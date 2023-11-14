@@ -136,6 +136,7 @@ import {
   InputLeftAddon,
   InputGroup,
   Flex,
+  Select,
 } from "@chakra-ui/react";
 
 function ResumeForm() {
@@ -153,6 +154,7 @@ function ResumeForm() {
     <Box fontSize={50}>
       <Container maxW={"container.xl"}>
         <Grid templateColumns={{ base: "1fr", md: "8fr 1fr" }} gap={4} mt={2}>
+          
           <GridItem>
             <Box bg="primary.200" color="white" p={2} borderRadius="md">
               <Heading as="h1" textAlign="center" >
@@ -178,66 +180,130 @@ function ResumeForm() {
               <Heading as="h3" size="md" textAlign="left">
                 DATOS PERSONALES
               </Heading>
-                <Grid templateColumns={{ base: "1fr", md: "1fr 3fr" }} gap={4} mt={2}>
-                  <GridItem fontSize={14} order={{ base: 1, md: 1 }}p={1}>
-                    Apellidos y Nombres:
+                <Grid templateColumns={{ base: "1fr", md: "2fr 2fr" }} gap={2} mt={2}>
+                  <GridItem fontSize={"sm"}>
+                    <InputGroup>
+                      <InputLeftAddon children='Primer Apellido' />
+                      <Input type='text' placeholder='Primer Apellido' />
+                    </InputGroup>
                   </GridItem>
-                  <GridItem fontSize={"sm"} order={{ base: 2, md: 1 }}>
-                  <Input type='text' placeholder='Apellidos y Nombres'/>
+                  <GridItem fontSize={"sm"}>
+                    <InputGroup>
+                      <InputLeftAddon children='Segundo Apellido' />
+                      <Input type='text' placeholder='Segundo Apellido' />
+                    </InputGroup>
                   </GridItem>
-                  <GridItem fontSize={14} order={{ base: 3, md: 1 }}p={1}>
-                  Fecha de nacimiento:
+                  <GridItem fontSize={"sm"}>
+                    <InputGroup>
+                      <InputLeftAddon children='Primer Nombre' />
+                      <Input type='text' placeholder='Primer Nombre' />
+                    </InputGroup>
                   </GridItem>
-                  <GridItem fontSize={"sm"} order={{ base: 4, md: 1 }}>
-                  <Input type='text' placeholder='Fecha de nacimiento' />
+                  <GridItem fontSize={"sm"}>
+                    <InputGroup>
+                      <InputLeftAddon children='Segundo Nombre' />
+                      <Input type='text' placeholder='Segundo Nombre' />
+                    </InputGroup>
                   </GridItem>
-                  <GridItem fontSize={14} order={{ base: 5, md: 1 }}p={1}>
-                  Lugar de Nacimiento:
+                  <GridItem fontSize={"sm"}>
+                    <InputGroup>
+                      <InputLeftAddon children='Fecha de nacimiento' />
+                      <Input
+                      placeholder="Fecha"
+                      size="md"
+                      type="date"
+                      />
+                    </InputGroup>
                   </GridItem>
-                  <GridItem fontSize={"sm"} order={{ base: 6, md: 1 }}>
-                    <Input type='text' placeholder='Lugar de Nacimiento'/>
+                  <GridItem fontSize={"sm"}>
+                    <InputGroup>
+                      <InputLeftAddon children='Estado Civil' />
+                      <Select placeholder='Seleccione una opción'>
+                        <option value='option1'>Soltero</option>
+                        <option value='option2'>Viudo</option>
+                        <option value='option3'>Casado</option>
+                        <option value='option3'>Divorciado</option>
+                      </Select>
+                    </InputGroup>
                   </GridItem>
-                  <GridItem fontSize={14} order={{ base: 7, md: 1 }}p={1}>
-                  Nacionalidad:
+                  
+                  <GridItem fontSize={"sm"}>
+                    <InputGroup>
+                      <InputLeftAddon children='Tipo de Sangre' />
+                      <Input type='text' placeholder='Tipo de Sangre' />
+                    </InputGroup>
                   </GridItem>
-                  <GridItem fontSize={"sm"} order={{ base: 8, md: 1 }}>
-                    <Input type='text' placeholder='Nacionalidad'/>
+                  <GridItem fontSize={"sm"}>
+                    <InputGroup>
+                      <InputLeftAddon children='Nacionalidad' />
+                      <Input type='text' placeholder='Nacionalidad' />
+                    </InputGroup>
                   </GridItem>
-                  <GridItem fontSize={14} order={{ base: 9, md: 1 }}p={1}>
-                  Estado Civil:
+                  <GridItem fontSize={"sm"}>
+                    <InputGroup>
+                      <InputLeftAddon children='Teléfono de domicilio' />
+                      <Input type='tel' placeholder='Teléfono de domicilio' />
+                    </InputGroup>
                   </GridItem>
-                  <GridItem fontSize={"sm"} order={{ base: 10, md: 1 }}>
-                    <Input type='text' placeholder='Estado Civil'/>
+                  <GridItem fontSize={"sm"}>
+                    <InputGroup>
+                      <InputLeftAddon children='Teléfono de celular' />
+                      <Input type='tel' placeholder='Teléfono de celular' />
+                    </InputGroup>
                   </GridItem>
-                  <GridItem fontSize={14} order={{ base: 11, md: 1 }}p={1}>
-                  Lugar de residencia:
+                  <GridItem fontSize={"sm"}>
+                    <InputGroup>
+                      <InputLeftAddon children='Lugar de Nacimiento' />
+                      <Input type='text' placeholder='Lugar de Nacimiento' />
+                    </InputGroup>
                   </GridItem>
-                  <GridItem fontSize={"sm"} order={{ base: 12, md: 1 }}>
-                    <Input type='text' placeholder='Lugar de residencia'/>
+                  <GridItem fontSize={"sm"}>
+                    <InputGroup>
+                      <InputLeftAddon children='Lugar de residencia' />
+                      <Input type='text' placeholder='Lugar de residencia' />
+                    </InputGroup>
                   </GridItem>
-                  <GridItem fontSize={14} order={{ base: 13, md: 1 }}p={1}>
-                  Dirección de domicilio:
+                  <GridItem fontSize={"sm"}>
+                    <InputGroup>
+                      <InputLeftAddon children='@' />
+                      <Input type='email' placeholder='Correo Electrónico Institucional' />
+                    </InputGroup>
                   </GridItem>
-                  <GridItem fontSize={"sm"} order={{ base: 14, md: 1 }}>
-                    <Input type='text' placeholder='Dirección de domicilio'/>
+                  <GridItem fontSize={"sm"}>
+                    <InputGroup>
+                      <InputLeftAddon children='@' />
+                      <Input type='email' placeholder='Correo Electrónico Personal' />
+                    </InputGroup>
                   </GridItem>
-                  <GridItem fontSize={14} order={{ base: 15, md: 1 }}p={1}>
-                  Teléfono de domicilio:
+                </Grid>
+                <Grid templateColumns={{ base: "1fr", md: "1fr" }} gap={2} mt={2}>
+                  <GridItem fontSize={"sm"}>
+                    <InputGroup>
+                      <InputLeftAddon children='Dirección de domicilio' />
+                      <Input type='text' placeholder='Dirección de domicilio' />
+                    </InputGroup>
                   </GridItem>
-                  <GridItem fontSize={"sm"} order={{ base: 16, md: 1 }}>
-                    <Input type='tel' placeholder='Teléfono de domicilio'/>
-                  </GridItem>
-                  <GridItem fontSize={14} order={{ base: 17, md: 1 }}p={1}>
-                  Teléfono de celular:
-                  </GridItem>
-                  <GridItem fontSize={"sm"} order={{ base: 18, md: 1 }}>
-                    <Input type='tel' placeholder='Teléfono de celular'/>
-                  </GridItem>
-                  <GridItem fontSize={14} order={{ base: 19, md: 1 }}p={1}>
-                  Tipo de Sangre:
-                  </GridItem>
-                  <GridItem fontSize={"sm"} order={{ base: 20, md: 1 }}>
-                    <Input type='text' placeholder='Tipo de Sangre'/>
+
+                  <GridItem fontSize={"sm"} border="1px solid #ccc" borderRadius={8}>
+                    <Grid templateColumns={{ base: "1fr", md: "1fr 4fr" }}>
+                      <GridItem fontSize={"lg"} margin={"auto"} >
+                       Discapacidad:
+                      </GridItem>
+                      <GridItem fontSize={"sm"}>
+                        <InputGroup>
+                          <InputLeftAddon children='Tipo' w={110} />
+                          <Input type='text' placeholder='Tipo' />
+                        </InputGroup>
+                        <InputGroup>
+                          <InputLeftAddon children='Nro' w={110}/>
+                          <Input type='text' placeholder='Nro' />
+                        </InputGroup>
+                        <InputGroup>
+                          <InputLeftAddon children='Porcentaje' w={110}/>
+                          <Input type='text' placeholder='Porcentaje' />
+                        </InputGroup>
+                      </GridItem>
+                    </Grid>
                   </GridItem>
                 </Grid>
 
