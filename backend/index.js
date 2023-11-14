@@ -6,13 +6,14 @@ import cors from "cors";
 const app = express();
 const PORT = 3000;
 
-app.use("/api", studentRoutes);
-app.use("/api/auth", authRoutes);
+app.use(express.json());
+
+
 
 const allowedOrigins = [
   // "http://dev.gym.com",
   "http://localhost",
-  "http://localhost:5173",
+  "http://localhost:5173"
 ];
 
 const corsOptions = {
@@ -29,6 +30,10 @@ const corsOptions = {
 };
 
 app.use(cors(corsOptions));
+
+
+app.use("/api/auth", authRoutes);
+app.use("/api/students", studentRoutes);
 
 app.listen(PORT, () => {
   console.log(`Backend escuchando en el puesto ${PORT}`);

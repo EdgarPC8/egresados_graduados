@@ -13,9 +13,13 @@ import {
   MenuDivider,
   IconButton,
   Stack,
+  Image,
 } from "@chakra-ui/react";
 
+import { Link } from "react-router-dom";
+
 import { HamburgerIcon, CloseIcon } from "@chakra-ui/icons";
+import { useAuth } from "../context/AuthContext";
 
 const NavLink = (props) => {
   const { children } = props;
@@ -25,7 +29,6 @@ const NavLink = (props) => {
       px={2}
       py={1}
       rounded={"md"}
-      href={"#"}
       _hover={{
         textDecoration: "none",
         bg: "bg.200",
@@ -36,13 +39,35 @@ const NavLink = (props) => {
   );
 };
 
-const Links = ["Dashboard", "Projects", "Team"];
-
 const Navbar = () => {
+  const Links = [
+    {
+      name: "Inicio",
+      path: "/inicio",
+    },
+    {
+      name: "Curriculos",
+      path: "/curriculos",
+    },
+    {
+      name: "Formularios",
+      path: "/formularios",
+    },
+  ];
+
+  const LinksToNoAuth = [
+    {
+      name: "Curriculos",
+      path: "/curriculos",
+    },
+  ];
+
+  const { isAuthenticated } = useAuth();
+
   const { isOpen, onOpen, onClose } = useDisclosure();
   return (
     <>
-      <Box p={4} bg="bg.100">
+      <Box p={2} bg="bg.100">
         <Flex alignItems="center" justifyContent={"space-between"}>
           <HStack spacing={8} alignItems={"center"}>
             <IconButton
@@ -57,9 +82,23 @@ const Navbar = () => {
               spacing={4}
               display={{ base: "none", md: "flex" }}
             >
-              {Links.map((link) => (
-                <NavLink key={link}>{link}</NavLink>
-              ))}
+              <Image
+                borderRadius="full"
+                boxSize="50px"
+                src="http://www.marianosamaniego.edu.ec/eva/pluginfile.php/1/core_admin/logo/0x200/1679244973/logoistms.jpeg"
+                alt="Dan Abramov"
+              />
+              {!isAuthenticated
+                ? LinksToNoAuth.map((link) => (
+                    <Link to={link.path}>
+                      <NavLink key={link.name}>{link.name}</NavLink>
+                    </Link>
+                  ))
+                : Links.map((link) => (
+                    <Link to={link.path}>
+                      <NavLink key={link.name}>{link.name}</NavLink>
+                    </Link>
+                  ))}
             </HStack>
           </HStack>
           <Menu>
@@ -70,12 +109,16 @@ const Navbar = () => {
               cursor={"pointer"}
               minW={0}
             >
-              <Avatar
-                size={"sm"}
-                src={
-                  "https://images.unsplash.com/photo-1493666438817-866a91353ca9?ixlib=rb-0.3.5&q=80&fm=jpg&crop=faces&fit=crop&h=200&w=200&s=b616b2c5b373a80ffc9636ba24f7a4a9"
-                }
-              />
+              {!isAuthenticated ? (
+                ""
+              ) : (
+                <Avatar
+                  size={"sm"}
+                  src={
+                    "https://images.unsplash.com/photo-1493666438817-866a91353ca9?ixlib=rb-0.3.5&q=80&fm=jpg&crop=faces&fit=crop&h=200&w=200&s=b616b2c5b373a80ffc9636ba24f7a4a9"
+                  }
+                />
+              )}
             </MenuButton>
             <MenuList>
               <MenuItem>Perfil</MenuItem>

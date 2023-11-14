@@ -12,4 +12,13 @@ const getAllStudentsFromDb = async () => {
   return students;
 };
 
-export { getAllStudentsFromDb };
+const searchUser = async ({ email }) => {
+  const [[user]] = await connection.query(
+    "SELECT * FROM users WHERE email = ?",
+    [email]
+  );
+
+  return user;
+};
+
+export { getAllStudentsFromDb, searchUser };
