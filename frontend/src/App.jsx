@@ -7,6 +7,7 @@ import HomePage from "./pages/HomePage.jsx";
 import LoginPage from "./pages/LoginPage.jsx";
 import { AuthProvider } from "./context/AuthContext.jsx";
 import ProtectedRoute from "./components/ProtectedRoute.jsx";
+import CV from "./pages/CV.jsx";
 
 function App() {
   return (
@@ -21,6 +22,7 @@ function App() {
             <Route element={<ProtectedRoute />}>
               <Route path="/curriculos" element="Lista Docentes" />
               <Route path="/inicio" element={<HomePage />} />
+              <Route path="/cv" element={<CV />} />
             </Route>
           </Routes>
         </BrowserRouter>
