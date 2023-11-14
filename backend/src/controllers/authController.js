@@ -38,6 +38,7 @@ const login = async (req, res) => {
     res.json({ message: "User auth", token });
   } catch (error) {
     res.status(500).json({ message: error.message });
+    console.log(error);
   }
 };
 
