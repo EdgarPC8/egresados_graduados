@@ -25,7 +25,6 @@ const NavLink = (props) => {
   const { children } = props;
   return (
     <Box
-      as="a"
       px={2}
       py={1}
       rounded={"md"}
@@ -43,10 +42,11 @@ const Navbar = () => {
   const Links = [
     {
       name: "Inicio",
-      path: "/inicio",
+      path: "/",
     },
     {
       name: "Curriculos",
+
       path: "/curriculos",
     },
     {
@@ -90,13 +90,13 @@ const Navbar = () => {
               />
               {!isAuthenticated
                 ? LinksToNoAuth.map((link) => (
-                    <Link to={link.path}>
-                      <NavLink key={link.name}>{link.name}</NavLink>
+                    <Link to={link.path} key={link.name}>
+                      <NavLink>{link.name}</NavLink>
                     </Link>
                   ))
                 : Links.map((link) => (
-                    <Link to={link.path}>
-                      <NavLink key={link.name}>{link.name}</NavLink>
+                    <Link to={link.path} key={link.name}>
+                      <NavLink>{link.name}</NavLink>
                     </Link>
                   ))}
             </HStack>
@@ -130,9 +130,17 @@ const Navbar = () => {
         {isOpen ? (
           <Box pb={4} pt={4} display={{ md: "none" }}>
             <Stack as={"nav"} spacing={4}>
-              {Links.map((link) => (
-                <NavLink key={link}>{link}</NavLink>
-              ))}
+              {!isAuthenticated
+                ? LinksToNoAuth.map((link) => (
+                    <Link to={link.path} key={link.name}>
+                      <NavLink>{link.name}</NavLink>
+                    </Link>
+                  ))
+                : Links.map((link) => (
+                    <Link to={link.path} key={link.name}>
+                      <NavLink>{link.name}</NavLink>
+                    </Link>
+                  ))}
             </Stack>
           </Box>
         ) : null}

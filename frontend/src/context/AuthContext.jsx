@@ -46,8 +46,6 @@ const AuthProvider = ({ children }) => {
     const checkLogin = async () => {
       const token = window.localStorage.getItem("token");
 
-      
-
       if (!token) {
         setIsAuthenticated(false);
         setIsLoading(false);
@@ -56,15 +54,12 @@ const AuthProvider = ({ children }) => {
 
       try {
         const res = await verifyTokenRequest();
-        console.log(res);
-
-        
+        // console.log(res);
+        setIsAuthenticated(true);
       } catch (error) {
         setIsAuthenticated(false);
         setIsLoading(false);
-        
       }
-
     };
     checkLogin();
   }, []);

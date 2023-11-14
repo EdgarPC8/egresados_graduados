@@ -16,12 +16,10 @@ function App() {
         <BrowserRouter>
           <Navbar />
           <Routes>
-            <Route path="/" element={<h1>Estas en el home :)</h1>} />
+            <Route path="/" element={<HomePage />} />
             <Route path="/login" element={<LoginPage />} />
 
             <Route element={<ProtectedRoute />}>
-              <Route path="/curriculos" element="Lista Docentes" />
-              <Route path="/inicio" element={<HomePage />} />
               <Route path="/cv" element={<CV />} />
             </Route>
           </Routes>
