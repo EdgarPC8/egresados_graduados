@@ -4,6 +4,7 @@ import customTheme from "./theme/theme.jsx";
 import "./App.css";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import HomePage from "./pages/HomePage.jsx";
+import CV from "./pages/CV.jsx";
 
 function App() {
   return (
@@ -13,6 +14,7 @@ function App() {
         <Routes>
           <Route path="/curriculums" element="Lista Docentes" />
           <Route path="/inicio" element={<HomePage/>} />
+          <Route path="/cv" element={<CV/>} />
         </Routes>
       </BrowserRouter>
     </ChakraProvider>
