@@ -54,8 +54,8 @@ const AuthProvider = ({ children }) => {
 
       try {
         const res = await verifyTokenRequest();
-        // console.log(res);
         setIsAuthenticated(true);
+        console.log(res);
       } catch (error) {
         setIsAuthenticated(false);
         setIsLoading(false);
