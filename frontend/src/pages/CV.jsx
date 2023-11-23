@@ -491,7 +491,7 @@ function ResumeForm() {
                     </Th>
                     <Th>
                       <Tr>
-                        <Th textAlign={"center"} colSpan={2}>Fecha de Realización</Th>
+                        <Th textAlign={"center"} colSpan={2}>Tipo de Participación</Th>
                       </Tr>
                       <Tr>
                         <Th>Asistente</Th>
