@@ -1,29 +1,14 @@
--- phpMyAdmin SQL Dump
--- version 5.2.1
--- https://www.phpmyadmin.net/
---
--- Host: localhost
--- Generation Time: Oct 23, 2023 at 09:11 PM
--- Server version: 10.4.28-MariaDB
--- PHP Version: 8.2.4
+/*Elminio la base de datos*/
+
+DROP DATABASE IF EXISTS egresados_graduados;
+/*Creo la base de datos*/
+CREATE DATABASE egresados_graduados;
+/*Selecciono la base datos*/
 USE egresados_graduados;
 
-SET
-  SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
-
+SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
-
-SET
-  time_zone = "+00:00";
-
-/*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
-
-/*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
-
-/*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
-
-/*!40101 SET NAMES utf8mb4 */;
-
+SET time_zone = "+00:00";
 --
 -- Database: `egresados_graduados`
 --
@@ -32,105 +17,32 @@ SET
 -- Table structure for table `students`
 --
 CREATE TABLE
-  `students` (
-    `id` int (11) DEFAULT NULL,
-    `first_name` varchar(50) DEFAULT NULL,
-    `last_name` varchar(50) DEFAULT NULL,
-    `email` varchar(50) DEFAULT NULL,
-    `gender` varchar(50) DEFAULT NULL,
-    `ip_address` varchar(20) DEFAULT NULL
+  students (
+    id int (11)  PRIMARY KEY AUTO_INCREMENT,
+    ci int (11) NOT NULL,
+    first_name varchar(50) DEFAULT NULL,
+    second_name varchar(50) DEFAULT NULL,
+    first_last_name varchar(50) DEFAULT NULL,
+    second_last_name varchar(50) DEFAULT NULL,
+    gender varchar(5) DEFAULT NULL,
+    blood_type varchar(10) DEFAULT NULL,
+    civil_status varchar(50) DEFAULT NULL,
+    nationality varchar(50) DEFAULT NULL,
+    place_birth varchar(50) DEFAULT NULL,
+    place_residence varchar(100) DEFAULT NULL,
+    direction TEXT DEFAULT NULL,
+    home_phone varchar(20) DEFAULT NULL,
+    cell_phone varchar(20) DEFAULT NULL,
+    personal_email varchar(60) DEFAULT NULL,
+    institutional_email varchar(60) DEFAULT NULL
   ) ENGINE = InnoDB DEFAULT CHARSET = utf8mb4 COLLATE = utf8mb4_general_ci;
-
---
--- Dumping data for table `students`
---
-INSERT INTO
-  `students` (
-    `id`,
-    `first_name`,
-    `last_name`,
-    `email`,
-    `gender`,
-    `ip_address`
-  )
-VALUES
-  (
-    1,
-    'Conni',
-    'Kenworthy',
-    'ckenworthy0@businessweek.com',
-    'Female',
-    '173.254.143.131'
-  ),
-  (
-    2,
-    'Abba',
-    'Stutely',
-    'astutely1@tinyurl.com',
-    'Agender',
-    '179.152.81.11'
-  ),
-  (
-    3,
-    'Mariana',
-    'Reisen',
-    'mreisen2@wisc.edu',
-    'Female',
-    '29.41.177.142'
-  ),
-  (
-    4,
-    'Charline',
-    'Brunsden',
-    'cbrunsden3@cdbaby.com',
-    'Female',
-    '195.215.130.244'
-  ),
-  (
-    5,
-    'Cully',
-    'Carnilian',
-    'ccarnilian4@studiopress.com',
-    'Male',
-    '255.155.80.60'
-  ),
-  (
-    6,
-    'Waite',
-    'Danzelman',
-    'wdanzelman5@github.io',
-    'Male',
-    '130.231.217.5'
-  ),
-  (
-    7,
-    'Shaylyn',
-    'Tapley',
-    'stapley6@telegraph.co.uk',
-    'Female',
-    '195.84.155.244'
-  ),
-  (
-    8,
-    'Desiri',
-    'Athelstan',
-    'dathelstan7@woothemes.com',
-    'Female',
-    '112.214.177.227'
-  );
-
-COMMIT;
 
 CREATE TABLE
   users (
     id_user int (11) PRIMARY KEY AUTO_INCREMENT,
     email varchar(30) NOT NULL,
     user_password varchar(100) NOT NULL
-  );
+  ) ENGINE = InnoDB DEFAULT CHARSET = utf8mb4 COLLATE = utf8mb4_general_ci;
 
--- INSERT INTO users (email, user_password) VALUES ("admin", "admin");
-/*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
-
-/*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
-
-/*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
+  INSERT INTO users (email,user_password) VALUES
+('admin', '$2b$10$p49gCto6b2liCqoQoSMDyu8/EmT1t3cwJe6HALeZNgXxZHx7rJMRu');

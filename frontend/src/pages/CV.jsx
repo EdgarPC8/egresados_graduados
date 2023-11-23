@@ -1,31 +1,53 @@
 import React, { useState } from "react";
+import { selectData,insertData, } from "../context/dataContext";
 import {
   Box,
   Heading,
   Input,
-  Textarea,
-  FormControl,
-  FormLabel,
   Container,
   Grid,
   GridItem,
-  Stack,
   InputLeftAddon,
   InputGroup,
-  Flex,
   Select,
 } from "@chakra-ui/react";
+
+const variable=await selectData({
+  Table:"students",
+  Columns:null,
+  Conditions:null,
+  GroupBy:null,
+  OrderBy:null,
+});
+console.log(variable)
+
+
+// const variable=await insertData({Table:"students",Sentencia:{
+//   id:98,
+//   first_name:"",	
+//   last_name:"",	
+//   email:"",	
+//   gender:"",	
+//   ip_address:"",	
+// }});
+
+
+// console.log(variable)
+
 
 function ResumeForm() {
   const [name, setName] = useState("");
   // ... (resto de los estados)
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     // Lógica para enviar los datos del formulario
     console.log("Nombre:", name);
     // ... (resto de los datos)
   };
+
+  // console.log(dataRequest())
+
 
   return (
     <Box fontSize={50}>
@@ -57,6 +79,7 @@ function ResumeForm() {
               DATOS PERSONALES
             </Heading>
             <Grid templateColumns={{ base: "1fr", md: "2fr 2fr" }} gap={2} mt={2}>
+              
               <GridItem fontSize={"sm"}>
                 <InputGroup>
                   <InputLeftAddon children='Primer Apellido' />
@@ -102,6 +125,12 @@ function ResumeForm() {
                   </Select>
                 </InputGroup>
               </GridItem>
+              <GridItem fontSize={"sm"}>
+                <InputGroup>
+                  <InputLeftAddon children='Cedula' />
+                  <Input type='text' placeholder='Cedula' />
+                </InputGroup>
+              </GridItem>
 
               <GridItem fontSize={"sm"}>
                 <InputGroup>
@@ -135,6 +164,12 @@ function ResumeForm() {
               </GridItem>
               <GridItem fontSize={"sm"}>
                 <InputGroup>
+                  <InputLeftAddon children='Dirección de domicilio' />
+                  <Input type='text' placeholder='Dirección de domicilio' />
+                </InputGroup>
+              </GridItem>
+              <GridItem fontSize={"sm"}>
+                <InputGroup>
                   <InputLeftAddon children='Lugar de residencia' />
                   <Input type='text' placeholder='Lugar de residencia' />
                 </InputGroup>
@@ -153,13 +188,7 @@ function ResumeForm() {
               </GridItem>
             </Grid>
             <Grid templateColumns={{ base: "1fr", md: "1fr" }} gap={2} mt={2}>
-              <GridItem fontSize={"sm"}>
-                <InputGroup>
-                  <InputLeftAddon children='Dirección de domicilio' />
-                  <Input type='text' placeholder='Dirección de domicilio' />
-                </InputGroup>
-              </GridItem>
-
+              
               <GridItem fontSize={"sm"} border="1px solid #ccc" borderRadius={8}>
                 <Grid templateColumns={{ base: "1fr", md: "1fr 4fr" }}>
                   <GridItem fontSize={"lg"} margin={"auto"} >
@@ -182,7 +211,6 @@ function ResumeForm() {
                 </Grid>
               </GridItem>
             </Grid>
-
           </GridItem>
           <GridItem order={{ base: 1, md: 1 }} textAlign={"center"} margin={"auto"}>
             <Box bg="primary.200" color="white" borderRadius="md" w={300} h={300}>
@@ -198,4 +226,3 @@ function ResumeForm() {
 }
 
 export default ResumeForm;
-

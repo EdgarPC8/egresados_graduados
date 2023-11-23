@@ -1,6 +1,7 @@
 import express from "express";
 import authRoutes from "./src/routes/authRoutes.js";
 import studentRoutes from "./src/routes/studentRoutes.js";
+import dataRoutes from "./src/routes/dataRoutes.js";
 import cors from "cors";
 
 const app = express();
@@ -35,6 +36,7 @@ app.use(cors(corsOptions));
 
 app.use("/api/auth", authRoutes);
 app.use("/api/students", studentRoutes);
+app.use("/api/data", dataRoutes);
 
 app.listen(PORT, () => {
   console.log(`Backend escuchando en el puesto ${PORT}`);

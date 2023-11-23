@@ -5,4 +5,6 @@ const getAllStudents = async (req, res) => {
   res.json(students);
 };
 
+
+
 export { getAllStudents };
