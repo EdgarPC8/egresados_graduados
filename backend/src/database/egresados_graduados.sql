@@ -19,7 +19,7 @@ SET time_zone = "+00:00";
 CREATE TABLE
   students (
     id int (11)  PRIMARY KEY AUTO_INCREMENT,
-    ci int (11) NOT NULL,
+    ci varchar (11) DEFAULT NULL,
     first_name varchar(50) DEFAULT NULL,
     second_name varchar(50) DEFAULT NULL,
     first_last_name varchar(50) DEFAULT NULL,
@@ -34,7 +34,8 @@ CREATE TABLE
     home_phone varchar(20) DEFAULT NULL,
     cell_phone varchar(20) DEFAULT NULL,
     personal_email varchar(60) DEFAULT NULL,
-    institutional_email varchar(60) DEFAULT NULL
+    institutional_email varchar(60) DEFAULT NULL,
+    imagen TEXT DEFAULT NULL
   ) ENGINE = InnoDB DEFAULT CHARSET = utf8mb4 COLLATE = utf8mb4_general_ci;
 
 CREATE TABLE
