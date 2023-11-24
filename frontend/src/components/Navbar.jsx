@@ -25,7 +25,6 @@ const NavLink = (props) => {
   const { children } = props;
   return (
     <Box
-      as="a"
       px={2}
       py={1}
       rounded={"md"}
@@ -43,26 +42,30 @@ const Navbar = () => {
   const Links = [
     {
       name: "Inicio",
-      path: "/inicio",
+      path: "/",
     },
     {
       name: "Curriculos",
       path: "/curriculos",
     },
     {
-      name: "Formularios",
-      path: "/formularios",
+      name: "Cv",
+      path: "/cv",
     },
   ];
 
   const LinksToNoAuth = [
     {
+      name: "Inicio",
+      path: "/",
+    },
+    {
       name: "Curriculos",
       path: "/curriculos",
     },
   ];
 
-  const { isAuthenticated } = useAuth();
+  const { isAuthenticated, logout } = useAuth();
 
   const { isOpen, onOpen, onClose } = useDisclosure();
   return (
@@ -90,49 +93,69 @@ const Navbar = () => {
               />
               {!isAuthenticated
                 ? LinksToNoAuth.map((link) => (
-                    <Link to={link.path}>
-                      <NavLink key={link.name}>{link.name}</NavLink>
+                    <Link to={link.path} key={link.name}>
+                      <NavLink>{link.name}</NavLink>
                     </Link>
                   ))
                 : Links.map((link) => (
-                    <Link to={link.path}>
-                      <NavLink key={link.name}>{link.name}</NavLink>
+                    <Link to={link.path} key={link.name}>
+                      <NavLink>{link.name}</NavLink>
                     </Link>
                   ))}
             </HStack>
           </HStack>
-          <Menu>
-            <MenuButton
-              as={Button}
-              rounded={"full"}
-              variant={"link"}
-              cursor={"pointer"}
-              minW={0}
-            >
-              {!isAuthenticated ? (
-                ""
-              ) : (
+          {!isAuthenticated ? (
+            <Link to="/login">
+              <Button
+                bg="primary.200"
+                color="white"
+                _hover={{
+                  bg: "primary.100",
+                }}
+              >
+                Iniciar Sesión
+              </Button>
+            </Link>
+          ) : (
+            <Menu>
+              <MenuButton
+                as={Button}
+                rounded={"full"}
+                variant={"link"}
+                cursor={"pointer"}
+                minW={0}
+              >
                 <Avatar
                   size={"sm"}
                   src={
                     "https://images.unsplash.com/photo-1493666438817-866a91353ca9?ixlib=rb-0.3.5&q=80&fm=jpg&crop=faces&fit=crop&h=200&w=200&s=b616b2c5b373a80ffc9636ba24f7a4a9"
                   }
                 />
-              )}
-            </MenuButton>
-            <MenuList>
-              <MenuItem>Perfil</MenuItem>
-              <MenuDivider />
-              <MenuItem>Salir</MenuItem>
-            </MenuList>
-          </Menu>
+              </MenuButton>
+              <MenuList>
+                <MenuItem>Perfil</MenuItem>
+                <MenuDivider />
+                <Link to="/login" onClick={logout}>
+                  <MenuItem>Salir</MenuItem>
+                </Link>
+              </MenuList>
+            </Menu>
+          )}
         </Flex>
         {isOpen ? (
           <Box pb={4} pt={4} display={{ md: "none" }}>
             <Stack as={"nav"} spacing={4}>
-              {Links.map((link) => (
-                <NavLink key={link}>{link}</NavLink>
-              ))}
+              {!isAuthenticated
+                ? LinksToNoAuth.map((link) => (
+                    <Link to={link.path} key={link.name}>
+                      <NavLink>{link.name}</NavLink>
+                    </Link>
+                  ))
+                : Links.map((link) => (
+                    <Link to={link.path} key={link.name}>
+                      <NavLink>{link.name}</NavLink>
+                    </Link>
+                  ))}
             </Stack>
           </Box>
         ) : null}

@@ -21,6 +21,7 @@ function App() {
 
             <Route element={<ProtectedRoute />}>
               <Route path="/cv" element={<CV />} />
+              
             </Route>
           </Routes>
         </BrowserRouter>

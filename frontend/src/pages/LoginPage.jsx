@@ -7,7 +7,12 @@ import {
   FormLabel,
   Input,
   Button,
+  Select,
   Text,
+  Alert,
+  AlertIcon,
+  AlertTitle,
+  AlertDescription,
 } from "@chakra-ui/react";
 
 import PasswordInput from "../components/PasswordInput";
@@ -16,7 +21,10 @@ import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 
 function LoginPage() {
-  const { signin, isAuthenticated } = useAuth();
+  const { signin, isAuthenticated, errors } = useAuth();
+
+  // console.log(errors)
+
   const navigate = useNavigate();
 
   const handleSubmit = (event) => {
@@ -29,7 +37,7 @@ function LoginPage() {
 
   useEffect(() => {
     if (isAuthenticated) {
-      navigate("/inicio");
+      navigate("/");
     }
   }, [isAuthenticated]);
 
@@ -39,7 +47,7 @@ function LoginPage() {
       py={{ base: "12", md: "24" }}
       px={{ base: "0", sm: "8" }}
     >
-      <Stack spacing="8">
+      <Stack spacing="7">
         <Stack spacing="6">
           <Stack spacing={{ base: "2", md: "3" }} textAlign="center">
             <Heading size={{ base: "xs", md: "sm" }}>
@@ -57,11 +65,29 @@ function LoginPage() {
             <form onSubmit={handleSubmit}>
               <Stack spacing="6">
                 <Stack spacing="5">
+                  {!errors.message ? (
+                    ""
+                  ) : (
+                    <Alert status="error">
+                      <AlertIcon />
+                      <AlertTitle>Autenticación</AlertTitle>
+                      <AlertDescription>{errors.message}</AlertDescription>
+                    </Alert>
+                  )}
+
                   <FormControl>
                     <FormLabel htmlFor="email">Correo</FormLabel>
                     <Input id="email" name="email" />
                   </FormControl>
                   <PasswordInput />
+                  <FormControl>
+                    <FormLabel htmlFor="roles">Roles disponibles</FormLabel>
+                    <Select placeholder="Seleccione un rol" name="rol">
+                      <option value="option1">Option 1</option>
+                      <option value="option2">Option 2</option>
+                      <option value="option3">Option 3</option>
+                    </Select>
+                  </FormControl>
                 </Stack>
                 <Button
                   bg="primary.200"

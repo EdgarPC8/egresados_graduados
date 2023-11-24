@@ -1,4 +1,6 @@
-import { searchUser } from "../database/connection.js";
+// import { searchUser } from "../database/connection.js";
+
+import { Users } from "../Models/Users.js";
 import bycrypt from "bcrypt";
 import { createAccessToken } from "../libs/jwt.js";
 import jwt from "jsonwebtoken";
@@ -9,20 +11,19 @@ const login = async (req, res) => {
 
   // console.log(user);
   try {
-    const user = await searchUser({ email });
+    const user = await Users.findOne({ where: { email } });
 
     // const passgenerate = await bycrypt.hash("admin", 10);
     // console.log(passgenerate);
-
-    const isCorrectPassword = await bycrypt.compare(
-      password,
-      user.user_password
-    );
 
     if (!user) {
       return res.status(400).json({ message: "Datos incorrectos" });
     }
 
+    const isCorrectPassword = await bycrypt.compare(
+      password,
+      user.password
+    );
     if (!isCorrectPassword) {
       return res.status(400).json({ message: "Datos incorrectos" });
     }
@@ -49,11 +50,9 @@ const verifytoken = (req, res) => {
   try {
     const decoded = jwt.verify(token, "privateKey");
     res.json(decoded);
-
   } catch (error) {
     return res.status(401).json({ message: "Unauthorized" });
   }
-
 };
 
 export { login, verifytoken };

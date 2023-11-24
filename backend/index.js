@@ -1,15 +1,14 @@
 import express from "express";
 import authRoutes from "./src/routes/authRoutes.js";
-import studentRoutes from "./src/routes/studentRoutes.js";
-import dataRoutes from "./src/routes/dataRoutes.js";
+import professionalsRoutes from "./src/routes/professionalsRoutes.js";
 import cors from "cors";
+import { sequelize } from "./src/database/connection.js";
+
 
 const app = express();
 const PORT = 3000;
 
 app.use(express.json());
-
-
 
 const allowedOrigins = [
   // "http://dev.gym.com",
@@ -33,11 +32,20 @@ const corsOptions = {
 
 app.use(cors(corsOptions));
 
-
 app.use("/api/auth", authRoutes);
-app.use("/api/students", studentRoutes);
-app.use("/api/data", dataRoutes);
+app.use("/api/professionals", professionalsRoutes);
 
-app.listen(PORT, () => {
-  console.log(`Backend escuchando en el puesto ${PORT}`);
-});
+async function main() {
+  try {
+    // await sequelize.authenticate();
+    await sequelize.sync({ force: true });
+    console.log("Conección realizada con éxito.");
+    app.listen(PORT, () => {
+      console.log(`Backend escuchando en el puesto ${PORT}`);
+    });
+  } catch (error) {
+    console.error("Error en la conexión en la db:", error);
+  }
+}
+
+main();

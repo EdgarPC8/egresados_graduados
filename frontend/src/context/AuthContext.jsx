@@ -19,6 +19,7 @@ const AuthProvider = ({ children }) => {
   const [isLoading, setIsLoading] = useState(true);
 
   const signin = async (user) => {
+    // console.log(user)
     try {
       const response = await loginRequest(user);
       const { data } = response;
@@ -28,9 +29,14 @@ const AuthProvider = ({ children }) => {
         setIsAuthenticated(true);
       }
     } catch (error) {
-      console.log(error.response.data);
+      // console.log(error.response.data);
       setErrors(error.response.data);
     }
+  };
+
+  const logout = async () => {
+    window.localStorage.removeItem("token");
+    setIsAuthenticated(false);
   };
 
   useEffect(() => {
@@ -66,7 +72,7 @@ const AuthProvider = ({ children }) => {
 
   return (
     <AuthContext.Provider
-      value={{ signin, errors, isAuthenticated, isLoading }}
+      value={{ signin, errors, logout, isAuthenticated, isLoading }}
     >
       {children}
     </AuthContext.Provider>

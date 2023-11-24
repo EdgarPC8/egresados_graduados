@@ -11,7 +11,7 @@ function HomePage() {
         Explora currículos detallados de estudiantes calificados. Encuentra el
         candidato ideal.
       </Text>
-      <Link to="/curriculums">
+      <Link to="/curriculos">
         <Button
           bg="primary.200"
           color="white"
