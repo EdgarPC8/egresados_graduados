@@ -1,8 +1,8 @@
 
 
 const Tables={
-  students:{
-    name:"students",
+  table1:{
+    name:"professional",
     columns:{
       ci:"ci",
       first_name:"first_name",

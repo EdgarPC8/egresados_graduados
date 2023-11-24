@@ -9,7 +9,7 @@ const getAllStudents = async (req, res) => {
 const insertStudent = async (req, res) => {
   const data = req.body; // Suponiendo que los datos están en el cuerpo de la solicitud
   
-  const respuesta= await insertData(Tables.students.name,data)
+  const respuesta= await insertData(Tables.table1.name,data)
   res.json(respuesta);
 };
 

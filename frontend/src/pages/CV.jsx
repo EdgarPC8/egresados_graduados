@@ -32,7 +32,8 @@ Radio,
 Flex,
 } from "@chakra-ui/react";
 
-const {data} = await insertStudent({ci:1104661598})
+// const {data} = await insertStudent({ci:1104661598})
+insertStudent({ci:1104661598})
 
 console.log(data)
 
