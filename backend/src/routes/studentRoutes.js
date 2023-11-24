@@ -4,6 +4,6 @@ import { getAllStudents,insertStudent } from "../controllers/studentController.j
 const router = Router();
 
 router.get("/students", getAllStudents);
-router.post("/students", insertStudent);
+router.post("/insertStudent", insertStudent);
 
 export default router;
