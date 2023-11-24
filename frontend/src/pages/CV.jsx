@@ -33,7 +33,8 @@ Flex,
 } from "@chakra-ui/react";
 
 const {data} = await insertStudent({ci:1104661598})
-HTMLFormControlsCollection.log(data)
+
+console.log(data)
 
 
 // const variable=await selectData({
