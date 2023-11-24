@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { selectData,insertData, } from "../context/dataContext";
+import { insertStudent } from "../api/dataRequest";
 import {
   Box,
   Heading,
@@ -30,6 +31,10 @@ Stack,
 Radio,
 Flex,
 } from "@chakra-ui/react";
+
+const {data} = await insertStudent({ci:1104661598})
+HTMLFormControlsCollection.log(data)
+
 
 // const variable=await selectData({
 //   Table:"students",
@@ -64,7 +69,6 @@ function ResumeForm() {
     console.log("Nombre:", name);
     // ... (resto de los datos)
   };
-
 
   return (
     <Box fontSize={50} mb={100}>
@@ -951,7 +955,6 @@ function ResumeForm() {
         </Accordion>
         
       </Container>
-      
     </Box>
   );
 }
