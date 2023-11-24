@@ -7,6 +7,15 @@
 -- Versión del servidor: 10.4.28-MariaDB
 -- Versión de PHP: 8.2.4
 
+
+/*Elminio la base de datos*/
+
+DROP DATABASE IF EXISTS egresados_graduados;
+/*Creo la base de datos*/
+CREATE DATABASE egresados_graduados;
+/*Selecciono la base datos*/
+USE egresados_graduados;
+
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
 SET time_zone = "+00:00";
@@ -563,10 +572,10 @@ CREATE TABLE `professional_experience` (
 -- --------------------------------------------------------
 
 --
--- Estructura de tabla para la tabla `students`
+-- Estructura de tabla para la tabla `professional`
 --
 
-CREATE TABLE `students` (
+CREATE TABLE `professional` (
   `id` int(11) NOT NULL,
   `ci` varchar(11) DEFAULT NULL,
   `first_name` varchar(50) DEFAULT NULL,
@@ -589,10 +598,10 @@ CREATE TABLE `students` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
--- Volcado de datos para la tabla `students`
+-- Volcado de datos para la tabla `professional`
 --
 
-INSERT INTO `students` (`id`, `ci`, `first_name`, `second_name`, `first_last_name`, `second_last_name`, `birthday_date`, `gender`, `blood_type`, `civil_status`, `nationality`, `place_birth`, `place_residence`, `direction`, `home_phone`, `cell_phone`, `personal_email`, `institutional_email`, `imagen`) VALUES
+INSERT INTO `professional` (`id`, `ci`, `first_name`, `second_name`, `first_last_name`, `second_last_name`, `birthday_date`, `gender`, `blood_type`, `civil_status`, `nationality`, `place_birth`, `place_residence`, `direction`, `home_phone`, `cell_phone`, `personal_email`, `institutional_email`, `imagen`) VALUES
 (1, '1150897542', 'Dayana', 'Marisol', 'Ajila', 'Espinoza', '29-11-2002', 'F', NULL, NULL, NULL, NULL, NULL, NULL, 'NULL', 'NULL', 'ajila.espinoza@gmail.com', 'dm_ajila@marianosamaniego.edu.ec', 'assets/fotos_perfil/90.jpg'),
 (2, '1105306359', 'Yomaira', 'Mishelle', 'Castro', 'Eras', '12-10-2003', 'F', NULL, NULL, NULL, NULL, NULL, NULL, 'NULL', 'NULL', 'mishellecastroe2003@gmail.com', 'ym_castro@marianosamaniego.edu.ec', 'assets/fotos_perfil/95.jpg'),
 (3, '1726159815', 'Rosa', 'Piedad', 'Jumbo', 'Abad', '23-07-2003', 'F', NULL, NULL, NULL, NULL, NULL, NULL, '(07) 268-7794', 'NULL', 'rositha.jumboabd@gmail.com', 'rp_jumbo@marianosamaniego.edu.ec', 'assets/fotos_perfil/96.jpg'),
@@ -814,7 +823,7 @@ INSERT INTO `students` (`id`, `ci`, `first_name`, `second_name`, `first_last_nam
 (219, '1106201732', 'Asdrúbal', 'Leonardo', 'Ontaneda ', 'Capa', '17-12-2000', 'M', NULL, NULL, NULL, NULL, NULL, NULL, 'NULL', 'NULL', 'ontanedaasdrubal@gmail.com', 'NULL', 'assets/fotos_perfil/322.jpg'),
 (220, '1105277550', 'Claudio', 'Efrain', 'Paccha', 'Tamayo', '01-02-1995', 'M', NULL, NULL, NULL, NULL, NULL, NULL, 'NULL', 'NULL', 'claudiopaccha2013@gmail.com', 'ce_paccha@marianosamaniego.edu.ec', 'assets/fotos_perfil/332.jpg'),
 (221, '1104931884', 'Faustino ', 'Ramon', 'Aguilar ', 'Aguirre', '10-02-1990', 'M', NULL, NULL, NULL, NULL, NULL, NULL, '(07) 268-9214', 'NULL', 'paramedicofa@hotmail.com', 'fr_aguilar@marianosamaniego.edu.ec', 'assets/fotos_perfil/336.jpg');
-INSERT INTO `students` (`id`, `ci`, `first_name`, `second_name`, `first_last_name`, `second_last_name`, `birthday_date`, `gender`, `blood_type`, `civil_status`, `nationality`, `place_birth`, `place_residence`, `direction`, `home_phone`, `cell_phone`, `personal_email`, `institutional_email`, `imagen`) VALUES
+INSERT INTO `professional` (`id`, `ci`, `first_name`, `second_name`, `first_last_name`, `second_last_name`, `birthday_date`, `gender`, `blood_type`, `civil_status`, `nationality`, `place_birth`, `place_residence`, `direction`, `home_phone`, `cell_phone`, `personal_email`, `institutional_email`, `imagen`) VALUES
 (222, '1105618001', 'Jimmy ', 'Alexis', 'Calle', 'Andrade', '07-06-1993', 'M', NULL, NULL, NULL, NULL, NULL, NULL, '(07) 265-3154', 'NULL', 'jimmycalleandrade@gmail.com', 'ja_calle@marianosamaniego.edu.ec', 'assets/fotos_perfil/352.jpg'),
 (223, '1106056177', 'Luis', 'Alberto', 'Cañar ', 'Castillo', '12-07-1995', 'M', NULL, NULL, NULL, NULL, NULL, NULL, 'NULL', 'NULL', 'albertoluis929@gmail.com', 'la_canar@marianosamaniego.edu.ec', 'assets/fotos_perfil/366.jpg'),
 (224, '1104713423', 'Anthony', 'Vicente', 'Castro', 'Yunga', '21-09-2000', 'M', NULL, NULL, NULL, NULL, NULL, NULL, 'NULL', 'NULL', 'castroyangua37@gmail.com', 'av_castro@marianosamaniego.edu.ec', 'assets/fotos_perfil/370.jpg'),
@@ -2694,9 +2703,9 @@ ALTER TABLE `professional_experience`
   ADD PRIMARY KEY (`id`);
 
 --
--- Indices de la tabla `students`
+-- Indices de la tabla `professional`
 --
-ALTER TABLE `students`
+ALTER TABLE `professional`
   ADD PRIMARY KEY (`id`);
 
 --
@@ -2790,9 +2799,9 @@ ALTER TABLE `professional_experience`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
--- AUTO_INCREMENT de la tabla `students`
+-- AUTO_INCREMENT de la tabla `professional`
 --
-ALTER TABLE `students`
+ALTER TABLE `professional`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=302;
 
 --
