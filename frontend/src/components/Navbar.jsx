@@ -52,6 +52,10 @@ const Navbar = () => {
       name: "Hoja de Vida",
       path: "/cv",
     },
+    {
+      name: "Encuesta",
+      path: "/quiz",
+    },
   ];
 
   const LinksToNoAuth = [

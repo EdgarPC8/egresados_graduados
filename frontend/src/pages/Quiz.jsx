@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-import { insertStudent } from "../api/dataRequest";
 import {
   Box,
   Heading,
@@ -36,7 +35,7 @@ import {
 
 
 
-function Quiz() {
+function ResumeForm() {
   const [name, setName] = useState("");
   // ... (resto de los estados)
 
@@ -670,4 +669,5 @@ function Quiz() {
     </Box>
   );
 }
-export default Quiz;
+
+export default ResumeForm;
