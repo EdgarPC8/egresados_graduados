@@ -24,17 +24,17 @@ CREATE TABLE
   INSERT INTO users (email,user_password) VALUES
 ('admin', '$2b$10$p49gCto6b2liCqoQoSMDyu8/EmT1t3cwJe6HALeZNgXxZHx7rJMRu');
 --
--- Table structure for table `professionals`
+-- Table structure for table `students`
 --
 CREATE TABLE
-  professionals (
+  students (
     id int (11)  PRIMARY KEY AUTO_INCREMENT,
     ci varchar (11) DEFAULT NULL,
-    firstname varchar(50) DEFAULT NULL,
-    secondname varchar(50) DEFAULT NULL,
-    first_lastname varchar(50) DEFAULT NULL,
-    second_lastname varchar(50) DEFAULT NULL,
-    birthdate varchar(20) DEFAULT NULL,
+    first_name varchar(50) DEFAULT NULL,
+    second_name varchar(50) DEFAULT NULL,
+    first_last_name varchar(50) DEFAULT NULL,
+    second_last_name varchar(50) DEFAULT NULL,
+    birthday_date varchar(20) DEFAULT NULL,
     gender varchar(5) DEFAULT NULL,
     blood_type varchar(10) DEFAULT NULL,
     civil_status varchar(50) DEFAULT NULL,
@@ -46,9 +46,9 @@ CREATE TABLE
     cell_phone varchar(20) DEFAULT NULL,
     personal_email varchar(60) DEFAULT NULL,
     institutional_email varchar(60) DEFAULT NULL,
-    image TEXT DEFAULT NULL
+    imagen TEXT DEFAULT NULL
   ) ENGINE = InnoDB DEFAULT CHARSET = utf8mb4 COLLATE = utf8mb4_general_ci;
-INSERT INTO `professionals` (`ci`, `firstname`, `secondname`, `first_lastname`, `second_lastname`,`birthdate`, `gender`, `blood_type`, `civil_status`, `nationality`, `place_birth`, `place_residence`, `direction`, `home_phone`, `cell_phone`, `personal_email`, `institutional_email`,`image`) VALUES
+INSERT INTO `students` (`ci`, `first_name`, `second_name`, `first_last_name`, `second_last_name`,`birthday_date`, `gender`, `blood_type`, `civil_status`, `nationality`, `place_birth`, `place_residence`, `direction`, `home_phone`, `cell_phone`, `personal_email`, `institutional_email`,`imagen`) VALUES
 ( '1150897542', 'Dayana', 'Marisol', 'Ajila', 'Espinoza','29-11-2002', 'F', NULL, NULL, NULL, NULL, NULL, NULL, 'NULL', 'NULL', 'ajila.espinoza@gmail.com', 'dm_ajila@marianosamaniego.edu.ec','assets/fotos_perfil/90.jpg'),
 ( '1105306359', 'Yomaira', 'Mishelle', 'Castro', 'Eras','12-10-2003', 'F', NULL, NULL, NULL, NULL, NULL, NULL, 'NULL', 'NULL', 'mishellecastroe2003@gmail.com', 'ym_castro@marianosamaniego.edu.ec','assets/fotos_perfil/95.jpg'),
 ( '1726159815', 'Rosa', 'Piedad', 'Jumbo', 'Abad','23-07-2003', 'F', NULL, NULL, NULL, NULL, NULL, NULL, '(07) 268-7794', 'NULL', 'rositha.jumboabd@gmail.com', 'rp_jumbo@marianosamaniego.edu.ec','assets/fotos_perfil/96.jpg'),

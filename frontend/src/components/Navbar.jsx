@@ -49,7 +49,7 @@ const Navbar = () => {
       path: "/curriculos",
     },
     {
-      name: "Cv",
+      name: "Hoja de Vida",
       path: "/cv",
     },
   ];
@@ -63,6 +63,7 @@ const Navbar = () => {
       name: "Curriculos",
       path: "/curriculos",
     },
+    
   ];
 
   const { isAuthenticated, logout } = useAuth();

@@ -1,13 +1,3 @@
--- phpMyAdmin SQL Dump
--- version 5.2.1
--- https://www.phpmyadmin.net/
---
--- Servidor: localhost
--- Tiempo de generación: 23-11-2023 a las 18:53:40
--- Versión del servidor: 10.4.28-MariaDB
--- Versión de PHP: 8.2.4
-
-
 /*Elminio la base de datos*/
 
 DROP DATABASE IF EXISTS egresados_graduados;
@@ -15,6 +5,14 @@ DROP DATABASE IF EXISTS egresados_graduados;
 CREATE DATABASE egresados_graduados;
 /*Selecciono la base datos*/
 USE egresados_graduados;
+-- phpMyAdmin SQL Dump
+-- version 5.2.1
+-- https://www.phpmyadmin.net/
+--
+-- Servidor: localhost
+-- Tiempo de generación: 25-11-2023 a las 03:11:35
+-- Versión del servidor: 10.4.28-MariaDB
+-- Versión de PHP: 8.2.4
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -296,6 +294,57 @@ CREATE TABLE `languages` (
 -- --------------------------------------------------------
 
 --
+-- Estructura de tabla para la tabla `options`
+--
+
+CREATE TABLE `options` (
+  `id_option` int(11) NOT NULL,
+  `id_question` int(11) DEFAULT NULL,
+  `option_text` text DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Volcado de datos para la tabla `options`
+--
+
+INSERT INTO `options` (`id_option`, `id_question`, `option_text`) VALUES
+(34, 10, 'Trabajo en un sector  relacionado a mi profesión'),
+(35, 10, 'Trabajo en un sector no relacionado a mi profesión'),
+(36, 10, 'Estoy  desempleado'),
+(37, 10, 'Otros'),
+(38, 11, 'Antes de graduarse'),
+(39, 11, 'Durante el primer año después de graduarse'),
+(40, 11, 'Un año después de graduarse'),
+(41, 11, 'No trabaja'),
+(42, 13, 'Título profesional'),
+(43, 13, 'Experiencia laboral'),
+(44, 13, 'Practicas preprofesionales'),
+(45, 13, 'Antecedentes que brinda la carrera'),
+(46, 13, 'Recomendación de terceras personas'),
+(47, 13, 'Otros'),
+(48, 14, 'Gestiona, transfiere y desarrolla soluciones informáticas para ambientes corporativos'),
+(49, 14, 'Explora problemas y genera diseños y soluciones inteligentes de sistemas informáticos mediante análisis de tecnología y costos de software y hardware'),
+(50, 14, 'Conforma equipos, procesos y sistemas de desarrollo de tecnologías informáticas con destreza y habilidad'),
+(51, 14, 'Conocimiento del lenguaje especializado de la ciencia'),
+(52, 14, 'Conoce los procedimientos de desarrollo, implementación y adecuación de medios informáticos'),
+(53, 14, 'Habilidad de trabajo en equipo y pro actividad, para adaptarse a los avances'),
+(54, 14, 'científicos y al desarrollo tecnológico.'),
+(55, 14, 'Conoce la importancia de la investigación en su propio proceso de formación'),
+(56, 14, 'Afronta y actúa con confianza y seguridad el análisis y la solución de problemas que se encuentran en la profesión'),
+(57, 14, 'Participa en procesos emprendedores'),
+(58, 16, 'Falta de actualización en nuevos temas'),
+(59, 16, 'Enseñanza de aplicaciones tecnológicas'),
+(60, 16, 'Actualización de los nuevos programas en software'),
+(61, 16, 'Capacitar continuamente al personal docente'),
+(62, 16, 'Otros'),
+(63, 19, 'Cursos de capacitación y actualización'),
+(64, 19, 'Hacer reuniones anuales de egresados'),
+(65, 19, 'Tener acceso a un directorio'),
+(66, 19, 'Otros');
+
+-- --------------------------------------------------------
+
+--
 -- Estructura de tabla para la tabla `paises`
 --
 
@@ -550,24 +599,6 @@ INSERT INTO `paises` (`id`, `iso`, `nombre`) VALUES
 (238, 'DJ', 'Yibuti'),
 (239, 'ZM', 'Zambia'),
 (240, 'ZW', 'Zimbabue');
-
--- --------------------------------------------------------
-
---
--- Estructura de tabla para la tabla `professional_experience`
---
-
-CREATE TABLE `professional_experience` (
-  `id` int(11) NOT NULL,
-  `nro` text DEFAULT NULL,
-  `company_institution` text DEFAULT NULL,
-  `position` text DEFAULT NULL,
-  `responsibilities` text DEFAULT NULL,
-  `immediate_head` text DEFAULT NULL,
-  `telephone` text DEFAULT NULL,
-  `start_date` text DEFAULT NULL,
-  `end_date` text DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
 
@@ -904,6 +935,131 @@ INSERT INTO `professional` (`id`, `ci`, `first_name`, `second_name`, `first_last
 (299, '1150016820', 'Victor', 'Alfonso', 'Salinas ', 'Mejia', '13-02-1997', 'M', NULL, NULL, NULL, NULL, NULL, NULL, '(07) 268-9295', 'NULL', 'Victoralfo2019@gmail.com', 'va_salinas@marianosamaniego.edu.ec', 'assets/fotos_perfil/287.jpg'),
 (300, '1150351607', 'Jose ', 'Vicente', 'Jiménez', 'Capa', '05-04-1996', 'M', NULL, NULL, NULL, NULL, NULL, NULL, 'NULL', 'NULL', 'Jose_5jimenez@hotmail.com', 'jv_jimenez@marianosamaniego.edu.ec', 'assets/fotos_perfil/323.jpg'),
 (301, '1104458300', 'Omar ', 'Fabricio', 'Martinez', 'Jiménez', '25-01-1986', 'M', NULL, NULL, NULL, NULL, NULL, NULL, 'NULL', 'NULL', 'ofmonutpl@hotmail.com', 'of_martinez@marianosamaniego.edu.ec', 'assets/fotos_perfil/249.jpg');
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `professional_experience`
+--
+
+CREATE TABLE `professional_experience` (
+  `id` int(11) NOT NULL,
+  `nro` text DEFAULT NULL,
+  `company_institution` text DEFAULT NULL,
+  `position` text DEFAULT NULL,
+  `responsibilities` text DEFAULT NULL,
+  `immediate_head` text DEFAULT NULL,
+  `telephone` text DEFAULT NULL,
+  `start_date` text DEFAULT NULL,
+  `end_date` text DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `questions`
+--
+
+CREATE TABLE `questions` (
+  `id_question` int(11) NOT NULL,
+  `id_quiz` int(11) DEFAULT NULL,
+  `id_question_type` int(11) DEFAULT NULL,
+  `question_text` text DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Volcado de datos para la tabla `questions`
+--
+
+INSERT INTO `questions` (`id_question`, `id_quiz`, `id_question_type`, `question_text`) VALUES
+(1, 1, 3, '¿Posee Titulo?'),
+(2, 1, 2, 'Carrera de la que Egreso'),
+(3, 1, 3, '¿Trabaja actualmente?'),
+(4, 1, 3, 'Tipo de Empresa'),
+(5, 1, 2, 'Nombre de la Empresa'),
+(6, 1, 2, 'Dirección del trabajo'),
+(7, 1, 2, 'Teléfono en el trabajo'),
+(8, 1, 3, '¿Su cargo tiene relación con su perfil profesional?'),
+(9, 1, 3, 'Tiempo de servicio en la empresa'),
+(10, 1, 3, '¿Cuál es su situación laboral actual?'),
+(11, 1, 1, '¿Cuál es su situación laboral actual?Explique su respuesta:'),
+(12, 1, 3, '¿Cuándo empezó a trabajar?'),
+(13, 1, 1, 'Área en la que desarrolla su actividad profesional actualmente'),
+(14, 1, 3, '¿Cuál es la relación del trabajo que tiene con la carrera que estudió?'),
+(15, 1, 3, '¿Cuál fue el factor que más contribuyo para que consiguiera su primer empleo?'),
+(16, 1, 1, '¿Cuál fue el factor que más contribuyo para que consiguiera su primer empleo? Especifique'),
+(17, 1, 4, '¿Qué  conocimientos y habilidades son las más relevantes para el desempeño de sus actividades laborales actuales?'),
+(18, 1, 3, '¿Cuál es su percepción general de los/las profesionales del ITSFMS?'),
+(19, 1, 4, 'En su opinión, ¿Cuáles son las principales carencias que tiene el programa académico de la carrera en que se graduó?'),
+(20, 1, 2, 'En su opinión, ¿Cuáles son las principales carencias que tiene el programa académico de la carrera en que se graduó? Carrera'),
+(21, 1, 1, 'En su opinión, ¿Cuáles son las principales carencias que tiene el programa académico de la carrera en que se graduó? Especifique'),
+(22, 1, 4, '¿Que recomienda para estrechar las relaciones entre el ISTMS y los GRADUADOS?'),
+(23, 1, 2, '¿Que recomienda para estrechar las relaciones entre el ISTMS y los GRADUADOS? Carrera'),
+(24, 1, 1, '¿Que recomienda para estrechar las relaciones entre el ISTMS y los GRADUADOS? Especifique'),
+(25, 1, 3, '¿Ha realizado usted estudios posteriores?'),
+(26, 1, 2, '¿Ha realizado usted estudios posteriores? Carrera'),
+(27, 1, 2, '¿Ha realizado usted estudios posteriores? Centro de Estudio'),
+(28, 1, 2, '¿Ha realizado usted estudios posteriores? Año de titulación'),
+(29, 1, 2, '¿Ha realizado usted estudios posteriores? En Curso'),
+(30, 1, 3, '¿A qué actividades económicas se dedica la institución o empresa en la que trabaja?'),
+(31, 1, 3, 'En su desempeño laboral que tan necesario es el dominio del idioma inglés');
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `question_types`
+--
+
+CREATE TABLE `question_types` (
+  `id_question_type` int(11) NOT NULL,
+  `name` varchar(50) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Volcado de datos para la tabla `question_types`
+--
+
+INSERT INTO `question_types` (`id_question_type`, `name`) VALUES
+(1, 'Preguntas Abierta'),
+(2, 'Respuesta Corta'),
+(3, 'Opción Múltiple (Selección Única)'),
+(4, 'Opción Múltiple (Selección Múltiple)'),
+(5, 'Escala de Likert');
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `quiz`
+--
+
+CREATE TABLE `quiz` (
+  `id_quiz` int(11) NOT NULL,
+  `title` varchar(100) DEFAULT NULL,
+  `description` text DEFAULT NULL,
+  `date` date DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Volcado de datos para la tabla `quiz`
+--
+
+INSERT INTO `quiz` (`id_quiz`, `title`, `description`, `date`) VALUES
+(1, 'ENCUESTA DE EMPLEABILIDAD A GRADUADOS', 'Escuesta para los graduados y egresados', '2023-11-29');
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `responses`
+--
+
+CREATE TABLE `responses` (
+  `id_response` int(11) NOT NULL,
+  `id_quiz` int(11) DEFAULT NULL,
+  `id_question` int(11) DEFAULT NULL,
+  `user_id` int(11) DEFAULT NULL,
+  `text_response` text DEFAULT NULL,
+  `id_option` int(11) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
 
@@ -2691,9 +2847,22 @@ ALTER TABLE `languages`
   ADD PRIMARY KEY (`id`);
 
 --
+-- Indices de la tabla `options`
+--
+ALTER TABLE `options`
+  ADD PRIMARY KEY (`id_option`),
+  ADD KEY `id_question` (`id_question`);
+
+--
 -- Indices de la tabla `paises`
 --
 ALTER TABLE `paises`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indices de la tabla `professional`
+--
+ALTER TABLE `professional`
   ADD PRIMARY KEY (`id`);
 
 --
@@ -2703,10 +2872,33 @@ ALTER TABLE `professional_experience`
   ADD PRIMARY KEY (`id`);
 
 --
--- Indices de la tabla `professional`
+-- Indices de la tabla `questions`
 --
-ALTER TABLE `professional`
-  ADD PRIMARY KEY (`id`);
+ALTER TABLE `questions`
+  ADD PRIMARY KEY (`id_question`),
+  ADD KEY `id_quiz` (`id_quiz`),
+  ADD KEY `id_question_type` (`id_question_type`);
+
+--
+-- Indices de la tabla `question_types`
+--
+ALTER TABLE `question_types`
+  ADD PRIMARY KEY (`id_question_type`);
+
+--
+-- Indices de la tabla `quiz`
+--
+ALTER TABLE `quiz`
+  ADD PRIMARY KEY (`id_quiz`);
+
+--
+-- Indices de la tabla `responses`
+--
+ALTER TABLE `responses`
+  ADD PRIMARY KEY (`id_response`),
+  ADD KEY `id_quiz` (`id_quiz`),
+  ADD KEY `id_question` (`id_question`),
+  ADD KEY `id_option` (`id_option`);
 
 --
 -- Indices de la tabla `tbl_canton`
@@ -2787,10 +2979,22 @@ ALTER TABLE `languages`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
+-- AUTO_INCREMENT de la tabla `options`
+--
+ALTER TABLE `options`
+  MODIFY `id_option` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=67;
+
+--
 -- AUTO_INCREMENT de la tabla `paises`
 --
 ALTER TABLE `paises`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=241;
+
+--
+-- AUTO_INCREMENT de la tabla `professional`
+--
+ALTER TABLE `professional`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=302;
 
 --
 -- AUTO_INCREMENT de la tabla `professional_experience`
@@ -2799,10 +3003,28 @@ ALTER TABLE `professional_experience`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
--- AUTO_INCREMENT de la tabla `professional`
+-- AUTO_INCREMENT de la tabla `questions`
 --
-ALTER TABLE `professional`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=302;
+ALTER TABLE `questions`
+  MODIFY `id_question` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=32;
+
+--
+-- AUTO_INCREMENT de la tabla `question_types`
+--
+ALTER TABLE `question_types`
+  MODIFY `id_question_type` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+
+--
+-- AUTO_INCREMENT de la tabla `quiz`
+--
+ALTER TABLE `quiz`
+  MODIFY `id_quiz` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+
+--
+-- AUTO_INCREMENT de la tabla `responses`
+--
+ALTER TABLE `responses`
+  MODIFY `id_response` int(11) NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT de la tabla `tbl_canton`
@@ -2837,6 +3059,27 @@ ALTER TABLE `users`
 --
 -- Restricciones para tablas volcadas
 --
+
+--
+-- Filtros para la tabla `options`
+--
+ALTER TABLE `options`
+  ADD CONSTRAINT `options_ibfk_1` FOREIGN KEY (`id_question`) REFERENCES `questions` (`id_question`);
+
+--
+-- Filtros para la tabla `questions`
+--
+ALTER TABLE `questions`
+  ADD CONSTRAINT `questions_ibfk_1` FOREIGN KEY (`id_quiz`) REFERENCES `quiz` (`id_quiz`),
+  ADD CONSTRAINT `questions_ibfk_2` FOREIGN KEY (`id_question_type`) REFERENCES `question_types` (`id_question_type`);
+
+--
+-- Filtros para la tabla `responses`
+--
+ALTER TABLE `responses`
+  ADD CONSTRAINT `responses_ibfk_1` FOREIGN KEY (`id_quiz`) REFERENCES `quiz` (`id_quiz`),
+  ADD CONSTRAINT `responses_ibfk_2` FOREIGN KEY (`id_question`) REFERENCES `questions` (`id_question`),
+  ADD CONSTRAINT `responses_ibfk_3` FOREIGN KEY (`id_option`) REFERENCES `options` (`id_option`);
 
 --
 -- Filtros para la tabla `tbl_canton`
