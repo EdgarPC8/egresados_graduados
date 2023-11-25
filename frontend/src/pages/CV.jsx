@@ -30,15 +30,6 @@ import {
   Flex,
 } from "@chakra-ui/react";
 
-<<<<<<< HEAD
-// const {data} = await insertStudent({ci:1104661598})
-insertStudent({ci:1104661598})
-
-console.log(data)
-
-
-=======
->>>>>>> 3a6e8c1 (implementación de modelos en js para sequelize)
 // const variable=await selectData({
 //   Table:"students",
 //   Columns:null,
