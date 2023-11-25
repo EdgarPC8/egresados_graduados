@@ -2,47 +2,8 @@ import { sequelize } from "../database/connection.js";
 import { DataTypes } from "sequelize";
 
 
-// -- tabla encuestas
-// CREATE TABLE quiz (
-//     id_quiz int (11)  PRIMARY KEY AUTO_INCREMENT,
-//     title VARCHAR(100),
-//     description TEXT,
-//     date DATE
-// );
-// CREATE TABLE question_types (
-//     id_question_type INT PRIMARY KEY AUTO_INCREMENT,
-//     name VARCHAR(50)
-// );
 
-// -- tabla preguntas
-// CREATE TABLE questions (
-//     id_question int (11)  PRIMARY KEY AUTO_INCREMENT,
-//     id_quiz INT,
-//     id_question_type INT,
-//     question_text TEXT,
-//     FOREIGN KEY (id_quiz) REFERENCES quiz(id_quiz),
-//     FOREIGN KEY (id_question_type) REFERENCES question_types(id_question_type)
-// );
-// -- tabla opciones
-// CREATE TABLE options (
-//     id_option int (11)  PRIMARY KEY AUTO_INCREMENT,
-//     id_question INT,
-//     option_text TEXT,
-//     FOREIGN KEY (id_question) REFERENCES questions(id_question)
-// );
-
-// CREATE TABLE responses (
-  //     id_response int (11)  PRIMARY KEY AUTO_INCREMENT,
-  //     id_quiz INT,
-  //     id_question INT,
-  //     user_id INT, -- si tienes un sistema de usuarios
-  //     text_response TEXT,
-  //     id_option INT, -- puede ser NULL para preguntas abiertas
-  //     FOREIGN KEY (id_quiz) REFERENCES quiz(id_quiz),
-  //     FOREIGN KEY (id_question) REFERENCES questions(id_question),
-  //     FOREIGN KEY (id_option) REFERENCES options(id_option)
-  // );
-  export const Questions = sequelize.define(
+  const Questions = sequelize.define(
     "questions",
     {
       id_question: {
@@ -51,11 +12,11 @@ import { DataTypes } from "sequelize";
         autoIncrement: true,
       },
       id_quiz: {
-        type: DataTypes.TEXT,
+        type: DataTypes.INTEGER,
         defaultValue: null,
       },
       id_question_type: {
-        type: DataTypes.TEXT,
+        type: DataTypes.INTEGER,
         defaultValue: null,
       },
       question_text: {
@@ -67,7 +28,7 @@ import { DataTypes } from "sequelize";
       timestamps: false,
     }
   );
-  export const Options = sequelize.define(
+  const Options = sequelize.define(
     "options",
     {
       id_option: {
@@ -76,7 +37,7 @@ import { DataTypes } from "sequelize";
         autoIncrement: true,
       },
       id_question: {
-        type: DataTypes.TEXT,
+        type: DataTypes.INTEGER,
         defaultValue: null,
       },
       option_text: {
@@ -89,7 +50,7 @@ import { DataTypes } from "sequelize";
     }
   );
   // -- tabla respuestas
-  export const Responses = sequelize.define(
+  const Responses = sequelize.define(
   "responses",
   {
     id_response: {
@@ -98,15 +59,16 @@ import { DataTypes } from "sequelize";
       autoIncrement: true,
     },
     id_quiz: {
-      type: DataTypes.TEXT,
+      type: DataTypes.INTEGER,
       defaultValue: null,
     },
     id_question: {
-      type: DataTypes.TEXT,
+      type: DataTypes.INTEGER,
       defaultValue: null,
+      //osea no le puedo poner aqui como parametro con cual va relacionado??
     },
     user_id: {
-      type: DataTypes.TEXT,
+      type: DataTypes.INTEGER,
       defaultValue: null,
     },
     text_response: {
@@ -114,7 +76,7 @@ import { DataTypes } from "sequelize";
       defaultValue: null,
     },
     id_option: {
-      type: DataTypes.TEXT,
+      type: DataTypes.INTEGER,
       defaultValue: null,
     },
   },
@@ -123,7 +85,7 @@ import { DataTypes } from "sequelize";
   }
 );
 // tipo de preguntas
-export const Question_types = sequelize.define(
+const Question_types = sequelize.define(
   "question_types",
   {
     id_question_type: {
@@ -142,7 +104,7 @@ export const Question_types = sequelize.define(
 );
 
 // -- Encuesta
-export const QuizTable = sequelize.define(
+const Quiz = sequelize.define(
   "quiz",
   {
     id_quiz: {
@@ -159,7 +121,7 @@ export const QuizTable = sequelize.define(
       defaultValue: null,
     },
     date: {
-      type: DataTypes.TEXT,
+      type: DataTypes.DATEONLY,
       defaultValue: null,
     },
   },
@@ -167,4 +129,28 @@ export const QuizTable = sequelize.define(
     timestamps: false,
   }
 );
+
+// Definición de relaciones entre modelos
+Quiz.hasMany(Questions, { foreignKey: "id_quiz" });
+Questions.belongsTo(Quiz, { foreignKey: "id_quiz" });
+
+Question_types.hasMany(Questions, { foreignKey: "id_question_type" });
+Questions.belongsTo(Question_types, { foreignKey: "id_question_type" });
+
+Questions.hasMany(Options, { foreignKey: "id_question" });
+Options.belongsTo(Questions, { foreignKey: "id_question" });
+
+Quiz.hasMany(Responses, { foreignKey: "id_quiz" });
+Responses.belongsTo(Quiz, { foreignKey: "id_quiz" });
+
+Questions.hasMany(Responses, { foreignKey: "id_question" });
+Responses.belongsTo(Questions, { foreignKey: "id_question" });
+
+Options.hasMany(Responses, { foreignKey: "id_option" });
+Responses.belongsTo(Options, { foreignKey: "id_option" });
+
+// Sincronizar los modelos con la base de datos
+// sequelize.sync();
+
+export { Quiz, Question_types, Questions, Options, Responses };
 

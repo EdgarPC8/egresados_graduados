@@ -3,6 +3,7 @@ import authRoutes from "./src/routes/authRoutes.js";
 import professionalsRoutes from "./src/routes/professionalsRoutes.js";
 import cvRoutes from "./src/routes/cvRoutes.js";
 import quizRoutes from "./src/routes/quizRoutes.js";
+import linguiGeoRoutes from "./src/routes/linguisticsGeographyRoutes.js";
 import cors from "cors";
 import { sequelize } from "./src/database/connection.js";
 
@@ -38,6 +39,7 @@ app.use("/api/auth", authRoutes);
 app.use("/api/professionals", professionalsRoutes);
 app.use("/api/cv", cvRoutes);
 app.use("/api/quiz", quizRoutes);
+app.use("/api/linguiGeo", linguiGeoRoutes);
 
 async function main() {
   try {
