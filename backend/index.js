@@ -1,6 +1,8 @@
 import express from "express";
 import authRoutes from "./src/routes/authRoutes.js";
 import professionalsRoutes from "./src/routes/professionalsRoutes.js";
+import cvRoutes from "./src/routes/cvRoutes.js";
+import quizRoutes from "./src/routes/quizRoutes.js";
 import cors from "cors";
 import { sequelize } from "./src/database/connection.js";
 
@@ -34,6 +36,8 @@ app.use(cors(corsOptions));
 
 app.use("/api/auth", authRoutes);
 app.use("/api/professionals", professionalsRoutes);
+app.use("/api/cv", cvRoutes);
+app.use("/api/quiz", quizRoutes);
 
 async function main() {
   try {

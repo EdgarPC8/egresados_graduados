@@ -1,17 +1,27 @@
-import { insertData,selectData } from "../database/connection.js";
+import { 
+  Professional_experience,
+  Languages,
+  Books,
+  Academic_professional_merits ,
+  Academic_training,
+Teaching_experience,
+Courses_workshops,
+Intellectual_production,
+} from "../Models/CV.js";
 
-
-const setData = async (req, res) => {
+const addProfessionalExp= async (req, res) => {
   const data = req.body; // Suponiendo que los datos están en el cuerpo de la solicitud
-  const respuesta= await insertData(data.Table,data.Sentencia)
-  res.json(respuesta);
+  try {
+    const newProfessional = await Professional_experience.create(data);
+  } catch (error) {
+    res.status(500).json({
+      message: error.message,
+    });
+  }
+
+  res.json({ message: "Agregado con éxito" });
 };
 
-const getData = async (req, res) => {
-  const data = req.body; // Suponiendo que los datos están en el cuerpo de la solicitud
-  const respuesta= await selectData(data.Table,data.Columns,data.Conditions,data.GroupBy,data.OrderBy)
-  res.json(respuesta);
-};
 
 
-export { getData,setData };
+export {addProfessionalExp};

@@ -18,4 +18,8 @@ const addProfessional = async (req, res) => {
   res.json({ message: "Agregado con éxito" });
 };
 
+
+
+
+
 export { getAllProfessionals, addProfessional };
