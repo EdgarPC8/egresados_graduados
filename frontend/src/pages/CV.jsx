@@ -31,6 +31,9 @@ import {
 } from "@chakra-ui/react";
 
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> 5ed55d332f3150fd9f9851b9465d1a451e7c1e92
 // const {data} = await insertStudent({ci:1104661598})
 insertStudent({ci:1104661598})
 
