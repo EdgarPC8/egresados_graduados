@@ -8,7 +8,7 @@ import LoginPage from "./pages/LoginPage.jsx";
 import { AuthProvider } from "./context/AuthContext.jsx";
 import ProtectedRoute from "./components/ProtectedRoute.jsx";
 import CV from "./pages/CV.jsx";
-// import Quiz from "./pages/Quiz.jsx";
+import Quiz from "./pages/Quiz.jsx";
 
 function App() {
   return (
@@ -22,8 +22,7 @@ function App() {
 
             <Route element={<ProtectedRoute />}>
               <Route path="/cv" element={<CV />} />
-              {/* <Route path="/quiz" element={<Quiz/>} /> */}
-              
+              <Route path="/quiz" element={<Quiz/>} />
             </Route>
           </Routes>
         </BrowserRouter>
