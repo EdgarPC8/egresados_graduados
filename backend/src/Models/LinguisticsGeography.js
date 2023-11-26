@@ -116,9 +116,5 @@ Canton.hasMany(Parroquia, { foreignKey: "id_canton" });
 Parroquia.belongsTo(Canton, { foreignKey: "id_canton" });
 
 
-
-// Sincronizar los modelos con la base de datos
-// sequelize.sync();
-
 // export { Quiz, Question_types, Questions, Options, Responses };
 

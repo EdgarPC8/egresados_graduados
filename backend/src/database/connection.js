@@ -5,4 +5,5 @@ const sequelize = new Sequelize("egresados_graduados", "root", "", {
   dialect: "mysql",
 });
 
+
 export { sequelize };

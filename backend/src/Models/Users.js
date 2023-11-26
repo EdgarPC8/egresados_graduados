@@ -1,6 +1,7 @@
-import { DataTypes } from "sequelize";
 import { sequelize } from "../database/connection.js";
+import { DataTypes } from "sequelize";
 
+// Definición del modelo Users
 export const Users = sequelize.define(
   "users",
   {
@@ -23,3 +24,4 @@ export const Users = sequelize.define(
     timestamps: false,
   }
 );
+

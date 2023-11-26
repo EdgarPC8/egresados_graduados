@@ -130,27 +130,25 @@ const Quiz = sequelize.define(
   }
 );
 
-// Definición de relaciones entre modelos
-Quiz.hasMany(Questions, { foreignKey: "id_quiz" });
-Questions.belongsTo(Quiz, { foreignKey: "id_quiz" });
+// // Definición de relaciones entre modelos
+Quiz.hasMany(Questions, { foreignKey: "id_quiz", onDelete: 'CASCADE', onUpdate: 'CASCADE' });
+Questions.belongsTo(Quiz, { foreignKey: "id_quiz", onDelete: 'CASCADE', onUpdate: 'CASCADE' });
 
-Question_types.hasMany(Questions, { foreignKey: "id_question_type" });
-Questions.belongsTo(Question_types, { foreignKey: "id_question_type" });
+Question_types.hasMany(Questions, { foreignKey: "id_question_type", onDelete: 'CASCADE', onUpdate: 'CASCADE' });
+Questions.belongsTo(Question_types, { foreignKey: "id_question_type", onDelete: 'CASCADE', onUpdate: 'CASCADE' });
 
-Questions.hasMany(Options, { foreignKey: "id_question" });
-Options.belongsTo(Questions, { foreignKey: "id_question" });
+Questions.hasMany(Options, { foreignKey: "id_question", onDelete: 'CASCADE', onUpdate: 'CASCADE' });
+Options.belongsTo(Questions, { foreignKey: "id_question", onDelete: 'CASCADE', onUpdate: 'CASCADE' });
 
-Quiz.hasMany(Responses, { foreignKey: "id_quiz" });
-Responses.belongsTo(Quiz, { foreignKey: "id_quiz" });
+Quiz.hasMany(Responses, { foreignKey: "id_quiz", onDelete: 'CASCADE', onUpdate: 'CASCADE' });
+Responses.belongsTo(Quiz, { foreignKey: "id_quiz", onDelete: 'CASCADE', onUpdate: 'CASCADE' });
 
-Questions.hasMany(Responses, { foreignKey: "id_question" });
-Responses.belongsTo(Questions, { foreignKey: "id_question" });
+Questions.hasMany(Responses, { foreignKey: "id_question", onDelete: 'CASCADE', onUpdate: 'CASCADE' });
+Responses.belongsTo(Questions, { foreignKey: "id_question", onDelete: 'CASCADE', onUpdate: 'CASCADE' });
 
-Options.hasMany(Responses, { foreignKey: "id_option" });
-Responses.belongsTo(Options, { foreignKey: "id_option" });
+Options.hasMany(Responses, { foreignKey: "id_option", onDelete: 'CASCADE', onUpdate: 'CASCADE' });
+Responses.belongsTo(Options, { foreignKey: "id_option", onDelete: 'CASCADE', onUpdate: 'CASCADE' });
 
-// Sincronizar los modelos con la base de datos
-// sequelize.sync();
 
 export { Quiz, Question_types, Questions, Options, Responses };
 
