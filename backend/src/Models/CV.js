@@ -16,7 +16,7 @@ export const Academic_training = sequelize.define(
       defaultValue: null,
     },
     date: {
-      type: DataTypes.TEXT,
+      type: DataTypes.DATEONLY,
       defaultValue: null,
     },
     place: {

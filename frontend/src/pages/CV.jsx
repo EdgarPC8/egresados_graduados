@@ -30,6 +30,7 @@ import {
   Stack,
   Radio,
   Flex,
+  FormControl,
 } from "@chakra-ui/react";
 
 
@@ -81,7 +82,7 @@ function ResumeForm() {
         </Grid>
       </Container>
       <Container py={2} maxW={"container.xl"} fontSize={"container.sm"}>
-      <form onSubmit={formProfessional}>
+        <form onSubmit={formProfessional}>
         <Grid templateColumns={{ base: "1fr", md: "9fr 1fr" }} gap={4} mt={2}>
           <GridItem order={{ base: 2, md: 1 }}>
             <Heading as="h3" size="md" textAlign="left">
@@ -115,6 +116,19 @@ function ResumeForm() {
               </GridItem>
               <GridItem fontSize={"sm"}>
                 <InputGroup>
+                  <InputLeftAddon children='Cedula' />
+                  <Input type='text' placeholder='Cedula' name="ci" isRequired minLength={10} maxLength={10}/>
+                </InputGroup>
+              </GridItem>
+
+              <GridItem fontSize={"sm"}>
+                <InputGroup>
+                  <InputLeftAddon children='Tipo de Sangre' />
+                  <Input type='text' placeholder='Tipo de Sangre' name="blood_type"/>
+                </InputGroup>
+              </GridItem>
+              <GridItem fontSize={"sm"}>
+                <InputGroup>
                   <InputLeftAddon children='Fecha de nacimiento'/>
                   <Input
                     placeholder="Fecha"
@@ -135,19 +149,7 @@ function ResumeForm() {
                   </Select>
                 </InputGroup>
               </GridItem>
-              <GridItem fontSize={"sm"}>
-                <InputGroup>
-                  <InputLeftAddon children='Cedula' />
-                  <Input type='text' placeholder='Cedula' name="ci"/>
-                </InputGroup>
-              </GridItem>
-
-              <GridItem fontSize={"sm"}>
-                <InputGroup>
-                  <InputLeftAddon children='Tipo de Sangre' />
-                  <Input type='text' placeholder='Tipo de Sangre' name="blood_type"/>
-                </InputGroup>
-              </GridItem>
+              
               <GridItem fontSize={"sm"}>
                 <InputGroup>
                   <InputLeftAddon children='Nacionalidad' />
@@ -239,6 +241,8 @@ function ResumeForm() {
       </Container>
       <Container py={2} maxW={"container.xl"} fontSize={"container.sm"}>
         <Accordion allowToggle>
+        <form onSubmit={formProfessional}>
+
           <AccordionItem>
             <h2>
               <AccordionButton>
@@ -322,6 +326,8 @@ function ResumeForm() {
               </TableContainer>
             </AccordionPanel>
           </AccordionItem>
+        </form>
+
           <AccordionItem>
             <h2>
               <AccordionButton>

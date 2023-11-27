@@ -30,8 +30,9 @@ export const Professionals = sequelize.define(
       autoIncrement: true,
     },
     ci: {
-      type: DataTypes.STRING(11),
-      defaultValue: null,
+      type: DataTypes.BIGINT(11),
+      allowNull: false, // No permite valores nulos
+      unique: true, // Hace que el campo sea único
     },
     first_name: {
       type: DataTypes.STRING(50),
@@ -54,7 +55,7 @@ export const Professionals = sequelize.define(
       defaultValue: null,
     },
     birth_date: {
-      type: DataTypes.STRING(20),
+      type: DataTypes.DATEONLY,
       defaultValue: null,
     },
     gender: {
@@ -70,7 +71,7 @@ export const Professionals = sequelize.define(
       defaultValue: null,
     },
     place_birth: {
-      type: DataTypes.STRING(50),
+      type: DataTypes.STRING(100),
       defaultValue: null,
     },
     place_residence: {
