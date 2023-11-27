@@ -1,5 +1,7 @@
 import { sequelize } from "../database/connection.js";
 import { Roles } from "./Roles.js";
+import { DataTypes } from "sequelize";
+
 
 // Definición del modelo Users
 export const Users = sequelize.define(

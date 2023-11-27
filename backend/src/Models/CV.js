@@ -27,7 +27,7 @@ export const Academic_training = sequelize.define(
       type: DataTypes.TEXT,
       defaultValue: null,
     },
-    obtained_title: {
+    obtained_tittle: {
       type: DataTypes.TEXT,
       defaultValue: null,
     },
@@ -62,11 +62,11 @@ export const Teaching_experience = sequelize.define(
       defaultValue: null,
     },
     start_date: {
-      type: DataTypes.TEXT,
+      type: DataTypes.DATEONLY,
       defaultValue: null,
     },
     end_date: {
-      type: DataTypes.TEXT,
+      type: DataTypes.DATEONLY,
       defaultValue: null,
     },
     modality: {

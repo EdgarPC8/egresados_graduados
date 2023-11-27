@@ -6,4 +6,5 @@ const sequelize = new Sequelize("graduates", "root", "", {
 });
 
 
+
 export { sequelize };
