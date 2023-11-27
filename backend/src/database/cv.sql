@@ -1,16 +1,16 @@
 /*Elminio la base de datos*/
 
-DROP DATABASE IF EXISTS egresados_graduados;
+DROP DATABASE IF EXISTS graduates;
 /*Creo la base de datos*/
-CREATE DATABASE egresados_graduados;
+CREATE DATABASE graduates;
 /*Selecciono la base datos*/
-USE egresados_graduados;
+USE graduates;
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
 SET time_zone = "+00:00";
 --
--- Database: `egresados_graduados`
+-- Database: `graduates`
 --
 -- --------------------------------------------------------
 
