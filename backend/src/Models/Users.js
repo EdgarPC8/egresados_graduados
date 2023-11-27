@@ -1,5 +1,5 @@
 import { sequelize } from "../database/connection.js";
-import { DataTypes } from "sequelize";
+import { Roles } from "./Roles.js";
 
 // Definición del modelo Users
 export const Users = sequelize.define(
@@ -25,3 +25,9 @@ export const Users = sequelize.define(
   }
 );
 
+
+
+// Relacion muchos a muchos, tabla intermedia user_roles
+
+Users.belongsToMany(Roles, { through: "user_roles" });
+Roles.belongsToMany(Users, { through: "user_roles" });

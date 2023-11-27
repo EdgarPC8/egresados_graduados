@@ -1,56 +1,54 @@
 import { sequelize } from "../database/connection.js";
 import { DataTypes } from "sequelize";
 
-
-
-  const Questions = sequelize.define(
-    "questions",
-    {
-      id_question: {
-        type: DataTypes.INTEGER,
-        primaryKey: true,
-        autoIncrement: true,
-      },
-      id_quiz: {
-        type: DataTypes.INTEGER,
-        defaultValue: null,
-      },
-      id_question_type: {
-        type: DataTypes.INTEGER,
-        defaultValue: null,
-      },
-      question_text: {
-        type: DataTypes.TEXT,
-        defaultValue: null,
-      },
+const Questions = sequelize.define(
+  "questions",
+  {
+    id_question: {
+      type: DataTypes.INTEGER,
+      primaryKey: true,
+      autoIncrement: true,
     },
-    {
-      timestamps: false,
-    }
-  );
-  const Options = sequelize.define(
-    "options",
-    {
-      id_option: {
-        type: DataTypes.INTEGER,
-        primaryKey: true,
-        autoIncrement: true,
-      },
-      id_question: {
-        type: DataTypes.INTEGER,
-        defaultValue: null,
-      },
-      option_text: {
-        type: DataTypes.TEXT,
-        defaultValue: null,
-      },
+    id_quiz: {
+      type: DataTypes.INTEGER,
+      defaultValue: null,
     },
-    {
-      timestamps: false,
-    }
-  );
-  // -- tabla respuestas
-  const Responses = sequelize.define(
+    id_question_type: {
+      type: DataTypes.INTEGER,
+      defaultValue: null,
+    },
+    question_text: {
+      type: DataTypes.TEXT,
+      defaultValue: null,
+    },
+  },
+  {
+    timestamps: false,
+  }
+);
+const Options = sequelize.define(
+  "options",
+  {
+    id_option: {
+      type: DataTypes.INTEGER,
+      primaryKey: true,
+      autoIncrement: true,
+    },
+    id_question: {
+      type: DataTypes.INTEGER,
+      defaultValue: null,
+    },
+    option_text: {
+      type: DataTypes.TEXT,
+      defaultValue: null,
+    },
+  },
+  {
+    timestamps: false,
+  }
+);
+// -- tabla respuestas
+const Responses = sequelize.define(
   "responses",
   {
     id_response: {
@@ -130,25 +128,51 @@ const Quiz = sequelize.define(
   }
 );
 
-// // Definición de relaciones entre modelos
-Quiz.hasMany(Questions, { foreignKey: "id_quiz", onDelete: 'CASCADE', onUpdate: 'CASCADE' });
-Questions.belongsTo(Quiz, { foreignKey: "id_quiz", onDelete: 'CASCADE', onUpdate: 'CASCADE' });
+// Definición de relaciones entre modelos
+Quiz.hasMany(Questions, { foreignKey: "idQuiz", sourceKey: "id_quiz" });
+Questions.belongsTo(Quiz, { foreignKey: "idQuiz", sourceKey: "id_quiz" });
 
-Question_types.hasMany(Questions, { foreignKey: "id_question_type", onDelete: 'CASCADE', onUpdate: 'CASCADE' });
-Questions.belongsTo(Question_types, { foreignKey: "id_question_type", onDelete: 'CASCADE', onUpdate: 'CASCADE' });
 
-Questions.hasMany(Options, { foreignKey: "id_question", onDelete: 'CASCADE', onUpdate: 'CASCADE' });
-Options.belongsTo(Questions, { foreignKey: "id_question", onDelete: 'CASCADE', onUpdate: 'CASCADE' });
+Question_types.hasMany(Questions, {
+  foreignKey: "idQuestionType",
+  sourceKey: "id_question_type",
+});
+Questions.belongsTo(Question_types, {
+  foreignKey: "idQuestionType",
+  sourceKey: "id_question_type",
+});
 
-Quiz.hasMany(Responses, { foreignKey: "id_quiz", onDelete: 'CASCADE', onUpdate: 'CASCADE' });
-Responses.belongsTo(Quiz, { foreignKey: "id_quiz", onDelete: 'CASCADE', onUpdate: 'CASCADE' });
 
-Questions.hasMany(Responses, { foreignKey: "id_question", onDelete: 'CASCADE', onUpdate: 'CASCADE' });
-Responses.belongsTo(Questions, { foreignKey: "id_question", onDelete: 'CASCADE', onUpdate: 'CASCADE' });
+Questions.hasMany(Options, {
+  foreignKey: "idQuestion",
+  sourceKey: "id_question",
+});
+Options.belongsTo(Questions, {
+  foreignKey: "idQuestion",
+  sourceKey: "id_question",
+});
 
-Options.hasMany(Responses, { foreignKey: "id_option", onDelete: 'CASCADE', onUpdate: 'CASCADE' });
-Responses.belongsTo(Options, { foreignKey: "id_option", onDelete: 'CASCADE', onUpdate: 'CASCADE' });
+
+Quiz.hasMany(Responses, { foreignKey: "idQuiz", sourceKey: "id_quiz" });
+Responses.belongsTo(Quiz, { foreignKey: "idQuiz", sourceKey: "id_quiz" });
+
+
+
+Questions.hasMany(Responses, {
+  foreignKey: "idQuestion",
+  sourceKey: "id_question",
+});
+Responses.belongsTo(Questions, {
+  foreignKey: "idQuestion",
+  sourceKey: "id_question",
+});
+
+
+Options.hasMany(Responses, { foreignKey: "idOption", sourceKey: "id_option" });
+Responses.belongsTo(Options, {
+  foreignKey: "idOption",
+  sourceKey: "id_option",
+});
 
 
 export { Quiz, Question_types, Questions, Options, Responses };
-

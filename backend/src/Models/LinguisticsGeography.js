@@ -1,8 +1,8 @@
 import { sequelize } from "../database/connection.js";
 import { DataTypes } from "sequelize";
 
-const Paises = sequelize.define(
-  "paises",
+const Country = sequelize.define(
+  "country",
   {
     id: {
       type: DataTypes.INTEGER,
@@ -23,36 +23,36 @@ const Paises = sequelize.define(
   }
 );
 
-  const Cod_lenguaje_pais = sequelize.define(
-    "cod_lenguaje_pais",
-    {
-      idx: {
-        type: DataTypes.INTEGER,
-        primaryKey: true,
-        autoIncrement: true,
-      },
-      cod_LP: {
-        type: DataTypes.STRING(5),
-        defaultValue: null,
-      },
-      descripcion: {
-        type: DataTypes.STRING(60),
-        defaultValue: null,
-      },
-    },
-    {
-      timestamps: false,
-    }
-  );
-const Provincia = sequelize.define(
-  "tbl_provincia",
+const Cod_country_lenguage = sequelize.define(
+  "cod_coungry_lenguage",
   {
     id: {
       type: DataTypes.INTEGER,
       primaryKey: true,
       autoIncrement: true,
     },
-    provincia: {
+    cod_LP: {
+      type: DataTypes.STRING(5),
+      defaultValue: null,
+    },
+    description: {
+      type: DataTypes.STRING(60),
+      defaultValue: null,
+    },
+  },
+  {
+    timestamps: false,
+  }
+);
+const Province = sequelize.define(
+  "tbl_province",
+  {
+    id: {
+      type: DataTypes.INTEGER,
+      primaryKey: true,
+      autoIncrement: true,
+    },
+    province: {
       type: DataTypes.INTEGER,
       defaultValue: null,
     },
@@ -69,7 +69,7 @@ const Canton = sequelize.define(
       primaryKey: true,
       autoIncrement: true,
     },
-    id_provincia: {
+    id_province: {
       type: DataTypes.INTEGER,
       defaultValue: null,
     },
@@ -82,8 +82,8 @@ const Canton = sequelize.define(
     timestamps: false,
   }
 );
-const Parroquia = sequelize.define(
-  "tbl_parroquia",
+const Parish = sequelize.define(
+  "tbl_parish",
   {
     id: {
       type: DataTypes.INTEGER,
@@ -94,27 +94,25 @@ const Parroquia = sequelize.define(
       type: DataTypes.INTEGER,
       defaultValue: null,
     },
-    parroquia: {
+    parish: {
       type: DataTypes.TEXT,
       defaultValue: null,
     },
-   
   },
   {
     timestamps: false,
   }
 );
 
-
 // Definición de relaciones entre modelos
 
+Province.hasMany(Canton, { foreignKey: "id_province", sourceKey: "id" });
+Canton.belongsTo(Province, { foreignKey: "id_province", sourceKey: "id" });
 
-Provincia.hasMany(Canton, { foreignKey: "id_provincia" });
-Canton.belongsTo(Provincia, { foreignKey: "id_provincia" });
+Canton.hasMany(Parish, { foreignKey: "id_canton", sourceKey: "id" });
+Parish.belongsTo(Canton, { foreignKey: "id_canton", sourceKey: "id" });
 
-Canton.hasMany(Parroquia, { foreignKey: "id_canton" });
-Parroquia.belongsTo(Canton, { foreignKey: "id_canton" });
-
+// Sincronizar los modelos con la base de datos
+// sequelize.sync();
 
 // export { Quiz, Question_types, Questions, Options, Responses };
-
