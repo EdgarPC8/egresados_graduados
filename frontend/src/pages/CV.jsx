@@ -33,21 +33,24 @@ import {
 } from "@chakra-ui/react";
 
 
-async function fetchData() {
-    const response = await axios.get("/professionals/getAllProfessionals");
-    const data = response.data;
+async function insertProfessional(dataForm) {
+    const {data} =await axios.post("/professionals/addProfessional",dataForm);
+    // const data = response.data;
     console.log(data);
 }
 // Llamar a la función fetchData
-fetchData();
 
 function ResumeForm() {
 
 
-  function handleSubmit(event) {
+
+  function formProfessional(event) {
+
     event.preventDefault();
     const dataForm = Object.fromEntries(new FormData(event.target));
     console.log('Datos del formulario:', dataForm);
+    insertProfessional(dataForm);
+
     // Aquí puedes enviar dataForm a una API, realizar más procesamiento, etc.
   }
 
@@ -78,7 +81,7 @@ function ResumeForm() {
         </Grid>
       </Container>
       <Container py={2} maxW={"container.xl"} fontSize={"container.sm"}>
-      <form onSubmit={handleSubmit}>
+      <form onSubmit={formProfessional}>
         <Grid templateColumns={{ base: "1fr", md: "9fr 1fr" }} gap={4} mt={2}>
           <GridItem order={{ base: 2, md: 1 }}>
             <Heading as="h3" size="md" textAlign="left">
