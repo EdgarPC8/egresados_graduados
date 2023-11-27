@@ -37,27 +37,42 @@ function ResumeForm() {
 // Definición del estado inicial usando useState
 const [datosAcademic_training, setDatosAcademic_training] = useState(null);
 const [datosTeaching_experience, setDatosTeaching_experience] = useState(null);
+const [datosCourses_workshops, setDatosCourses_workshops] = useState(null);
+const [datosIntellectual_production, setDatosIntellectual_production] = useState(null);
+const [datosBooks, setDatosBooks] = useState(null);
+const [datosAcademic_professional_merits, setDatosAcademic_professional_merits] = useState(null);
+const [datosLanguages, setDatosLanguages] = useState(null);
+const [datosProfessional_experience, setDatosProfessional_experience] = useState(null);
 
 // Obtener los datos académicos una vez al cargar el componente
 useEffect(() => {
   async function fetchData() {
     try {
       const getAllAcademic_training = await axios.get("/cv/getAllAcademic_training");
-      setDatosAcademic_training(getAllAcademic_training.data);
       const getAllTeaching_experience = await axios.get("/cv/getAllTeaching_experience");
+      const getAllCourses_workshops = await axios.get("/cv/getAllCourses_workshops");
+      const getAllIntellectual_production = await axios.get("/cv/getAllIntellectual_production");
+      const getAllBooks = await axios.get("/cv/getAllBooks");
+      const getAllAcademic_professional_merits = await axios.get("/cv/getAllAcademic_professional_merits");
+      const getAllLanguages = await axios.get("/cv/getAllLanguages");
+      const getAllProfessional_experience = await axios.get("/cv/getAllProfessional_experience");
+
+      setDatosAcademic_training(getAllAcademic_training.data);
       setDatosTeaching_experience(getAllTeaching_experience.data);
+      setDatosCourses_workshops(getAllCourses_workshops.data);
+      setDatosIntellectual_production(getAllIntellectual_production.data);
+      setDatosBooks(getAllBooks.data);
+      setDatosAcademic_professional_merits(getAllAcademic_professional_merits.data);
+      setDatosLanguages(getAllLanguages.data);
+      setDatosProfessional_experience(getAllProfessional_experience.data);
+
     } catch (error) {
       console.error('Error al obtener datos académicos:', error);
     }
   }
-
   fetchData();
 }, []); // Este efecto se ejecuta solo una vez al montar el componente
-
-
-
 // Resto de tu código...
-
 async function formProfessional(event) {
   event.preventDefault();
   const dataForm = Object.fromEntries(new FormData(event.target));
@@ -74,7 +89,6 @@ async function formProfessional(event) {
     throw error;
   }
 }
-
 async function formAcademic_training(event) {
   event.preventDefault();
   const dataForm = Object.fromEntries(new FormData(event.target));
@@ -109,6 +123,110 @@ async function formTeaching_experience(event) {
     throw error;
   }
 }
+async function formCourses_workshops(event) {
+  event.preventDefault();
+  const dataForm = Object.fromEntries(new FormData(event.target));
+  console.log('Datos del formulario:', dataForm);
+  try {
+    // Puedes hacer la solicitud para agregar datos académicos aquí
+    // Por ejemplo:
+
+    const { data } = await axios.post("/cv/addCourses_workshops", dataForm);
+    // Luego, si es necesario, actualizar los datos en el estado local:
+    // console.log(dataForm)
+
+    setDatosCourses_workshops([...datosCourses_workshops, dataForm]);
+  } catch (error) {
+    console.error('Error en getAllProfessionals:', error);
+    throw error;
+  }
+}
+async function formIntellectual_production(event) {
+  event.preventDefault();
+  const dataForm = Object.fromEntries(new FormData(event.target));
+  console.log('Datos del formulario:', dataForm);
+  try {
+    // Puedes hacer la solicitud para agregar datos académicos aquí
+    // Por ejemplo:
+    const { data } = await axios.post("/cv/addIntellectual_production", dataForm);
+    // Luego, si es necesario, actualizar los datos en el estado local:
+    // console.log(dataForm)
+
+    setDatosIntellectual_production([...datosIntellectual_production, dataForm]);
+  } catch (error) {
+    console.error('Error en getAllProfessionals:', error);
+    throw error;
+  }
+}
+async function formBooks(event) {
+  event.preventDefault();
+  const dataForm = Object.fromEntries(new FormData(event.target));
+  console.log('Datos del formulario:', dataForm);
+  try {
+    // Puedes hacer la solicitud para agregar datos académicos aquí
+    // Por ejemplo:
+    const { data } = await axios.post("/cv/addBooks", dataForm);
+    // Luego, si es necesario, actualizar los datos en el estado local:
+    // console.log(dataForm)
+
+    setDatosBooks([...datosBooks, dataForm]);
+  } catch (error) {
+    console.error('Error en getAllProfessionals:', error);
+    throw error;
+  }
+}
+async function formAcademic_professional_merits(event) {
+  event.preventDefault();
+  const dataForm = Object.fromEntries(new FormData(event.target));
+  console.log('Datos del formulario:', dataForm);
+  try {
+    // Puedes hacer la solicitud para agregar datos académicos aquí
+    // Por ejemplo:
+    const { data } = await axios.post("/cv/addAcademic_professional_merits", dataForm);
+    // Luego, si es necesario, actualizar los datos en el estado local:
+    // console.log(dataForm)
+
+    setDatosAcademic_professional_merits([...datosAcademic_professional_merits, dataForm]);
+  } catch (error) {
+    console.error('Error en getAllProfessionals:', error);
+    throw error;
+  }
+}
+async function formLanguages(event) {
+  event.preventDefault();
+  const dataForm = Object.fromEntries(new FormData(event.target));
+  console.log('Datos del formulario:', dataForm);
+  try {
+    // Puedes hacer la solicitud para agregar datos académicos aquí
+    // Por ejemplo:
+    const { data } = await axios.post("/cv/addLanguages", dataForm);
+    // Luego, si es necesario, actualizar los datos en el estado local:
+    // console.log(dataForm)
+
+    setDatosLanguages([...datosLanguages, dataForm]);
+  } catch (error) {
+    console.error('Error en getAllProfessionals:', error);
+    throw error;
+  }
+}
+async function formProfessional_experience(event) {
+  event.preventDefault();
+  const dataForm = Object.fromEntries(new FormData(event.target));
+  console.log('Datos del formulario:', dataForm);
+  try {
+    // Puedes hacer la solicitud para agregar datos académicos aquí
+    // Por ejemplo:
+    const { data } = await axios.post("/cv/addProfessional_experience", dataForm);
+    // Luego, si es necesario, actualizar los datos en el estado local:
+    // console.log(dataForm)
+
+    setDatosProfessional_experience([...datosProfessional_experience, dataForm]);
+  } catch (error) {
+    console.error('Error en getAllProfessionals:', error);
+    throw error;
+  }
+}
+
   return (
     <Box fontSize={50} mb={100}>
       <Container maxW={"container.xl"}>
@@ -143,7 +261,7 @@ async function formTeaching_experience(event) {
               <GridItem fontSize={"sm"}>
                 <InputGroup>
                   <InputLeftAddon children='Cedula' />
-                  <Input type='text' placeholder='Cedula' name="ci" isRequired minLength={10} maxLength={10}/>
+                  <Input type='number' placeholder='Cedula' name="ci" isRequired/>
                 </InputGroup>
               </GridItem>
               <GridItem></GridItem>
@@ -519,6 +637,8 @@ async function formTeaching_experience(event) {
           </AccordionItem>
         </form>
 
+        <form onSubmit={formCourses_workshops}>
+          
           <AccordionItem>
             <h2>
               <AccordionButton>
@@ -533,37 +653,43 @@ async function formTeaching_experience(event) {
                 <GridItem fontSize={"sm"}>
                   <InputGroup>
                     <InputLeftAddon children='Fecha Inicio' />
-                    <Input placeholder="Fecha" size="md" type="date" />
+                    <Input placeholder="Fecha" size="md" type="date" name='start_date'/>
                   </InputGroup>
                 </GridItem>
                 <GridItem fontSize={"sm"}>
                   <InputGroup>
                     <InputLeftAddon children='Fecha Fin' />
-                    <Input placeholder="Fecha" size="md" type="date" />
+                    <Input placeholder="Fecha" size="md" type="date" name='end_date'/>
                   </InputGroup>
                 </GridItem>
                 <GridItem fontSize={"sm"}>
                   <InputGroup>
                     <InputLeftAddon children='Lugar' />
-                    <Input type='text' placeholder='Lugar' />
+                    <Input type='text' placeholder='Lugar' name='place'/>
                   </InputGroup>
                 </GridItem>
                 <GridItem fontSize={"sm"}>
                   <InputGroup>
                     <InputLeftAddon children='Tipo' />
-                    <Input type='text' placeholder='(Curso, Seminario, Taller, Congreso, Otro)' />
+                    <Input type='text' placeholder='(Curso, Seminario, Taller, Congreso, Otro)' name='type'/>
+                  </InputGroup>
+                </GridItem>
+                <GridItem fontSize={"sm"}>
+                  <InputGroup>
+                    <InputLeftAddon children='Duración' />
+                    <Input type='number' placeholder='En Horas' name='duration'/>
                   </InputGroup>
                 </GridItem>
 
                 <GridItem fontSize={"sm"}>
                   <InputGroup>
                     <InputLeftAddon children='Tipo participación' />
-                    <RadioGroup defaultValue='2' m={"auto"}>
+                    <RadioGroup m={"auto"}>
                       <Stack spacing={5} direction='row'>
-                        <Radio colorScheme='green' value='1'>
+                        <Radio colorScheme='green' value='Asistente'name='type_participation'>
                           Asistente
                         </Radio>
-                        <Radio colorScheme='green' value='2'>
+                        <Radio colorScheme='green' value='Expositor'name='type_participation'>
                           Expositor
                         </Radio>
                       </Stack>
@@ -575,20 +701,26 @@ async function formTeaching_experience(event) {
                 <GridItem fontSize={"sm"}>
                   <InputGroup>
                     <InputLeftAddon children='Nombre' />
-                    <Input type='text' placeholder='Nombre' />
+                    <Input type='text' placeholder='Nombre' name='name'/>
                   </InputGroup>
                 </GridItem>
                 <GridItem fontSize={"sm"}>
                   <InputGroup>
                     <InputLeftAddon children='Organizado Por' />
-                    <Input type='text' placeholder='Organizado Por' />
+                    <Input type='text' placeholder='Organizado Por' name='organized_by'/>
                   </InputGroup>
+                </GridItem>
+                <GridItem colSpan={2} order={{ base: 1, md: 1 }} textAlign={"right"}>
+                  <Button type="submit" mt={4} colorScheme="teal">
+                    Enviar
+                  </Button>
                 </GridItem>
               </Grid>
               <TableContainer mb={4} >
                 <Table size='sm'>
                   <Thead>
                     <Tr>
+                      <Th rowSpan={2}>#</Th>
                       <Th rowSpan={2}>Tipo</Th>
                       <Th rowSpan={2}>Nombre</Th>
                       <Th rowSpan={2}>Organizado Por:</Th>
@@ -600,23 +732,42 @@ async function formTeaching_experience(event) {
                     <Tr>
                           <Th>Fecha Inicio</Th>
                           <Th>Fecha Fin</Th>
-                          <Th>Asistente</Th>
-                          <Th>Expositor</Th>
+                          <Th  textAlign={"center"}>Asistente/Expositor</Th>
                     </Tr>
+                    
                   </Thead>
-                  <Tbody>
-                    {/* <Tr>
-                    <Td>inches</Td>
-                    <Td>millimetres (mm)</Td>
-                    <Td isNumeric>25.4</Td>
-                  </Tr> */}
-                  </Tbody>
+                  {datosCourses_workshops ? (
+                    <Tbody>
+                      {datosCourses_workshops.map((item, index) => (
+                        <Tr key={index}>
+                          <Td>{index+1}</Td>
+                          <Td>{item.type}</Td>
+                          <Td>{item.name}</Td>
+                          <Td>{item.organized_by}</Td>
+                          <Td>{item.place}</Td>
+                          <Td>{item.duration}</Td>
+                          <Td>{item.start_date}</Td>
+                          <Td>{item.end_date}</Td>
+                          <Td textAlign={"center"}>{item.type_participation}</Td>
+                        </Tr>
+                      ))}
+                    </Tbody>
+                  ) : (
+                    <Tbody>
+                      <Tr>
+                        <Td colSpan="7">Cargando datos...</Td>
+                      </Tr>
+                    </Tbody>
+                  )}
                   <Tfoot>
                   </Tfoot>
                 </Table>
               </TableContainer>
             </AccordionPanel>
           </AccordionItem>
+          </form>
+        <form onSubmit={formIntellectual_production}>
+          
           <AccordionItem>
             <h2>
               <AccordionButton>
@@ -632,19 +783,19 @@ async function formTeaching_experience(event) {
                 <GridItem fontSize={"sm"}>
                   <InputGroup>
                     <InputLeftAddon children='Tipo' />
-                    <Input type='text' placeholder='Tipo' />
+                    <Input type='text' placeholder='Tipo' name='type'/>
                   </InputGroup>
                 </GridItem>
                 <GridItem fontSize={"sm"}>
                   <InputGroup>
                     <InputLeftAddon children='Tipo de Autoria' />
-                    <Input type='text' placeholder='Tipo de Autoria' />
+                    <Input type='text' placeholder='Tipo de Autoria' name='type_authorship'/>
                   </InputGroup>
                 </GridItem>
                 <GridItem fontSize={"sm"}>
                   <InputGroup>
                     <InputLeftAddon children='Fecha Inicio' />
-                    <Input placeholder="Fecha" size="md" type="date" />
+                    <Input placeholder="Fecha" size="md" type="date" name='date'/>
                   </InputGroup>
                 </GridItem>
               </Grid>
@@ -652,20 +803,26 @@ async function formTeaching_experience(event) {
                 <GridItem fontSize={"sm"}>
                   <InputGroup>
                     <InputLeftAddon children='Nombre/Titulo' />
-                    <Input type='text' placeholder='Nombre/Titulo' />
+                    <Input type='text' placeholder='Nombre/Titulo' name='name'/>
                   </InputGroup>
                 </GridItem>
                 <GridItem fontSize={"sm"}>
                   <InputGroup>
                     <InputLeftAddon children='Enlace Web' />
-                    <Input type='text' placeholder='Enlace Web' />
+                    <Input type='text' placeholder='Enlace Web' name='web_link'/>
                   </InputGroup>
+                </GridItem>
+                <GridItem colSpan={2} order={{ base: 1, md: 1 }} textAlign={"right"}>
+                  <Button type="submit" mt={4} colorScheme="teal">
+                    Enviar
+                  </Button>
                 </GridItem>
               </Grid>
               <TableContainer mb={4}>
                 <Table size='sm'>
                   <Thead>
                     <Tr>
+                      <Th>#</Th>
                       <Th>Tipo</Th>
                       <Th>Nombre/Titulo</Th>
                       <Th>Tipo de Autoria</Th>
@@ -673,19 +830,35 @@ async function formTeaching_experience(event) {
                       <Th>Enlace Web</Th>
                     </Tr>
                   </Thead>
-                  <Tbody>
-                    {/* <Tr>
-                    <Td>inches</Td>
-                    <Td>millimetres (mm)</Td>
-                    <Td isNumeric>25.4</Td>
-                  </Tr> */}
-                  </Tbody>
+                  {datosIntellectual_production ? (
+                    <Tbody>
+                      {datosIntellectual_production.map((item, index) => (
+                        <Tr key={index}>
+                          <Td>{index+1}</Td>
+                          <Td>{item.type}</Td>
+                          <Td>{item.name}</Td>
+                          <Td>{item.type_authorship}</Td>
+                          <Td>{item.date}</Td>
+                          <Td>{item.web_link}</Td>
+                        </Tr>
+                      ))}
+                    </Tbody>
+                  ) : (
+                    <Tbody>
+                      <Tr>
+                        <Td colSpan="7">Cargando datos...</Td>
+                      </Tr>
+                    </Tbody>
+                  )}
                   <Tfoot>
                   </Tfoot>
                 </Table>
               </TableContainer>
             </AccordionPanel>
           </AccordionItem>
+          </form>
+        <form onSubmit={formBooks}>
+          
           <AccordionItem>
             <h2>
               <AccordionButton>
@@ -701,46 +874,58 @@ async function formTeaching_experience(event) {
                 <GridItem fontSize={"sm"}>
                   <InputGroup>
                     <InputLeftAddon children='Tipo' />
-                    <Input type='text' placeholder='(Divulgación, Científico)' />
+                    <Input type='text' placeholder='(Divulgación, Científico)' name='type'/>
                   </InputGroup>
                 </GridItem>
                 <GridItem fontSize={"sm"}>
                   <InputGroup>
                     <InputLeftAddon children='Tipo de Autoria' />
-                    <Input type='text' placeholder='(Autor, Coautor)' />
+                    <Input type='text' placeholder='(Autor, Coautor)' name='type_authorship'/>
                   </InputGroup>
                 </GridItem>
                 <GridItem fontSize={"sm"}>
                   <InputGroup>
                     <InputLeftAddon children='Nombre de Editorial' />
-                    <Input type='text' placeholder='Nombre de Editorial' />
+                    <Input type='text' placeholder='Nombre de Editorial' name='editoral_name'/>
                   </InputGroup>
                 </GridItem>
                 <GridItem fontSize={"sm"}>
                   <InputGroup>
                     <InputLeftAddon children='Origen de Editorial' />
-                    <Input type='text' placeholder='(Nacional, Internacional)' />
+                    <Input type='text' placeholder='(Nacional, Internacional)' name='editoral_origin'/>
                   </InputGroup>
                 </GridItem>
                 <GridItem fontSize={"sm"}>
                   <InputGroup>
                     <InputLeftAddon children='Año' />
-                    <Input placeholder="Fecha" size="md" type="date" />
+                    <Input placeholder="Fecha" size="md" type="date" name='year'/>
+                  </InputGroup>
+                </GridItem>
+                <GridItem fontSize={"sm"}>
+                  <InputGroup>
+                    <InputLeftAddon children='ISB N.' />
+                    <Input type='text' placeholder='ISB N.' name='isb_n'/>
                   </InputGroup>
                 </GridItem>
               </Grid>
               <Grid gap={2} mt={2} mb={2}>
                 <GridItem fontSize={"sm"}>
                   <InputGroup>
-                    <InputLeftAddon children='Nombre' />
-                    <Input type='text' placeholder='Nombre' />
+                    <InputLeftAddon children='Titulo' />
+                    <Input type='text' placeholder='Titulo' name='tittle'/>
                   </InputGroup>
+                </GridItem>
+                <GridItem colSpan={2} order={{ base: 1, md: 1 }} textAlign={"right"}>
+                  <Button type="submit" mt={4} colorScheme="teal">
+                    Enviar
+                  </Button>
                 </GridItem>
               </Grid>
               <TableContainer mb={4}>
                 <Table size='sm'>
                   <Thead>
                     <Tr>
+                      <Th rowSpan={2}>#</Th>
                       <Th rowSpan={2}>Titulo</Th>
                       <Th rowSpan={2}>Tipo</Th>
                       <Th rowSpan={2}>Tipo de Autoria</Th>
@@ -753,19 +938,37 @@ async function formTeaching_experience(event) {
                       <Th textAlign={"center"}>Origen</Th>
                     </Tr>
                   </Thead>
-                  <Tbody>
-                    {/* <Tr>
-                    <Td>inches</Td>
-                    <Td>millimetres (mm)</Td>
-                    <Td isNumeric>25.4</Td>
-                  </Tr> */}
-                  </Tbody>
+                  {datosBooks ? (
+                    <Tbody>
+                      {datosBooks.map((item, index) => (
+                        <Tr key={index}>
+                          <Td>{index+1}</Td>
+                          <Td>{item.tittle}</Td>
+                          <Td>{item.type}</Td>
+                          <Td>{item.type_authorship}</Td>
+                          <Td>{item.isb_n}</Td>
+                          <Td>{item.editoral_name}</Td>
+                          <Td>{item.editoral_origin}</Td>
+                          <Td>{item.year}</Td>
+                        </Tr>
+                      ))}
+                    </Tbody>
+                  ) : (
+                    <Tbody>
+                      <Tr>
+                        <Td colSpan="7">Cargando datos...</Td>
+                      </Tr>
+                    </Tbody>
+                  )}
                   <Tfoot>
                   </Tfoot>
                 </Table>
               </TableContainer>
             </AccordionPanel>
           </AccordionItem>
+          </form>
+        <form onSubmit={formAcademic_professional_merits}>
+          
           <AccordionItem>
             <h2>
               <AccordionButton>
@@ -780,25 +983,25 @@ async function formTeaching_experience(event) {
                 <GridItem fontSize={"sm"}>
                   <InputGroup>
                     <InputLeftAddon children='País' />
-                    <Input type='text' placeholder='País' />
+                    <Input type='text' placeholder='País' name='country'/>
                   </InputGroup>
                 </GridItem>
                 <GridItem fontSize={"sm"}>
                   <InputGroup>
                     <InputLeftAddon children='Lugar' />
-                    <Input type='text' placeholder='Lugar' />
+                    <Input type='text' placeholder='Lugar' name='location'/>
                   </InputGroup>
                 </GridItem>
                 <GridItem fontSize={"sm"}>
                   <InputGroup>
                     <InputLeftAddon children='Tipo' />
-                    <Input type='text' placeholder='(Nacional, Internacional)' />
+                    <Input type='text' placeholder='(Nacional, Internacional)' name='type'/>
                   </InputGroup>
                 </GridItem>
                 <GridItem fontSize={"sm"}>
                   <InputGroup>
                     <InputLeftAddon children='Fecha' />
-                    <Input placeholder="Fecha" size="md" type="date" />
+                    <Input placeholder="Fecha" size="md" type="date" name='date'/>
                   </InputGroup>
                 </GridItem>
               </Grid>
@@ -806,20 +1009,26 @@ async function formTeaching_experience(event) {
                 <GridItem fontSize={"sm"}>
                   <InputGroup>
                     <InputLeftAddon children='Nombre' />
-                    <Input type='text' placeholder='Nombre' />
+                    <Input type='text' placeholder='Nombre' name='name'/>
                   </InputGroup>
                 </GridItem>
                 <GridItem fontSize={"sm"}>
                   <InputGroup>
                     <InputLeftAddon children='Otorgado Por' />
-                    <Input type='text' placeholder='Otorgado Por' />
+                    <Input type='text' placeholder='Otorgado Por' name='granted_by'/>
                   </InputGroup>
+                </GridItem>
+                <GridItem colSpan={2} order={{ base: 1, md: 1 }} textAlign={"right"}>
+                  <Button type="submit" mt={4} colorScheme="teal">
+                    Enviar
+                  </Button>
                 </GridItem>
               </Grid>
               <TableContainer mb={4}>
                 <Table size='sm'>
                   <Thead>
                     <Tr>
+                      <Th>#</Th>
                       <Th>Nombre</Th>
                       <Th>Fecha</Th>
                       <Th>Tipo</Th>
@@ -828,19 +1037,36 @@ async function formTeaching_experience(event) {
                       <Th>Lugar</Th>
                     </Tr>
                   </Thead>
-                  <Tbody>
-                    {/* <Tr>
-                    <Td>inches</Td>
-                    <Td>millimetres (mm)</Td>
-                    <Td isNumeric>25.4</Td>
-                  </Tr> */}
-                  </Tbody>
+                  {datosAcademic_professional_merits ? (
+                    <Tbody>
+                      {datosAcademic_professional_merits.map((item, index) => (
+                        <Tr key={index}>
+                          <Td>{index+1}</Td>
+                          <Td>{item.name}</Td>
+                          <Td>{item.date}</Td>
+                          <Td>{item.type}</Td>
+                          <Td>{item.granted_by}</Td>
+                          <Td>{item.country}</Td>
+                          <Td>{item.location}</Td>
+                        </Tr>
+                      ))}
+                    </Tbody>
+                  ) : (
+                    <Tbody>
+                      <Tr>
+                        <Td colSpan="7">Cargando datos...</Td>
+                      </Tr>
+                    </Tbody>
+                  )}
                   <Tfoot>
                   </Tfoot>
                 </Table>
               </TableContainer>
             </AccordionPanel>
           </AccordionItem>
+          </form>
+        <form onSubmit={formLanguages}>
+          
           <AccordionItem>
             <h2>
               <AccordionButton>
@@ -855,13 +1081,13 @@ async function formTeaching_experience(event) {
                 <GridItem fontSize={"sm"}>
                   <InputGroup>
                     <InputLeftAddon children='Nombre' />
-                    <Input type='text' placeholder='Diferente al Nativo' />
+                    <Input type='text' placeholder='Diferente al Nativo' name='name'/>
                   </InputGroup>
                 </GridItem>
                 <GridItem fontSize={"sm"}>
                   <InputGroup>
                     <InputLeftAddon children='Tipo de Certificación' />
-                    <Input type='text' placeholder='(TOEPI, TOEIC, CPE, IELTS, PET, Otro)' />
+                    <Input type='text' placeholder='(TOEPI, TOEIC, CPE, IELTS, PET, Otro)' name='type_certification'/>
                   </InputGroup>
                 </GridItem>
                 <GridItem fontSize={"sm"} border="1px solid #ccc" borderRadius={8}>
@@ -872,15 +1098,18 @@ async function formTeaching_experience(event) {
                     <GridItem fontSize={"sm"}>
                       <InputGroup mt={3}>
                         <InputLeftAddon w={150} children='Hablado' />
-                        <RadioGroup defaultValue='2' m={"auto"}>
+                        <RadioGroup defaultValue='' m={"auto"} name="speaking_level">
                           <Stack spacing={5} direction='row'>
-                            <Radio colorScheme='green' value='1'>
+                            <Radio colorScheme='green' value=''>
+                              Ninguno
+                            </Radio>
+                            <Radio colorScheme='green' value='Básico'>
                               Básico
                             </Radio>
-                            <Radio colorScheme='green' value='2'>
+                            <Radio colorScheme='green' value='Medio'>
                               Medio
                             </Radio>
-                            <Radio colorScheme='green' value='3'>
+                            <Radio colorScheme='green' value='Alto'>
                               Alto
                             </Radio>
                           </Stack>
@@ -888,15 +1117,18 @@ async function formTeaching_experience(event) {
                       </InputGroup>
                       <InputGroup mt={3}>
                         <InputLeftAddon w={150} children='Escritura' />
-                        <RadioGroup defaultValue='2' m={"auto"}>
+                        <RadioGroup defaultValue='' m={"auto"} name="writing_level">
                           <Stack spacing={5} direction='row'>
-                            <Radio colorScheme='green' value='1'>
+                            <Radio colorScheme='green' value=''>
+                              Ninguno
+                            </Radio>
+                            <Radio colorScheme='green' value='Básico'>
                               Básico
                             </Radio>
-                            <Radio colorScheme='green' value='2'>
+                            <Radio colorScheme='green' value='Medio'>
                               Medio
                             </Radio>
-                            <Radio colorScheme='green' value='3'>
+                            <Radio colorScheme='green' value='Alto'>
                               Alto
                             </Radio>
                           </Stack>
@@ -904,15 +1136,18 @@ async function formTeaching_experience(event) {
                       </InputGroup>
                       <InputGroup mt={3}>
                         <InputLeftAddon w={150} children='Comprensión' />
-                        <RadioGroup defaultValue='2' m={"auto"}>
+                        <RadioGroup defaultValue='' m={"auto"} name="comprehension_level">
                           <Stack spacing={5} direction='row'>
-                            <Radio colorScheme='green' value='1'>
+                            <Radio colorScheme='green' value=''>
+                              Ninguno
+                            </Radio>
+                            <Radio colorScheme='green' value='Básico'>
                               Básico
                             </Radio>
-                            <Radio colorScheme='green' value='2'>
+                            <Radio colorScheme='green' value='Medio'>
                               Medio
                             </Radio>
-                            <Radio colorScheme='green' value='3'>
+                            <Radio colorScheme='green' value='Alto'>
                               Alto
                             </Radio>
                           </Stack>
@@ -921,45 +1156,61 @@ async function formTeaching_experience(event) {
                     </GridItem>
                   </Grid>
                 </GridItem>
+                <GridItem colSpan={2} order={{ base: 1, md: 1 }} textAlign={"right"}>
+                  <Button type="submit" mt={4} colorScheme="teal">
+                    Enviar
+                  </Button>
+                </GridItem>
               </Grid>
               <TableContainer mb={4}>
                 <Table size='sm'>
                   <Thead>
                     <Tr>
+                      <Th rowSpan={3} colSpan={1}>#</Th>
                       <Th rowSpan={3} colSpan={1}>Idioma (Diferente al nativo)</Th>
-                      <Th colSpan={9} textAlign="center">Nivel de dominio</Th>
+                      <Th colSpan={3} textAlign="center">Nivel de dominio</Th>
                       <Th rowSpan={3} colSpan={0}>Tipo de Certificación</Th>
                     </Tr>
                     <Tr>
-                      <Th colSpan={3} textAlign="center">Hablado</Th>
-                      <Th colSpan={3} textAlign="center">Escritura</Th>
-                      <Th colSpan={3} textAlign="center">Comprensión</Th>
+                      <Th textAlign="center">Hablado</Th>
+                      <Th textAlign="center">Escritura</Th>
+                      <Th textAlign="center">Comprensión</Th>
                     </Tr>
                     <Tr>
-                      <Th textAlign="center">Básico</Th>
-                      <Th textAlign="center">Medio</Th>
-                      <Th textAlign="center">Alto</Th>
-                      <Th textAlign="center">Básico</Th>
-                      <Th textAlign="center">Medio</Th>
-                      <Th textAlign="center">Alto</Th>
-                      <Th textAlign="center">Básico</Th>
-                      <Th textAlign="center">Medio</Th>
-                      <Th textAlign="center">Alto</Th>
+                      <Th textAlign="center">Básico/Medio/Alto</Th>
+                      <Th textAlign="center">Básico/Medio/Alto</Th>
+                      <Th textAlign="center">Básico/Medio/Alto</Th>
                     </Tr>
                   </Thead>
-                  <Tbody>
-                    {/* <Tr>
-                    <Td>inches</Td>
-                    <Td>millimetres (mm)</Td>
-                    <Td isNumeric>25.4</Td>
-                  </Tr> */}
-                  </Tbody>
+                  {datosLanguages ? (
+                    <Tbody>
+                      {datosLanguages.map((item, index) => (
+                        <Tr key={index}>
+                          <Td>{index+1}</Td>
+                          <Td>{item.name}</Td>
+                          <Td textAlign="center">{item.speaking_level}</Td>
+                          <Td textAlign="center">{item.writing_level}</Td>
+                          <Td textAlign="center">{item.comprehension_level}</Td>
+                          <Td textAlign="center">{item.type_certification}</Td>
+                        </Tr>
+                      ))}
+                    </Tbody>
+                  ) : (
+                    <Tbody>
+                      <Tr>
+                        <Td colSpan="7">Cargando datos...</Td>
+                      </Tr>
+                    </Tbody>
+                  )}
                   <Tfoot>
                   </Tfoot>
                 </Table>
               </TableContainer>
             </AccordionPanel>
           </AccordionItem>
+          </form>
+        <form onSubmit={formProfessional_experience}>
+          
           <AccordionItem>
             <h2>
               <AccordionButton>
@@ -974,37 +1225,37 @@ async function formTeaching_experience(event) {
                 <GridItem fontSize={"sm"}>
                   <InputGroup>
                     <InputLeftAddon children='Fecha Inicio' />
-                    <Input placeholder="Fecha" size="md" type="date" />
+                    <Input placeholder="Fecha" size="md" type="date" name='start_date'/>
                   </InputGroup>
                 </GridItem>
                 <GridItem fontSize={"sm"}>
                   <InputGroup>
                     <InputLeftAddon children='Fecha Fin' />
-                    <Input placeholder="Fecha" size="md" type="date" />
+                    <Input placeholder="Fecha" size="md" type="date" name='end_date'/>
                   </InputGroup>
                 </GridItem>
                 <GridItem fontSize={"sm"}>
                   <InputGroup>
                     <InputLeftAddon children='Cargo' />
-                    <Input type='text' placeholder='Cargo' />
+                    <Input type='text' placeholder='Cargo' name='position'/>
                   </InputGroup>
                 </GridItem>
                 <GridItem fontSize={"sm"}>
                   <InputGroup>
                     <InputLeftAddon children='Teléfono' />
-                    <Input type='text' placeholder='Teléfono' />
+                    <Input type='text' placeholder='Teléfono' name='telephone'/>
                   </InputGroup>
                 </GridItem>
                 <GridItem fontSize={"sm"}>
                   <InputGroup>
                     <InputLeftAddon children='Jefe Inmediato' />
-                    <Input type='text' placeholder='Jefe Inmediato' />
+                    <Input type='text' placeholder='Jefe Inmediato' name='immediate_head'/>
                   </InputGroup>
                 </GridItem>
                 <GridItem fontSize={"sm"}>
                   <InputGroup>
                     <InputLeftAddon children='Responsabiliades y/o Actividades' />
-                    <Input type='text' placeholder='Responsabiliades y/o Actividades' />
+                    <Input type='text' placeholder='Responsabiliades y/o Actividades' name='responsibilities'/>
                   </InputGroup>
                 </GridItem>
               </Grid>
@@ -1012,14 +1263,20 @@ async function formTeaching_experience(event) {
                 <GridItem fontSize={"sm"}>
                   <InputGroup>
                     <InputLeftAddon children='Empresa/Institución' />
-                    <Input type='text' placeholder='Comience por la ultima' />
+                    <Input type='text' placeholder='Comience por la ultima' name='company_institution'/>
                   </InputGroup>
+                </GridItem>
+                <GridItem colSpan={2} order={{ base: 1, md: 1 }} textAlign={"right"}>
+                  <Button type="submit" mt={4} colorScheme="teal">
+                    Enviar
+                  </Button>
                 </GridItem>
               </Grid>
               <TableContainer mb={4}>
                 <Table size='sm'>
                   <Thead>
                     <Tr>
+                      <Th>#</Th>
                       <Th>Nro.</Th>
                       <Th>Empresa/Institución</Th>
                       <Th>Cargo</Th>
@@ -1030,19 +1287,37 @@ async function formTeaching_experience(event) {
                       <Th>Fecha Fin</Th>
                     </Tr>
                   </Thead>
-                  <Tbody>
-                    {/* <Tr>
-                    <Td>inches</Td>
-                    <Td>millimetres (mm)</Td>
-                    <Td isNumeric>25.4</Td>
-                  </Tr> */}
-                  </Tbody>
+                  {datosProfessional_experience ? (
+                    <Tbody>
+                      {datosProfessional_experience.map((item, index) => (
+                        <Tr key={index}>
+                          <Td>{index+1}</Td>
+                          <Td>{item.nro}</Td>
+                          <Td>{item.company_institution}</Td>
+                          <Td>{item.position}</Td>
+                          <Td>{item.responsibilities}</Td>
+                          <Td>{item.immediate_head}</Td>
+                          <Td>{item.telephone}</Td>
+                          <Td>{item.start_date}</Td>
+                          <Td>{item.end_date}</Td>
+                        </Tr>
+                      ))}
+                    </Tbody>
+                  ) : (
+                    <Tbody>
+                      <Tr>
+                        <Td colSpan="7">Cargando datos...</Td>
+                      </Tr>
+                    </Tbody>
+                  )}
                   <Tfoot>
                   </Tfoot>
                 </Table>
               </TableContainer>
             </AccordionPanel>
           </AccordionItem>
+          </form>
+
         </Accordion>
 
       </Container>

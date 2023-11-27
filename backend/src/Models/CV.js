@@ -107,6 +107,10 @@ export const Courses_workshops = sequelize.define(
       type: DataTypes.TEXT,
       defaultValue: null,
     },
+    place: {
+      type: DataTypes.TEXT,
+      defaultValue: null,
+    },
     duration: {
       type: DataTypes.TEXT,
       defaultValue: null,
@@ -251,6 +255,10 @@ export const Languages = sequelize.define(
       primaryKey: true,
       autoIncrement: true,
     },
+    name: {
+      type: DataTypes.TEXT,
+      defaultValue: null,
+    },
     type_certification: {
       type: DataTypes.TEXT,
       defaultValue: null,
@@ -306,11 +314,11 @@ export const Professional_experience = sequelize.define(
       defaultValue: null,
     },
     start_date: {
-      type: DataTypes.STRING(20),
+      type: DataTypes.DATEONLY,
       defaultValue: null,
     },
     end_date: {
-      type: DataTypes.STRING(5),
+      type: DataTypes.DATEONLY,
       defaultValue: null,
     },
   },
