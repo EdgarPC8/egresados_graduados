@@ -5,6 +5,7 @@ const getAllProfessionals = async (req, res) => {
   res.json(professionals);
 };
 
+
 const addProfessional = async (req, res) => {
   const data = req.body; // Suponiendo que los datos están en el cuerpo de la solicitud
   try {
@@ -14,11 +15,8 @@ const addProfessional = async (req, res) => {
       message: error.message,
     });
   }
-
   res.json({ message: "Agregado con éxito" });
 };
-
-
 
 
 

@@ -33,11 +33,11 @@ export const Professionals = sequelize.define(
       type: DataTypes.STRING(11),
       defaultValue: null,
     },
-    firstname: {
+    first_name: {
       type: DataTypes.STRING(50),
       defaultValue: null,
     },
-    secondname: {
+    second_name: {
       type: DataTypes.STRING(50),
       defaultValue: null,
     },
@@ -53,7 +53,7 @@ export const Professionals = sequelize.define(
       type: DataTypes.STRING(10),
       defaultValue: null,
     },
-    birthdate: {
+    birth_date: {
       type: DataTypes.STRING(20),
       defaultValue: null,
     },
