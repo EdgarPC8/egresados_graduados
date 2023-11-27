@@ -1,4 +1,6 @@
 import React, { useState } from "react";
+import axios from "../api/axios.js";
+
 import {
   Box,
   Heading,
@@ -30,36 +32,27 @@ import {
   Flex,
 } from "@chakra-ui/react";
 
-// const variable=await selectData({
-//   Table:"students",
-//   Columns:null,
-//   Conditions:null,
-//   GroupBy:null,
-//   OrderBy:null,
-// });
-// console.log(variable)
 
-// const variable=await insertData({Table:"students",Sentencia:{
-//   id:98,
-//   first_name:"",
-//   last_name:"",
-//   email:"",
-//   gender:"",
-//   ip_address:"",
-// }});
-
-// console.log(variable)
+async function fetchData() {
+    const response = await axios.get("/professionals/getAllProfessionals");
+    const data = response.data;
+    console.log(data);
+}
+// Llamar a la función fetchData
+fetchData();
 
 function ResumeForm() {
-  const [name, setName] = useState("");
-  // ... (resto de los estados)
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    // Lógica para enviar los datos del formulario
-    console.log("Nombre:", name);
-    // ... (resto de los datos)
-  };
+
+  function handleSubmit(event) {
+    event.preventDefault();
+    const dataForm = Object.fromEntries(new FormData(event.target));
+    console.log('Datos del formulario:', dataForm);
+    // Aquí puedes enviar dataForm a una API, realizar más procesamiento, etc.
+  }
+
+  
+
 
   return (
     <Box fontSize={50} mb={100}>
@@ -85,6 +78,7 @@ function ResumeForm() {
         </Grid>
       </Container>
       <Container py={2} maxW={"container.xl"} fontSize={"container.sm"}>
+      <form onSubmit={handleSubmit}>
         <Grid templateColumns={{ base: "1fr", md: "9fr 1fr" }} gap={4} mt={2}>
           <GridItem order={{ base: 2, md: 1 }}>
             <Heading as="h3" size="md" textAlign="left">
@@ -95,41 +89,42 @@ function ResumeForm() {
               <GridItem fontSize={"sm"}>
                 <InputGroup>
                   <InputLeftAddon children='Primer Apellido' />
-                  <Input type='text' placeholder='Primer Apellido' />
+                  <Input type='text' placeholder='Primer Apellido' name="first_lastname"/>
                 </InputGroup>
               </GridItem>
               <GridItem fontSize={"sm"}>
                 <InputGroup>
-                  <InputLeftAddon children='Segundo Apellido' />
-                  <Input type='text' placeholder='Segundo Apellido' />
+                  <InputLeftAddon children='Segundo Apellido'/>
+                  <Input type='text' placeholder='Segundo Apellido' name="second_lastname"/>
                 </InputGroup>
               </GridItem>
               <GridItem fontSize={"sm"}>
                 <InputGroup>
                   <InputLeftAddon children='Primer Nombre' />
-                  <Input type='text' placeholder='Primer Nombre' />
+                  <Input type='text' placeholder='Primer Nombre' name="first_name"/>
                 </InputGroup>
               </GridItem>
               <GridItem fontSize={"sm"}>
                 <InputGroup>
                   <InputLeftAddon children='Segundo Nombre' />
-                  <Input type='text' placeholder='Segundo Nombre' />
+                  <Input type='text' placeholder='Segundo Nombre' name="second_name"/>
                 </InputGroup>
               </GridItem>
               <GridItem fontSize={"sm"}>
                 <InputGroup>
-                  <InputLeftAddon children='Fecha de nacimiento' />
+                  <InputLeftAddon children='Fecha de nacimiento'/>
                   <Input
                     placeholder="Fecha"
                     size="md"
                     type="date"
+                    name="birth_date"
                   />
                 </InputGroup>
               </GridItem>
               <GridItem fontSize={"sm"}>
                 <InputGroup>
                   <InputLeftAddon children='Estado Civil' />
-                  <Select placeholder='Seleccione una opción'>
+                  <Select placeholder='Seleccione una opción' name="civil_status">
                     <option value='option1'>Soltero</option>
                     <option value='option2'>Viudo</option>
                     <option value='option3'>Casado</option>
@@ -140,62 +135,62 @@ function ResumeForm() {
               <GridItem fontSize={"sm"}>
                 <InputGroup>
                   <InputLeftAddon children='Cedula' />
-                  <Input type='text' placeholder='Cedula' />
+                  <Input type='text' placeholder='Cedula' name="ci"/>
                 </InputGroup>
               </GridItem>
 
               <GridItem fontSize={"sm"}>
                 <InputGroup>
                   <InputLeftAddon children='Tipo de Sangre' />
-                  <Input type='text' placeholder='Tipo de Sangre' />
+                  <Input type='text' placeholder='Tipo de Sangre' name="blood_type"/>
                 </InputGroup>
               </GridItem>
               <GridItem fontSize={"sm"}>
                 <InputGroup>
                   <InputLeftAddon children='Nacionalidad' />
-                  <Input type='text' placeholder='Nacionalidad' />
+                  <Input type='text' placeholder='Nacionalidad' name="nationality"/>
                 </InputGroup>
               </GridItem>
               <GridItem fontSize={"sm"}>
                 <InputGroup>
                   <InputLeftAddon children='Teléfono de domicilio' />
-                  <Input type='tel' placeholder='Teléfono de domicilio' />
+                  <Input type='tel' placeholder='Teléfono de domicilio' name="home_phone"/>
                 </InputGroup>
               </GridItem>
               <GridItem fontSize={"sm"}>
                 <InputGroup>
                   <InputLeftAddon children='Teléfono de celular' />
-                  <Input type='tel' placeholder='Teléfono de celular' />
+                  <Input type='tel' placeholder='Teléfono de celular' name="cell_phone"/>
                 </InputGroup>
               </GridItem>
               <GridItem fontSize={"sm"}>
                 <InputGroup>
                   <InputLeftAddon children='Lugar de Nacimiento' />
-                  <Input type='text' placeholder='Lugar de Nacimiento' />
+                  <Input type='text' placeholder='Lugar de Nacimiento' name="place_birth"/>
                 </InputGroup>
               </GridItem>
               <GridItem fontSize={"sm"}>
                 <InputGroup>
                   <InputLeftAddon children='Dirección de domicilio' />
-                  <Input type='text' placeholder='Dirección de domicilio' />
+                  <Input type='text' placeholder='Dirección de domicilio' name="direction"/>
                 </InputGroup>
               </GridItem>
               <GridItem fontSize={"sm"}>
                 <InputGroup>
                   <InputLeftAddon children='Lugar de residencia' />
-                  <Input type='text' placeholder='Lugar de residencia' />
+                  <Input type='text' placeholder='Lugar de residencia' name="place_residence"/>
                 </InputGroup>
               </GridItem>
               <GridItem fontSize={"sm"}>
                 <InputGroup>
                   <InputLeftAddon children='@' />
-                  <Input type='email' placeholder='Correo Electrónico Institucional' />
+                  <Input type='email' placeholder='Correo Electrónico Institucional' name="institutional_email"/>
                 </InputGroup>
               </GridItem>
               <GridItem fontSize={"sm"}>
                 <InputGroup>
                   <InputLeftAddon children='@' />
-                  <Input type='email' placeholder='Correo Electrónico Personal' />
+                  <Input type='email' placeholder='Correo Electrónico Personal' name="personal_email"/>
                 </InputGroup>
               </GridItem>
             </Grid>
@@ -231,7 +226,13 @@ function ResumeForm() {
               </Heading>
             </Box>
           </GridItem>
+          <GridItem colSpan={2} order={{ base: 1, md: 1 }} textAlign={"center"} margin={"auto"}>
+            <Button type="submit" mt={4} colorScheme="teal">
+              Enviar
+            </Button>
+          </GridItem>
         </Grid>
+        </form>
       </Container>
       <Container py={2} maxW={"container.xl"} fontSize={"container.sm"}>
         <Accordion allowToggle>

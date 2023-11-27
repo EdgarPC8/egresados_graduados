@@ -109,10 +109,19 @@ const Parish = sequelize.define(
 Province.hasMany(Canton, { foreignKey: "id_province", sourceKey: "id" });
 Canton.belongsTo(Province, { foreignKey: "id_province", sourceKey: "id" });
 
+<<<<<<< HEAD
 Canton.hasMany(Parish, { foreignKey: "id_canton", sourceKey: "id" });
 Parish.belongsTo(Canton, { foreignKey: "id_canton", sourceKey: "id" });
 
 // Sincronizar los modelos con la base de datos
 // sequelize.sync();
+=======
+Provincia.hasMany(Canton, { foreignKey: "id_provincia" });
+Canton.belongsTo(Provincia, { foreignKey: "id_provincia" });
+
+Canton.hasMany(Parroquia, { foreignKey: "id_canton" });
+Parroquia.belongsTo(Canton, { foreignKey: "id_canton" });
+
+>>>>>>> d284a90cfbd5c291f9b1fecd62af9ba0fe18b808
 
 // export { Quiz, Question_types, Questions, Options, Responses };

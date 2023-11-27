@@ -6,7 +6,7 @@ import {
 
 const router = Router();
 
-router.get("/", getAllProfessionals);
-router.post("/", addProfessional);
+router.get("/getAllProfessionals", getAllProfessionals);
+router.post("/addProfessional", addProfessional);
 
 export default router;

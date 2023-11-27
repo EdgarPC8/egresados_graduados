@@ -174,7 +174,5 @@ Responses.belongsTo(Options, {
   sourceKey: "id_option",
 });
 
-// Sincronizar los modelos con la base de datos
-// sequelize.sync();
 
 export { Quiz, Question_types, Questions, Options, Responses };

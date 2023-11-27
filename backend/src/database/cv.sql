@@ -21,7 +21,7 @@ CREATE TABLE
     user_password varchar(100) NOT NULL
   ) ENGINE = InnoDB DEFAULT CHARSET = utf8mb4 COLLATE = utf8mb4_general_ci;
 
-  INSERT INTO users (email,user_password) VALUES
+  INSERT INTO users (email,password) VALUES
 ('admin', '$2b$10$p49gCto6b2liCqoQoSMDyu8/EmT1t3cwJe6HALeZNgXxZHx7rJMRu');
 --
 -- Table structure for table `students`
