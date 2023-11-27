@@ -10,12 +10,12 @@ const addProfessional = async (req, res) => {
   const data = req.body; // Suponiendo que los datos están en el cuerpo de la solicitud
   try {
     const newProfessional = await Professionals.create(data);
+    res.json({ message: "Agregado con éxito" ,data:data});
   } catch (error) {
     res.status(500).json({
       message: error.message,
     });
   }
-  res.json({ message: "Agregado con éxito" });
 };
 
 
