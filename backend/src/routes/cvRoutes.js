@@ -1,6 +1,7 @@
 import { Router } from "express";
 import {
     addAcademic_training,
+    editAcademic_training,
     getAllAcademic_training,
     addTeaching_experience,
     getAllTeaching_experience,
@@ -23,6 +24,7 @@ const router = Router();
 // router.post("/", addLanguages);
 router.post("/addAcademic_training", addAcademic_training);
 router.get("/getAllAcademic_training", getAllAcademic_training);
+router.put("/editAcademic_training", editAcademic_training);
 router.post("/addTeaching_experience", addTeaching_experience);
 router.get("/getAllTeaching_experience", getAllTeaching_experience);
 router.post("/addCourses_workshops", addCourses_workshops);
