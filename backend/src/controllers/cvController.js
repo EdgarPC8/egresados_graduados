@@ -28,15 +28,15 @@ const editAcademic_training= async (req, res) => {
   try {
     // const newProfessional = await Academic_training.update({place:"Chile",where:{id:1}});
     const updatedAcademicTraining = await Academic_training.update(
-      { place: 'Chile' }, // Aquí defines los campos y sus nuevos valores a actualizar
-      { where: { id: 1 } } // Aquí estableces la condición para la actualización
-    );
+      data.columns, // Aquí defines los campos y sus nuevos valores a actualizar
+      data.where // Aquí estableces la condición para la actualización
+      );
+      res.json({ message: "Editado con éxito"  });
   } catch (error) {
     res.status(500).json({
       message: error.message,
     });
   }
-  res.json({ message: "Editado con éxito" });
 };
 
 const getAllAcademic_training = async (req, res) => {
