@@ -1,8 +1,12 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect,useRef } from 'react';
 import axios from "../api/axios.js";
 import {reorderDate} from "../helpers/date.js";
 import {handleEditClick} from "../helpers/editForm.js";
 import { EditIcon, DeleteIcon } from "@chakra-ui/icons";
+import $ from 'jquery';
+import 'datatables.net'; // Importa DataTables
+
+
 
 import {
   Box,
@@ -36,6 +40,8 @@ import {
   FormControl,
 } from "@chakra-ui/react";
 
+
+
 function ResumeForm() {
 // Definición del estado inicial usando useState
 const [datosAcademic_training, setDatosAcademic_training] = useState(null);
@@ -49,6 +55,8 @@ const [datosProfessional_experience, setDatosProfessional_experience] = useState
 
 // Obtener los datos académicos una vez al cargar el componente
 useEffect(() => {
+
+ 
   async function fetchData() {
     try {
       const getAllAcademic_training = await axios.get("/cv/getAllAcademic_training");
@@ -59,7 +67,6 @@ useEffect(() => {
       const getAllAcademic_professional_merits = await axios.get("/cv/getAllAcademic_professional_merits");
       const getAllLanguages = await axios.get("/cv/getAllLanguages");
       const getAllProfessional_experience = await axios.get("/cv/getAllProfessional_experience");
-
       setDatosAcademic_training(getAllAcademic_training.data);
       setDatosTeaching_experience(getAllTeaching_experience.data);
       setDatosCourses_workshops(getAllCourses_workshops.data);
@@ -68,12 +75,12 @@ useEffect(() => {
       setDatosAcademic_professional_merits(getAllAcademic_professional_merits.data);
       setDatosLanguages(getAllLanguages.data);
       setDatosProfessional_experience(getAllProfessional_experience.data);
-
     } catch (error) {
       console.error('Error al obtener datos académicos:', error);
     }
   }
   fetchData();
+
 }, []); // Este efecto se ejecuta solo una vez al montar el componente
 // Resto de tu código...
 async function formProfessional(event) {
@@ -100,9 +107,7 @@ async function formAcademic_training(event) {
     // Puedes hacer la solicitud para agregar datos académicos aquí
     // Por ejemplo:
     const { data } = await axios.post("/cv/addAcademic_training", dataForm);
-    // Luego, si es necesario, actualizar los datos en el estado local:
-    // console.log(dataForm)
-
+    // const { data } = await axios.put("/cv/editAcademic_training", dataForm);
     setDatosAcademic_training([...datosAcademic_training, dataForm]);
   } catch (error) {
     console.error('Error en getAllProfessionals:', error);
@@ -229,6 +234,9 @@ async function formProfessional_experience(event) {
     throw error;
   }
 }
+
+
+
 
 
   return (
@@ -615,8 +623,9 @@ async function formProfessional_experience(event) {
                   </Button>
                 </GridItem>
               </Grid>
-              <TableContainer mb={4}>
-                <Table size='sm'>
+               
+                <TableContainer mb={4}>
+                   <Table size='sm'>
                   <Thead>
                     <Tr>
                       <Th>#</Th>
@@ -654,7 +663,8 @@ async function formProfessional_experience(event) {
                   <Tfoot>
                   </Tfoot>
                 </Table>
-              </TableContainer>
+                
+                </TableContainer>
             </AccordionPanel>
           </AccordionItem>
         </form>
