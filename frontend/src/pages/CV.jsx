@@ -532,7 +532,6 @@ async function formProfessional_experience(event) {
       tableTitle="Datos"
       data={datosAcademic_training} 
       columnHeaders={[
-        '#',
         'Tipo',
         'Título Obtenido',
         'Institución Educativa',
@@ -543,7 +542,6 @@ async function formProfessional_experience(event) {
         'Acción'
       ]} 
       columnKeys={[
-        'rowNumber',
         'type',
         'date',
         'place',
@@ -553,7 +551,9 @@ async function formProfessional_experience(event) {
         'senescyt_registration_n',
         'senescyt_registration_n'
         ]} 
-      ref={dataTableRef1}/>
+      ref={dataTableRef1}
+      showRowNumber={true} 
+      />
       </ChakraProvider>
               {/* <TableContainer mb={4}>
                 <Table size='sm'>
