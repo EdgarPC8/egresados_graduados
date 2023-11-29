@@ -6,6 +6,7 @@ import quizRoutes from "./src/routes/quizRoutes.js";
 import linguiGeoRoutes from "./src/routes/linguisticsGeographyRoutes.js";
 import cors from "cors";
 import { sequelize } from "./src/database/connection.js";
+import { insertData } from "./src/database/insertData.js";
 
 const app = express();
 const PORT = 3000;
@@ -43,7 +44,9 @@ app.use("/api/linguiGeo", linguiGeoRoutes);
 async function main() {
   try {
     // await sequelize.authenticate();
-    // await sequelize.sync({ force: true });
+    await sequelize.sync({ force: true });
+    await insertData();
+
     console.log("Conección realizada con éxito.");
     app.listen(PORT, () => {
       console.log(`Backend escuchando en el puesto ${PORT}`);

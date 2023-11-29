@@ -18,5 +18,5 @@ const Roles = sequelize.define(
   }
 );
 
-export { Roles };
 
+export { Roles };

@@ -1,7 +1,7 @@
 import { sequelize } from "../database/connection.js";
 import { Roles } from "./Roles.js";
 import { DataTypes } from "sequelize";
-
+import { UserRoles } from "./UserRoles.js";
 
 // Definición del modelo Users
 export const Users = sequelize.define(
@@ -18,18 +18,13 @@ export const Users = sequelize.define(
     password: {
       type: DataTypes.STRING(100),
     },
-    rol: {
-      type: DataTypes.INTEGER(11),
-    },
   },
   {
     timestamps: false,
   }
 );
 
-
-
 // Relacion muchos a muchos, tabla intermedia user_roles
 
-Users.belongsToMany(Roles, { through: "user_roles" });
-Roles.belongsToMany(Users, { through: "user_roles" });
+Users.belongsToMany(Roles, { through: UserRoles, foreignKey: "userId" });
+Roles.belongsToMany(Users, { through: UserRoles, foreignKey: "roleId" });
