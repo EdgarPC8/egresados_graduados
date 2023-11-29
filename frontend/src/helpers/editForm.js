@@ -1,3 +1,5 @@
+import axios from "../api/axios.js";
+
 export const handleEditClick = (item,event) => {
   const clickedButton = event.currentTarget;
   const formId = clickedButton.getAttribute('data-form-id');
@@ -40,5 +42,19 @@ export const handleEditClick = (item,event) => {
   });
 
 };
+
+export const handleDeleteClick = async (item, event) => {
+  console.log(item);
+
+  try {
+    const { data } = await axios.delete(`/cv/deleteAcademic_training/${item}`);
+    console.log(data)
+    // Hacer algo con la respuesta 'data' si es necesario
+  } catch (error) {
+    // Manejar cualquier error que pueda ocurrir en la solicitud
+    console.error("Error al realizar la solicitud:", error);
+  }
+};
+
 
 

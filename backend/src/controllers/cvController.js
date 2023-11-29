@@ -38,6 +38,21 @@ const editAcademic_training= async (req, res) => {
     });
   }
 };
+const deleteAcademic_training= async (req, res) => {
+   const taskId = req.params.taskId;
+  try {
+    const updatedAcademicTraining =await Academic_training.destroy({
+      where: {
+        id: taskId
+      },
+    });
+      res.json({ message: "Eliminado con Exito"});
+  } catch (error) {
+    res.status(500).json({
+      message: error.message,
+    });
+  }
+};
 
 const getAllAcademic_training = async (req, res) => {
   const professionals = await Academic_training.findAll();
@@ -158,7 +173,7 @@ const getAllProfessional_experience = async (req, res) => {
 
 
 
-export {addAcademic_training,getAllAcademic_training,editAcademic_training,
+export {addAcademic_training,getAllAcademic_training,editAcademic_training,deleteAcademic_training,
   addTeaching_experience,getAllTeaching_experience,
   addCourses_workshops,getAllCourses_workshops,
   addIntellectual_production,getAllIntellectual_production,

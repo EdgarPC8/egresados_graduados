@@ -1,10 +1,13 @@
 import React, { useState, useEffect,useRef } from 'react';
 import axios from "../api/axios.js";
 import {reorderDate} from "../helpers/date.js";
-import {handleEditClick} from "../helpers/editForm.js";
+import {handleEditClick,handleDeleteClick} from "../helpers/editForm.js";
+import {form} from "../components/Forms.js";
 import { EditIcon, DeleteIcon } from "@chakra-ui/icons";
+import DataTable from "../components/DataTables.jsx"; 
 
 import {
+  ChakraProvider,
   Box,
   Heading,
   Input,
@@ -36,8 +39,6 @@ import {
   FormControl,
 } from "@chakra-ui/react";
 
-
-
 function ResumeForm() {
 // Definición del estado inicial usando useState
 const [datosAcademic_training, setDatosAcademic_training] = useState(null);
@@ -49,6 +50,8 @@ const [datosAcademic_professional_merits, setDatosAcademic_professional_merits] 
 const [datosLanguages, setDatosLanguages] = useState(null);
 const [datosProfessional_experience, setDatosProfessional_experience] = useState(null);
 
+const dataTableRef1 = useRef();
+
 async function fetchData() {
   try {
     const getAllAcademic_training = await axios.get("/cv/getAllAcademic_training");
@@ -59,6 +62,7 @@ async function fetchData() {
     const getAllAcademic_professional_merits = await axios.get("/cv/getAllAcademic_professional_merits");
     const getAllLanguages = await axios.get("/cv/getAllLanguages");
     const getAllProfessional_experience = await axios.get("/cv/getAllProfessional_experience");
+
     setDatosAcademic_training(getAllAcademic_training.data);
     setDatosTeaching_experience(getAllTeaching_experience.data);
     setDatosCourses_workshops(getAllCourses_workshops.data);
@@ -86,17 +90,12 @@ useEffect(() => {
   fetchData();
 }, []); // Este efecto se ejecuta solo una vez al montar el componente
 // Resto de tu código...
-
-
 async function formProfessional(event) {
   event.preventDefault();
   const dataForm = Object.fromEntries(new FormData(event.target));
-  console.log('Datos del formulario:', dataForm);
   try {
     const { data } = await axios.post("/professionals/addProfessional", dataForm);
     console.log(data);
-
-    // No es necesario llamar a getAllTables aquí
     // En su lugar, podrías hacer una nueva solicitud para actualizar los datos si es necesario
 
   } catch (error) {
@@ -110,19 +109,14 @@ async function formAcademic_training(event) {
   const form = document.getElementById("formAcademic_training");
   const submitButton = form.querySelector('button[type="submit"]');
 
-
   // const purpose = event.submitter.getAttribute('data-purpose'); // Obtén el valor de data-purpose del botón que desencadenó el envío
   try {
     if (submitButton.innerHTML === 'Guardar') {
     console.log('Datos del formulario para Crear:', dataForm);
-
-      // Realizar lógica para el envío de creación (por ejemplo, usar POST)
-      // const { data } = await axios.post("/cv/addAcademic_training", dataForm);
-      // setDatosAcademic_training([...datosAcademic_training, dataForm]);
+      const { data } = await axios.post("/cv/addAcademic_training", dataForm);
+      setDatosAcademic_training([...datosAcademic_training, dataForm]);
     } else if (submitButton.innerHTML === 'Editar') {
-      
     console.log('Datos del formulario para Editar:', submitButton.value);
-
     const obj = {
       columns:dataForm,
       where: { where: { id: submitButton.value }},
@@ -133,9 +127,7 @@ async function formAcademic_training(event) {
     setDatosAcademic_training(updatedData.getAllAcademic_training);
 
 
-    } else {
-      console.log('Propósito no identificado:', purpose);
-    }
+    } 
   } catch (error) {
     console.error('Error en getAllProfessionals:', error);
     throw error;
@@ -144,15 +136,27 @@ async function formAcademic_training(event) {
 async function formTeaching_experience(event) {
   event.preventDefault();
   const dataForm = Object.fromEntries(new FormData(event.target));
-  console.log('Datos del formulario:', dataForm);
+  const form = document.getElementById("formTeaching_experience");
+  const submitButton = form.querySelector('button[type="submit"]');
   try {
-    // Puedes hacer la solicitud para agregar datos académicos aquí
-    // Por ejemplo:
-    const { data } = await axios.post("/cv/addTeaching_experience", dataForm);
-    // Luego, si es necesario, actualizar los datos en el estado local:
-    // console.log(dataForm)
+    if (submitButton.innerHTML === 'Guardar') {
+        const { data } = await axios.post("/cv/addTeaching_experience", dataForm);
+        setDatosTeaching_experience([...datosTeaching_experience, dataForm]);
 
-    setDatosAcademic_training([...datosAcademic_training, dataForm]);
+
+      } else if (submitButton.innerHTML === 'Editar') {
+      console.log('Datos del formulario para Editar:', submitButton.value);
+      // const obj = {
+      //   columns:dataForm,
+      //   where: { where: { id: submitButton.value }},
+      // }
+      // const { data } = await axios.put("/cv/editAcademic_training", obj);
+      // console.log(data)
+      // const updatedData = await fetchData();
+      // setDatosAcademic_training(updatedData.getAllAcademic_training);
+  
+  
+      } 
   } catch (error) {
     console.error('Error en getAllProfessionals:', error);
     throw error;
@@ -261,12 +265,10 @@ async function formProfessional_experience(event) {
     throw error;
   }
 }
-
-
-
-
   return (
     <Box fontSize={50} mb={100}>
+      
+
       <Container maxW={"container.xl"}>
         <Grid templateColumns={{ base: "8fr 1fr", md: "8fr 1fr" }} gap={1} mt={2}>
           <GridItem>
@@ -458,7 +460,7 @@ async function formProfessional_experience(event) {
       </Container>
       <Container py={2} maxW={"container.xl"} fontSize={"container.sm"}>
         <Accordion allowToggle>
-        <form onSubmit={formAcademic_training} id="formAcademic_training">
+        <form onSubmit={form} id="formAcademic_training">
           <AccordionItem>
             <h2>
               <AccordionButton>
@@ -525,7 +527,35 @@ async function formProfessional_experience(event) {
                   </Button>
                 </GridItem>
               </Grid>
-              <TableContainer mb={4}>
+              <ChakraProvider>
+      <DataTable 
+      tableTitle="Datos"
+      data={datosAcademic_training} 
+      columnHeaders={[
+        '#',
+        'Tipo',
+        'Título Obtenido',
+        'Institución Educativa',
+        'Fecha',
+        'Lugar',
+        'País',
+        'Nro. de registro SENESCYT',
+        'Acción'
+      ]} 
+      columnKeys={[
+        'rowNumber',
+        'type',
+        'date',
+        'place',
+        'country',
+        'obtained_tittle',
+        'educational_institution',
+        'senescyt_registration_n',
+        'senescyt_registration_n'
+        ]} 
+      ref={dataTableRef1}/>
+      </ChakraProvider>
+              {/* <TableContainer mb={4}>
                 <Table size='sm'>
                   <Thead>
                     <Tr>
@@ -564,7 +594,8 @@ async function formProfessional_experience(event) {
                           >
                             <EditIcon />
                           </Button>
-                          <Button type="button" mt={4} bg="red"_hover={{bg:"red.600"}} color={"white"}>
+
+                          <Button type="button" mt={4} bg="red"_hover={{bg:"red.600"}} color={"white"} onClick={(event)=> handleDeleteClick(item.id,event)}>
                             <DeleteIcon />
                           </Button>
 
@@ -583,11 +614,11 @@ async function formProfessional_experience(event) {
                   <Tfoot>
                   </Tfoot>
                 </Table>
-              </TableContainer>
+              </TableContainer> */}
             </AccordionPanel>
           </AccordionItem>
         </form>
-        <form onSubmit={formTeaching_experience}>
+        <form onSubmit={formTeaching_experience} id='formTeaching_experience'>
           <AccordionItem>
             <h2>
               <AccordionButton>
@@ -676,6 +707,24 @@ async function formProfessional_experience(event) {
                           <Td>{item.modality}</Td>
                           <Td>{item.place}</Td>
                           <Td>{item.country}</Td>
+                          <Td>
+                          <Button
+                            type="button"
+                            mt={4}
+                            bg="yellow"
+                            _hover={{ bg: "yellow.300" }}
+                            color={"white"}
+                            onClick={(event) => handleEditClick(item,event)} // Maneja el clic en el botón de editar
+                            data-form-id="formTeaching_experience"
+                          >
+                            <EditIcon />
+                          </Button>
+
+                          <Button type="button" mt={4} bg="red"_hover={{bg:"red.600"}} color={"white"} onClick={(event)=> handleDeleteClick(item.id,event)}>
+                            <DeleteIcon />
+                          </Button>
+
+                          </Td>
                         </Tr>
                       ))}
                     </Tbody>

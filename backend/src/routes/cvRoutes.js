@@ -3,6 +3,7 @@ import {
     addAcademic_training,
     editAcademic_training,
     getAllAcademic_training,
+    deleteAcademic_training,
     addTeaching_experience,
     getAllTeaching_experience,
     addCourses_workshops,
@@ -25,6 +26,8 @@ const router = Router();
 router.post("/addAcademic_training", addAcademic_training);
 router.get("/getAllAcademic_training", getAllAcademic_training);
 router.put("/editAcademic_training", editAcademic_training);
+router.delete("/deleteAcademic_training/:taskId", deleteAcademic_training);
+
 router.post("/addTeaching_experience", addTeaching_experience);
 router.get("/getAllTeaching_experience", getAllTeaching_experience);
 router.post("/addCourses_workshops", addCourses_workshops);
