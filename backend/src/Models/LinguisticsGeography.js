@@ -13,7 +13,7 @@ const Country = sequelize.define(
       type: DataTypes.CHAR(2),
       defaultValue: null,
     },
-    nombre: {
+    name: {
       type: DataTypes.STRING(80),
       defaultValue: null,
     },
