@@ -1,5 +1,8 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect,useRef } from 'react';
 import axios from "../api/axios.js";
+import {reorderDate} from "../helpers/date.js";
+import {handleEditClick} from "../helpers/editForm.js";
+import { EditIcon, DeleteIcon } from "@chakra-ui/icons";
 
 import {
   Box,
@@ -33,6 +36,8 @@ import {
   FormControl,
 } from "@chakra-ui/react";
 
+
+
 function ResumeForm() {
 // Definición del estado inicial usando useState
 const [datosAcademic_training, setDatosAcademic_training] = useState(null);
@@ -44,35 +49,45 @@ const [datosAcademic_professional_merits, setDatosAcademic_professional_merits] 
 const [datosLanguages, setDatosLanguages] = useState(null);
 const [datosProfessional_experience, setDatosProfessional_experience] = useState(null);
 
+async function fetchData() {
+  try {
+    const getAllAcademic_training = await axios.get("/cv/getAllAcademic_training");
+    const getAllTeaching_experience = await axios.get("/cv/getAllTeaching_experience");
+    const getAllCourses_workshops = await axios.get("/cv/getAllCourses_workshops");
+    const getAllIntellectual_production = await axios.get("/cv/getAllIntellectual_production");
+    const getAllBooks = await axios.get("/cv/getAllBooks");
+    const getAllAcademic_professional_merits = await axios.get("/cv/getAllAcademic_professional_merits");
+    const getAllLanguages = await axios.get("/cv/getAllLanguages");
+    const getAllProfessional_experience = await axios.get("/cv/getAllProfessional_experience");
+    setDatosAcademic_training(getAllAcademic_training.data);
+    setDatosTeaching_experience(getAllTeaching_experience.data);
+    setDatosCourses_workshops(getAllCourses_workshops.data);
+    setDatosIntellectual_production(getAllIntellectual_production.data);
+    setDatosBooks(getAllBooks.data);
+    setDatosAcademic_professional_merits(getAllAcademic_professional_merits.data);
+    setDatosLanguages(getAllLanguages.data);
+    setDatosProfessional_experience(getAllProfessional_experience.data);
+    return {
+      getAllAcademic_training: getAllAcademic_training.data,
+      getAllTeaching_experience: getAllTeaching_experience.data,
+      getAllCourses_workshops: getAllCourses_workshops.data,
+      getAllIntellectual_production: getAllIntellectual_production.data,
+      getAllBooks: getAllBooks.data,
+      getAllAcademic_professional_merits: getAllAcademic_professional_merits.data,
+      getAllLanguages: getAllLanguages.data,
+      getAllProfessional_experience: getAllProfessional_experience.data
+    };
+  } catch (error) {
+    console.error('Error al obtener datos académicos:', error);
+  }
+}
 // Obtener los datos académicos una vez al cargar el componente
 useEffect(() => {
-  async function fetchData() {
-    try {
-      const getAllAcademic_training = await axios.get("/cv/getAllAcademic_training");
-      const getAllTeaching_experience = await axios.get("/cv/getAllTeaching_experience");
-      const getAllCourses_workshops = await axios.get("/cv/getAllCourses_workshops");
-      const getAllIntellectual_production = await axios.get("/cv/getAllIntellectual_production");
-      const getAllBooks = await axios.get("/cv/getAllBooks");
-      const getAllAcademic_professional_merits = await axios.get("/cv/getAllAcademic_professional_merits");
-      const getAllLanguages = await axios.get("/cv/getAllLanguages");
-      const getAllProfessional_experience = await axios.get("/cv/getAllProfessional_experience");
-
-      setDatosAcademic_training(getAllAcademic_training.data);
-      setDatosTeaching_experience(getAllTeaching_experience.data);
-      setDatosCourses_workshops(getAllCourses_workshops.data);
-      setDatosIntellectual_production(getAllIntellectual_production.data);
-      setDatosBooks(getAllBooks.data);
-      setDatosAcademic_professional_merits(getAllAcademic_professional_merits.data);
-      setDatosLanguages(getAllLanguages.data);
-      setDatosProfessional_experience(getAllProfessional_experience.data);
-
-    } catch (error) {
-      console.error('Error al obtener datos académicos:', error);
-    }
-  }
   fetchData();
 }, []); // Este efecto se ejecuta solo una vez al montar el componente
 // Resto de tu código...
+
+
 async function formProfessional(event) {
   event.preventDefault();
   const dataForm = Object.fromEntries(new FormData(event.target));
@@ -92,15 +107,35 @@ async function formProfessional(event) {
 async function formAcademic_training(event) {
   event.preventDefault();
   const dataForm = Object.fromEntries(new FormData(event.target));
-  console.log('Datos del formulario:', dataForm);
-  try {
-    // Puedes hacer la solicitud para agregar datos académicos aquí
-    // Por ejemplo:
-    const { data } = await axios.post("/cv/addAcademic_training", dataForm);
-    // Luego, si es necesario, actualizar los datos en el estado local:
-    // console.log(dataForm)
+  const form = document.getElementById("formAcademic_training");
+  const submitButton = form.querySelector('button[type="submit"]');
 
-    setDatosAcademic_training([...datosAcademic_training, dataForm]);
+
+  // const purpose = event.submitter.getAttribute('data-purpose'); // Obtén el valor de data-purpose del botón que desencadenó el envío
+  try {
+    if (submitButton.innerHTML === 'Guardar') {
+    console.log('Datos del formulario para Crear:', dataForm);
+
+      // Realizar lógica para el envío de creación (por ejemplo, usar POST)
+      // const { data } = await axios.post("/cv/addAcademic_training", dataForm);
+      // setDatosAcademic_training([...datosAcademic_training, dataForm]);
+    } else if (submitButton.innerHTML === 'Editar') {
+      
+    console.log('Datos del formulario para Editar:', submitButton.value);
+
+    const obj = {
+      columns:dataForm,
+      where: { where: { id: submitButton.value }},
+    }
+    const { data } = await axios.put("/cv/editAcademic_training", obj);
+    console.log(data)
+    const updatedData = await fetchData();
+    setDatosAcademic_training(updatedData.getAllAcademic_training);
+
+
+    } else {
+      console.log('Propósito no identificado:', purpose);
+    }
   } catch (error) {
     console.error('Error en getAllProfessionals:', error);
     throw error;
@@ -227,19 +262,22 @@ async function formProfessional_experience(event) {
   }
 }
 
+
+
+
   return (
     <Box fontSize={50} mb={100}>
       <Container maxW={"container.xl"}>
         <Grid templateColumns={{ base: "8fr 1fr", md: "8fr 1fr" }} gap={1} mt={2}>
           <GridItem>
-            <Box bg="primary.200" color="white" p={2} borderRadius="md">
+            <Box bg="primary.100" color="white" p={2} borderRadius="md">
               <Heading as="h1" textAlign="center" >
                 HOJA DE VIDA
               </Heading>
             </Box>
           </GridItem>
           <GridItem>
-            <Box bg="primary.200" color="white" borderRadius="md" p={2} alignItems="center">
+            <Box bg="primary.100" color="white" borderRadius="md" p={2} alignItems="center">
               <Heading as="h3" fontSize="xl">
                 CÓDIGO
               </Heading>
@@ -411,8 +449,8 @@ async function formProfessional_experience(event) {
             </Box>
           </GridItem>
           <GridItem colSpan={2} order={{ base: 1, md: 1 }} textAlign={"center"} margin={"auto"}>
-            <Button type="submit" mt={4} colorScheme="teal">
-              Enviar
+            <Button type="submit" mt={4} bg="primary.200" color={"white"}>
+              Guardar
             </Button>
           </GridItem>
         </Grid>
@@ -420,7 +458,7 @@ async function formProfessional_experience(event) {
       </Container>
       <Container py={2} maxW={"container.xl"} fontSize={"container.sm"}>
         <Accordion allowToggle>
-        <form onSubmit={formAcademic_training}>
+        <form onSubmit={formAcademic_training} id="formAcademic_training">
           <AccordionItem>
             <h2>
               <AccordionButton>
@@ -436,9 +474,9 @@ async function formProfessional_experience(event) {
                   <InputGroup>
                     <InputLeftAddon children='Tipo' />
                     <Select placeholder='Seleccione una opción' name="type">
-                      <option value='option1'>Secundaria</option>
-                      <option value='option2'>Tercer Nivel</option>
-                      <option value='option3'>Cuarto Nivel</option>
+                      <option value='Secundaria'>Secundaria</option>
+                      <option value='Tercer Nivel'>Tercer Nivel</option>
+                      <option value='Cuarto Nivel'>Cuarto Nivel</option>
                     </Select>
                   </InputGroup>
                 </GridItem>
@@ -482,8 +520,8 @@ async function formProfessional_experience(event) {
                   </InputGroup>
                 </GridItem>
                 <GridItem colSpan={2} order={{ base: 1, md: 1 }} textAlign={"right"}>
-                  <Button type="submit" mt={4} colorScheme="teal">
-                    Enviar
+                  <Button type="submit" mt={4} bg="primary.200" color={"white"} _hover={{bg:"primary.100"}} data-purpose="create" >
+                    Guardar
                   </Button>
                 </GridItem>
               </Grid>
@@ -499,6 +537,7 @@ async function formProfessional_experience(event) {
                       <Th>Lugar</Th>
                       <Th>País</Th>
                       <Th>Nro. de registro SENESCYT</Th>
+                      <Th>Acción</Th>
                     </Tr>
                   </Thead>
                   {datosAcademic_training ? (
@@ -507,12 +546,29 @@ async function formProfessional_experience(event) {
                         <Tr key={index}>
                           <Td>{index+1}</Td>
                           <Td>{item.type}</Td>
-                          <Td>{item.date}</Td>
+                          <Td>{reorderDate(item.date)}</Td>
                           <Td>{item.place}</Td>
                           <Td>{item.country}</Td>
                           <Td>{item.obtained_tittle}</Td>
                           <Td>{item.educational_institution}</Td>
                           <Td>{item.senescyt_registration_n}</Td>
+                          <Td>
+                          <Button
+                            type="button"
+                            mt={4}
+                            bg="yellow"
+                            _hover={{ bg: "yellow.300" }}
+                            color={"white"}
+                            onClick={(event) => handleEditClick(item,event)} // Maneja el clic en el botón de editar
+                            data-form-id="formAcademic_training"
+                          >
+                            <EditIcon />
+                          </Button>
+                          <Button type="button" mt={4} bg="red"_hover={{bg:"red.600"}} color={"white"}>
+                            <DeleteIcon />
+                          </Button>
+
+                          </Td>
                         </Tr>
                       ))}
                     </Tbody>
@@ -588,13 +644,14 @@ async function formProfessional_experience(event) {
                   </InputGroup>
                 </GridItem>
                 <GridItem colSpan={2} order={{ base: 1, md: 1 }} textAlign={"right"}>
-                  <Button type="submit" mt={4} colorScheme="teal">
-                    Enviar
+                  <Button type="submit" mt={4} bg="primary.200" color={"white"}>
+                    Guardar
                   </Button>
                 </GridItem>
               </Grid>
-              <TableContainer mb={4}>
-                <Table size='sm'>
+               
+                <TableContainer mb={4}>
+                   <Table size='sm'>
                   <Thead>
                     <Tr>
                       <Th>#</Th>
@@ -614,8 +671,8 @@ async function formProfessional_experience(event) {
                           <Td>{index+1}</Td>
                           <Td>{item.educational_institution}</Td>
                           <Td>{item.subject}</Td>
-                          <Td>{item.start_date}</Td>
-                          <Td>{item.end_date}</Td>
+                          <Td>{reorderDate(item.start_date)}</Td>
+                          <Td>{reorderDate(item.end_date)}</Td>
                           <Td>{item.modality}</Td>
                           <Td>{item.place}</Td>
                           <Td>{item.country}</Td>
@@ -632,11 +689,11 @@ async function formProfessional_experience(event) {
                   <Tfoot>
                   </Tfoot>
                 </Table>
-              </TableContainer>
+                
+                </TableContainer>
             </AccordionPanel>
           </AccordionItem>
         </form>
-
         <form onSubmit={formCourses_workshops}>
           
           <AccordionItem>
@@ -711,8 +768,8 @@ async function formProfessional_experience(event) {
                   </InputGroup>
                 </GridItem>
                 <GridItem colSpan={2} order={{ base: 1, md: 1 }} textAlign={"right"}>
-                  <Button type="submit" mt={4} colorScheme="teal">
-                    Enviar
+                  <Button type="submit" mt={4} bg="primary.200" color={"white"}>
+                    Guardar
                   </Button>
                 </GridItem>
               </Grid>
@@ -746,8 +803,8 @@ async function formProfessional_experience(event) {
                           <Td>{item.organized_by}</Td>
                           <Td>{item.place}</Td>
                           <Td>{item.duration}</Td>
-                          <Td>{item.start_date}</Td>
-                          <Td>{item.end_date}</Td>
+                          <Td>{reorderDate(item.start_date)}</Td>
+                          <Td>{reorderDate(item.end_date)}</Td>
                           <Td textAlign={"center"}>{item.type_participation}</Td>
                         </Tr>
                       ))}
@@ -813,8 +870,8 @@ async function formProfessional_experience(event) {
                   </InputGroup>
                 </GridItem>
                 <GridItem colSpan={2} order={{ base: 1, md: 1 }} textAlign={"right"}>
-                  <Button type="submit" mt={4} colorScheme="teal">
-                    Enviar
+                  <Button type="submit" mt={4} bg="primary.200" color={"white"}>
+                    Guardar
                   </Button>
                 </GridItem>
               </Grid>
@@ -838,7 +895,7 @@ async function formProfessional_experience(event) {
                           <Td>{item.type}</Td>
                           <Td>{item.name}</Td>
                           <Td>{item.type_authorship}</Td>
-                          <Td>{item.date}</Td>
+                          <Td>{reorderDate(item.date)}</Td>
                           <Td>{item.web_link}</Td>
                         </Tr>
                       ))}
@@ -916,8 +973,8 @@ async function formProfessional_experience(event) {
                   </InputGroup>
                 </GridItem>
                 <GridItem colSpan={2} order={{ base: 1, md: 1 }} textAlign={"right"}>
-                  <Button type="submit" mt={4} colorScheme="teal">
-                    Enviar
+                  <Button type="submit" mt={4} bg="primary.200" color={"white"}>
+                    Guardar
                   </Button>
                 </GridItem>
               </Grid>
@@ -1019,8 +1076,8 @@ async function formProfessional_experience(event) {
                   </InputGroup>
                 </GridItem>
                 <GridItem colSpan={2} order={{ base: 1, md: 1 }} textAlign={"right"}>
-                  <Button type="submit" mt={4} colorScheme="teal">
-                    Enviar
+                  <Button type="submit" mt={4} bg="primary.200" color={"white"}>
+                    Guardar
                   </Button>
                 </GridItem>
               </Grid>
@@ -1043,7 +1100,7 @@ async function formProfessional_experience(event) {
                         <Tr key={index}>
                           <Td>{index+1}</Td>
                           <Td>{item.name}</Td>
-                          <Td>{item.date}</Td>
+                          <Td>{reorderDate(item.date)}</Td>
                           <Td>{item.type}</Td>
                           <Td>{item.granted_by}</Td>
                           <Td>{item.country}</Td>
@@ -1157,8 +1214,8 @@ async function formProfessional_experience(event) {
                   </Grid>
                 </GridItem>
                 <GridItem colSpan={2} order={{ base: 1, md: 1 }} textAlign={"right"}>
-                  <Button type="submit" mt={4} colorScheme="teal">
-                    Enviar
+                  <Button type="submit" mt={4} bg="primary.200" color={"white"}>
+                    Guardar
                   </Button>
                 </GridItem>
               </Grid>
@@ -1267,8 +1324,8 @@ async function formProfessional_experience(event) {
                   </InputGroup>
                 </GridItem>
                 <GridItem colSpan={2} order={{ base: 1, md: 1 }} textAlign={"right"}>
-                  <Button type="submit" mt={4} colorScheme="teal">
-                    Enviar
+                  <Button type="submit" mt={4} bg="primary.200" color={"white"}>
+                    Guardar
                   </Button>
                 </GridItem>
               </Grid>
@@ -1298,8 +1355,8 @@ async function formProfessional_experience(event) {
                           <Td>{item.responsibilities}</Td>
                           <Td>{item.immediate_head}</Td>
                           <Td>{item.telephone}</Td>
-                          <Td>{item.start_date}</Td>
-                          <Td>{item.end_date}</Td>
+                          <Td>{reorderDate(item.start_date)}</Td>
+                          <Td>{reorderDate(item.end_date)}</Td>
                         </Tr>
                       ))}
                     </Tbody>
@@ -1317,7 +1374,6 @@ async function formProfessional_experience(event) {
             </AccordionPanel>
           </AccordionItem>
           </form>
-
         </Accordion>
 
       </Container>

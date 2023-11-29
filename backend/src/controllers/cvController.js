@@ -1,3 +1,4 @@
+import { where } from "sequelize";
 import { 
   Professional_experience,
   Languages,
@@ -9,6 +10,7 @@ import {
   Intellectual_production,
 } from "../Models/CV.js";
 
+
 const addAcademic_training= async (req, res) => {
   const data = req.body; // Suponiendo que los datos están en el cuerpo de la solicitud
   try {
@@ -19,6 +21,22 @@ const addAcademic_training= async (req, res) => {
     });
   }
   res.json({ message: "Agregado con éxito" });
+};
+
+const editAcademic_training= async (req, res) => {
+  const data = req.body; // Suponiendo que los datos están en el cuerpo de la solicitud
+  try {
+    // const newProfessional = await Academic_training.update({place:"Chile",where:{id:1}});
+    const updatedAcademicTraining = await Academic_training.update(
+      data.columns, // Aquí defines los campos y sus nuevos valores a actualizar
+      data.where // Aquí estableces la condición para la actualización
+      );
+      res.json({ message: "Editado con éxito"  });
+  } catch (error) {
+    res.status(500).json({
+      message: error.message,
+    });
+  }
 };
 
 const getAllAcademic_training = async (req, res) => {
@@ -140,7 +158,7 @@ const getAllProfessional_experience = async (req, res) => {
 
 
 
-export {addAcademic_training,getAllAcademic_training,
+export {addAcademic_training,getAllAcademic_training,editAcademic_training,
   addTeaching_experience,getAllTeaching_experience,
   addCourses_workshops,getAllCourses_workshops,
   addIntellectual_production,getAllIntellectual_production,
