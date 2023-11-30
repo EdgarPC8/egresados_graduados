@@ -14,7 +14,7 @@ const login = async (req, res) => {
 
   // console.log(user);
   try {
-    const user = await Users.findOne({ where: { email, rol } });
+    const user = await Users.findOne({ where: { email} });
 
     // const passgenerate = await bycrypt.hash("admin", 10);
     // console.log(passgenerate);
