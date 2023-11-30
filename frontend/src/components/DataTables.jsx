@@ -13,7 +13,6 @@ import {
 } from '@chakra-ui/react';
 import { CloseIcon } from "@chakra-ui/icons";
 
-
 class DataTable extends Component {
   constructor(props) {
     super(props);
@@ -80,7 +79,7 @@ class DataTable extends Component {
   };
 
   render() {
-    const { columnHeaders, columnKeys, tableTitle } = this.props;
+    const { columnHeaders, columnKeys, tableTitle, showRowNumber } = this.props;
     const { searchTerm, currentPage, data, sortBy, sortOrder } = this.state;
     const itemsPerPage = 5;
 
@@ -114,6 +113,7 @@ class DataTable extends Component {
         <Table variant="simple" size="sm">
           <Thead>
             <Tr>
+              {showRowNumber && <Th>#</Th>}
               {columnHeaders.map((header, index) => (
                 <Th
                   key={index}
@@ -129,6 +129,7 @@ class DataTable extends Component {
           <Tbody>
             {currentItems.map((item, rowIndex) => (
               <Tr key={rowIndex}>
+                {showRowNumber && <Td>{indexOfFirstItem + rowIndex + 1}</Td>}
                 {columnKeys.map((key, colIndex) => (
                   <Td key={colIndex} fontSize="sm" px={4}>
                     {item[key]}

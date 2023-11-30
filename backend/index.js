@@ -44,8 +44,8 @@ app.use("/api/linguiGeo", linguiGeoRoutes);
 async function main() {
   try {
     // await sequelize.authenticate();
-    await sequelize.sync({ force: true });
-    await insertData();
+    // await sequelize.sync({ force: true });
+    // await insertData();
 
     console.log("Conección realizada con éxito.");
     app.listen(PORT, () => {
