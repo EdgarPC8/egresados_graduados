@@ -30,19 +30,62 @@ import {
   Flex,
   FormControl,
 } from "@chakra-ui/react";
-import { addAcademicTraining } from "../api/cvRequest";
+import { useEffect } from "react";
+import { useState } from "react";
+import { addAcademicTraining, getAllAcademicTraining,editAcademicTraining } from "../api/cvRequest";
+import DataTable from "../components/DataTables";
+import { putFormEditElementsInputs } from "../helpers/editForm.js";
 
 function FormAcademicTraining() {
+  const [datosAcademicTraining, setDatosAcademicTraining] = useState([]);
+  const [editing, setEditing] = useState(false);
+  const [idEdit, setIdEdit] = useState(false);
+  async function fetchData() {
+    try {
+      const { data } = await getAllAcademicTraining();
+      setDatosAcademicTraining(data)
+    } catch (error) {
+      console.error('Error al obtener datos académicos:', error);
+    }
+  }
   const handleSubmit = async (event) => {
     event.preventDefault();
     const formData = Object.fromEntries(new FormData(event.target));
     try {
-      const { data } = addAcademicTraining(formData);
-      console.log(data);
+      if (editing) {
+        // event.currentTarget.closest("form")?event.currentTarget.closest("form").querySelector('button[type="submit"]').innerText="Guardar":null;
+        const form = event.currentTarget.closest("form");
+        if (form) {
+          const submitButton = form.querySelector('button[type="submit"]');
+          submitButton?submitButton.innerText="Guardar":null;
+        }
+        const { data } = await editAcademicTraining({columns:formData,where:{where:{id:idEdit}}}); 
+        fetchData()
+      } else {
+        const { data } = await addAcademicTraining(formData); // assuming addAcademicTraining is an asynchronous function
+        setDatosAcademicTraining([...datosAcademicTraining, formData]); // Assuming the returned data is the newly added item
+      }
+      setEditing(false);
+      event.target.reset(); // Reiniciar el formulario
+
     } catch (error) {
       console.log(error);
     }
   };
+
+
+  // Función para editar una fila
+  const handleEditRow = (row, event) => {
+    setIdEdit(putFormEditElementsInputs(row, event))
+    setEditing(true);
+  };
+  // Función para eliminar una fila
+  const handleDeleteRow = (row) => {
+    console.log(`Eliminando la fila con tipo ${row.type}`);
+  };
+  useEffect(() => {
+    fetchData();
+  }, [])
   return (
     <form onSubmit={handleSubmit}>
       <AccordionItem>
@@ -55,6 +98,7 @@ function FormAcademicTraining() {
           </AccordionButton>
         </h2>
         <AccordionPanel pb={4}>
+
           <Grid
             gap={2}
             mt={2}
@@ -97,6 +141,7 @@ function FormAcademicTraining() {
             </GridItem>
           </Grid>
           <Grid gap={2} mt={2} mb={2}>
+
             <GridItem fontSize={"sm"}>
               <InputGroup>
                 <InputLeftAddon children="Título Obtenido" />
@@ -146,98 +191,41 @@ function FormAcademicTraining() {
               </Button>
             </GridItem>
           </Grid>
-          <ChakraProvider>
-            {/* <DataTable
-              tableTitle="Datos"
-              data={datosAcademic_training}
-              columnHeaders={[
-                "#",
-                "Tipo",
-                "Título Obtenido",
-                "Institución Educativa",
-                "Fecha",
-                "Lugar",
-                "País",
-                "Nro. de registro SENESCYT",
-                "Acción",
-              ]}
-              columnKeys={[
-                "rowNumber",
-                "type",
-                "date",
-                "place",
-                "country",
-                "obtained_tittle",
-                "educational_institution",
-                "senescyt_registration_n",
-                "senescyt_registration_n",
-              ]}
-              ref={dataTableRef1}
-            /> */}
-          </ChakraProvider>
-          {/* <TableContainer mb={4}>
-                <Table size='sm'>
-                  <Thead>
-                    <Tr>
-                      <Th>#</Th>
-                      <Th>Tipo</Th>
-                      <Th>Título Obtenido</Th>
-                      <Th>Institución Educativa</Th>
-                      <Th>Fecha</Th>
-                      <Th>Lugar</Th>
-                      <Th>País</Th>
-                      <Th>Nro. de registro SENESCYT</Th>
-                      <Th>Acción</Th>
-                    </Tr>
-                  </Thead>
-                  {datosAcademic_training ? (
-                    <Tbody>
-                      {datosAcademic_training.map((item, index) => (
-                        <Tr key={index}>
-                          <Td>{index+1}</Td>
-                          <Td>{item.type}</Td>
-                          <Td>{reorderDate(item.date)}</Td>
-                          <Td>{item.place}</Td>
-                          <Td>{item.country}</Td>
-                          <Td>{item.obtained_tittle}</Td>
-                          <Td>{item.educational_institution}</Td>
-                          <Td>{item.senescyt_registration_n}</Td>
-                          <Td>
-                          <Button
-                            type="button"
-                            mt={4}
-                            bg="yellow"
-                            _hover={{ bg: "yellow.300" }}
-                            color={"white"}
-                            onClick={(event) => handleEditClick(item,event)} // Maneja el clic en el botón de editar
-                            data-form-id="formAcademic_training"
-                          >
-                            <EditIcon />
-                          </Button>
-
-                          <Button type="button" mt={4} bg="red"_hover={{bg:"red.600"}} color={"white"} onClick={(event)=> handleDeleteClick(item.id,event)}>
-                            <DeleteIcon />
-                          </Button>
-
-                          </Td>
-                        </Tr>
-                      ))}
-                    </Tbody>
-                  ) : (
-                    <Tbody>
-                      <Tr>
-                        <Td colSpan="7">Cargando datos...</Td>
-                      </Tr>
-                    </Tbody>
-                  )}
-
-                  <Tfoot>
-                  </Tfoot>
-                </Table>
-              </TableContainer> */}
+          <DataTable
+            header={[
+              'Tipo',
+              'Título Obtenido',
+              'Institución Educativa',
+              'Fecha',
+              'Lugar',
+              'País',
+              'Nro. de registro SENESCYT',
+              'Acción'
+            ]}
+            keyValues={[
+              'type',
+              'obtained_tittle',
+              'educational_institution',
+              'date',
+              'place',
+              'country',
+              'senescyt_registration_n'
+            ]}
+            data={datosAcademicTraining}
+            title="Formación Academica"
+            defaultRowsPerPage={5}
+            numberRow={true}
+            buttons={{
+              buttonEdit: true,
+              handleEditRow: handleEditRow,
+              buttonDelete: true,
+              handleDeleteRow: handleDeleteRow
+            }}
+          />
         </AccordionPanel>
       </AccordionItem>
     </form>
+
   );
 }
 

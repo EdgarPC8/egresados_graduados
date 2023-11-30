@@ -1,9 +1,5 @@
 import React, { useState, useEffect, useRef } from "react";
 import axios from "../api/axios.js";
-import { reorderDate } from "../helpers/date.js";
-import { handleEditClick, handleDeleteClick } from "../helpers/editForm.js";
-import { form } from "../components/Forms.js";
-import { EditIcon, DeleteIcon } from "@chakra-ui/icons";
 import ProfessionalForm from "../components/ProfessionalForm.jsx";
 import FormAcademicTraining from "../components/FormAcademicTraining.jsx";
 import FormBooks from "../components/FormBooks.jsx";
@@ -292,7 +288,6 @@ function ResumeForm() {
           <FormBooks />
           <FormAcademicTraining />
           <FormCourses />
-
           <FormIntellectualProduction />
           <FormLanguages />
           <FormProfessionalExperience />
