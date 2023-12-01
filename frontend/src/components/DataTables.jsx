@@ -20,6 +20,7 @@ GridItem,
 } from '@chakra-ui/react';
 import { CloseIcon, ChevronLeftIcon, ChevronRightIcon, ChevronDownIcon, ChevronUpIcon, EditIcon, DeleteIcon } from '@chakra-ui/icons';
 
+
 function DataTable({ header, keyValues, data, numberRow = false, defaultRowsPerPage = 10, title = 'Titulo...',
   buttons = { buttonEdit: false, buttonDelete: false, buttonAdd: false, handleDeleteRow: null, handleEditRow: null } }) {
 
@@ -155,7 +156,7 @@ function DataTable({ header, keyValues, data, numberRow = false, defaultRowsPerP
                       bg="red"
                       _hover={{ bg: "red.600" }}
                       color={"white"}
-                      onClick={() => buttons.handleDeleteRow(row)}
+                      onClick={(event) => buttons.handleDeleteRow(row,event)}
                     >
                       <DeleteIcon />
                     </Button>

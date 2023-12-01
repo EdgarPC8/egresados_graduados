@@ -9,18 +9,18 @@ import {
   Select,
   Button,
 } from "@chakra-ui/react";
-import { addProfessional } from "../api/cvRequest";
+// import { addProfessional } from "../api/cvRequest";
 
 function ProfessionalForm() {
   const handleSubmit = async (event) => {
-    event.preventDefault();
-    const dataForm = Object.fromEntries(new FormData(event.target));
-    try {
-      const { data } = await addProfessional(dataForm);
-      console.log(data);
-    } catch (error) {
-      console.error("Error en getAllProfessionals:", error);
-    }
+    // event.preventDefault();
+    // const dataForm = Object.fromEntries(new FormData(event.target));
+    // try {
+    //   const { data } = await addProfessional(dataForm);
+    //   console.log(data);
+    // } catch (error) {
+    //   console.error("Error en getAllProfessionals:", error);
+    // }
   };
   return (
     <form onSubmit={handleSubmit}>

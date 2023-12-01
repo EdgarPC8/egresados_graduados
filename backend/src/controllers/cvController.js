@@ -1,20 +1,19 @@
 import { where } from "sequelize";
 import { 
-  Professional_experience,
-  Languages,
+  AcademicTraining,
+  TeachingExperience,
+  CoursesWorkshops,
+  IntellectualProduction,
   Books,
-  Academic_professional_merits ,
-  Academic_training,
-  Teaching_experience,
-  Courses_workshops,
-  Intellectual_production,
+  AcademicProfessionalMerits,
+  Languages,
+  ProfessionalExperience,
 } from "../Models/CV.js";
 
-
-const addAcademic_training= async (req, res) => {
+export const addProfessionalExperience= async (req, res) => {
   const data = req.body; // Suponiendo que los datos están en el cuerpo de la solicitud
   try {
-    const newProfessional = await Academic_training.create(data);
+    const newProfessional = await ProfessionalExperience.create(data);
   } catch (error) {
     res.status(500).json({
       message: error.message,
@@ -22,12 +21,10 @@ const addAcademic_training= async (req, res) => {
   }
   res.json({ message: "Agregado con éxito" });
 };
-
-const editAcademic_training= async (req, res) => {
+export const editProfessionalExperience= async (req, res) => {
   const data = req.body; // Suponiendo que los datos están en el cuerpo de la solicitud
   try {
-    // const newProfessional = await Academic_training.update({place:"Chile",where:{id:1}});
-    const updatedAcademicTraining = await Academic_training.update(
+    const updatedProfessionalExperience = await ProfessionalExperience.update(
       data.columns, // Aquí defines los campos y sus nuevos valores a actualizar
       data.where // Aquí estableces la condición para la actualización
       );
@@ -38,10 +35,10 @@ const editAcademic_training= async (req, res) => {
     });
   }
 };
-const deleteAcademic_training= async (req, res) => {
+export const deleteProfessionalExperience= async (req, res) => {
    const taskId = req.params.taskId;
   try {
-    const updatedAcademicTraining =await Academic_training.destroy({
+    const updatedProfessionalExperience =await ProfessionalExperience.destroy({
       where: {
         id: taskId
       },
@@ -53,93 +50,14 @@ const deleteAcademic_training= async (req, res) => {
     });
   }
 };
-
-const getAllAcademic_training = async (req, res) => {
-  const professionals = await Academic_training.findAll();
+export const getAllProfessionalExperience = async (req, res) => {
+  const professionals = await ProfessionalExperience.findAll();
   res.json(professionals);
 };
 
-const addTeaching_experience= async (req, res) => {
-  const data = req.body; // Suponiendo que los datos están en el cuerpo de la solicitud
-  try {
-    const newProfessional = await Teaching_experience.create(data);
-  } catch (error) {
-    res.status(500).json({
-      message: error.message,
-    });
-  }
-  res.json({ message: "Agregado con éxito" });
-};
 
-const getAllTeaching_experience = async (req, res) => {
-  const professionals = await Teaching_experience.findAll();
-  res.json(professionals);
-};
 
-const addCourses_workshops= async (req, res) => {
-  const data = req.body; // Suponiendo que los datos están en el cuerpo de la solicitud
-  try {
-    const newProfessional = await Courses_workshops.create(data);
-  } catch (error) {
-    res.status(500).json({
-      message: error.message,
-    });
-  }
-  res.json({ message: "Agregado con éxito" });
-};
-
-const getAllCourses_workshops = async (req, res) => {
-  const professionals = await Courses_workshops.findAll();
-  res.json(professionals);
-};
-const addIntellectual_production= async (req, res) => {
-  const data = req.body; // Suponiendo que los datos están en el cuerpo de la solicitud
-  try {
-    const newProfessional = await Intellectual_production.create(data);
-  } catch (error) {
-    res.status(500).json({
-      message: error.message,
-    });
-  }
-  res.json({ message: "Agregado con éxito" });
-};
-
-const getAllIntellectual_production = async (req, res) => {
-  const professionals = await Intellectual_production.findAll();
-  res.json(professionals);
-};
-const addBooks= async (req, res) => {
-  const data = req.body; // Suponiendo que los datos están en el cuerpo de la solicitud
-  try {
-    const newProfessional = await Books.create(data);
-  } catch (error) {
-    res.status(500).json({
-      message: error.message,
-    });
-  }
-  res.json({ message: "Agregado con éxito" });
-};
-const getAllBooks = async (req, res) => {
-  const professionals = await Books.findAll();
-  res.json(professionals);
-};
-const addAcademic_professional_merits= async (req, res) => {
-  const data = req.body; // Suponiendo que los datos están en el cuerpo de la solicitud
-  try {
-    const newProfessional = await Academic_professional_merits.create(data);
-  } catch (error) {
-    res.status(500).json({
-      message: error.message,
-    });
-  }
-  res.json({ message: "Agregado con éxito" });
-};
-
-const getAllAcademic_professional_merits = async (req, res) => {
-  const professionals = await Academic_professional_merits.findAll();
-  res.json(professionals);
-};
-const addLanguages= async (req, res) => {
+export const addLanguages= async (req, res) => {
   const data = req.body; // Suponiendo que los datos están en el cuerpo de la solicitud
   try {
     const newProfessional = await Languages.create(data);
@@ -150,14 +68,46 @@ const addLanguages= async (req, res) => {
   }
   res.json({ message: "Agregado con éxito" });
 };
-const getAllLanguages = async (req, res) => {
+export const editLanguages= async (req, res) => {
+  const data = req.body; // Suponiendo que los datos están en el cuerpo de la solicitud
+  try {
+    const updatedLanguages = await Languages.update(
+      data.columns, // Aquí defines los campos y sus nuevos valores a actualizar
+      data.where // Aquí estableces la condición para la actualización
+      );
+      res.json({ message: "Editado con éxito"  });
+  } catch (error) {
+    res.status(500).json({
+      message: error.message,
+    });
+  }
+};
+export const deleteLanguages= async (req, res) => {
+   const taskId = req.params.taskId;
+  try {
+    const updatedLanguages =await Languages.destroy({
+      where: {
+        id: taskId
+      },
+    });
+      res.json({ message: "Eliminado con Exito"});
+  } catch (error) {
+    res.status(500).json({
+      message: error.message,
+    });
+  }
+};
+export const getAllLanguages = async (req, res) => {
   const professionals = await Languages.findAll();
   res.json(professionals);
 };
-const addProfessional_experience= async (req, res) => {
+
+
+
+export const addAcademicProfessionalMerits= async (req, res) => {
   const data = req.body; // Suponiendo que los datos están en el cuerpo de la solicitud
   try {
-    const newProfessional = await Professional_experience.create(data);
+    const newProfessional = await AcademicProfessionalMerits.create(data);
   } catch (error) {
     res.status(500).json({
       message: error.message,
@@ -165,20 +115,279 @@ const addProfessional_experience= async (req, res) => {
   }
   res.json({ message: "Agregado con éxito" });
 };
-
-const getAllProfessional_experience = async (req, res) => {
-  const professionals = await Professional_experience.findAll();
+export const editAcademicProfessionalMerits= async (req, res) => {
+  const data = req.body; // Suponiendo que los datos están en el cuerpo de la solicitud
+  try {
+    const updatedAcademicProfessionalMerits = await AcademicProfessionalMerits.update(
+      data.columns, // Aquí defines los campos y sus nuevos valores a actualizar
+      data.where // Aquí estableces la condición para la actualización
+      );
+      res.json({ message: "Editado con éxito"  });
+  } catch (error) {
+    res.status(500).json({
+      message: error.message,
+    });
+  }
+};
+export const deleteAcademicProfessionalMerits= async (req, res) => {
+   const taskId = req.params.taskId;
+  try {
+    const updatedAcademicProfessionalMerits =await AcademicProfessionalMerits.destroy({
+      where: {
+        id: taskId
+      },
+    });
+      res.json({ message: "Eliminado con Exito"});
+  } catch (error) {
+    res.status(500).json({
+      message: error.message,
+    });
+  }
+};
+export const getAllAcademicProfessionalMerits = async (req, res) => {
+  const professionals = await AcademicProfessionalMerits.findAll();
   res.json(professionals);
 };
 
 
 
-export {addAcademic_training,getAllAcademic_training,editAcademic_training,deleteAcademic_training,
-  addTeaching_experience,getAllTeaching_experience,
-  addCourses_workshops,getAllCourses_workshops,
-  addIntellectual_production,getAllIntellectual_production,
-  addBooks,getAllBooks,
-  addAcademic_professional_merits,getAllAcademic_professional_merits,
-  addLanguages,getAllLanguages,
-  addProfessional_experience,getAllProfessional_experience,
+export const addAcademicTraining= async (req, res) => {
+  const data = req.body; // Suponiendo que los datos están en el cuerpo de la solicitud
+  try {
+    const newProfessional = await AcademicTraining.create(data);
+  } catch (error) {
+    res.status(500).json({
+      message: error.message,
+    });
+  }
+  res.json({ message: "Agregado con éxito" });
 };
+export const editAcademicTraining= async (req, res) => {
+  const data = req.body; // Suponiendo que los datos están en el cuerpo de la solicitud
+  try {
+    const updatedAcademicTraining = await AcademicTraining.update(
+      data.columns, // Aquí defines los campos y sus nuevos valores a actualizar
+      data.where // Aquí estableces la condición para la actualización
+      );
+      res.json({ message: "Editado con éxito"  });
+  } catch (error) {
+    res.status(500).json({
+      message: error.message,
+    });
+  }
+};
+export const deleteAcademicTraining= async (req, res) => {
+   const taskId = req.params.taskId;
+  try {
+    const updatedAcademicTraining =await AcademicTraining.destroy({
+      where: {
+        id: taskId
+      },
+    });
+      res.json({ message: "Eliminado con Exito"});
+  } catch (error) {
+    res.status(500).json({
+      message: error.message,
+    });
+  }
+};
+export const getAllAcademicTraining = async (req, res) => {
+  const professionals = await AcademicTraining.findAll();
+  res.json(professionals);
+};
+
+
+
+export const addTeachingExperience= async (req, res) => {
+  const data = req.body; // Suponiendo que los datos están en el cuerpo de la solicitud
+  try {
+    const newProfessional = await TeachingExperience.create(data);
+  } catch (error) {
+    res.status(500).json({
+      message: error.message,
+    });
+  }
+  res.json({ message: "Agregado con éxito" });
+};
+export const editTeachingExperience= async (req, res) => {
+  const data = req.body; // Suponiendo que los datos están en el cuerpo de la solicitud
+  try {
+    const updatedTeachingExperience = await TeachingExperience.update(
+      data.columns, // Aquí defines los campos y sus nuevos valores a actualizar
+      data.where // Aquí estableces la condición para la actualización
+      );
+      res.json({ message: "Editado con éxito"  });
+  } catch (error) {
+    res.status(500).json({
+      message: error.message,
+    });
+  }
+};
+export const deleteTeachingExperience= async (req, res) => {
+   const taskId = req.params.taskId;
+  try {
+    const updatedTeachingExperience =await TeachingExperience.destroy({
+      where: {
+        id: taskId
+      },
+    });
+      res.json({ message: "Eliminado con Exito"});
+  } catch (error) {
+    res.status(500).json({
+      message: error.message,
+    });
+  }
+};
+export const getAllTeachingExperience = async (req, res) => {
+  const professionals = await TeachingExperience.findAll();
+  res.json(professionals);
+};
+
+
+
+export const addCoursesWorkshops= async (req, res) => {
+  const data = req.body; // Suponiendo que los datos están en el cuerpo de la solicitud
+  try {
+    const newProfessional = await CoursesWorkshops.create(data);
+    res.json({ message: "Agregado con éxito" });
+  } catch (error) {
+    res.status(500).json({
+      message: error.message,
+    });
+  }
+};
+export const editCoursesWorkshops= async (req, res) => {
+  const data = req.body; // Suponiendo que los datos están en el cuerpo de la solicitud
+  try {
+    const updatedCoursesWorkshops = await CoursesWorkshops.update(
+      data.columns, // Aquí defines los campos y sus nuevos valores a actualizar
+      data.where // Aquí estableces la condición para la actualización
+      );
+      res.json({ message: "Editado con éxito"  });
+  } catch (error) {
+    res.status(500).json({
+      message: error.message,
+    });
+  }
+};
+export const deleteCoursesWorkshops= async (req, res) => {
+   const taskId = req.params.taskId;
+  try {
+    const updatedCoursesWorkshops =await CoursesWorkshops.destroy({
+      where: {
+        id: taskId
+      },
+    });
+      res.json({ message: "Eliminado con Exito"});
+  } catch (error) {
+    res.status(500).json({
+      message: error.message,
+    });
+  }
+};
+export const getAllCoursesWorkshops = async (req, res) => {
+  const professionals = await CoursesWorkshops.findAll();
+  res.json(professionals);
+};
+
+
+
+export const addIntellectualProduction= async (req, res) => {
+  const data = req.body; // Suponiendo que los datos están en el cuerpo de la solicitud
+  try {
+    const newProfessional = await IntellectualProduction.create(data);
+    res.json({ message: "Agregado con éxito" });
+  } catch (error) {
+    res.status(500).json({
+      message: error.message,
+    });
+  }
+};
+export const editIntellectualProduction= async (req, res) => {
+  const data = req.body; // Suponiendo que los datos están en el cuerpo de la solicitud
+  try {
+    const updatedIntellectualProduction = await IntellectualProduction.update(
+      data.columns, // Aquí defines los campos y sus nuevos valores a actualizar
+      data.where // Aquí estableces la condición para la actualización
+      );
+      res.json({ message: "Editado con éxito"  });
+  } catch (error) {
+    res.status(500).json({
+      message: error.message,
+    });
+  }
+};
+export const deleteIntellectualProduction= async (req, res) => {
+   const taskId = req.params.taskId;
+  try {
+    const updatedIntellectualProduction =await IntellectualProduction.destroy({
+      where: {
+        id: taskId
+      },
+    });
+      res.json({ message: "Eliminado con Exito"});
+  } catch (error) {
+    res.status(500).json({
+      message: error.message,
+    });
+  }
+};
+export const getAllIntellectualProduction = async (req, res) => {
+  const professionals = await IntellectualProduction.findAll();
+  res.json(professionals);
+};
+
+
+
+export const addBooks= async (req, res) => {
+  const data = req.body; // Suponiendo que los datos están en el cuerpo de la solicitud
+  try {
+    const newProfessional = await Books.create(data);
+    res.json({ message: "Agregado con éxito" });
+  } catch (error) {
+    res.status(500).json({
+      message: error.message,
+    });
+  }
+};
+export const editBooks= async (req, res) => {
+  const data = req.body; // Suponiendo que los datos están en el cuerpo de la solicitud
+  try {
+    const updatedBooks = await Books.update(
+      data.columns, // Aquí defines los campos y sus nuevos valores a actualizar
+      data.where // Aquí estableces la condición para la actualización
+      );
+      res.json({ message: "Editado con éxito"  });
+  } catch (error) {
+    res.status(500).json({
+      message: error.message,
+    });
+  }
+};
+export const deleteBooks= async (req, res) => {
+   const taskId = req.params.taskId;
+  try {
+    const updatedBooks =await Books.destroy({
+      where: {
+        id: taskId
+      },
+    });
+      res.json({ message: "Eliminado con Exito"});
+  } catch (error) {
+    res.status(500).json({
+      message: error.message,
+    });
+  }
+};
+export const getAllBooks = async (req, res) => {
+  const professionals = await Books.findAll();
+  res.json(professionals);
+};
+
+
+
+
+
+
+
+

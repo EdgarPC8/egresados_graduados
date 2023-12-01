@@ -285,14 +285,14 @@ function ResumeForm() {
       </Container>
       <Container py={2} maxW={"container.xl"} fontSize={"container.sm"}>
         <Accordion allowToggle>
-          <FormBooks />
           <FormAcademicTraining />
+          <FormTeaching />
           <FormCourses />
           <FormIntellectualProduction />
+          <FormBooks />
+          <FormProfessionalMerits />
           <FormLanguages />
           <FormProfessionalExperience />
-          <FormProfessionalMerits />
-          <FormTeaching />
         </Accordion>
       </Container>
     </Box>

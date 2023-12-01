@@ -19,23 +19,94 @@ import {
   AccordionIcon,
   AccordionButton,
 } from "@chakra-ui/react";
-import { addBooks } from "../api/cvRequest";
-
+import { useEffect, useState, useRef } from "react";
+import { addBooks, getAllBooks, editBooks, deleteBooks } from "../api/cvRequest";
+import DataTable from "../components/DataTables";
+import Modal from "../components/AlertDialog";
 function FormBooks() {
+  const [datosBooks, setDatosBooks] = useState([]);
+  const [editing, setEditing] = useState(false);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const form = useRef(null);
+
+  const [buttonSubmit, setbuttonSubmit] = useState("Guardar");
+
+  const [id, setId] = useState(false);
+  const [tittle, setTittle] = useState("");
+  const [type, setType] = useState("");
+  const [type_authorship, setType_authorship] = useState("");
+  const [isb_n, setIsb_n] = useState("");
+  const [editoral_name, setEditoral_name] = useState("");
+  const [editoral_origin, setEditoral_origin] = useState("");
+  const [year, setYear] = useState("");
+
+  function clear() {
+    setEditing(false);
+    setId(false)
+    setTittle("")
+    setType("")
+    setType_authorship("")
+    setIsb_n("")
+    setEditoral_name("")
+    setEditoral_origin("")
+    setYear("")
+    setbuttonSubmit("Guardar")
+  }
+  async function fetchData() {
+    try {
+      const { data } = await getAllBooks();
+      setDatosBooks(data)
+    } catch (error) {
+      console.error('Error al obtener datos académicos:', error);
+    }
+  }
   const handleSubmit = async (event) => {
     event.preventDefault();
-    const dataForm = Object.fromEntries(new FormData(event.target));
-
+    const formData = Object.fromEntries(new FormData(event.target));
     try {
-      const { data } = addBooks(dataForm);
-      console.log(data);
+      if (editing) {
+        const { data } = await editBooks({ columns: formData, where: { where: { id: id } } });
+        fetchData()
+      } else {
+        const { data } = await addBooks(formData); // assuming addBooks is an asynchronous function
+        setDatosBooks([...datosBooks, formData]); // Assuming the returned data is the newly added item
+      }
+      clear()
     } catch (error) {
       console.log(error);
     }
   };
-
+  const handleEditRow = (row, event) => {
+    form.current.scrollIntoView({ behavior: "smooth", block: "start" });
+    setbuttonSubmit("Editar")
+    setEditing(true);
+    setId(row.id)
+    setTittle(row.tittle)
+    setType(row.type)
+    setType_authorship(row.type_authorship)
+    setIsb_n(row.isb_n)
+    setEditoral_name(row.editoral_name)
+    setEditoral_origin(row.editoral_origin)
+    setYear(row.year)
+  };
+  const handleDeleteRow = async (row, event) => {
+    setIsModalOpen(true);
+    setId(row.id)
+  };
+  const handleAcceptDelete = async () => {
+    try {
+      const { data } = await deleteBooks(id);
+      fetchData();
+      clear()
+    } catch (error) {
+      console.log(error);
+    }
+  };
+  useEffect(() => {
+    fetchData();
+  }, [])
   return (
-    <form onSubmit={handleSubmit}>
+    <form onSubmit={handleSubmit} ref={form}>
       <AccordionItem>
         <h2>
           <AccordionButton>
@@ -58,7 +129,7 @@ function FormBooks() {
                 <Input
                   type="text"
                   placeholder="(Divulgación, Científico)"
-                  name="type"
+                  name="type"value={type} onChange={(e) => setType(e.target.value)}
                 />
               </InputGroup>
             </GridItem>
@@ -68,7 +139,7 @@ function FormBooks() {
                 <Input
                   type="text"
                   placeholder="(Autor, Coautor)"
-                  name="type_authorship"
+                  name="type_authorship"value={type_authorship} onChange={(e) => setType_authorship(e.target.value)}
                 />
               </InputGroup>
             </GridItem>
@@ -78,7 +149,7 @@ function FormBooks() {
                 <Input
                   type="text"
                   placeholder="Nombre de Editorial"
-                  name="editoral_name"
+                  name="editoral_name"value={editoral_name} onChange={(e) => setEditoral_name(e.target.value)}
                 />
               </InputGroup>
             </GridItem>
@@ -88,20 +159,20 @@ function FormBooks() {
                 <Input
                   type="text"
                   placeholder="(Nacional, Internacional)"
-                  name="editoral_origin"
+                  name="editoral_origin"value={editoral_origin} onChange={(e) => setEditoral_origin(e.target.value)}
                 />
               </InputGroup>
             </GridItem>
             <GridItem fontSize={"sm"}>
               <InputGroup>
                 <InputLeftAddon children="Año" />
-                <Input placeholder="Fecha" size="md" type="date" name="year" />
+                <Input placeholder="Fecha" size="md" type="date" name="year"value={year} onChange={(e) => setYear(e.target.value)} />
               </InputGroup>
             </GridItem>
             <GridItem fontSize={"sm"}>
               <InputGroup>
                 <InputLeftAddon children="ISB N." />
-                <Input type="text" placeholder="ISB N." name="isb_n" />
+                <Input type="text" placeholder="ISB N." name="isb_n"value={isb_n} onChange={(e) => setIsb_n(e.target.value)} />
               </InputGroup>
             </GridItem>
           </Grid>
@@ -109,7 +180,7 @@ function FormBooks() {
             <GridItem fontSize={"sm"}>
               <InputGroup>
                 <InputLeftAddon children="Titulo" />
-                <Input type="text" placeholder="Titulo" name="tittle" />
+                <Input type="text" placeholder="Titulo" name="tittle"value={tittle} onChange={(e) => setTittle(e.target.value)} />
               </InputGroup>
             </GridItem>
             <GridItem
@@ -118,54 +189,50 @@ function FormBooks() {
               textAlign={"right"}
             >
               <Button type="submit" mt={4} bg="primary.200" color={"white"}>
-                Guardar
+                {buttonSubmit}
               </Button>
             </GridItem>
           </Grid>
-          <TableContainer mb={4}>
-            <Table size="sm">
-              <Thead>
-                <Tr>
-                  <Th rowSpan={2}>#</Th>
-                  <Th rowSpan={2}>Titulo</Th>
-                  <Th rowSpan={2}>Tipo</Th>
-                  <Th rowSpan={2}>Tipo de Autoria</Th>
-                  <Th rowSpan={2}>ISB N.</Th>
-                  <Th colSpan={2} textAlign={"center"}>
-                    Editorial
-                  </Th>
-                  <Th rowSpan={2}>Año</Th>
-                </Tr>
-                <Tr>
-                  <Th textAlign={"center"}>Nombre</Th>
-                  <Th textAlign={"center"}>Origen</Th>
-                </Tr>
-              </Thead>
-              {/* {datosBooks ? (
-                <Tbody>
-                  {datosBooks.map((item, index) => (
-                    <Tr key={index}>
-                      <Td>{index + 1}</Td>
-                      <Td>{item.tittle}</Td>
-                      <Td>{item.type}</Td>
-                      <Td>{item.type_authorship}</Td>
-                      <Td>{item.isb_n}</Td>
-                      <Td>{item.editoral_name}</Td>
-                      <Td>{item.editoral_origin}</Td>
-                      <Td>{item.year}</Td>
-                    </Tr>
-                  ))}
-                </Tbody>
-              ) : (
-                <Tbody>
-                  <Tr>
-                    <Td colSpan="7">Cargando datos...</Td>
-                  </Tr>
-                </Tbody>
-              )} */}
-              <Tfoot></Tfoot>
-            </Table>
-          </TableContainer>
+          <Modal
+            isOpen={isModalOpen}
+            onClose={() => setIsModalOpen(false)}
+            onAccept={handleAcceptDelete}
+            title="Datos"
+            message="¿Estas Seguro que deseas eliminar?"
+          >
+          </Modal>
+          <DataTable
+            header={[
+              'Titulo',
+              'Tipo',
+              'Tipo de Autoria',
+              'ISB N.',
+              'Nombre Editorial',
+              'Origen Editorial',
+              'Año',
+              'Acción'
+            ]}
+            keyValues={[
+              'tittle',
+              'type',
+              'type_authorship',
+              'isb_n',
+              'editoral_name',
+              'editoral_origin',
+              'year'
+            ]}
+            data={datosBooks}
+            title="Formación Academica"
+            defaultRowsPerPage={5}
+            numberRow={true}
+            buttons={{
+              buttonEdit: true,
+              handleEditRow: handleEditRow,
+              buttonDelete: true,
+              handleDeleteRow: handleDeleteRow
+            }}
+          />
+        
         </AccordionPanel>
       </AccordionItem>
     </form>

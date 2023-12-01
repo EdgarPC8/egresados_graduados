@@ -19,10 +19,96 @@ import {
   AccordionIcon,
   AccordionButton,
 } from "@chakra-ui/react";
+import { useEffect,useState,useRef } from "react";
+import { addTeachingExperience, getAllTeachingExperience,editTeachingExperience,deleteTeachingExperience } from "../api/cvRequest";
+import DataTable from "../components/DataTables";
+import Modal from "../components/AlertDialog";
 
 function FormTeaching() {
+  const [datosTeachingExperience, setDatosTeachingExperience] = useState([]);
+  const [editing, setEditing] = useState(false);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const form = useRef(null);
+
+  const [buttonSubmit, setbuttonSubmit] = useState("Guardar");
+
+  const [id, setId] = useState(false);
+  const [educational_institution, setEducational_institution] = useState("");
+  const [subject, setSubject] = useState("");
+  const [start_date, setStart_date] = useState("");
+  const [end_date, setEnd_date] = useState("");
+  const [modality, setModality] = useState("");
+  const [place, setPlace] = useState("");
+  const [country, setCountry] = useState("");
+
+  function clear(){
+      setEditing(false);
+      setId(false)
+      setEducational_institution("")
+      setSubject("")
+      setStart_date("")
+      setEnd_date("")
+      setModality("")
+      setPlace("")
+      setCountry("")
+      setbuttonSubmit("Guardar")
+  }
+  async function fetchData() {
+    try {
+      const { data } = await getAllTeachingExperience();
+      setDatosTeachingExperience(data)
+    } catch (error) {
+      console.error('Error al obtener datos académicos:', error);
+    }
+  }
+  const handleSubmit = async (event) => {
+    event.preventDefault();
+    const formData = Object.fromEntries(new FormData(event.target));
+    try {
+      if (editing) {
+        const { data } = await editTeachingExperience({columns:formData,where:{where:{id:id}}}); 
+        fetchData()
+      } else {
+        const { data } = await addTeachingExperience(formData); // assuming addTeachingExperience is an asynchronous function
+        setDatosTeachingExperience([...datosTeachingExperience, formData]); // Assuming the returned data is the newly added item
+      }
+      clear()
+    } catch (error) {
+      console.log(error);
+    }
+  };
+  const handleEditRow = (row, event) => {
+    form.current.scrollIntoView({ behavior: "smooth", block: "start" });
+    setbuttonSubmit("Editar")
+    setEditing(true);
+    setId(row.id)
+    setEducational_institution(row.educational_institution)
+    setSubject(row.subject)
+    setStart_date(row.start_date)
+    setEnd_date(row.end_date)
+    setModality(row.modality)
+    setPlace(row.place)
+    setCountry(row.country)
+  };
+  const handleDeleteRow = async (row,event) => {
+    setIsModalOpen(true);
+    setId(row.id)
+  };
+  const handleAcceptDelete = async () => {
+    try {
+      const { data } = await deleteTeachingExperience(id);
+      fetchData();
+      clear()
+    } catch (error) {
+      console.log(error);
+    }
+  };
+  useEffect(() => {
+    fetchData();
+  }, [])
+
   return (
-    <form>
+    <form onSubmit={handleSubmit} ref={form}>
       <AccordionItem>
         <h2>
           <AccordionButton>
@@ -47,7 +133,7 @@ function FormTeaching() {
                   size="md"
                   type="date"
                   required
-                  name="start_date"
+                  name="start_date"value={start_date} onChange={(e) => setStart_date(e.target.value)}
                 />
               </InputGroup>
             </GridItem>
@@ -59,20 +145,20 @@ function FormTeaching() {
                   size="md"
                   type="date"
                   required
-                  name="end_date"
+                  name="end_date"value={end_date} onChange={(e) => setEnd_date(e.target.value)}
                 />
               </InputGroup>
             </GridItem>
             <GridItem fontSize={"sm"}>
               <InputGroup>
                 <InputLeftAddon children="Lugar" />
-                <Input type="text" placeholder="Lugar" name="place" />
+                <Input type="text" placeholder="Lugar" name="place"value={place} onChange={(e) => setPlace(e.target.value)} />
               </InputGroup>
             </GridItem>
             <GridItem fontSize={"sm"}>
               <InputGroup>
                 <InputLeftAddon children="País" />
-                <Input type="text" placeholder="País" name="country" />
+                <Input type="text" placeholder="País" name="country"value={country} onChange={(e) => setCountry(e.target.value)} />
               </InputGroup>
             </GridItem>
             <GridItem fontSize={"sm"}>
@@ -82,14 +168,14 @@ function FormTeaching() {
                   type="text"
                   placeholder="Materia/Componente Educativo"
                   required
-                  name="subject"
+                  name="subject"value={subject} onChange={(e) => setSubject(e.target.value)}
                 />
               </InputGroup>
             </GridItem>
             <GridItem fontSize={"sm"}>
               <InputGroup>
                 <InputLeftAddon children="Modalidad" />
-                <Input type="text" placeholder="Modalidad" name="modality" />
+                <Input type="text" placeholder="Modalidad" name="modality"value={modality} onChange={(e) => setModality(e.target.value)} />
               </InputGroup>
             </GridItem>
           </Grid>
@@ -101,7 +187,7 @@ function FormTeaching() {
                   type="text"
                   placeholder="Institución Educativa"
                   required
-                  name="educational_institution"
+                  name="educational_institution"value={educational_institution} onChange={(e) => setEducational_institution(e.target.value)}
                 />
               </InputGroup>
             </GridItem>
@@ -111,74 +197,49 @@ function FormTeaching() {
               textAlign={"right"}
             >
               <Button type="submit" mt={4} bg="primary.200" color={"white"}>
-                Guardar
+                {buttonSubmit}
               </Button>
             </GridItem>
           </Grid>
-
-          <TableContainer mb={4}>
-            <Table size="sm">
-              <Thead>
-                <Tr>
-                  <Th>#</Th>
-                  <Th>Institución Educativa</Th>
-                  <Th>Materia/Componente Educativo</Th>
-                  <Th>Fecha Inicio</Th>
-                  <Th>Fecha Fin</Th>
-                  <Th>Modalidad</Th>
-                  <Th>Lugar</Th>
-                  <Th>País</Th>
-                </Tr>
-              </Thead>
-              {/* {datosTeaching_experience ? (
-                <Tbody>
-                  {datosTeaching_experience.map((item, index) => (
-                    <Tr key={index}>
-                      <Td>{index + 1}</Td>
-                      <Td>{item.educational_institution}</Td>
-                      <Td>{item.subject}</Td>
-                      <Td>{reorderDate(item.start_date)}</Td>
-                      <Td>{reorderDate(item.end_date)}</Td>
-                      <Td>{item.modality}</Td>
-                      <Td>{item.place}</Td>
-                      <Td>{item.country}</Td>
-                      <Td>
-                        <Button
-                          type="button"
-                          mt={4}
-                          bg="yellow"
-                          _hover={{ bg: "yellow.300" }}
-                          color={"white"}
-                          onClick={(event) => handleEditClick(item, event)} // Maneja el clic en el botón de editar
-                          data-form-id="formTeaching_experience"
-                        >
-                          <EditIcon />
-                        </Button>
-
-                        <Button
-                          type="button"
-                          mt={4}
-                          bg="red"
-                          _hover={{ bg: "red.600" }}
-                          color={"white"}
-                          onClick={(event) => handleDeleteClick(item.id, event)}
-                        >
-                          <DeleteIcon />
-                        </Button>
-                      </Td>
-                    </Tr>
-                  ))}
-                </Tbody>
-              ) : (
-                <Tbody>
-                  <Tr>
-                    <Td colSpan="7">Cargando datos...</Td>
-                  </Tr>
-                </Tbody>
-              )} */}
-              <Tfoot></Tfoot>
-            </Table>
-          </TableContainer>
+          <Modal
+            isOpen={isModalOpen}
+            onClose={() => setIsModalOpen(false)}
+            onAccept={handleAcceptDelete}
+            title="Datos"
+            message="¿Estas Seguro que deseas eliminar?"
+          >
+          </Modal>
+          <DataTable
+            header={[
+              'Institución',
+              'Materia',
+              'Fecha',
+              'Fecha',
+              'Modalidad',
+              'Lugar',
+              'País',
+              'Acción'
+            ]}
+            keyValues={[
+              'educational_institution',
+              'subject',
+              'start_date',
+              'end_date',
+              'modality',
+              'place',
+              'country'
+            ]}
+            data={datosTeachingExperience}
+            title="Experiencia Docente"
+            defaultRowsPerPage={5}
+            numberRow={true}
+            buttons={{
+              buttonEdit: true,
+              handleEditRow: handleEditRow,
+              buttonDelete: true,
+              handleDeleteRow: handleDeleteRow
+            }}
+          />
         </AccordionPanel>
       </AccordionItem>
     </form>

@@ -31,12 +31,92 @@ import {
   FormControl,
 } from "@chakra-ui/react";
 
+import { useEffect, useState, useRef } from "react";
+import { addLanguages, getAllLanguages, editLanguages, deleteLanguages } from "../api/cvRequest";
+import DataTable from "../components/DataTables";
+import Modal from "../components/AlertDialog";
+
 function FormLanguages() {
+  const [datosLanguages, setDatosLanguages] = useState([]);
+  const [editing, setEditing] = useState(false);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const form = useRef(null);
+
+  const [buttonSubmit, setbuttonSubmit] = useState("Guardar");
+
+  const [id, setId] = useState(false);
+  const [name, setName] = useState("");
+  const [speaking_level, setSpeaking_level] = useState("");
+  const [writing_level, setWriting_level] = useState("");
+  const [comprehension_level, setComprehension_level] = useState("");
+  const [type_certification, setType_certification] = useState("");
+
+  function clear() {
+    setEditing(false);
+    setId(false)
+    setName("")
+    setSpeaking_level("")
+    setWriting_level("")
+    setComprehension_level("")
+    setType_certification("")
+    setbuttonSubmit("Guardar")
+  }
+  async function fetchData() {
+    try {
+      const { data } = await getAllLanguages();
+      setDatosLanguages(data)
+    } catch (error) {
+      console.error('Error al obtener datos académicos:', error);
+    }
+  }
+  const handleSubmit = async (event) => {
+    event.preventDefault();
+    const formData = Object.fromEntries(new FormData(event.target));
+    try {
+      if (editing) {
+        const { data } = await editLanguages({ columns: formData, where: { where: { id: id } } });
+        fetchData()
+      } else {
+        const { data } = await addLanguages(formData); // assuming addLanguages is an asynchronous function
+        setDatosLanguages([...datosLanguages, formData]); // Assuming the returned data is the newly added item
+      }
+      clear()
+    } catch (error) {
+      console.log(error);
+    }
+  };
+  const handleEditRow = (row, event) => {
+    form.current.scrollIntoView({ behavior: "smooth", block: "start" });
+    setbuttonSubmit("Editar")
+    setEditing(true);
+    setId(row.id)
+    setName(row.name)
+    setSpeaking_level(row.speaking_level)
+    setWriting_level(row.writing_level)
+    setComprehension_level(row.comprehension_level)
+    setType_certification(row.type_certification)
+  };
+  const handleDeleteRow = async (row, event) => {
+    setIsModalOpen(true);
+    setId(row.id)
+  };
+  const handleAcceptDelete = async () => {
+    try {
+      const { data } = await deleteLanguages(id);
+      fetchData();
+      clear()
+    } catch (error) {
+      console.log(error);
+    }
+  };
+  useEffect(() => {
+    fetchData();
+  }, [])
   
 
 
   return (
-    <form>
+    <form onSubmit={handleSubmit} ref={form}>
       <AccordionItem>
         <h2>
           <AccordionButton>
@@ -54,7 +134,7 @@ function FormLanguages() {
                 <Input
                   type="text"
                   placeholder="Diferente al Nativo"
-                  name="name"
+                  name="name"value={name} onChange={(e) => setName(e.target.value)}
                 />
               </InputGroup>
             </GridItem>
@@ -64,7 +144,7 @@ function FormLanguages() {
                 <Input
                   type="text"
                   placeholder="(TOEPI, TOEIC, CPE, IELTS, PET, Otro)"
-                  name="type_certification"
+                  name="type_certification"value={type_certification} onChange={(e) => setType_certification(e.target.value)}
                 />
               </InputGroup>
             </GridItem>
@@ -77,9 +157,8 @@ function FormLanguages() {
                   <InputGroup mt={3}>
                     <InputLeftAddon w={150} children="Hablado" />
                     <RadioGroup
-                      defaultValue=""
                       m={"auto"}
-                      name="speaking_level"
+                      name="speaking_level"value={speaking_level} onChange={setSpeaking_level}
                     >
                       <Stack spacing={5} direction="row">
                         <Radio colorScheme="green" value="">
@@ -99,7 +178,7 @@ function FormLanguages() {
                   </InputGroup>
                   <InputGroup mt={3}>
                     <InputLeftAddon w={150} children="Escritura" />
-                    <RadioGroup defaultValue="" m={"auto"} name="writing_level">
+                    <RadioGroup m={"auto"} name="writing_level"value={writing_level} onChange={setWriting_level}>
                       <Stack spacing={5} direction="row">
                         <Radio colorScheme="green" value="">
                           Ninguno
@@ -119,9 +198,8 @@ function FormLanguages() {
                   <InputGroup mt={3}>
                     <InputLeftAddon w={150} children="Comprensión" />
                     <RadioGroup
-                      defaultValue=""
                       m={"auto"}
-                      name="comprehension_level"
+                      name="comprehension_level"value={comprehension_level} onChange={setComprehension_level}
                     >
                       <Stack spacing={5} direction="row">
                         <Radio colorScheme="green" value="">
@@ -148,61 +226,45 @@ function FormLanguages() {
               textAlign={"right"}
             >
               <Button type="submit" mt={4} bg="primary.200" color={"white"}>
-                Guardar
+                {buttonSubmit}
               </Button>
             </GridItem>
           </Grid>
-          <TableContainer mb={4}>
-            <Table size="sm">
-              <Thead>
-                <Tr>
-                  <Th rowSpan={3} colSpan={1}>
-                    #
-                  </Th>
-                  <Th rowSpan={3} colSpan={1}>
-                    Idioma (Diferente al nativo)
-                  </Th>
-                  <Th colSpan={3} textAlign="center">
-                    Nivel de dominio
-                  </Th>
-                  <Th rowSpan={3} colSpan={0}>
-                    Tipo de Certificación
-                  </Th>
-                </Tr>
-                <Tr>
-                  <Th textAlign="center">Hablado</Th>
-                  <Th textAlign="center">Escritura</Th>
-                  <Th textAlign="center">Comprensión</Th>
-                </Tr>
-                <Tr>
-                  <Th textAlign="center">Básico/Medio/Alto</Th>
-                  <Th textAlign="center">Básico/Medio/Alto</Th>
-                  <Th textAlign="center">Básico/Medio/Alto</Th>
-                </Tr>
-              </Thead>
-              {/* {datosLanguages ? (
-                <Tbody>
-                  {datosLanguages.map((item, index) => (
-                    <Tr key={index}>
-                      <Td>{index + 1}</Td>
-                      <Td>{item.name}</Td>
-                      <Td textAlign="center">{item.speaking_level}</Td>
-                      <Td textAlign="center">{item.writing_level}</Td>
-                      <Td textAlign="center">{item.comprehension_level}</Td>
-                      <Td textAlign="center">{item.type_certification}</Td>
-                    </Tr>
-                  ))}
-                </Tbody>
-              ) : (
-                <Tbody>
-                  <Tr>
-                    <Td colSpan="7">Cargando datos...</Td>
-                  </Tr>
-                </Tbody>
-              )} */}
-              <Tfoot></Tfoot>
-            </Table>
-          </TableContainer>
+          <Modal
+            isOpen={isModalOpen}
+            onClose={() => setIsModalOpen(false)}
+            onAccept={handleAcceptDelete}
+            title="Datos"
+            message="¿Estas Seguro que deseas eliminar?"
+          >
+          </Modal>
+          <DataTable
+            header={[
+              'Idioma (Diferente al nativo)',
+              'Hablado Básico/Medio/Alto',
+              'Escritura Básico/Medio/Alto',
+              'Comprensión Básico/Medio/Alto',
+              'Tipo de Certificación',
+              'Acción'
+            ]}
+            keyValues={[
+              'name',
+              'speaking_level',
+              'writing_level',
+              'comprehension_level',
+              'type_certification',
+            ]}
+            data={datosLanguages}
+            title="Idiomas"
+            defaultRowsPerPage={5}
+            numberRow={true}
+            buttons={{
+              buttonEdit: true,
+              handleEditRow: handleEditRow,
+              buttonDelete: true,
+              handleDeleteRow: handleDeleteRow
+            }}
+          />
         </AccordionPanel>
       </AccordionItem>
     </form>

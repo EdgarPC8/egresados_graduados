@@ -1,6 +1,4 @@
 
-  // const formId = clickedButton.getAttribute('data-form-id');
-  // const form = document.getElementById(formId);
   export const putFormEditElementsInputs = (item,event) => {
     const form = event.currentTarget.closest("form");
     let IdEdit=null;
@@ -16,7 +14,7 @@
        if (element.type === 'date' ||element.type === 'text') {
         element.value = item[key];
       } 
-      if (element.tagName.toLowerCase() === 'select') {
+      if (element.tagName === 'SELECT') {
         // Buscar la opción con el valor correspondiente y marcarla como seleccionada
         for (let i = 0; i < element.options.length; i++) {
           if (element.options[i].value === item[key]) {
@@ -24,6 +22,18 @@
           }
         }
       }
+      if(typeof element[0] === 'object'){
+        console.log("-----------")
+        console.log(item[key])
+        element.forEach(valor => {
+          if(item[key]==valor.value){
+            console.log(valor.parentNode.parentNode.parentNode.defaultValue="Asistente")
+            // element.value="dede"
+          }
+          
+        });
+      }
+
       }else{
         if(!isNaN(item[key]) && parseInt(Number(item[key])) == item[key] && !isNaN(parseInt(item[key], 10))){
           IdEdit=item[key]

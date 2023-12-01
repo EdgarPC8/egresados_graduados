@@ -20,9 +20,98 @@ import {
   AccordionButton,
 } from "@chakra-ui/react";
 
+import { useEffect, useState, useRef } from "react";
+import { addProfessionalExperience, getAllProfessionalExperience, editProfessionalExperience, deleteProfessionalExperience } from "../api/cvRequest";
+import DataTable from "../components/DataTables";
+import Modal from "../components/AlertDialog";
+
 function FormProfessionalExperience() {
+  const [datosProfessionalExperience, setDatosProfessionalExperience] = useState([]);
+  const [editing, setEditing] = useState(false);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const form = useRef(null);
+
+  const [buttonSubmit, setbuttonSubmit] = useState("Guardar");
+
+  const [id, setId] = useState(false);
+  const [nro, setNro] = useState("");
+  const [company_institution, setCompany_institution] = useState("");
+  const [position, setPosition] = useState("");
+  const [responsibilities, setResponsibilities] = useState("");
+  const [immediate_head, setImmediate_head] = useState("");
+  const [telephone, setTelephone] = useState("");
+  const [start_date, setStart_date] = useState("");
+  const [end_date, setEnd_date] = useState("");
+
+  function clear() {
+    setEditing(false);
+    setId(false)
+    setNro("")
+    setCompany_institution("")
+    setPosition("")
+    setResponsibilities("")
+    setImmediate_head("")
+    setTelephone("")
+    setStart_date("")
+    setEnd_date("")
+    setbuttonSubmit("Guardar")
+  }
+  async function fetchData() {
+    try {
+      const { data } = await getAllProfessionalExperience();
+      setDatosProfessionalExperience(data)
+    } catch (error) {
+      console.error('Error al obtener datos académicos:', error);
+    }
+  }
+  const handleSubmit = async (event) => {
+    event.preventDefault();
+    const formData = Object.fromEntries(new FormData(event.target));
+    try {
+      if (editing) {
+        const { data } = await editProfessionalExperience({ columns: formData, where: { where: { id: id } } });
+        fetchData()
+      } else {
+        const { data } = await addProfessionalExperience(formData); // assuming addProfessionalExperience is an asynchronous function
+        setDatosProfessionalExperience([...datosProfessionalExperience, formData]); // Assuming the returned data is the newly added item
+      }
+      clear()
+    } catch (error) {
+      console.log(error);
+    }
+  };
+  const handleEditRow = (row, event) => {
+    form.current.scrollIntoView({ behavior: "smooth", block: "start" });
+    setbuttonSubmit("Editar")
+    setEditing(true);
+    setId(row.id)
+    setNro(row.nro)
+    setCompany_institution(row.company_institution)
+    setPosition(row.position)
+    setResponsibilities(row.responsibilities)
+    setImmediate_head(row.immediate_head)
+    setTelephone(row.telephone)
+    setStart_date(row.start_date)
+    setEnd_date(row.end_date)
+  };
+  const handleDeleteRow = async (row, event) => {
+    setIsModalOpen(true);
+    setId(row.id)
+  };
+  const handleAcceptDelete = async () => {
+    try {
+      const { data } = await deleteProfessionalExperience(id);
+      fetchData();
+      clear()
+    } catch (error) {
+      console.log(error);
+    }
+  };
+  useEffect(() => {
+    fetchData();
+  }, [])
   return (
-    <form>
+    <form onSubmit={handleSubmit} ref={form}>
       <AccordionItem>
         <h2>
           <AccordionButton>
@@ -46,7 +135,7 @@ function FormProfessionalExperience() {
                   placeholder="Fecha"
                   size="md"
                   type="date"
-                  name="start_date"
+                  name="start_date"value={start_date} onChange={(e) => setStart_date(e.target.value)}
                 />
               </InputGroup>
             </GridItem>
@@ -57,20 +146,20 @@ function FormProfessionalExperience() {
                   placeholder="Fecha"
                   size="md"
                   type="date"
-                  name="end_date"
+                  name="end_date"value={end_date} onChange={(e) => setEnd_date(e.target.value)}
                 />
               </InputGroup>
             </GridItem>
             <GridItem fontSize={"sm"}>
               <InputGroup>
                 <InputLeftAddon children="Cargo" />
-                <Input type="text" placeholder="Cargo" name="position" />
+                <Input type="text" placeholder="Cargo" name="position"value={position} onChange={(e) => setPosition(e.target.value)} />
               </InputGroup>
             </GridItem>
             <GridItem fontSize={"sm"}>
               <InputGroup>
                 <InputLeftAddon children="Teléfono" />
-                <Input type="text" placeholder="Teléfono" name="telephone" />
+                <Input type="text" placeholder="Teléfono" name="telephone"value={telephone} onChange={(e) => setTelephone(e.target.value)} />
               </InputGroup>
             </GridItem>
             <GridItem fontSize={"sm"}>
@@ -79,7 +168,7 @@ function FormProfessionalExperience() {
                 <Input
                   type="text"
                   placeholder="Jefe Inmediato"
-                  name="immediate_head"
+                  name="immediate_head"value={immediate_head} onChange={(e) => setImmediate_head(e.target.value)}
                 />
               </InputGroup>
             </GridItem>
@@ -89,7 +178,7 @@ function FormProfessionalExperience() {
                 <Input
                   type="text"
                   placeholder="Responsabiliades y/o Actividades"
-                  name="responsibilities"
+                  name="responsibilities"value={responsibilities} onChange={(e) => setResponsibilities(e.target.value)}
                 />
               </InputGroup>
             </GridItem>
@@ -101,7 +190,7 @@ function FormProfessionalExperience() {
                 <Input
                   type="text"
                   placeholder="Comience por la ultima"
-                  name="company_institution"
+                  name="company_institution"value={company_institution} onChange={(e) => setCompany_institution(e.target.value)}
                 />
               </InputGroup>
             </GridItem>
@@ -111,51 +200,51 @@ function FormProfessionalExperience() {
               textAlign={"right"}
             >
               <Button type="submit" mt={4} bg="primary.200" color={"white"}>
-                Guardar
+                {buttonSubmit}
               </Button>
             </GridItem>
           </Grid>
-          <TableContainer mb={4}>
-            <Table size="sm">
-              <Thead>
-                <Tr>
-                  <Th>#</Th>
-                  <Th>Nro.</Th>
-                  <Th>Empresa/Institución</Th>
-                  <Th>Cargo</Th>
-                  <Th>Responsabilidades y/o Actividades</Th>
-                  <Th>Jefe Inmediato</Th>
-                  <Th>Teléfono</Th>
-                  <Th>Fecha Inicio</Th>
-                  <Th>Fecha Fin</Th>
-                </Tr>
-              </Thead>
-              {/* {datosProfessional_experience ? (
-                <Tbody>
-                  {datosProfessional_experience.map((item, index) => (
-                    <Tr key={index}>
-                      <Td>{index + 1}</Td>
-                      <Td>{item.nro}</Td>
-                      <Td>{item.company_institution}</Td>
-                      <Td>{item.position}</Td>
-                      <Td>{item.responsibilities}</Td>
-                      <Td>{item.immediate_head}</Td>
-                      <Td>{item.telephone}</Td>
-                      <Td>{reorderDate(item.start_date)}</Td>
-                      <Td>{reorderDate(item.end_date)}</Td>
-                    </Tr>
-                  ))}
-                </Tbody>
-              ) : (
-                <Tbody>
-                  <Tr>
-                    <Td colSpan="7">Cargando datos...</Td>
-                  </Tr>
-                </Tbody>
-              )} */}
-              <Tfoot></Tfoot>
-            </Table>
-          </TableContainer>
+          <Modal
+            isOpen={isModalOpen}
+            onClose={() => setIsModalOpen(false)}
+            onAccept={handleAcceptDelete}
+            title="Datos"
+            message="¿Estas Seguro que deseas eliminar?"
+          >
+          </Modal>
+          <DataTable
+            header={[
+              'Nro.',
+              'Empresa/Institución',
+              'Cargo',
+              'Responsabilidades y/o Actividades',
+              'Jefe Inmediato',
+              'Teléfono',
+              'Fecha Inicio',
+              'Fecha Fin',
+              'Acción'
+            ]}
+            keyValues={[
+              'nro',
+              'company_institution',
+              'position',
+              'responsibilities',
+              'immediate_head',
+              'telephone',
+              'start_date',
+              'end_date'
+            ]}
+            data={datosProfessionalExperience}
+            title="Formación Academica"
+            defaultRowsPerPage={5}
+            numberRow={true}
+            buttons={{
+              buttonEdit: true,
+              handleEditRow: handleEditRow,
+              buttonDelete: true,
+              handleDeleteRow: handleDeleteRow
+            }}
+          />
         </AccordionPanel>
       </AccordionItem>
     </form>

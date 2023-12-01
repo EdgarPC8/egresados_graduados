@@ -1,45 +1,51 @@
 import {
-  ChakraProvider,
   Box,
-  Heading,
   Input,
-  Container,
   Grid,
   GridItem,
   InputLeftAddon,
   InputGroup,
   Select,
   Button,
-  TableContainer,
-  Table,
-  Th,
-  Td,
-  Tr,
-  Thead,
-  Tbody,
-  Tfoot,
-  Textarea,
-  Accordion,
   AccordionItem,
   AccordionPanel,
   AccordionIcon,
   AccordionButton,
-  RadioGroup,
-  Stack,
-  Radio,
-  Flex,
-  FormControl,
 } from "@chakra-ui/react";
-import { useEffect } from "react";
-import { useState } from "react";
-import { addAcademicTraining, getAllAcademicTraining,editAcademicTraining } from "../api/cvRequest";
+import { useEffect, useState, useRef } from "react";
+import { addAcademicTraining, getAllAcademicTraining, editAcademicTraining, deleteAcademicTraining } from "../api/cvRequest";
 import DataTable from "../components/DataTables";
-import { putFormEditElementsInputs } from "../helpers/editForm.js";
+import Modal from "../components/AlertDialog";
 
 function FormAcademicTraining() {
   const [datosAcademicTraining, setDatosAcademicTraining] = useState([]);
   const [editing, setEditing] = useState(false);
-  const [idEdit, setIdEdit] = useState(false);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const form = useRef(null);
+
+  const [buttonSubmit, setbuttonSubmit] = useState("Guardar");
+
+  const [id, setId] = useState(false);
+  const [type, setType] = useState("");
+  const [date, setDate] = useState("");
+  const [place, setPlace] = useState("");
+  const [country, setCountry] = useState("");
+  const [obtained_tittle, setObtained_tittle] = useState("");
+  const [educational_institution, setEducational_institution] = useState("");
+  const [senescyt_registration_n, setSenescyt_registration_n] = useState("");
+
+  function clear() {
+    setEditing(false);
+    setId(false)
+    setType("")
+    setDate("")
+    setPlace("")
+    setCountry("")
+    setObtained_tittle("")
+    setEducational_institution("")
+    setSenescyt_registration_n("")
+    setbuttonSubmit("Guardar")
+  }
   async function fetchData() {
     try {
       const { data } = await getAllAcademicTraining();
@@ -53,41 +59,48 @@ function FormAcademicTraining() {
     const formData = Object.fromEntries(new FormData(event.target));
     try {
       if (editing) {
-        // event.currentTarget.closest("form")?event.currentTarget.closest("form").querySelector('button[type="submit"]').innerText="Guardar":null;
-        const form = event.currentTarget.closest("form");
-        if (form) {
-          const submitButton = form.querySelector('button[type="submit"]');
-          submitButton?submitButton.innerText="Guardar":null;
-        }
-        const { data } = await editAcademicTraining({columns:formData,where:{where:{id:idEdit}}}); 
+        const { data } = await editAcademicTraining({ columns: formData, where: { where: { id: id } } });
         fetchData()
       } else {
         const { data } = await addAcademicTraining(formData); // assuming addAcademicTraining is an asynchronous function
         setDatosAcademicTraining([...datosAcademicTraining, formData]); // Assuming the returned data is the newly added item
       }
-      setEditing(false);
-      event.target.reset(); // Reiniciar el formulario
-
+      clear()
     } catch (error) {
       console.log(error);
     }
   };
-
-
-  // Función para editar una fila
   const handleEditRow = (row, event) => {
-    setIdEdit(putFormEditElementsInputs(row, event))
+    form.current.scrollIntoView({ behavior: "smooth", block: "start" });
+    setbuttonSubmit("Editar")
     setEditing(true);
+    setId(row.id)
+    setType(row.type)
+    setDate(row.date)
+    setPlace(row.place)
+    setCountry(row.country)
+    setObtained_tittle(row.obtained_tittle)
+    setEducational_institution(row.educational_institution)
+    setSenescyt_registration_n(row.senescyt_registration_n)
   };
-  // Función para eliminar una fila
-  const handleDeleteRow = (row) => {
-    console.log(`Eliminando la fila con tipo ${row.type}`);
+  const handleDeleteRow = async (row, event) => {
+    setIsModalOpen(true);
+    setId(row.id)
+  };
+  const handleAcceptDelete = async () => {
+    try {
+      const { data } = await deleteAcademicTraining(id);
+      fetchData();
+      clear()
+    } catch (error) {
+      console.log(error);
+    }
   };
   useEffect(() => {
     fetchData();
   }, [])
   return (
-    <form onSubmit={handleSubmit}>
+    <form onSubmit={handleSubmit} ref={form}>
       <AccordionItem>
         <h2>
           <AccordionButton>
@@ -98,7 +111,6 @@ function FormAcademicTraining() {
           </AccordionButton>
         </h2>
         <AccordionPanel pb={4}>
-
           <Grid
             gap={2}
             mt={2}
@@ -108,7 +120,7 @@ function FormAcademicTraining() {
             <GridItem fontSize={"sm"}>
               <InputGroup>
                 <InputLeftAddon children="Tipo" />
-                <Select placeholder="Seleccione una opción" name="type">
+                <Select placeholder="Seleccione una opción" name="type" value={type} onChange={(e) => setType(e.target.value)} >
                   <option value="Secundaria">Secundaria</option>
                   <option value="Tercer Nivel">Tercer Nivel</option>
                   <option value="Cuarto Nivel">Cuarto Nivel</option>
@@ -123,6 +135,7 @@ function FormAcademicTraining() {
                   size="md"
                   type="date"
                   name="date"
+                  value={date} onChange={(e) => setDate(e.target.value)}
                   required
                 />
               </InputGroup>
@@ -130,13 +143,13 @@ function FormAcademicTraining() {
             <GridItem fontSize={"sm"}>
               <InputGroup>
                 <InputLeftAddon children="Lugar" />
-                <Input type="text" placeholder="Lugar" name="place" />
+                <Input type="text" placeholder="Lugar" name="place" value={place} onChange={(e) => setPlace(e.target.value)} />
               </InputGroup>
             </GridItem>
             <GridItem fontSize={"sm"}>
               <InputGroup>
                 <InputLeftAddon children="País" />
-                <Input type="text" placeholder="País" name="country" />
+                <Input type="text" placeholder="País" name="country" value={country} onChange={(e) => setCountry(e.target.value)} />
               </InputGroup>
             </GridItem>
           </Grid>
@@ -149,6 +162,7 @@ function FormAcademicTraining() {
                   type="text"
                   placeholder="Título Obtenido"
                   name="obtained_tittle"
+                  value={obtained_tittle} onChange={(e) => setObtained_tittle(e.target.value)}
                   required
                 />
               </InputGroup>
@@ -160,6 +174,7 @@ function FormAcademicTraining() {
                   type="text"
                   placeholder="Institución Educativa"
                   name="educational_institution"
+                  value={educational_institution} onChange={(e) => setEducational_institution(e.target.value)}
                   required
                 />
               </InputGroup>
@@ -171,6 +186,7 @@ function FormAcademicTraining() {
                   type="text"
                   placeholder="Nro. de registro SENESCYT"
                   name="senescyt_registration_n"
+                  value={senescyt_registration_n} onChange={(e) => setSenescyt_registration_n(e.target.value)}
                 />
               </InputGroup>
             </GridItem>
@@ -187,10 +203,18 @@ function FormAcademicTraining() {
                 _hover={{ bg: "primary.100" }}
                 data-purpose="create"
               >
-                Guardar
+                {buttonSubmit}
               </Button>
             </GridItem>
           </Grid>
+          <Modal
+            isOpen={isModalOpen}
+            onClose={() => setIsModalOpen(false)}
+            onAccept={handleAcceptDelete}
+            title="Datos"
+            message="¿Estas Seguro que deseas eliminar?"
+          >
+          </Modal>
           <DataTable
             header={[
               'Tipo',

@@ -20,10 +20,92 @@ import {
   AccordionIcon,
   AccordionButton,
 } from "@chakra-ui/react";
+import { useEffect, useState, useRef } from "react";
+import { addAcademicProfessionalMerits, getAllAcademicProfessionalMerits, editAcademicProfessionalMerits, deleteAcademicProfessionalMerits } from "../api/cvRequest";
+import DataTable from "../components/DataTables";
+import Modal from "../components/AlertDialog";
 
 function FormProfessionalMerits() {
+  const [datosAcademicProfessionalMerits, setDatosAcademicProfessionalMerits] = useState([]);
+  const [editing, setEditing] = useState(false);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const form = useRef(null);
+
+  const [buttonSubmit, setbuttonSubmit] = useState("Guardar");
+
+  const [id, setId] = useState(false);
+  const [name, setName] = useState("");
+  const [date, setDate] = useState("");
+  const [type, setType] = useState("");
+  const [granted_by, setGranted_by] = useState("");
+  const [country, setCountry] = useState("");
+  const [location, setLocation] = useState("");
+
+  function clear() {
+    setEditing(false);
+    setId(false)
+    setName("")
+    setDate("")
+    setType("")
+    setGranted_by("")
+    setCountry("")
+    setLocation("")
+    setbuttonSubmit("Guardar")
+  }
+  async function fetchData() {
+    try {
+      const { data } = await getAllAcademicProfessionalMerits();
+      setDatosAcademicProfessionalMerits(data)
+    } catch (error) {
+      console.error('Error al obtener datos académicos:', error);
+    }
+  }
+  const handleSubmit = async (event) => {
+    event.preventDefault();
+    const formData = Object.fromEntries(new FormData(event.target));
+    try {
+      if (editing) {
+        const { data } = await editAcademicProfessionalMerits({ columns: formData, where: { where: { id: id } } });
+        fetchData()
+      } else {
+        const { data } = await addAcademicProfessionalMerits(formData); // assuming addAcademicProfessionalMerits is an asynchronous function
+        setDatosAcademicProfessionalMerits([...datosAcademicProfessionalMerits, formData]); // Assuming the returned data is the newly added item
+      }
+      clear()
+    } catch (error) {
+      console.log(error);
+    }
+  };
+  const handleEditRow = (row, event) => {
+    form.current.scrollIntoView({ behavior: "smooth", block: "start" });
+    setbuttonSubmit("Editar")
+    setEditing(true);
+    setId(row.id)
+    setName(row.name)
+    setDate(row.date)
+    setType(row.type)
+    setGranted_by(row.granted_by)
+    setCountry(row.country)
+    setLocation(row.location)
+  };
+  const handleDeleteRow = async (row, event) => {
+    setIsModalOpen(true);
+    setId(row.id)
+  };
+  const handleAcceptDelete = async () => {
+    try {
+      const { data } = await deleteAcademicProfessionalMerits(id);
+      fetchData();
+      clear()
+    } catch (error) {
+      console.log(error);
+    }
+  };
+  useEffect(() => {
+    fetchData();
+  }, [])
   return (
-    <form>
+    <form onSubmit={handleSubmit} ref={form}>
       <AccordionItem>
         <h2>
           <AccordionButton>
@@ -43,13 +125,13 @@ function FormProfessionalMerits() {
             <GridItem fontSize={"sm"}>
               <InputGroup>
                 <InputLeftAddon children="País" />
-                <Input type="text" placeholder="País" name="country" />
+                <Input type="text" placeholder="País" name="country"value={country} onChange={(e) => setCountry(e.target.value)} />
               </InputGroup>
             </GridItem>
             <GridItem fontSize={"sm"}>
               <InputGroup>
                 <InputLeftAddon children="Lugar" />
-                <Input type="text" placeholder="Lugar" name="location" />
+                <Input type="text" placeholder="Lugar" name="location"value={location} onChange={(e) => setLocation(e.target.value)} />
               </InputGroup>
             </GridItem>
             <GridItem fontSize={"sm"}>
@@ -58,14 +140,14 @@ function FormProfessionalMerits() {
                 <Input
                   type="text"
                   placeholder="(Nacional, Internacional)"
-                  name="type"
+                  name="type"value={type} onChange={(e) => setType(e.target.value)}
                 />
               </InputGroup>
             </GridItem>
             <GridItem fontSize={"sm"}>
               <InputGroup>
                 <InputLeftAddon children="Fecha" />
-                <Input placeholder="Fecha" size="md" type="date" name="date" />
+                <Input placeholder="Fecha" size="md" type="date" name="date"value={date} onChange={(e) => setDate(e.target.value)} />
               </InputGroup>
             </GridItem>
           </Grid>
@@ -73,7 +155,7 @@ function FormProfessionalMerits() {
             <GridItem fontSize={"sm"}>
               <InputGroup>
                 <InputLeftAddon children="Nombre" />
-                <Input type="text" placeholder="Nombre" name="name" />
+                <Input type="text" placeholder="Nombre" name="name"value={name} onChange={(e) => setName(e.target.value)} />
               </InputGroup>
             </GridItem>
             <GridItem fontSize={"sm"}>
@@ -82,7 +164,7 @@ function FormProfessionalMerits() {
                 <Input
                   type="text"
                   placeholder="Otorgado Por"
-                  name="granted_by"
+                  name="granted_by"value={granted_by} onChange={(e) => setGranted_by(e.target.value)}
                 />
               </InputGroup>
             </GridItem>
@@ -92,47 +174,47 @@ function FormProfessionalMerits() {
               textAlign={"right"}
             >
               <Button type="submit" mt={4} bg="primary.200" color={"white"}>
-                Guardar
+                {buttonSubmit}
               </Button>
             </GridItem>
           </Grid>
-          <TableContainer mb={4}>
-            <Table size="sm">
-              <Thead>
-                <Tr>
-                  <Th>#</Th>
-                  <Th>Nombre</Th>
-                  <Th>Fecha</Th>
-                  <Th>Tipo</Th>
-                  <Th>Otorgado Por</Th>
-                  <Th>País</Th>
-                  <Th>Lugar</Th>
-                </Tr>
-              </Thead>
-              {/* {datosAcademic_professional_merits ? (
-                <Tbody>
-                  {datosAcademic_professional_merits.map((item, index) => (
-                    <Tr key={index}>
-                      <Td>{index + 1}</Td>
-                      <Td>{item.name}</Td>
-                      <Td>{reorderDate(item.date)}</Td>
-                      <Td>{item.type}</Td>
-                      <Td>{item.granted_by}</Td>
-                      <Td>{item.country}</Td>
-                      <Td>{item.location}</Td>
-                    </Tr>
-                  ))}
-                </Tbody>
-              ) : (
-                <Tbody>
-                  <Tr>
-                    <Td colSpan="7">Cargando datos...</Td>
-                  </Tr>
-                </Tbody>
-              )} */}
-              <Tfoot></Tfoot>
-            </Table>
-          </TableContainer>
+          <Modal
+            isOpen={isModalOpen}
+            onClose={() => setIsModalOpen(false)}
+            onAccept={handleAcceptDelete}
+            title="Datos"
+            message="¿Estas Seguro que deseas eliminar?"
+          >
+          </Modal>
+          <DataTable
+            header={[
+              'Nombre',
+              'Fecha',
+              'Tipo',
+              'Otorgado Por',
+              'País',
+              'Lugar',
+              'Acción'
+            ]}
+            keyValues={[
+              'name',
+              'date',
+              'type',
+              'granted_by',
+              'country',
+              'location',
+            ]}
+            data={datosAcademicProfessionalMerits}
+            title="Meritos Académicos"
+            defaultRowsPerPage={5}
+            numberRow={true}
+            buttons={{
+              buttonEdit: true,
+              handleEditRow: handleEditRow,
+              buttonDelete: true,
+              handleDeleteRow: handleDeleteRow
+            }}
+          />
         </AccordionPanel>
       </AccordionItem>
     </form>

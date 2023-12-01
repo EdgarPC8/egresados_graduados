@@ -3,7 +3,7 @@ import { DataTypes } from "sequelize";
 
 
 // -- Formacion Academica
-export const Academic_training = sequelize.define(
+export const AcademicTraining = sequelize.define(
   "academic_training",
   {
     id: {
@@ -45,7 +45,7 @@ export const Academic_training = sequelize.define(
   }
 );
 // -- Experiencia Docente
-export const Teaching_experience = sequelize.define(
+export const TeachingExperience = sequelize.define(
   "teaching_experience",
   {
     id: {
@@ -87,7 +87,7 @@ export const Teaching_experience = sequelize.define(
   }
 );
 //   -- Cursos Talleres Seminarios etc
-export const Courses_workshops = sequelize.define(
+export const CoursesWorkshops = sequelize.define(
   "courses_workshops",
   {
     id: {
@@ -133,7 +133,7 @@ export const Courses_workshops = sequelize.define(
   }
 );
 // -- Produccion intelectual
-export const Intellectual_production = sequelize.define(
+export const IntellectualProduction = sequelize.define(
   "intellectual_production",
   {
     id: {
@@ -209,7 +209,7 @@ export const Books = sequelize.define(
   }
 );
 // -- Meritos academicos y profesionales
-export const Academic_professional_merits = sequelize.define(
+export const AcademicProfessionalMerits = sequelize.define(
   "academic_professional_merits",
   {
     id: {
@@ -281,7 +281,7 @@ export const Languages = sequelize.define(
   }
 );
 // -- Experiencia Profesional
-export const Professional_experience = sequelize.define(
+export const ProfessionalExperience = sequelize.define(
   "professional_experience",
   {
     id: {
