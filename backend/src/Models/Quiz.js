@@ -4,20 +4,20 @@ import { DataTypes } from "sequelize";
 const Questions = sequelize.define(
   "questions",
   {
-    id_question: {
+    idQuestion: {
       type: DataTypes.INTEGER,
       primaryKey: true,
       autoIncrement: true,
     },
-    id_quiz: {
+    idQuiz: {
       type: DataTypes.INTEGER,
       defaultValue: null,
     },
-    id_question_type: {
+    idQuestionType: {
       type: DataTypes.INTEGER,
       defaultValue: null,
     },
-    question_text: {
+    questionText: {
       type: DataTypes.TEXT,
       defaultValue: null,
     },
@@ -29,16 +29,16 @@ const Questions = sequelize.define(
 const Options = sequelize.define(
   "options",
   {
-    id_option: {
+    idOption: {
       type: DataTypes.INTEGER,
       primaryKey: true,
       autoIncrement: true,
     },
-    id_question: {
+    idQuestion: {
       type: DataTypes.INTEGER,
       defaultValue: null,
     },
-    option_text: {
+    optionText: {
       type: DataTypes.TEXT,
       defaultValue: null,
     },
@@ -51,29 +51,29 @@ const Options = sequelize.define(
 const Responses = sequelize.define(
   "responses",
   {
-    id_response: {
+    idResponse: {
       type: DataTypes.INTEGER,
       primaryKey: true,
       autoIncrement: true,
     },
-    id_quiz: {
+    idQuiz: {
       type: DataTypes.INTEGER,
       defaultValue: null,
     },
-    id_question: {
+    idQuestion: {
       type: DataTypes.INTEGER,
       defaultValue: null,
       //osea no le puedo poner aqui como parametro con cual va relacionado??
     },
-    user_id: {
+    userId: {
       type: DataTypes.INTEGER,
       defaultValue: null,
     },
-    text_response: {
+    textResponse: {
       type: DataTypes.TEXT,
       defaultValue: null,
     },
-    id_option: {
+    idOption: {
       type: DataTypes.INTEGER,
       defaultValue: null,
     },
@@ -86,7 +86,7 @@ const Responses = sequelize.define(
 const Question_types = sequelize.define(
   "question_types",
   {
-    id_question_type: {
+    idQuestionType: {
       type: DataTypes.INTEGER,
       primaryKey: true,
       autoIncrement: true,
@@ -105,7 +105,7 @@ const Question_types = sequelize.define(
 const Quiz = sequelize.define(
   "quiz",
   {
-    id_quiz: {
+    idQuiz: {
       type: DataTypes.INTEGER,
       primaryKey: true,
       autoIncrement: true,
@@ -129,50 +129,43 @@ const Quiz = sequelize.define(
 );
 
 // Definición de relaciones entre modelos
-Quiz.hasMany(Questions, { foreignKey: "idQuiz", sourceKey: "id_quiz" });
-Questions.belongsTo(Quiz, { foreignKey: "idQuiz", sourceKey: "id_quiz" });
-
+Quiz.hasMany(Questions, { foreignKey: "idQuiz", sourceKey: "idQuiz" });
+Questions.belongsTo(Quiz, { foreignKey: "idQuiz", sourceKey: "idQuiz" });
 
 Question_types.hasMany(Questions, {
   foreignKey: "idQuestionType",
-  sourceKey: "id_question_type",
+  sourceKey: "idQuestionType",
 });
 Questions.belongsTo(Question_types, {
   foreignKey: "idQuestionType",
-  sourceKey: "id_question_type",
+  sourceKey: "idQuestionType",
 });
-
 
 Questions.hasMany(Options, {
   foreignKey: "idQuestion",
-  sourceKey: "id_question",
+  sourceKey: "idQuestion",
 });
 Options.belongsTo(Questions, {
   foreignKey: "idQuestion",
-  sourceKey: "id_question",
+  sourceKey: "idQuestion",
 });
 
-
-Quiz.hasMany(Responses, { foreignKey: "idQuiz", sourceKey: "id_quiz" });
-Responses.belongsTo(Quiz, { foreignKey: "idQuiz", sourceKey: "id_quiz" });
-
-
+Quiz.hasMany(Responses, { foreignKey: "idQuiz", sourceKey: "idQuiz" });
+Responses.belongsTo(Quiz, { foreignKey: "idQuiz", sourceKey: "idQuiz" });
 
 Questions.hasMany(Responses, {
   foreignKey: "idQuestion",
-  sourceKey: "id_question",
+  sourceKey: "idQuestion",
 });
 Responses.belongsTo(Questions, {
   foreignKey: "idQuestion",
-  sourceKey: "id_question",
+  sourceKey: "idQuestion",
 });
 
-
-Options.hasMany(Responses, { foreignKey: "idOption", sourceKey: "id_option" });
+Options.hasMany(Responses, { foreignKey: "idOption", sourceKey: "idOption" });
 Responses.belongsTo(Options, {
   foreignKey: "idOption",
-  sourceKey: "id_option",
+  sourceKey: "idOption",
 });
-
 
 export { Quiz, Question_types, Questions, Options, Responses };

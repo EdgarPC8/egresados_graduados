@@ -15,7 +15,7 @@ import {
   Stack,
   Radio,
 } from "@chakra-ui/react";
-import { useEffect, useState,useRef } from "react";
+import { useEffect, useState, useRef } from "react";
 import {
   addCoursesWorkshops,
   getAllCoursesWorkshops,
@@ -26,22 +26,24 @@ import DataTable from "../components/DataTables";
 import Modal from "../components/AlertDialog";
 
 function FormCourses() {
+  const initialFormCourses = {
+    starDate: "",
+    endDate: "",
+    place: "",
+    type: "",
+    duration: "",
+    typeParticipation: "",
+    name: "",
+    organizedBy: "",
+  };
+
   const [datosCoursesWorkshops, setDatosCoursesWorkshops] = useState([]);
-  const [editing, setEditing] = useState(false);
+  const [isEditing, setIsEditing] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const form = useRef(null);
 
-
-  const [buttonSubmit, setbuttonSubmit] = useState("Guardar");
-  const [id, setId] = useState(false);
-  const [start_date, setStart_date] = useState("");
-  const [end_date, setEnd_date] = useState("");
-  const [place, setPlace] = useState("");
-  const [type, setType] = useState("");
-  const [duration, setDuration] = useState("");
-  const [type_participation, setType_participation] = useState("");
-  const [name, setName] = useState("");
-  const [organized_by, setOrganized_by] = useState("");
+  const [id, setId] = useState(0);
+  const [formCourse, setFormCourse] = useState(initialFormCourses);
 
   async function fetchData() {
     try {
@@ -51,51 +53,57 @@ function FormCourses() {
       console.error("Error al obtener datos académicos:", error);
     }
   }
-  function clear(){
-    setbuttonSubmit("Guardar");
+  function clear() {
     setId(false);
-    setStart_date("");
-    setEnd_date("");
-    setPlace("");
-    setType("");
-    setDuration("");
-    setType_participation("");
-    setName("");
-    setOrganized_by("");
-    setEditing(false)
+    setFormCourse(initialFormCourses);
+    setIsEditing(false);
   }
   const handleSubmit = async (event) => {
     event.preventDefault();
-    const formData = Object.fromEntries(new FormData(event.target));
     try {
-      if (editing) {
-        const { data } = await editCoursesWorkshops({
-          columns: formData,
-          where: { where: { id: id } },
-        });
+      if (isEditing) {
+        const { data } = await editCoursesWorkshops(id, formCourse);
         fetchData();
       } else {
-        const { data } = await addCoursesWorkshops(formData); // assuming addCoursesWorkshops is an asynchronous function
-        setDatosCoursesWorkshops([...datosCoursesWorkshops, formData]); // Assuming the returned data is the newly added item
+        const { data } = await addCoursesWorkshops(formCourse); // assuming addCoursesWorkshops is an asynchronous function
+        setDatosCoursesWorkshops([...datosCoursesWorkshops, formCourse]); // Assuming the returned data is the newly added item
       }
-      clear()
+      clear();
     } catch (error) {
       console.log(error);
     }
   };
+
+  const handleChange = (event) => {
+    const { name, value } = event.target;
+    setFormCourse({ ...formCourse, [name]: value });
+  };
+
   const handleEditRow = (row, event) => {
+    const {
+      starDate,
+      endDate,
+      place,
+      type,
+      duration,
+      typeParticipation,
+      name,
+      organizedBy,
+    } = row;
     form.current.scrollIntoView({ behavior: "smooth", block: "start" });
-    setbuttonSubmit("Editar");
-    setEditing(true);
+    setIsEditing(true);
     setId(row.id);
-    setStart_date(row.start_date);
-    setEnd_date(row.end_date);
-    setPlace(row.place);
-    setType(row.type);
-    setDuration(row.duration);
-    setType_participation(row.type_participation);
-    setName(row.name);
-    setOrganized_by(row.organized_by);
+
+    setFormCourse({
+      starDate,
+      endDate,
+      place,
+      type,
+      duration,
+      typeParticipation,
+      name,
+      organizedBy,
+    });
   };
 
   const handleDeleteRow = async (row, event) => {
@@ -106,7 +114,7 @@ function FormCourses() {
     try {
       const { data } = await deleteCoursesWorkshops(id);
       fetchData();
-      clear()
+      clear();
     } catch (error) {
       console.log(error);
     }
@@ -116,7 +124,7 @@ function FormCourses() {
     fetchData();
   }, []);
   return (
-    <form onSubmit={handleSubmit}ref={form}>
+    <form onSubmit={handleSubmit} ref={form}>
       <AccordionItem>
         <h2>
           <AccordionButton>
@@ -141,9 +149,9 @@ function FormCourses() {
                   placeholder="Fecha"
                   size="md"
                   type="date"
-                  name="start_date"
-                  value={start_date}
-                  onChange={(e) => setStart_date(e.target.value)}
+                  name="startDate"
+                  value={formCourse.starDate}
+                  onChange={handleChange}
                 />
               </InputGroup>
             </GridItem>
@@ -154,9 +162,9 @@ function FormCourses() {
                   placeholder="Fecha"
                   size="md"
                   type="date"
-                  name="end_date"
-                  value={end_date}
-                  onChange={(e) => setEnd_date(e.target.value)}
+                  name="endDate"
+                  value={formCourse.endDate}
+                  onChange={handleChange}
                 />
               </InputGroup>
             </GridItem>
@@ -167,8 +175,8 @@ function FormCourses() {
                   type="text"
                   placeholder="Lugar"
                   name="place"
-                  value={place}
-                  onChange={(e) => setPlace(e.target.value)}
+                  value={formCourse.place}
+                  onChange={handleChange}
                 />
               </InputGroup>
             </GridItem>
@@ -179,8 +187,8 @@ function FormCourses() {
                   type="text"
                   placeholder="(Curso, Seminario, Taller, Congreso, Otro)"
                   name="type"
-                  value={type}
-                  onChange={(e) => setType(e.target.value)}
+                  value={formCourse.type}
+                  onChange={handleChange}
                 />
               </InputGroup>
             </GridItem>
@@ -192,8 +200,8 @@ function FormCourses() {
                   type="number"
                   placeholder="En Horas"
                   name="duration"
-                  value={duration}
-                  onChange={(e) => setDuration(e.target.value)}
+                  value={formCourse.duration}
+                  onChange={handleChange}
                 />
               </InputGroup>
             </GridItem>
@@ -203,21 +211,15 @@ function FormCourses() {
                 <InputLeftAddon children="Tipo participación" />
                 <RadioGroup
                   m={"auto"}
-                  value={type_participation}
-                  onChange={setType_participation}
-                  name="type_participation"
+                  value={formCourse.typeParticipation}
+                  onChange={handleChange}
+                  name="typeParticipation"
                 >
                   <Stack spacing={5} direction="row">
-                    <Radio
-                      colorScheme="green"
-                      value="Asistente"
-                    >
+                    <Radio colorScheme="green" value="Asistente">
                       Asistente
                     </Radio>
-                    <Radio
-                      colorScheme="green"
-                      value="Expositor"
-                    >
+                    <Radio colorScheme="green" value="Expositor">
                       Expositor
                     </Radio>
                   </Stack>
@@ -234,8 +236,8 @@ function FormCourses() {
                   type="text"
                   placeholder="Nombre"
                   name="name"
-                  value={name}
-                  onChange={(e) => setName(e.target.value)}
+                  value={formCourse.name}
+                  onChange={handleChange}
                 />
               </InputGroup>
             </GridItem>
@@ -245,9 +247,9 @@ function FormCourses() {
                 <Input
                   type="text"
                   placeholder="Organizado Por"
-                  name="organized_by"
-                  value={organized_by}
-                  onChange={(e) => setOrganized_by(e.target.value)}
+                  name="organizedBy"
+                  value={formCourse.organizedBy}
+                  onChange={handleChange}
                 />
               </InputGroup>
             </GridItem>
@@ -257,7 +259,7 @@ function FormCourses() {
               textAlign={"right"}
             >
               <Button type="submit" mt={4} bg="primary.200" color={"white"}>
-                {buttonSubmit}
+                {!isEditing ? "Guardar" : "Editar"}
               </Button>
             </GridItem>
           </Grid>

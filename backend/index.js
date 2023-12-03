@@ -5,6 +5,7 @@ import cvRoutes from "./src/routes/cvRoutes.js";
 import quizRoutes from "./src/routes/quizRoutes.js";
 import linguiGeoRoutes from "./src/routes/linguisticsGeographyRoutes.js";
 import cors from "cors";
+import userRoutes from "./src/routes/userRoutes.js";
 import { sequelize } from "./src/database/connection.js";
 import { insertData } from "./src/database/insertData.js";
 
@@ -40,12 +41,13 @@ app.use("/api/professionals", professionalsRoutes);
 app.use("/api/cv", cvRoutes);
 app.use("/api/quiz", quizRoutes);
 app.use("/api/linguiGeo", linguiGeoRoutes);
+app.use("/api/user", userRoutes);
 
 async function main() {
   try {
     // await sequelize.authenticate();
-    // await sequelize.sync({ force: true });
-    // await insertData();
+    await sequelize.sync({ force: true });
+    await insertData();
 
     console.log("Conección realizada con éxito.");
     app.listen(PORT, () => {

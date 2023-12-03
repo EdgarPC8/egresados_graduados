@@ -48,7 +48,7 @@ function ProfessionalForm() {
                 <Input
                   type="text"
                   placeholder="Primer Apellido"
-                  name="first_lastname"
+                  name="firstLastname"
                 />
               </InputGroup>
             </GridItem>
@@ -58,7 +58,7 @@ function ProfessionalForm() {
                 <Input
                   type="text"
                   placeholder="Segundo Apellido"
-                  name="second_lastname"
+                  name="secondLastname"
                 />
               </InputGroup>
             </GridItem>
@@ -68,7 +68,7 @@ function ProfessionalForm() {
                 <Input
                   type="text"
                   placeholder="Primer Nombre"
-                  name="first_name"
+                  name="firstname"
                 />
               </InputGroup>
             </GridItem>
@@ -98,7 +98,7 @@ function ProfessionalForm() {
                 <Input
                   type="text"
                   placeholder="Tipo de Sangre"
-                  name="blood_type"
+                  name="bloodType"
                 />
               </InputGroup>
             </GridItem>
@@ -109,7 +109,7 @@ function ProfessionalForm() {
                   placeholder="Fecha"
                   size="md"
                   type="date"
-                  name="birth_date"
+                  name="birthDate"
                   required
                 />
               </InputGroup>
@@ -117,7 +117,7 @@ function ProfessionalForm() {
             <GridItem fontSize={"sm"}>
               <InputGroup>
                 <InputLeftAddon children="Estado Civil" />
-                <Select placeholder="Seleccione una opción" name="civil_status">
+                <Select placeholder="Seleccione una opción" name="civilStatus">
                   <option value="option1">Soltero</option>
                   <option value="option2">Viudo</option>
                   <option value="option3">Casado</option>
@@ -142,7 +142,7 @@ function ProfessionalForm() {
                 <Input
                   type="tel"
                   placeholder="Teléfono de domicilio"
-                  name="home_phone"
+                  name="homePhone"
                 />
               </InputGroup>
             </GridItem>
@@ -152,7 +152,7 @@ function ProfessionalForm() {
                 <Input
                   type="tel"
                   placeholder="Teléfono de celular"
-                  name="cell_phone"
+                  name="cellphone"
                 />
               </InputGroup>
             </GridItem>
@@ -162,7 +162,7 @@ function ProfessionalForm() {
                 <Input
                   type="text"
                   placeholder="Lugar de Nacimiento"
-                  name="place_birth"
+                  name="placeBirth"
                 />
               </InputGroup>
             </GridItem>
@@ -182,7 +182,7 @@ function ProfessionalForm() {
                 <Input
                   type="text"
                   placeholder="Lugar de residencia"
-                  name="place_residence"
+                  name="placeResidence"
                 />
               </InputGroup>
             </GridItem>
@@ -192,7 +192,7 @@ function ProfessionalForm() {
                 <Input
                   type="email"
                   placeholder="Correo Electrónico Institucional"
-                  name="institutional_email"
+                  name="institutionalEmail"
                 />
               </InputGroup>
             </GridItem>
@@ -202,7 +202,7 @@ function ProfessionalForm() {
                 <Input
                   type="email"
                   placeholder="Correo Electrónico Personal"
-                  name="personal_email"
+                  name="personalEmail"
                 />
               </InputGroup>
             </GridItem>

@@ -1,3 +1,5 @@
+import { Roles } from "../Models/Roles.js";
+
 const addUser = async (req, res) => {
   try {
     const { email, password, rol } = req.body;
@@ -19,4 +21,14 @@ const addUser = async (req, res) => {
   }
 };
 
-export { addUser };
+const getRoles = async (req, res) => {
+  try {
+    const roles = await Roles.findAll();
+    res.json(roles);
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+    console.log(error);
+  }
+};
+
+export { addUser, getRoles };

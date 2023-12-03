@@ -21,89 +21,109 @@ import {
   AccordionButton,
 } from "@chakra-ui/react";
 import { useEffect, useState, useRef } from "react";
-import { addAcademicProfessionalMerits, getAllAcademicProfessionalMerits, editAcademicProfessionalMerits, deleteAcademicProfessionalMerits } from "../api/cvRequest";
+import {
+  addAcademicProfessionalMerits,
+  getAllAcademicProfessionalMerits,
+  editAcademicProfessionalMerits,
+  deleteAcademicProfessionalMerits,
+} from "../api/cvRequest";
 import DataTable from "../components/DataTables";
 import Modal from "../components/AlertDialog";
 
 function FormProfessionalMerits() {
-  const [datosAcademicProfessionalMerits, setDatosAcademicProfessionalMerits] = useState([]);
-  const [editing, setEditing] = useState(false);
+  const initialProfessionalMerits = {
+    name: "",
+    date: "",
+    type: "",
+    grantedBy: "",
+    country: "",
+    location: "",
+  };
+
+  const [datosAcademicProfessionalMerits, setDatosAcademicProfessionalMerits] =
+    useState([]);
+  const [isEditing, setIsEditing] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const form = useRef(null);
 
-  const [buttonSubmit, setbuttonSubmit] = useState("Guardar");
+  const [formProfessionalMerits, setFormProfessionalMerits] = useState(
+    initialProfessionalMerits
+  );
 
   const [id, setId] = useState(false);
-  const [name, setName] = useState("");
-  const [date, setDate] = useState("");
-  const [type, setType] = useState("");
-  const [granted_by, setGranted_by] = useState("");
-  const [country, setCountry] = useState("");
-  const [location, setLocation] = useState("");
 
   function clear() {
-    setEditing(false);
-    setId(false)
-    setName("")
-    setDate("")
-    setType("")
-    setGranted_by("")
-    setCountry("")
-    setLocation("")
-    setbuttonSubmit("Guardar")
+    setIsEditing(false);
+    setId(false);
+    setFormProfessionalMerits(initialProfessionalMerits);
   }
   async function fetchData() {
     try {
       const { data } = await getAllAcademicProfessionalMerits();
-      setDatosAcademicProfessionalMerits(data)
+      setDatosAcademicProfessionalMerits(data);
     } catch (error) {
-      console.error('Error al obtener datos académicos:', error);
+      console.error("Error al obtener datos académicos:", error);
     }
   }
+
+  const handleChange = (event) => {
+    const { name, value } = event.target;
+    setFormProfessionalMerits({ ...formProfessionalMerits, [name]: value });
+  };
+
   const handleSubmit = async (event) => {
     event.preventDefault();
-    const formData = Object.fromEntries(new FormData(event.target));
     try {
-      if (editing) {
-        const { data } = await editAcademicProfessionalMerits({ columns: formData, where: { where: { id: id } } });
-        fetchData()
+      if (isEditing) {
+        const { data } = await editAcademicProfessionalMerits(
+          id,
+          formProfessionalMerits
+        );
+        fetchData();
       } else {
-        const { data } = await addAcademicProfessionalMerits(formData); // assuming addAcademicProfessionalMerits is an asynchronous function
-        setDatosAcademicProfessionalMerits([...datosAcademicProfessionalMerits, formData]); // Assuming the returned data is the newly added item
+        const { data } = await addAcademicProfessionalMerits(
+          formProfessionalMerits
+        );
+        setDatosAcademicProfessionalMerits([
+          ...datosAcademicProfessionalMerits,
+          formProfessionalMerits,
+        ]);
       }
-      clear()
+      clear();
     } catch (error) {
       console.log(error);
     }
   };
   const handleEditRow = (row, event) => {
+    const { name, date, type, grantedBy, country, location } = row;
     form.current.scrollIntoView({ behavior: "smooth", block: "start" });
-    setbuttonSubmit("Editar")
-    setEditing(true);
-    setId(row.id)
-    setName(row.name)
-    setDate(row.date)
-    setType(row.type)
-    setGranted_by(row.granted_by)
-    setCountry(row.country)
-    setLocation(row.location)
+    setIsEditing(true);
+    setId(row.id);
+    setFormProfessionalMerits({
+      name,
+      date,
+      type,
+      grantedBy,
+      country,
+      location,
+    });
   };
   const handleDeleteRow = async (row, event) => {
     setIsModalOpen(true);
-    setId(row.id)
+    setId(row.id);
   };
   const handleAcceptDelete = async () => {
     try {
       const { data } = await deleteAcademicProfessionalMerits(id);
       fetchData();
-      clear()
+      clear();
     } catch (error) {
       console.log(error);
     }
   };
   useEffect(() => {
     fetchData();
-  }, [])
+  }, []);
   return (
     <form onSubmit={handleSubmit} ref={form}>
       <AccordionItem>
@@ -125,13 +145,25 @@ function FormProfessionalMerits() {
             <GridItem fontSize={"sm"}>
               <InputGroup>
                 <InputLeftAddon children="País" />
-                <Input type="text" placeholder="País" name="country"value={country} onChange={(e) => setCountry(e.target.value)} />
+                <Input
+                  type="text"
+                  placeholder="País"
+                  name="country"
+                  value={formProfessionalMerits.country}
+                  onChange={handleChange}
+                />
               </InputGroup>
             </GridItem>
             <GridItem fontSize={"sm"}>
               <InputGroup>
                 <InputLeftAddon children="Lugar" />
-                <Input type="text" placeholder="Lugar" name="location"value={location} onChange={(e) => setLocation(e.target.value)} />
+                <Input
+                  type="text"
+                  placeholder="Lugar"
+                  name="location"
+                  value={formProfessionalMerits.location}
+                  onChange={handleChange}
+                />
               </InputGroup>
             </GridItem>
             <GridItem fontSize={"sm"}>
@@ -140,14 +172,23 @@ function FormProfessionalMerits() {
                 <Input
                   type="text"
                   placeholder="(Nacional, Internacional)"
-                  name="type"value={type} onChange={(e) => setType(e.target.value)}
+                  name="type"
+                  value={formProfessionalMerits.type}
+                  onChange={handleChange}
                 />
               </InputGroup>
             </GridItem>
             <GridItem fontSize={"sm"}>
               <InputGroup>
                 <InputLeftAddon children="Fecha" />
-                <Input placeholder="Fecha" size="md" type="date" name="date"value={date} onChange={(e) => setDate(e.target.value)} />
+                <Input
+                  placeholder="Fecha"
+                  size="md"
+                  type="date"
+                  name="date"
+                  value={formProfessionalMerits.date}
+                  onChange={handleChange}
+                />
               </InputGroup>
             </GridItem>
           </Grid>
@@ -155,7 +196,13 @@ function FormProfessionalMerits() {
             <GridItem fontSize={"sm"}>
               <InputGroup>
                 <InputLeftAddon children="Nombre" />
-                <Input type="text" placeholder="Nombre" name="name"value={name} onChange={(e) => setName(e.target.value)} />
+                <Input
+                  type="text"
+                  placeholder="Nombre"
+                  name="name"
+                  value={formProfessionalMerits.name}
+                  onChange={handleChange}
+                />
               </InputGroup>
             </GridItem>
             <GridItem fontSize={"sm"}>
@@ -164,7 +211,9 @@ function FormProfessionalMerits() {
                 <Input
                   type="text"
                   placeholder="Otorgado Por"
-                  name="granted_by"value={granted_by} onChange={(e) => setGranted_by(e.target.value)}
+                  name="grantedBy"
+                  value={formProfessionalMerits.grantedBy}
+                  onChange={handleChange}
                 />
               </InputGroup>
             </GridItem>
@@ -174,7 +223,7 @@ function FormProfessionalMerits() {
               textAlign={"right"}
             >
               <Button type="submit" mt={4} bg="primary.200" color={"white"}>
-                {buttonSubmit}
+                {!isEditing ? "Guardar" : "Editar"}
               </Button>
             </GridItem>
           </Grid>
@@ -184,25 +233,24 @@ function FormProfessionalMerits() {
             onAccept={handleAcceptDelete}
             title="Datos"
             message="¿Estas Seguro que deseas eliminar?"
-          >
-          </Modal>
+          ></Modal>
           <DataTable
             header={[
-              'Nombre',
-              'Fecha',
-              'Tipo',
-              'Otorgado Por',
-              'País',
-              'Lugar',
-              'Acción'
+              "Nombre",
+              "Fecha",
+              "Tipo",
+              "Otorgado Por",
+              "País",
+              "Lugar",
+              "Acción",
             ]}
             keyValues={[
-              'name',
-              'date',
-              'type',
-              'granted_by',
-              'country',
-              'location',
+              "name",
+              "date",
+              "type",
+              "granted_by",
+              "country",
+              "location",
             ]}
             data={datosAcademicProfessionalMerits}
             title="Meritos Académicos"
@@ -212,7 +260,7 @@ function FormProfessionalMerits() {
               buttonEdit: true,
               handleEditRow: handleEditRow,
               buttonDelete: true,
-              handleDeleteRow: handleDeleteRow
+              handleDeleteRow: handleDeleteRow,
             }}
           />
         </AccordionPanel>

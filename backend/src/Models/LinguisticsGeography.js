@@ -31,7 +31,7 @@ const Cod_country_lenguage = sequelize.define(
       primaryKey: true,
       autoIncrement: true,
     },
-    cod_LP: {
+    codLP: {
       type: DataTypes.STRING(5),
       defaultValue: null,
     },
@@ -69,7 +69,7 @@ const Canton = sequelize.define(
       primaryKey: true,
       autoIncrement: true,
     },
-    id_province: {
+    idProvince: {
       type: DataTypes.INTEGER,
       defaultValue: null,
     },
@@ -90,7 +90,7 @@ const Parish = sequelize.define(
       primaryKey: true,
       autoIncrement: true,
     },
-    id_canton: {
+    idCanton: {
       type: DataTypes.INTEGER,
       defaultValue: null,
     },

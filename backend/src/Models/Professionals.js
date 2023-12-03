@@ -34,27 +34,27 @@ export const Professionals = sequelize.define(
       allowNull: false, // No permite valores nulos
       unique: true, // Hace que el campo sea único
     },
-    first_name: {
+    firstname: {
       type: DataTypes.STRING(50),
       defaultValue: null,
     },
-    second_name: {
+    secondname: {
       type: DataTypes.STRING(50),
       defaultValue: null,
     },
-    first_lastname: {
+    firstLastname: {
       type: DataTypes.STRING(50),
       defaultValue: null,
     },
-    second_lastname: {
+    secondLastname: {
       type: DataTypes.STRING(50),
       defaultValue: null,
     },
-    blood_type: {
+    bloodType: {
       type: DataTypes.STRING(10),
       defaultValue: null,
     },
-    birth_date: {
+    birthDate: {
       type: DataTypes.DATEONLY,
       defaultValue: null,
     },
@@ -62,7 +62,7 @@ export const Professionals = sequelize.define(
       type: DataTypes.STRING(5),
       defaultValue: null,
     },
-    civil_status: {
+    civilStatus: {
       type: DataTypes.STRING(10),
       defaultValue: null,
     },
@@ -70,11 +70,11 @@ export const Professionals = sequelize.define(
       type: DataTypes.STRING(50),
       defaultValue: null,
     },
-    place_birth: {
+    placebBirth: {
       type: DataTypes.STRING(100),
       defaultValue: null,
     },
-    place_residence: {
+    placeResidence: {
       type: DataTypes.STRING(100),
       defaultValue: null,
     },
@@ -82,19 +82,19 @@ export const Professionals = sequelize.define(
       type: DataTypes.TEXT,
       defaultValue: null,
     },
-    home_phone: {
+    homePhone: {
       type: DataTypes.STRING(20),
       defaultValue: null,
     },
-    cell_phone: {
+    cellPhone: {
       type: DataTypes.STRING(20),
       defaultValue: null,
     },
-    personal_email: {
+    personalEmail: {
       type: DataTypes.STRING(60),
       defaultValue: null,
     },
-    institutional_email: {
+    institutionalEmail: {
       type: DataTypes.STRING(60),
       defaultValue: null,
     },

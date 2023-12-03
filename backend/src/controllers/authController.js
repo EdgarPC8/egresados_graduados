@@ -4,18 +4,29 @@ import { Users } from "../Models/Users.js";
 import bycrypt from "bcrypt";
 import { createAccessToken } from "../libs/jwt.js";
 import jwt from "jsonwebtoken";
+import { Roles } from "../Models/Roles.js";
+import { UserRoles } from "../Models/UserRoles.js";
 
 // Llamar a la función para agregar un usuario
 // agregarUsuario("admin", "contraseña", 1);
 
 const login = async (req, res) => {
   const { email, password, rol } = req.body;
+
   //Verificar si existe
 
   // console.log(user);
   try {
-    const user = await Users.findOne({ where: { email} });
+    const user = await Users.findOne({
+      where: { email },
+      include: {
+        model: Roles,
+        where: { rol },
+      },
+    });
 
+    // console.log(user.roles.rol);
+    // const userRol = user.roles.map((role) => role.rol);
     // const passgenerate = await bycrypt.hash("admin", 10);
     // console.log(passgenerate);
 
@@ -31,7 +42,7 @@ const login = async (req, res) => {
     const payload = {
       userId: user.id_user,
       userEmail: user.email,
-      userRol: user.rol,
+      userRol: user.roles[0].rol,
     };
 
     //Crear token JWT

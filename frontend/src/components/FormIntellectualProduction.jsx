@@ -17,89 +17,10 @@ import {
   AccordionIcon,
   AccordionButton,
 } from "@chakra-ui/react";
-import { useEffect, useState, useRef } from "react";
-import { addIntellectualProduction, getAllIntellectualProduction, editIntellectualProduction, deleteIntellectualProduction } from "../api/cvRequest";
-import DataTable from "../components/DataTables";
-import Modal from "../components/AlertDialog";
 
-function formIntellectualProduction() {
-  const [datosIntellectualProduction, setDatosIntellectualProduction] = useState([]);
-  const [editing, setEditing] = useState(false);
-  const [isModalOpen, setIsModalOpen] = useState(false);
-  const form = useRef(null);
-
-  const [buttonSubmit, setbuttonSubmit] = useState("Guardar");
-
-  const [id, setId] = useState(false);
-  const [type, setType] = useState("");
-  const [name, setName] = useState("");
-  const [type_authorship, setType_authorship] = useState("");
-  const [date, setDate] = useState("");
-  const [web_link, setWeb_link] = useState("");
-
-  function clear() {
-    setEditing(false);
-    setId(false)
-    setType("")
-    setName("")
-    setType_authorship("")
-    setDate("")
-    setWeb_link("")
-    setbuttonSubmit("Guardar")
-  }
-  async function fetchData() {
-    try {
-      const { data } = await getAllIntellectualProduction();
-      setDatosIntellectualProduction(data)
-    } catch (error) {
-      console.error('Error al obtener datos académicos:', error);
-    }
-  }
-  const handleSubmit = async (event) => {
-    event.preventDefault();
-    const formData = Object.fromEntries(new FormData(event.target));
-    try {
-      if (editing) {
-        const { data } = await editIntellectualProduction({ columns: formData, where: { where: { id: id } } });
-        fetchData()
-      } else {
-        const { data } = await addIntellectualProduction(formData); // assuming addIntellectualProduction is an asynchronous function
-        setDatosIntellectualProduction([...datosIntellectualProduction, formData]); // Assuming the returned data is the newly added item
-      }
-      clear()
-    } catch (error) {
-      console.log(error);
-    }
-  };
-  const handleEditRow = (row, event) => {
-    form.current.scrollIntoView({ behavior: "smooth", block: "start" });
-    setbuttonSubmit("Editar")
-    setEditing(true);
-    setId(row.id)
-    setType(row.type)
-    setName(row.name)
-    setType_authorship(row.type_authorship)
-    setDate(row.date)
-    setWeb_link(row.web_link)
-  };
-  const handleDeleteRow = async (row, event) => {
-    setIsModalOpen(true);
-    setId(row.id)
-  };
-  const handleAcceptDelete = async () => {
-    try {
-      const { data } = await deleteIntellectualProduction(id);
-      fetchData();
-      clear()
-    } catch (error) {
-      console.log(error);
-    }
-  };
-  useEffect(() => {
-    fetchData();
-  }, [])
+function FormIntellectualProduction() {
   return (
-    <form onSubmit={handleSubmit} ref={form}>
+    <form>
       <AccordionItem>
         <h2>
           <AccordionButton>
@@ -119,7 +40,7 @@ function formIntellectualProduction() {
             <GridItem fontSize={"sm"}>
               <InputGroup>
                 <InputLeftAddon children="Tipo" />
-                <Input type="text" placeholder="Tipo" name="type"value={type} onChange={(e) => setType(e.target.value)} />
+                <Input type="text" placeholder="Tipo" name="type" />
               </InputGroup>
             </GridItem>
             <GridItem fontSize={"sm"}>
@@ -128,14 +49,14 @@ function formIntellectualProduction() {
                 <Input
                   type="text"
                   placeholder="Tipo de Autoria"
-                  name="type_authorship"value={type_authorship} onChange={(e) => setType_authorship(e.target.value)}
+                  name="type_authorship"
                 />
               </InputGroup>
             </GridItem>
             <GridItem fontSize={"sm"}>
               <InputGroup>
                 <InputLeftAddon children="Fecha Inicio" />
-                <Input placeholder="Fecha" size="md" type="date" name="date"value={date} onChange={(e) => setDate(e.target.value)} />
+                <Input placeholder="Fecha" size="md" type="date" name="date" />
               </InputGroup>
             </GridItem>
           </Grid>
@@ -143,13 +64,13 @@ function formIntellectualProduction() {
             <GridItem fontSize={"sm"}>
               <InputGroup>
                 <InputLeftAddon children="Nombre/Titulo" />
-                <Input type="text" placeholder="Nombre/Titulo" name="name"value={name} onChange={(e) => setName(e.target.value)} />
+                <Input type="text" placeholder="Nombre/Titulo" name="name" />
               </InputGroup>
             </GridItem>
             <GridItem fontSize={"sm"}>
               <InputGroup>
                 <InputLeftAddon children="Enlace Web" />
-                <Input type="text" placeholder="Enlace Web" name="web_link"value={web_link} onChange={(e) => setWeb_link(e.target.value)} />
+                <Input type="text" placeholder="Enlace Web" name="web_link" />
               </InputGroup>
             </GridItem>
             <GridItem
@@ -158,49 +79,49 @@ function formIntellectualProduction() {
               textAlign={"right"}
             >
               <Button type="submit" mt={4} bg="primary.200" color={"white"}>
-                {buttonSubmit}
+                Guardar
               </Button>
             </GridItem>
           </Grid>
-          <Modal
-            isOpen={isModalOpen}
-            onClose={() => setIsModalOpen(false)}
-            onAccept={handleAcceptDelete}
-            title="Datos"
-            message="¿Estas Seguro que deseas eliminar?"
-          >
-          </Modal>
-          <DataTable
-            header={[
-              'Tipo',
-              'Nombre/Titulo',
-              'Tipo de Autoria',
-              'Fecha',
-              'Enlace Web',
-              'Acción'
-            ]}
-            keyValues={[
-              'type',
-              'name',
-              'type_authorship',
-              'date',
-              'web_link'
-            ]}
-            data={datosIntellectualProduction}
-            title="Producción Intelectual"
-            defaultRowsPerPage={5}
-            numberRow={true}
-            buttons={{
-              buttonEdit: true,
-              handleEditRow: handleEditRow,
-              buttonDelete: true,
-              handleDeleteRow: handleDeleteRow
-            }}
-          />
+          <TableContainer mb={4}>
+            <Table size="sm">
+              <Thead>
+                <Tr>
+                  <Th>#</Th>
+                  <Th>Tipo</Th>
+                  <Th>Nombre/Titulo</Th>
+                  <Th>Tipo de Autoria</Th>
+                  <Th>Fecha</Th>
+                  <Th>Enlace Web</Th>
+                </Tr>
+              </Thead>
+              {/* {datosIntellectual_production ? (
+            <Tbody>
+              {datosIntellectual_production.map((item, index) => (
+                <Tr key={index}>
+                  <Td>{index + 1}</Td>
+                  <Td>{item.type}</Td>
+                  <Td>{item.name}</Td>
+                  <Td>{item.type_authorship}</Td>
+                  <Td>{reorderDate(item.date)}</Td>
+                  <Td>{item.web_link}</Td>
+                </Tr>
+              ))}
+            </Tbody>
+          ) : (
+            <Tbody>
+              <Tr>
+                <Td colSpan="7">Cargando datos...</Td>
+              </Tr>
+            </Tbody>
+          )} */}
+              <Tfoot></Tfoot>
+            </Table>
+          </TableContainer>
         </AccordionPanel>
       </AccordionItem>
     </form>
   );
 }
 
-export default formIntellectualProduction;
+export default FormIntellectualProduction;

@@ -6,8 +6,9 @@ const authorization = {
 
 const loginRequest = async (data) => await axios.post("/auth/login", data);
 
-
 const verifyTokenRequest = async () =>
   await axios.get("/auth/verifytoken", { headers: authorization });
 
-export { loginRequest, verifyTokenRequest };
+const getRoles = async () => await axios.get("/user/roles");
+
+export { loginRequest, verifyTokenRequest, getRoles };

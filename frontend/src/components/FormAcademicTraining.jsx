@@ -13,92 +13,111 @@ import {
   AccordionButton,
 } from "@chakra-ui/react";
 import { useEffect, useState, useRef } from "react";
-import { addAcademicTraining, getAllAcademicTraining, editAcademicTraining, deleteAcademicTraining } from "../api/cvRequest";
+import {
+  addAcademicTraining,
+  getAllAcademicTraining,
+  editAcademicTraining,
+  deleteAcademicTraining,
+} from "../api/cvRequest";
 import DataTable from "../components/DataTables";
 import Modal from "../components/AlertDialog";
 
 function FormAcademicTraining() {
-  const [datosAcademicTraining, setDatosAcademicTraining] = useState([]);
-  const [editing, setEditing] = useState(false);
+  const initialFormAcademic = {
+    type: "",
+    date: "",
+    place: "",
+    country: "",
+    obtainedTitle: "",
+    educationalInstitution: "",
+    senescytRegistrationN: "",
+  };
+
+  const [ListAcademicTraining, setListAcademicTraining] = useState([]);
+  const [isEditing, setIsEditing] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const form = useRef(null);
 
-  const [buttonSubmit, setbuttonSubmit] = useState("Guardar");
+  const [id, setId] = useState(0);
 
-  const [id, setId] = useState(false);
-  const [type, setType] = useState("");
-  const [date, setDate] = useState("");
-  const [place, setPlace] = useState("");
-  const [country, setCountry] = useState("");
-  const [obtained_tittle, setObtained_tittle] = useState("");
-  const [educational_institution, setEducational_institution] = useState("");
-  const [senescyt_registration_n, setSenescyt_registration_n] = useState("");
+  const [formAcademic, setFormAcademic] = useState(initialFormAcademic);
 
   function clear() {
-    setEditing(false);
-    setId(false)
-    setType("")
-    setDate("")
-    setPlace("")
-    setCountry("")
-    setObtained_tittle("")
-    setEducational_institution("")
-    setSenescyt_registration_n("")
-    setbuttonSubmit("Guardar")
+    setIsEditing(false);
+    setId(0);
+    setFormAcademic(initialFormAcademic);
   }
+
   async function fetchData() {
     try {
       const { data } = await getAllAcademicTraining();
-      setDatosAcademicTraining(data)
+      setListAcademicTraining(data);
     } catch (error) {
-      console.error('Error al obtener datos académicos:', error);
+      console.error("Error al obtener datos académicos:", error);
     }
   }
   const handleSubmit = async (event) => {
     event.preventDefault();
-    const formData = Object.fromEntries(new FormData(event.target));
     try {
-      if (editing) {
-        const { data } = await editAcademicTraining({ columns: formData, where: { where: { id: id } } });
-        fetchData()
+      if (isEditing) {
+        const { data } = await editAcademicTraining(id, formAcademic);
+        fetchData();
       } else {
-        const { data } = await addAcademicTraining(formData); // assuming addAcademicTraining is an asynchronous function
-        setDatosAcademicTraining([...datosAcademicTraining, formData]); // Assuming the returned data is the newly added item
+        const { data } = await addAcademicTraining(formAcademic);
+
+        setListAcademicTraining([...ListAcademicTraining, formAcademic]);
       }
-      clear()
+      clear();
     } catch (error) {
       console.log(error);
     }
   };
   const handleEditRow = (row, event) => {
     form.current.scrollIntoView({ behavior: "smooth", block: "start" });
-    setbuttonSubmit("Editar")
-    setEditing(true);
-    setId(row.id)
-    setType(row.type)
-    setDate(row.date)
-    setPlace(row.place)
-    setCountry(row.country)
-    setObtained_tittle(row.obtained_tittle)
-    setEducational_institution(row.educational_institution)
-    setSenescyt_registration_n(row.senescyt_registration_n)
+    const {
+      type,
+      obtainedTitle,
+      educationalInstitution,
+      date,
+      place,
+      country,
+      senescytRegistrationN,
+    } = row;
+
+    setIsEditing(true);
+    setId(row.id);
+    setFormAcademic({
+      type,
+      obtainedTitle,
+      educationalInstitution,
+      date,
+      place,
+      country,
+      senescytRegistrationN,
+    });
   };
+
+  const handleChange = (event) => {
+    const { name, value } = event.target;
+    setFormAcademic({ ...formAcademic, [name]: value });
+  };
+
   const handleDeleteRow = async (row, event) => {
     setIsModalOpen(true);
-    setId(row.id)
+    setId(row.id);
   };
   const handleAcceptDelete = async () => {
     try {
       const { data } = await deleteAcademicTraining(id);
       fetchData();
-      clear()
+      clear();
     } catch (error) {
       console.log(error);
     }
   };
   useEffect(() => {
     fetchData();
-  }, [])
+  }, []);
   return (
     <form onSubmit={handleSubmit} ref={form}>
       <AccordionItem>
@@ -120,7 +139,12 @@ function FormAcademicTraining() {
             <GridItem fontSize={"sm"}>
               <InputGroup>
                 <InputLeftAddon children="Tipo" />
-                <Select placeholder="Seleccione una opción" name="type" value={type} onChange={(e) => setType(e.target.value)} >
+                <Select
+                  placeholder="Seleccione una opción"
+                  name="type"
+                  value={formAcademic.type}
+                  onChange={handleChange}
+                >
                   <option value="Secundaria">Secundaria</option>
                   <option value="Tercer Nivel">Tercer Nivel</option>
                   <option value="Cuarto Nivel">Cuarto Nivel</option>
@@ -135,7 +159,8 @@ function FormAcademicTraining() {
                   size="md"
                   type="date"
                   name="date"
-                  value={date} onChange={(e) => setDate(e.target.value)}
+                  value={formAcademic.date}
+                  onChange={handleChange}
                   required
                 />
               </InputGroup>
@@ -143,26 +168,38 @@ function FormAcademicTraining() {
             <GridItem fontSize={"sm"}>
               <InputGroup>
                 <InputLeftAddon children="Lugar" />
-                <Input type="text" placeholder="Lugar" name="place" value={place} onChange={(e) => setPlace(e.target.value)} />
+                <Input
+                  type="text"
+                  placeholder="Lugar"
+                  name="place"
+                  value={formAcademic.place}
+                  onChange={handleChange}
+                />
               </InputGroup>
             </GridItem>
             <GridItem fontSize={"sm"}>
               <InputGroup>
                 <InputLeftAddon children="País" />
-                <Input type="text" placeholder="País" name="country" value={country} onChange={(e) => setCountry(e.target.value)} />
+                <Input
+                  type="text"
+                  placeholder="País"
+                  name="country"
+                  value={formAcademic.country}
+                  onChange={handleChange}
+                />
               </InputGroup>
             </GridItem>
           </Grid>
           <Grid gap={2} mt={2} mb={2}>
-
             <GridItem fontSize={"sm"}>
               <InputGroup>
                 <InputLeftAddon children="Título Obtenido" />
                 <Input
                   type="text"
                   placeholder="Título Obtenido"
-                  name="obtained_tittle"
-                  value={obtained_tittle} onChange={(e) => setObtained_tittle(e.target.value)}
+                  name="obtainedTitle"
+                  value={formAcademic.obtainedTitle}
+                  onChange={handleChange}
                   required
                 />
               </InputGroup>
@@ -173,8 +210,9 @@ function FormAcademicTraining() {
                 <Input
                   type="text"
                   placeholder="Institución Educativa"
-                  name="educational_institution"
-                  value={educational_institution} onChange={(e) => setEducational_institution(e.target.value)}
+                  name="educationalInstitution"
+                  value={formAcademic.educationalInstitution}
+                  onChange={handleChange}
                   required
                 />
               </InputGroup>
@@ -185,8 +223,9 @@ function FormAcademicTraining() {
                 <Input
                   type="text"
                   placeholder="Nro. de registro SENESCYT"
-                  name="senescyt_registration_n"
-                  value={senescyt_registration_n} onChange={(e) => setSenescyt_registration_n(e.target.value)}
+                  name="senescytRegistrationN"
+                  value={formAcademic.senescytRegistrationN}
+                  onChange={handleChange}
                 />
               </InputGroup>
             </GridItem>
@@ -203,7 +242,7 @@ function FormAcademicTraining() {
                 _hover={{ bg: "primary.100" }}
                 data-purpose="create"
               >
-                {buttonSubmit}
+                {!isEditing ? "Guardar" : "editar"}
               </Button>
             </GridItem>
           </Grid>
@@ -213,43 +252,41 @@ function FormAcademicTraining() {
             onAccept={handleAcceptDelete}
             title="Datos"
             message="¿Estas Seguro que deseas eliminar?"
-          >
-          </Modal>
+          ></Modal>
           <DataTable
             header={[
-              'Tipo',
-              'Título Obtenido',
-              'Institución Educativa',
-              'Fecha',
-              'Lugar',
-              'País',
-              'Nro. de registro SENESCYT',
-              'Acción'
+              "Tipo",
+              "Título Obtenido",
+              "Institución Educativa",
+              "Fecha",
+              "Lugar",
+              "País",
+              "Nro. de registro SENESCYT",
+              "Acción",
             ]}
             keyValues={[
-              'type',
-              'obtained_tittle',
-              'educational_institution',
-              'date',
-              'place',
-              'country',
-              'senescyt_registration_n'
+              "type",
+              "obtainedTittle",
+              "educationalInstitution",
+              "date",
+              "place",
+              "country",
+              "senescytRegistrationN",
             ]}
-            data={datosAcademicTraining}
+            data={ListAcademicTraining}
             title="Formación Academica"
             defaultRowsPerPage={5}
             numberRow={true}
             buttons={{
               buttonEdit: true,
-              handleEditRow: handleEditRow,
+              handleEditRow,
               buttonDelete: true,
-              handleDeleteRow: handleDeleteRow
+              handleDeleteRow,
             }}
           />
         </AccordionPanel>
       </AccordionItem>
     </form>
-
   );
 }
 

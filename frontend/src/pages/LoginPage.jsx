@@ -17,11 +17,13 @@ import {
 
 import PasswordInput from "../components/PasswordInput";
 import { useAuth } from "../context/AuthContext";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { getRoles } from "../api/userRequest";
 
 function LoginPage() {
   const { signin, isAuthenticated, errors } = useAuth();
+  const [roles, setRoles] = useState([]);
 
   // console.log(errors)
 
@@ -40,6 +42,14 @@ function LoginPage() {
       navigate("/");
     }
   }, [isAuthenticated]);
+
+  useEffect(() => {
+    const loadRoles = async () => {
+      const { data } = await getRoles();
+      setRoles(data);
+    };
+    loadRoles();
+  }, []);
 
   return (
     <Container
@@ -83,9 +93,11 @@ function LoginPage() {
                   <FormControl>
                     <FormLabel htmlFor="roles">Roles disponibles</FormLabel>
                     <Select placeholder="Seleccione un rol" name="rol">
-                      <option value="option1">Option 1</option>
-                      <option value="option2">Option 2</option>
-                      <option value="option3">Option 3</option>
+                      {roles.map((rol) => (
+                        <option key={rol.id} value={rol.rol}>
+                          {rol.rol}
+                        </option>
+                      ))}
                     </Select>
                   </FormControl>
                 </Stack>

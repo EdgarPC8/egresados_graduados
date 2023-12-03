@@ -20,91 +20,111 @@ import {
   AccordionButton,
 } from "@chakra-ui/react";
 import { useEffect, useState, useRef } from "react";
-import { addBooks, getAllBooks, editBooks, deleteBooks } from "../api/cvRequest";
+import {
+  addBooks,
+  getAllBooks,
+  editBooks,
+  deleteBooks,
+} from "../api/cvRequest";
 import DataTable from "../components/DataTables";
 import Modal from "../components/AlertDialog";
 function FormBooks() {
   const [datosBooks, setDatosBooks] = useState([]);
-  const [editing, setEditing] = useState(false);
+  const [isEditing, setIsEditing] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const form = useRef(null);
 
-  const [buttonSubmit, setbuttonSubmit] = useState("Guardar");
-
   const [id, setId] = useState(false);
-  const [tittle, setTittle] = useState("");
-  const [type, setType] = useState("");
-  const [type_authorship, setType_authorship] = useState("");
-  const [isb_n, setIsb_n] = useState("");
-  const [editoral_name, setEditoral_name] = useState("");
-  const [editoral_origin, setEditoral_origin] = useState("");
-  const [year, setYear] = useState("");
+
+  const initialFormBooks = {
+    type: "",
+    typeAuthorship: "",
+    editoralName: "",
+    editoralOrigin: "",
+    year: "",
+    isbN: "",
+    title: "",
+  };
+
+  const [formBook, setFormBook] = useState(initialFormBooks);
 
   function clear() {
-    setEditing(false);
-    setId(false)
-    setTittle("")
-    setType("")
-    setType_authorship("")
-    setIsb_n("")
-    setEditoral_name("")
-    setEditoral_origin("")
-    setYear("")
-    setbuttonSubmit("Guardar")
+    setIsEditing(false);
+    setId(false);
+    setFormBook(initialFormBooks);
   }
+
+  const handleChange = (event) => {
+    const { name, value } = event.target;
+    setFormBook({ ...formBook, [name]: value });
+  };
+
   async function fetchData() {
     try {
       const { data } = await getAllBooks();
-      setDatosBooks(data)
+      setDatosBooks(data);
     } catch (error) {
-      console.error('Error al obtener datos académicos:', error);
+      console.error("Error al obtener datos académicos:", error);
     }
   }
   const handleSubmit = async (event) => {
     event.preventDefault();
-    const formData = Object.fromEntries(new FormData(event.target));
+    // const formData = Object.fromEntries(new FormData(event.target));
     try {
-      if (editing) {
-        const { data } = await editBooks({ columns: formData, where: { where: { id: id } } });
-        fetchData()
+      if (isEditing) {
+        const { data } = await editBooks(id, formBook);
+        fetchData();
       } else {
-        const { data } = await addBooks(formData); // assuming addBooks is an asynchronous function
-        setDatosBooks([...datosBooks, formData]); // Assuming the returned data is the newly added item
+        const { data } = await addBooks(formBook); // assuming addBooks is an asynchronous function
+        setDatosBooks([...datosBooks, formBook]); // Assuming the returned data is the newly added item
       }
-      clear()
+      clear();
     } catch (error) {
       console.log(error);
     }
   };
   const handleEditRow = (row, event) => {
     form.current.scrollIntoView({ behavior: "smooth", block: "start" });
-    setbuttonSubmit("Editar")
-    setEditing(true);
-    setId(row.id)
-    setTittle(row.tittle)
-    setType(row.type)
-    setType_authorship(row.type_authorship)
-    setIsb_n(row.isb_n)
-    setEditoral_name(row.editoral_name)
-    setEditoral_origin(row.editoral_origin)
-    setYear(row.year)
+    const {
+      id,
+      title,
+      type,
+      typeAuthorship,
+      isbN,
+      editoralName,
+      editoralOrigin,
+      year,
+    } = row;
+
+    setIsEditing(true);
+    setId(row.id);
+    setFormBook({
+      id,
+      title,
+      type,
+      typeAuthorship,
+      isbN,
+      editoralName,
+      editoralOrigin,
+      year,
+    });
   };
   const handleDeleteRow = async (row, event) => {
     setIsModalOpen(true);
-    setId(row.id)
+    setId(row.id);
   };
   const handleAcceptDelete = async () => {
     try {
       const { data } = await deleteBooks(id);
       fetchData();
-      clear()
+      clear();
     } catch (error) {
       console.log(error);
     }
   };
   useEffect(() => {
     fetchData();
-  }, [])
+  }, []);
   return (
     <form onSubmit={handleSubmit} ref={form}>
       <AccordionItem>
@@ -129,7 +149,9 @@ function FormBooks() {
                 <Input
                   type="text"
                   placeholder="(Divulgación, Científico)"
-                  name="type"value={type} onChange={(e) => setType(e.target.value)}
+                  name="type"
+                  value={formBook.type}
+                  onChange={handleChange}
                 />
               </InputGroup>
             </GridItem>
@@ -139,7 +161,9 @@ function FormBooks() {
                 <Input
                   type="text"
                   placeholder="(Autor, Coautor)"
-                  name="type_authorship"value={type_authorship} onChange={(e) => setType_authorship(e.target.value)}
+                  name="typeAuthorship"
+                  value={formBook.typeAuthorship}
+                  onChange={handleChange}
                 />
               </InputGroup>
             </GridItem>
@@ -149,7 +173,9 @@ function FormBooks() {
                 <Input
                   type="text"
                   placeholder="Nombre de Editorial"
-                  name="editoral_name"value={editoral_name} onChange={(e) => setEditoral_name(e.target.value)}
+                  name="editoralName"
+                  value={formBook.editoralName}
+                  onChange={handleChange}
                 />
               </InputGroup>
             </GridItem>
@@ -159,20 +185,35 @@ function FormBooks() {
                 <Input
                   type="text"
                   placeholder="(Nacional, Internacional)"
-                  name="editoral_origin"value={editoral_origin} onChange={(e) => setEditoral_origin(e.target.value)}
+                  name="editoralOrigin"
+                  value={formBook.editoralOrigin}
+                  onChange={handleChange}
                 />
               </InputGroup>
             </GridItem>
             <GridItem fontSize={"sm"}>
               <InputGroup>
                 <InputLeftAddon children="Año" />
-                <Input placeholder="Fecha" size="md" type="date" name="year"value={year} onChange={(e) => setYear(e.target.value)} />
+                <Input
+                  placeholder="Fecha"
+                  size="md"
+                  type="date"
+                  name="year"
+                  value={formBook.year}
+                  onChange={handleChange}
+                />
               </InputGroup>
             </GridItem>
             <GridItem fontSize={"sm"}>
               <InputGroup>
                 <InputLeftAddon children="ISB N." />
-                <Input type="text" placeholder="ISB N." name="isb_n"value={isb_n} onChange={(e) => setIsb_n(e.target.value)} />
+                <Input
+                  type="text"
+                  placeholder="ISB N."
+                  name="isbN"
+                  value={formBook.isbN}
+                  onChange={handleChange}
+                />
               </InputGroup>
             </GridItem>
           </Grid>
@@ -180,7 +221,13 @@ function FormBooks() {
             <GridItem fontSize={"sm"}>
               <InputGroup>
                 <InputLeftAddon children="Titulo" />
-                <Input type="text" placeholder="Titulo" name="tittle"value={tittle} onChange={(e) => setTittle(e.target.value)} />
+                <Input
+                  type="text"
+                  placeholder="Titulo"
+                  name="title"
+                  value={formBook.title}
+                  onChange={handleChange}
+                />
               </InputGroup>
             </GridItem>
             <GridItem
@@ -189,7 +236,7 @@ function FormBooks() {
               textAlign={"right"}
             >
               <Button type="submit" mt={4} bg="primary.200" color={"white"}>
-                {buttonSubmit}
+                {!isEditing ? "Guardar" : "Editar"}
               </Button>
             </GridItem>
           </Grid>
@@ -199,27 +246,26 @@ function FormBooks() {
             onAccept={handleAcceptDelete}
             title="Datos"
             message="¿Estas Seguro que deseas eliminar?"
-          >
-          </Modal>
+          ></Modal>
           <DataTable
             header={[
-              'Titulo',
-              'Tipo',
-              'Tipo de Autoria',
-              'ISB N.',
-              'Nombre Editorial',
-              'Origen Editorial',
-              'Año',
-              'Acción'
+              "Titulo",
+              "Tipo",
+              "Tipo de Autoria",
+              "ISB N.",
+              "Nombre Editorial",
+              "Origen Editorial",
+              "Año",
+              "Acción",
             ]}
             keyValues={[
-              'tittle',
-              'type',
-              'type_authorship',
-              'isb_n',
-              'editoral_name',
-              'editoral_origin',
-              'year'
+              "title",
+              "type",
+              "typeAuthorship",
+              "isbN",
+              "editoralName",
+              "editoralOrigin",
+              "year",
             ]}
             data={datosBooks}
             title="Formación Academica"
@@ -227,12 +273,11 @@ function FormBooks() {
             numberRow={true}
             buttons={{
               buttonEdit: true,
-              handleEditRow: handleEditRow,
+              handleEditRow,
               buttonDelete: true,
-              handleDeleteRow: handleDeleteRow
+              handleDeleteRow
             }}
           />
-        
         </AccordionPanel>
       </AccordionItem>
     </form>

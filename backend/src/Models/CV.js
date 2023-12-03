@@ -27,15 +27,15 @@ export const AcademicTraining = sequelize.define(
       type: DataTypes.TEXT,
       defaultValue: null,
     },
-    obtained_tittle: {
+    obtainedTitle: {
       type: DataTypes.TEXT,
       defaultValue: null,
     },
-    educational_institution: {
+    educationalInstitution: {
       type: DataTypes.TEXT,
       defaultValue: null,
     },
-    senescyt_registration_n: {
+    senescytRegistrationN: {
       type: DataTypes.TEXT,
       defaultValue: null,
     },
@@ -53,7 +53,7 @@ export const TeachingExperience = sequelize.define(
       primaryKey: true,
       autoIncrement: true,
     },
-    educational_institution: {
+    educationalInstitution: {
       type: DataTypes.TEXT,
       defaultValue: null,
     },
@@ -61,11 +61,11 @@ export const TeachingExperience = sequelize.define(
       type: DataTypes.TEXT,
       defaultValue: null,
     },
-    start_date: {
+    startDate: {
       type: DataTypes.DATEONLY,
       defaultValue: null,
     },
-    end_date: {
+    endDate: {
       type: DataTypes.DATEONLY,
       defaultValue: null,
     },
@@ -103,7 +103,7 @@ export const CoursesWorkshops = sequelize.define(
       type: DataTypes.TEXT,
       defaultValue: null,
     },
-    organized_by: {
+    organizedBy: {
       type: DataTypes.TEXT,
       defaultValue: null,
     },
@@ -115,15 +115,15 @@ export const CoursesWorkshops = sequelize.define(
       type: DataTypes.TEXT,
       defaultValue: null,
     },
-    start_date: {
+    startDate: {
       type: DataTypes.TEXT,
       defaultValue: null,
     },
-    end_date: {
+    endDate: {
       type: DataTypes.TEXT,
       defaultValue: null,
     },
-    type_participation: {
+    typeParticipation: {
       type: DataTypes.TEXT,
       defaultValue: null,
     },
@@ -149,7 +149,7 @@ export const IntellectualProduction = sequelize.define(
       type: DataTypes.TEXT,
       defaultValue: null,
     },
-    type_authorship: {
+    typeAuthorship: {
       type: DataTypes.TEXT,
       defaultValue: null,
     },
@@ -157,7 +157,7 @@ export const IntellectualProduction = sequelize.define(
       type: DataTypes.TEXT,
       defaultValue: null,
     },
-    web_link: {
+    webLink: {
       type: DataTypes.TEXT,
       defaultValue: null,
     },
@@ -175,7 +175,7 @@ export const Books = sequelize.define(
       primaryKey: true,
       autoIncrement: true,
     },
-    tittle: {
+    title: {
       type: DataTypes.TEXT,
       defaultValue: null,
     },
@@ -183,19 +183,19 @@ export const Books = sequelize.define(
       type: DataTypes.TEXT,
       defaultValue: null,
     },
-    type_authorship: {
+    typeAuthorship: {
       type: DataTypes.TEXT,
       defaultValue: null,
     },
-    isb_n: {
+    isbN: {
       type: DataTypes.TEXT,
       defaultValue: null,
     },
-    editoral_name: {
+    editoralName: {
       type: DataTypes.TEXT,
       defaultValue: null,
     },
-    editoral_origin: {
+    editoralOrigin: {
       type: DataTypes.TEXT,
       defaultValue: null,
     },
@@ -229,7 +229,7 @@ export const AcademicProfessionalMerits = sequelize.define(
       type: DataTypes.TEXT,
       defaultValue: null,
     },
-    granted_by: {
+    grantedBy: {
       type: DataTypes.TEXT,
       defaultValue: null,
     },
@@ -259,19 +259,19 @@ export const Languages = sequelize.define(
       type: DataTypes.TEXT,
       defaultValue: null,
     },
-    type_certification: {
+    typeCertification: {
       type: DataTypes.TEXT,
       defaultValue: null,
     },
-    speaking_level: {
+    speakingLevel: {
       type: DataTypes.TEXT,
       defaultValue: null,
     },
-    writing_level: {
+    writingLevel: {
       type: DataTypes.TEXT,
       defaultValue: null,
     },
-    comprehension_level: {
+    comprehensionLevel: {
       type: DataTypes.TEXT,
       defaultValue: null,
     },
@@ -293,7 +293,7 @@ export const ProfessionalExperience = sequelize.define(
       type: DataTypes.STRING(11),
       defaultValue: null,
     },
-    company_institution: {
+    companyInstitution: {
       type: DataTypes.STRING(50),
       defaultValue: null,
     },
@@ -305,7 +305,7 @@ export const ProfessionalExperience = sequelize.define(
       type: DataTypes.STRING(50),
       defaultValue: null,
     },
-    immediate_head: {
+    immediateHead: {
       type: DataTypes.STRING(50),
       defaultValue: null,
     },
@@ -313,11 +313,11 @@ export const ProfessionalExperience = sequelize.define(
       type: DataTypes.STRING(10),
       defaultValue: null,
     },
-    start_date: {
+    startDate: {
       type: DataTypes.DATEONLY,
       defaultValue: null,
     },
-    end_date: {
+    endDate: {
       type: DataTypes.DATEONLY,
       defaultValue: null,
     },
