@@ -68,7 +68,7 @@ router.delete(
 router.post("/addBooks", addBooks);
 router.get("/getAllBooks", getAllBooks);
 router.put("/editBooks/:bookId", editBooks);
-router.delete("/deleteBooks/:taskId", deleteBooks);
+router.delete("/deleteBooks/:bookId", deleteBooks);
 
 router.post("/addAcademicProfessionalMerits", addAcademicProfessionalMerits);
 router.get(
@@ -80,14 +80,14 @@ router.put(
   editAcademicProfessionalMerits
 );
 router.delete(
-  "/deleteAcademicProfessionalMerits/:taskId",
+  "/deleteAcademicProfessionalMerits/:meritId",
   deleteAcademicProfessionalMerits
 );
 
 router.post("/addLanguages", addLanguages);
 router.get("/getAllLanguages", getAllLanguages);
-router.put("/editLanguages/:idLanguage", editLanguages);
-router.delete("/deleteLanguages/:taskId", deleteLanguages);
+router.put("/editLanguages/:languageId", editLanguages);
+router.delete("/deleteLanguages/:languageId", deleteLanguages);
 
 router.post("/addProfessionalExperience", addProfessionalExperience);
 router.get("/getAllProfessionalExperience", getAllProfessionalExperience);
@@ -96,7 +96,7 @@ router.put(
   editProfessionalExperience
 );
 router.delete(
-  "/deleteProfessionalExperience/:taskId",
+  "/deleteProfessionalExperience/:experienceId",
   deleteProfessionalExperience
 );
 

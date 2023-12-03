@@ -36,11 +36,11 @@ export const editProfessionalExperience = async (req, res) => {
   }
 };
 export const deleteProfessionalExperience = async (req, res) => {
-  const taskId = req.params.taskId;
+  const experienceId = req.params.experienceId;
   try {
     const updatedProfessionalExperience = await ProfessionalExperience.destroy({
       where: {
-        id: taskId,
+        id: experienceId,
       },
     });
     res.json({ message: "Eliminado con Exito" });
@@ -71,7 +71,7 @@ export const editLanguages = async (req, res) => {
   try {
     const updatedLanguages = await Languages.update(
       newData, // Aquí defines los campos y sus nuevos valores a actualizar
-      req.params.idLanguages // Aquí estableces la condición para la actualización
+      req.params.languageId // Aquí estableces la condición para la actualización
     );
     res.json({ message: "Editado con éxito" });
   } catch (error) {
@@ -81,11 +81,11 @@ export const editLanguages = async (req, res) => {
   }
 };
 export const deleteLanguages = async (req, res) => {
-  const taskId = req.params.taskId;
+  const languageId = req.params.languageId;
   try {
     const updatedLanguages = await Languages.destroy({
       where: {
-        id: taskId,
+        id: languageId,
       },
     });
     res.json({ message: "Eliminado con Exito" });
@@ -127,12 +127,12 @@ export const editAcademicProfessionalMerits = async (req, res) => {
   }
 };
 export const deleteAcademicProfessionalMerits = async (req, res) => {
-  const taskId = req.params.taskId;
+  const meritId = req.params.meritId;
   try {
     const updatedAcademicProfessionalMerits =
       await AcademicProfessionalMerits.destroy({
         where: {
-          id: taskId,
+          id: meritId,
         },
       });
     res.json({ message: "Eliminado con Exito" });
@@ -352,11 +352,11 @@ export const editBooks = async (req, res) => {
   }
 };
 export const deleteBooks = async (req, res) => {
-  const taskId = req.params.taskId;
+  const bookId = req.params.bookId;
   try {
     const updatedBooks = await Books.destroy({
       where: {
-        id: taskId,
+        id: bookId,
       },
     });
     res.json({ message: "Eliminado con Exito" });
