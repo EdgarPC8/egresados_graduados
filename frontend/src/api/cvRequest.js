@@ -2,7 +2,6 @@ import axios from "./axios.js";
 
 export const getAllAcademicTraining = async () =>
   await axios.get("/cv/getAllAcademicTraining");
-
 export const addAcademicTraining = async (data) =>
   await axios.post("/cv/addAcademicTraining", data);
 
@@ -38,7 +37,6 @@ export const deleteLanguages = async (data) =>
 
 export const getAllAcademicProfessionalMerits = async () =>
   await axios.get("/cv/getAllAcademicProfessionalMerits");
-
 export const addAcademicProfessionalMerits = async (data) =>
   await axios.post("/cv/addAcademicProfessionalMerits", data);
 
@@ -66,13 +64,11 @@ export const addIntellectualProduction = async (id, data) =>
 
 export const editIntellectualProduction = async (data) =>
   await axios.put("/cv/editIntellectualProduction", data);
-
 export const deleteIntellectualProduction = async (data) =>
   await axios.delete(`/cv/deleteIntellectualProduction/${data}`);
 
 export const getAllCoursesWorkshops = async () =>
   await axios.get("/cv/getAllCoursesWorkshops");
-
 export const addCoursesWorkshops = async (data) =>
   await axios.post("/cv/addCoursesWorkshops", data);
 

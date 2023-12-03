@@ -1,4 +1,3 @@
-import React, { useState } from "react";
 import {
   Box,
   Heading,
@@ -32,22 +31,196 @@ import {
   FormLabel,
   Checkbox,
 } from "@chakra-ui/react";
-
+import { useEffect, useState, useRef } from "react";
+import { addResponses, getAllResponses, editResponses, deleteResponses } from "../api/quizResquest.js";
+import DataTable from "../components/DataTables";
+import Modal from "../components/AlertDialog";
 
 
 function ResumeForm() {
-  const [name, setName] = useState("");
-  // ... (resto de los estados)
+
+  const form = useRef(null);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    // Lógica para enviar los datos del formulario
-    console.log("Nombre:", name);
-    // ... (resto de los datos)
-  };
+    const formData = Object.fromEntries(new FormData(e.target));
+    
+    const encuesta ={
+      idQuiz:1,
+      userId:null,
+      Questions:[
+        {
+          idQuestion:1,
+          textResponse:formData.question1,
+        },
+        {
+          idQuestion:2,
+          textResponse:formData.question2,
+        },
+        {
+          idQuestion:3,
+          textResponse:formData.question3,
+        },
+        {
+          idQuestion:4,
+          textResponse:formData.question4,
+        },
+        {
+          idQuestion:5,
+          textResponse:formData.question5,
+        },
+        {
+          idQuestion:6,
+          textResponse:formData.question6,
+        },
+        {
+          idQuestion:7,
+          textResponse:formData.question7,
+        },
+        {
+          idQuestion:8,
+          textResponse:formData.question8,
+        },
+        {
+          idQuestion:9,
+          textResponse:formData.question9,
+        },
+        {
+          idQuestion:10,
+          textResponse:formData.question10,
+          idOption:formData.questionOption10,
+        },
+        {
+          idQuestion:11,
+          textResponse:formData.question11,
+          idOption:formData.questionOption11,
+        },
+        {
+          idQuestion:12,
+          textResponse:formData.question12,
+        },
+        {
+          idQuestion:13,
+          textResponse:formData.question13,
+          idOption:formData.questionOption13,
+        },
+        {
+          idQuestion: 14,
+          checkOptions: (() => {
+            const checkValues = [];
+            for (let i = 0; i <= 9; i++) {
+              const value = formData[`question14Option${i}`];
+              if (value) {
+                checkValues.push({ value});
+              }
+            }
+            return checkValues;
+          })(), // <-- Ejecutar la función inmediatamente para obtener el array de valores
+        },
+        {
+          idQuestion:15,
+          textResponse:formData.question15,
+        },
+        {
+          idQuestion:16,
+          checkOptions: (() => {
+            const checkValues = [];
+            for (let i = 0; i <= 4; i++) {
+              const value = formData[`question16Option${i}`];
+              if (value) {
+                checkValues.push({ value});
+              }
+            }
+            return checkValues;
+          })(), // <-- Ejecutar la función inmediatamente para obtener el array de valores
+        },
+        {
+          idQuestion:17,
+          textResponse:formData.question17,
+        },
+        {
+          idQuestion:18,
+          textResponse:formData.question18,
+        },
+        {
+          idQuestion:19,
+          checkOptions: (() => {
+            const checkValues = [];
+            for (let i = 0; i <= 3; i++) {
+              const value = formData[`question19Option${i}`];
+              if (value) {
+                checkValues.push({ value});
+              }
+            }
+            return checkValues;
+          })(), // <-- Ejecutar la función inmediatamente para obtener el array de valores
+        },
+        {
+          idQuestion:20,
+          textResponse:formData.question20,
+        },
+        {
+          idQuestion:21,
+          textResponse:formData.question21,
+        },
+        {
+          idQuestion:22,
+          textResponse:formData.question22,
+        },
+        {
+          idQuestion:23,
+          textResponse:formData.question23,
+        },
+        {
+          idQuestion:24,
+          textResponse:formData.question24,
+        },
+        {
+          idQuestion:25,
+          textResponse:formData.question25,
+        },
+        {
+          idQuestion:26,
+          textResponse:formData.question26,
+        },
+        {
+          idQuestion:27,
+          textResponse:formData.question27,
+        },
+        {
+          idQuestion:28,
+          textResponse:formData.question28,
+        },
+        
+      ],
+      
+    }
+    console.log("------------------------------------")
 
+    encuesta.Questions.forEach((value) => {
+      if((value.textResponse || value.idOption)&& !value.checkOptions){
+        value["idQuiz"]=encuesta.idQuiz;
+        value["userId"]=encuesta.userId;
+        console.log(value)
+        addResponses(value); 
+
+      }else if(value.checkOptions){
+        value.checkOptions.forEach(element => {
+          addResponses({
+            idQuiz:encuesta.idQuiz,
+            idQuestion:value.idQuestion,
+            userId:encuesta.userId,
+            idOption:element.value,
+          }); 
+        });
+      }
+    });
+
+
+  };
   return (
-    <Box fontSize={50} mb={100}>
+    <form onSubmit={handleSubmit} ref={form}>
+      <Box fontSize={50} mb={100}>
       <Container maxW={"container.xl"}>
         <Grid gap={1} mt={2}>
           <GridItem>
@@ -143,7 +316,7 @@ function ResumeForm() {
               <GridItem fontSize={"sm"}>
                 <InputGroup mt={3}>
                   <InputLeftAddon w={150} children='Posee título' />
-                  <RadioGroup m={"auto"}>
+                  <RadioGroup m={"auto"} name="question1">
                     <Stack spacing={5} direction='row'>
                       <Radio colorScheme='green' value='Si'>
                         Si
@@ -160,7 +333,7 @@ function ResumeForm() {
               <GridItem fontSize={"sm"}>
                 <InputGroup>
                   <InputLeftAddon children='Carrera de la que Egresó' />
-                  <Input type='text' placeholder='Carrera de la que Egresó' />
+                  <Input type='text' placeholder='Carrera de la que Egresó' name="question2"/>
                 </InputGroup>
               </GridItem>
               <GridItem fontSize={"sm"}>
@@ -169,12 +342,7 @@ function ResumeForm() {
                   <Input type='text' placeholder='Lugar de Residencia Actual' />
                 </InputGroup>
               </GridItem>
-              <GridItem fontSize={"sm"}>
-                <InputGroup>
-                  <InputLeftAddon children='Lugar de residencia' />
-                  <Input type='text' placeholder='Lugar de residencia' />
-                </InputGroup>
-              </GridItem>
+            
             </Grid>
           </GridItem>
         </Grid>
@@ -191,8 +359,8 @@ function ResumeForm() {
               <GridItem fontSize={"sm"}>
                 <FormControl isRequired display="flex">
                   <FormLabel>Trabaja Actualmente:</FormLabel>
-                  <RadioGroup>
-                    <Stack spacing={5} direction='row'>
+                  <RadioGroup name="question3">
+                    <Stack spacing={5} direction='row' >
                       <Radio colorScheme='green' value='Si'>
                         Si
                       </Radio>
@@ -206,15 +374,15 @@ function ResumeForm() {
               <GridItem fontSize={"sm"}>
                 <FormControl display="flex">
                   <FormLabel>Tipo de Empresa:</FormLabel>
-                  <RadioGroup>
+                  <RadioGroup name="question4">
                     <Stack spacing={5} direction='row'>
-                      <Radio colorScheme='green' value='1'>
+                      <Radio colorScheme='green' value='Pública'>
                         Pública
                       </Radio>
-                      <Radio colorScheme='green' value='2'>
+                      <Radio colorScheme='green' value='Privada'>
                         Privada
                       </Radio>
-                      <Radio colorScheme='green' value='3'>
+                      <Radio colorScheme='green' value='Propia-familiar'>
                         Propia-familiar
                       </Radio>
                     </Stack>
@@ -227,25 +395,25 @@ function ResumeForm() {
               <GridItem fontSize={"sm"}>
                 <FormControl>
                   <FormLabel>Nombre de la Empresa:</FormLabel>
-                  <Input type='text' variant='flushed' placeholder='Nombre de la Empresa' />
+                  <Input type='text' variant='flushed' placeholder='Nombre de la Empresa'name="question5" />
                 </FormControl>
               </GridItem>
               <GridItem fontSize={"sm"}>
                 <FormControl>
                   <FormLabel>Dirección del trabajo:</FormLabel>
-                  <Input type='text' variant='flushed' placeholder='Dirección del trabajo' />
+                  <Input type='text' variant='flushed' placeholder='Dirección del trabajo' name="question6"/>
                 </FormControl>
               </GridItem>
               <GridItem fontSize={"sm"}>
                 <FormControl>
                   <FormLabel>Teléfono en el trabajo:</FormLabel>
-                  <Input type='text' variant='flushed' placeholder='Teléfono en el trabajo' />
+                  <Input type='text' variant='flushed' placeholder='Teléfono en el trabajo' name="question7"/>
                 </FormControl>
               </GridItem>
               <GridItem fontSize={"sm"}>
                 <FormControl display="flex">
                   <FormLabel>¿Su cargo tiene relación con su perfil profesional?</FormLabel>
-                  <RadioGroup>
+                  <RadioGroup name="question8">
                     <Stack spacing={5} direction='row'>
                       <Radio colorScheme='green' value='Si'>
                         Si
@@ -260,15 +428,15 @@ function ResumeForm() {
               <GridItem fontSize={"sm"}>
                 <FormControl display="flex">
                   <FormLabel>Tiempo de servicio en la empresa:</FormLabel>
-                  <RadioGroup>
+                  <RadioGroup name="question9">
                     <Stack spacing={5} direction='row'>
-                      <Radio colorScheme='green' value='1'>
+                      <Radio colorScheme='green' value='0-6 meses'>
                         0-6 meses
                       </Radio>
-                      <Radio colorScheme='green' value='2'>
+                      <Radio colorScheme='green' value='6 meses-año'>
                         6 meses-año
                       </Radio>
-                      <Radio colorScheme='green' value='3'>
+                      <Radio colorScheme='green' value='Más de un año'>
                         Más de un año
                       </Radio>
                     </Stack>
@@ -284,18 +452,18 @@ function ResumeForm() {
               <GridItem fontSize={"sm"}>
                 <FormControl>
                   <FormLabel>¿Cuál es su situación laboral actual?</FormLabel>
-                  <RadioGroup>
+                  <RadioGroup name="questionOption10">
                     <Stack spacing={5}>
-                      <Radio colorScheme='green' value='1'>
+                      <Radio colorScheme='green' value={'1'}>
                         Trabajo en un sector  relacionado a mi profesión
                       </Radio>
-                      <Radio colorScheme='green' value='2'>
+                      <Radio colorScheme='green' value={'2'}>
                         Trabajo en un sector no relacionado a mi profesión
                       </Radio>
-                      <Radio colorScheme='green' value='3'>
+                      <Radio colorScheme='green' value={'3'}>
                         Estoy  desempleado
                       </Radio>
-                      <Radio colorScheme='green' value='4'>
+                      <Radio colorScheme='green' value={'4'}>
                         Otros
                       </Radio>
                     </Stack>
@@ -305,7 +473,7 @@ function ResumeForm() {
               <GridItem fontSize={"sm"}>
                 <FormControl>
                   <FormLabel>Explique su respuesta:</FormLabel>
-                  <Textarea placeholder='Explique su respuesta' />
+                  <Textarea placeholder='Explique su respuesta' name="question10"/>
                 </FormControl>
               </GridItem>
             </Grid>
@@ -318,7 +486,7 @@ function ResumeForm() {
               <GridItem fontSize={"sm"}>
                 <FormControl>
                   <FormLabel>¿Cuándo empezó a trabajar?</FormLabel>
-                  <RadioGroup>
+                  <RadioGroup name="questionOption11">
                     <Stack spacing={5}>
                       <Radio colorScheme='green' value='1'>
                         Antes de graduarse
@@ -339,7 +507,7 @@ function ResumeForm() {
               <GridItem fontSize={"sm"}>
                 <FormControl>
                   <FormLabel>Área en la que desarrolla su actividad profesional actualmente:</FormLabel>
-                  <Textarea placeholder='Describa...' />
+                  <Textarea placeholder='Describa...' name="question11"/>
                 </FormControl>
               </GridItem>
             </Grid>
@@ -350,18 +518,18 @@ function ResumeForm() {
           <GridItem fontSize={"sm"}>
             <FormControl>
               <FormLabel>¿Cuál es la relación del trabajo que tiene con la carrera que estudió?</FormLabel>
-              <RadioGroup>
+              <RadioGroup name="question12">
                 <Stack spacing={5}>
-                  <Radio colorScheme='green' value='1'>
+                  <Radio colorScheme='green' value='Bastante'>
                     Bastante
                   </Radio>
-                  <Radio colorScheme='green' value='2'>
+                  <Radio colorScheme='green' value='Mediana'>
                     Mediana
                   </Radio>
-                  <Radio colorScheme='green' value='3'>
+                  <Radio colorScheme='green' value='Poca'>
                     Poca
                   </Radio>
-                  <Radio colorScheme='green' value='4'>
+                  <Radio colorScheme='green' value='Ninguna'>
                     Ninguna
                   </Radio>
                 </Stack>
@@ -373,7 +541,7 @@ function ResumeForm() {
           <GridItem fontSize={"sm"}>
             <FormControl>
               <FormLabel>¿Cuál fue el factor que más contribuyo para que consiguiera su primer empleo?</FormLabel>
-              <RadioGroup>
+              <RadioGroup name="questionOption13">
                 <Stack spacing={5}>
                   <Radio colorScheme='green' value='1'>
                     Título profesional
@@ -400,7 +568,7 @@ function ResumeForm() {
           <GridItem fontSize={"sm"}>
             <FormControl>
               <FormLabel>Especifique:</FormLabel>
-              <Textarea placeholder='Especifique...' />
+              <Textarea placeholder='Especifique...' name="question13"/>
             </FormControl>
           </GridItem>
         </Grid>
@@ -410,34 +578,34 @@ function ResumeForm() {
               <FormLabel>¿Qué  conocimientos y habilidades son las más relevantes para el desempeño de sus actividades laborales actuales? (Puede ser más de uno)</FormLabel>
               <RadioGroup>
                 <Stack spacing={5}>
-                  <Checkbox>
+                  <Checkbox value={15} name="question14Option0">
                     Gestiona, transfiere y desarrolla soluciones informáticas para ambientes corporativos
                   </Checkbox>
-                  <Checkbox>
+                  <Checkbox value={16} name="question14Option1">
                     Explora problemas y genera diseños y soluciones inteligentes de sistemas informáticos mediante análisis de tecnología y costos de software y hardware
                   </Checkbox>
-                  <Checkbox>
+                  <Checkbox value={17} name="question14Option2">
                     Conforma equipos, procesos y sistemas de desarrollo de tecnologías informáticas con destreza y habilidad
                   </Checkbox>
-                  <Checkbox>
+                  <Checkbox value={18} name="question14Option3">
                     Conocimiento del lenguaje especializado de la ciencia
                   </Checkbox>
-                  <Checkbox>
+                  <Checkbox value={19} name="question14Option4">
                     Conoce los procedimientos de desarrollo, implementación y adecuación de medios informáticos
                   </Checkbox>
-                  <Checkbox>
+                  <Checkbox value={20} name="question14Option5">
                     Habilidad de trabajo en equipo y pro actividad, para adaptarse a los avances
                   </Checkbox>
-                  <Checkbox>
+                  <Checkbox value={21} name="question14Option6">
                     científicos y al desarrollo tecnológico.
                   </Checkbox>
-                  <Checkbox>
+                  <Checkbox value={22} name="question14Option7">
                     Conoce la importancia de la investigación en su propio proceso de formación
                   </Checkbox>
-                  <Checkbox>
+                  <Checkbox value={23} name="question14Option8">
                     Afronta y actúa con confianza y seguridad el análisis y la solución de problemas que se encuentran en la profesión
                   </Checkbox>
-                  <Checkbox>
+                  <Checkbox value={24} name="question14Option9">
                     Participa en procesos emprendedores
                   </Checkbox>
                 </Stack>
@@ -449,21 +617,21 @@ function ResumeForm() {
           <GridItem fontSize={"sm"}>
             <FormControl>
               <FormLabel>¿Cuál es su percepción general de los/las profesionales del ITSFMS?</FormLabel>
-              <RadioGroup>
+              <RadioGroup name="question15">
                 <Stack spacing={5} direction={{ base: "column", md: "row" }}>
-                  <Radio colorScheme='green' value='1'>
+                  <Radio colorScheme='green' value='Excelente'>
                     Excelente
                   </Radio>
-                  <Radio colorScheme='green' value='2'>
+                  <Radio colorScheme='green' value='Muy buena'>
                     Muy buena
                   </Radio>
-                  <Radio colorScheme='green' value='3'>
+                  <Radio colorScheme='green' value='Buena'>
                     Buena
                   </Radio>
-                  <Radio colorScheme='green' value='4'>
+                  <Radio colorScheme='green' value='Regular'>
                     Regular
                   </Radio>
-                  <Radio colorScheme='green' value='5'>
+                  <Radio colorScheme='green' value='Mala'>
                     Mala
                   </Radio>
                 </Stack>
@@ -479,35 +647,33 @@ function ResumeForm() {
               <GridItem fontSize={"sm"}>
                 <FormControl>
                   <FormLabel>Carrera:</FormLabel>
-                  <Input type='text' variant='flushed' placeholder='Carrera' />
+                  <Input type='text' variant='flushed' placeholder='Carrera' name="question17"/>
                 </FormControl>
               </GridItem>
               <GridItem fontSize={"sm"}></GridItem>
-              <RadioGroup>
                 <Stack spacing={5}>
-                  <Checkbox>
+                  <Checkbox name="question16Option0"value={25}>
                     Falta de actualización en nuevos temas
                   </Checkbox>
-                  <Checkbox>
+                  <Checkbox name="question16Option1"value={26}>
                     Enseñanza de aplicaciones tecnológicas
                   </Checkbox>
-                  <Checkbox>
+                  <Checkbox name="question16Option2"value={27}>
                     Actualización de los nuevos programas en software
                   </Checkbox>
-                  <Checkbox>
+                  <Checkbox name="question16Option3"value={28}>
                     Capacitar continuamente al personal docente
                   </Checkbox>
-                  <Checkbox>
+                  <Checkbox name="question16Option4"value={29}>
                     Otros
                   </Checkbox>
                 </Stack>
-              </RadioGroup>
             </FormControl>
           </GridItem>
           <GridItem fontSize={"sm"}>
             <FormControl>
               <FormLabel>Especifique:</FormLabel>
-              <Textarea placeholder='Especifique...' />
+              <Textarea placeholder='Especifique...' name="question18"/>
             </FormControl>
           </GridItem>
         </Grid>
@@ -518,21 +684,21 @@ function ResumeForm() {
               <GridItem fontSize={"sm"}>
                 <FormControl>
                   <FormLabel>Carrera:</FormLabel>
-                  <Input type='text' variant='flushed' placeholder='Carrera' />
+                  <Input type='text' variant='flushed' placeholder='Carrera' name="question20"/>
                 </FormControl>
               </GridItem>
               <GridItem fontSize={"sm"}>
                 <Stack spacing={5}>
-                  <Checkbox>
+                  <Checkbox value={30} name="question19Option0">
                     Cursos de capacitación y actualización
                   </Checkbox>
-                  <Checkbox>
+                  <Checkbox value={31} name="question19Option1">
                     Hacer reuniones anuales de egresados
                   </Checkbox>
-                  <Checkbox>
+                  <Checkbox value={32} name="question19Option2">
                     Tener acceso a un directorio
                   </Checkbox>
-                  <Checkbox>
+                  <Checkbox value={33} name="question19Option3">
                     Otros
                   </Checkbox>
                 </Stack>
@@ -542,7 +708,7 @@ function ResumeForm() {
           <GridItem fontSize={"sm"}>
             <FormControl>
               <FormLabel>Especifique:</FormLabel>
-              <Textarea placeholder='Especifique...' />
+              <Textarea placeholder='Especifique...' name="question21"/>
             </FormControl>
           </GridItem>
         </Grid>
@@ -551,7 +717,7 @@ function ResumeForm() {
           <GridItem fontSize={"sm"} colSpan={{ base: 1, md: 2 }}>
             <FormControl display="flex">
               <FormLabel>¿Ha realizado usted estudios posteriores? </FormLabel>
-              <RadioGroup>
+              <RadioGroup name="question22">
                 <Stack spacing={5} direction='row'>
                   <Radio colorScheme='green' value='Si'>
                     Si
@@ -566,24 +732,24 @@ function ResumeForm() {
           <GridItem fontSize={"sm"}>
             <FormControl>
               <FormLabel>Carrera:</FormLabel>
-              <Input type='text' variant='flushed' placeholder='Carrera' />
+              <Input type='text' variant='flushed' placeholder='Carrera' name="question23"/>
             </FormControl>
           </GridItem>
           <GridItem fontSize={"sm"}>
             <FormControl>
               <FormLabel>Centro de Estudio:</FormLabel>
-              <Input type='text' variant='flushed' placeholder='Centro de Estudio' />
+              <Input type='text' variant='flushed' placeholder='Centro de Estudio' name="question24"/>
             </FormControl>
           </GridItem>
           <GridItem fontSize={"sm"}>
             <FormControl>
               <FormLabel>Año de titulación:</FormLabel>
-              <Input type='text' variant='flushed' placeholder='Año de titulación' />
+              <Input type='text' variant='flushed' placeholder='Año de titulación' name="question25"/>
             </FormControl>
           </GridItem>
           <GridItem fontSize={"sm"}>
             <Stack spacing={5}>
-              <Checkbox>
+              <Checkbox name="question26" value={"En Curso"}>
                 En Curso
               </Checkbox>
             </Stack>
@@ -593,53 +759,53 @@ function ResumeForm() {
           <GridItem fontSize={"sm"}>
             <FormControl>
               <FormLabel>¿A qué actividades económicas se dedica la institución o empresa en la que trabaja? </FormLabel>
-              <RadioGroup display={{ base: "", md: "flex" }} >
+              <RadioGroup display={{ base: "", md: "flex" }} name="question27">
                 <Stack spacing={5} flex="1">
-                  <Radio colorScheme='green' value='1'>
+                  <Radio colorScheme='green' value='Alimentos fresco y procesados'>
                     Alimentos fresco y procesados
                   </Radio>
-                  <Radio colorScheme='green' value='2'>
+                  <Radio colorScheme='green' value='Productos forestales de madera'>
                     Productos forestales de madera
                   </Radio>
-                  <Radio colorScheme='green' value='3'>
+                  <Radio colorScheme='green' value='Biotecnología (bioquímica y biomedicina)'>
                     Biotecnología (bioquímica y biomedicina)
                   </Radio>
-                  <Radio colorScheme='green' value='4'>
+                  <Radio colorScheme='green' value='Servicios ambientales'>
                     Servicios ambientales
                   </Radio>
-                  <Radio colorScheme='green' value='5'>
+                  <Radio colorScheme='green' value='Confecciones y calzado'>
                     Confecciones y calzado
                   </Radio>
-                  <Radio colorScheme='green' value='6'>
+                  <Radio colorScheme='green' value='Tecnología (software, hardware y servicios informáticos)'>
                     Tecnología (software, hardware y servicios informáticos)
                   </Radio>
-                  <Radio colorScheme='green' value='7'>
+                  <Radio colorScheme='green' value='Energías renovables'>
                     Energías renovables
                   </Radio>
-                  <Radio colorScheme='green' value='15'>
+                  <Radio colorScheme='green' value='1Otros'>
                     Otros
                   </Radio>
                 </Stack>
                 <Stack spacing={5} flex="1">
-                  <Radio colorScheme='green' value='8'>
+                  <Radio colorScheme='green' value='Vehículos, automotores, carrocerías y partes'>
                     Vehículos, automotores, carrocerías y partes
                   </Radio>
-                  <Radio colorScheme='green' value='9'>
+                  <Radio colorScheme='green' value='Industria farmacéutica'>
                     Industria farmacéutica
                   </Radio>
-                  <Radio colorScheme='green' value='10'>
+                  <Radio colorScheme='green' value='1Construcción'>
                     Construcción
                   </Radio>
-                  <Radio colorScheme='green' value='11'>
+                  <Radio colorScheme='green' value='1Metalmecánica'>
                     Metalmecánica
                   </Radio>
-                  <Radio colorScheme='green' value='12'>
+                  <Radio colorScheme='green' value='1Transporte y logística'>
                     Transporte y logística
                   </Radio>
-                  <Radio colorScheme='green' value='13'>
+                  <Radio colorScheme='green' value='1Petroquímica'>
                     Petroquímica
                   </Radio>
-                  <Radio colorScheme='green' value='14'>
+                  <Radio colorScheme='green' value='1Turismo'>
                     Turismo
                   </Radio>
 
@@ -652,12 +818,12 @@ function ResumeForm() {
           <GridItem fontSize={"sm"}>
             <FormControl>
               <FormLabel>En su desempeño laboral que tan necesario es el dominio del idioma inglés</FormLabel>
-              <RadioGroup>
+              <RadioGroup name="question28"> 
                 <Stack spacing={5}>
-                  <Radio colorScheme='green' value='1'>
+                  <Radio colorScheme='green' value='Indispensable'>
                   Indispensable	
                   </Radio>
-                  <Radio colorScheme='green' value='2'>
+                  <Radio colorScheme='green' value='No indispensable'>
                   No indispensable	
                   </Radio>
                 </Stack>
@@ -667,6 +833,20 @@ function ResumeForm() {
         </Grid>
       </Container>
     </Box>
+    <Button
+      position="fixed"
+      bottom={4}
+      right={4}
+      colorScheme="blue"
+      size="lg"
+      zIndex="tooltip"
+      type="submit"
+    >
+      Enviar Encuesta
+    </Button>
+
+    </form>
+    
   );
 }
 

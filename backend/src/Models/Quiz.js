@@ -83,8 +83,8 @@ const Responses = sequelize.define(
   }
 );
 // tipo de preguntas
-const Question_types = sequelize.define(
-  "question_types",
+const QuestionTypes = sequelize.define(
+  "questionTypes",
   {
     idQuestionType: {
       type: DataTypes.INTEGER,
@@ -132,11 +132,11 @@ const Quiz = sequelize.define(
 Quiz.hasMany(Questions, { foreignKey: "idQuiz", sourceKey: "idQuiz" });
 Questions.belongsTo(Quiz, { foreignKey: "idQuiz", sourceKey: "idQuiz" });
 
-Question_types.hasMany(Questions, {
+QuestionTypes.hasMany(Questions, {
   foreignKey: "idQuestionType",
   sourceKey: "idQuestionType",
 });
-Questions.belongsTo(Question_types, {
+Questions.belongsTo(QuestionTypes, {
   foreignKey: "idQuestionType",
   sourceKey: "idQuestionType",
 });
@@ -161,7 +161,6 @@ Responses.belongsTo(Questions, {
   foreignKey: "idQuestion",
   sourceKey: "idQuestion",
 });
-
 Options.hasMany(Responses, { foreignKey: "idOption", sourceKey: "idOption" });
 Responses.belongsTo(Options, {
   foreignKey: "idOption",
