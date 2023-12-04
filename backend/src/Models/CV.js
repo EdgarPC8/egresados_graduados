@@ -191,11 +191,11 @@ export const Books = sequelize.define(
       type: DataTypes.TEXT,
       defaultValue: null,
     },
-    editoralName: {
+    editorialName: {
       type: DataTypes.TEXT,
       defaultValue: null,
     },
-    editoralOrigin: {
+    editorialOrigin: {
       type: DataTypes.TEXT,
       defaultValue: null,
     },
