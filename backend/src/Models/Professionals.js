@@ -34,19 +34,19 @@ export const Professionals = sequelize.define(
       allowNull: false, // No permite valores nulos
       unique: true, // Hace que el campo sea único
     },
-    firstname: {
+    firstName: {
       type: DataTypes.STRING(50),
       defaultValue: null,
     },
-    secondname: {
+    secondName: {
       type: DataTypes.STRING(50),
       defaultValue: null,
     },
-    firstLastname: {
+    firstLastName: {
       type: DataTypes.STRING(50),
       defaultValue: null,
     },
-    secondLastname: {
+    secondLastName: {
       type: DataTypes.STRING(50),
       defaultValue: null,
     },

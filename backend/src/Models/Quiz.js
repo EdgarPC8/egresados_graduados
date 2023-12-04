@@ -167,4 +167,4 @@ Responses.belongsTo(Options, {
   sourceKey: "idOption",
 });
 
-export { Quiz, Question_types, Questions, Options, Responses };
+export { Quiz, QuestionTypes, Questions, Options, Responses };
