@@ -285,12 +285,12 @@ function FormCourses() {
             keyValues={[
               "type",
               "name",
-              "organized_by",
+              "organizedBy",
               "place",
               "duration",
-              "start_date",
-              "end_date",
-              "type_participation",
+              "startDate",
+              "endDate",
+              "typeParticipation",
             ]}
             data={datosCoursesWorkshops}
             title="Cursos"

@@ -266,7 +266,7 @@ function FormAcademicTraining() {
             ]}
             keyValues={[
               "type",
-              "obtainedTittle",
+              "obtainedTitle",
               "educationalInstitution",
               "date",
               "place",

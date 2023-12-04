@@ -89,7 +89,13 @@ function LoginPage() {
                     <FormLabel htmlFor="email">Correo</FormLabel>
                     <Input id="email" name="email" />
                   </FormControl>
-                  <PasswordInput />
+                  <FormControl>
+                    <FormLabel>Contraseña</FormLabel>
+                    <PasswordInput
+                      labelText="Contraseña"
+                      nameInput="password"
+                    />
+                  </FormControl>
                   <FormControl>
                     <FormLabel htmlFor="roles">Roles disponibles</FormLabel>
                     <Select placeholder="Seleccione un rol" name="rol">
@@ -101,6 +107,7 @@ function LoginPage() {
                     </Select>
                   </FormControl>
                 </Stack>
+              </Stack>
                 <Button
                   bg="primary.200"
                   color="white"
@@ -111,7 +118,6 @@ function LoginPage() {
                 >
                   Iniciar Sesión
                 </Button>
-              </Stack>
             </form>
           </Box>
         </Stack>

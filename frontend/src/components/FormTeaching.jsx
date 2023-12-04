@@ -261,10 +261,10 @@ function FormTeaching() {
               "Acción",
             ]}
             keyValues={[
-              "educational_institution",
+              "educationalInstitution",
               "subject",
-              "start_date",
-              "end_date",
+              "startDate",
+              "endDate",
               "modality",
               "place",
               "country",

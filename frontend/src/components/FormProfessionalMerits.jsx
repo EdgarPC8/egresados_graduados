@@ -248,7 +248,7 @@ function FormProfessionalMerits() {
               "name",
               "date",
               "type",
-              "granted_by",
+              "grantedBy",
               "country",
               "location",
             ]}

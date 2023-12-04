@@ -27,7 +27,7 @@ const NavLink = (props) => {
     <Box
       px={2}
       py={1}
-      rounded={"md"}
+      rounded="md"
       _hover={{
         textDecoration: "none",
         bg: "bg.200",
@@ -67,7 +67,6 @@ const Navbar = () => {
       name: "Curriculos",
       path: "/curriculos",
     },
-    
   ];
 
   const { isAuthenticated, logout } = useAuth();
@@ -75,7 +74,7 @@ const Navbar = () => {
   const { isOpen, onOpen, onClose } = useDisclosure();
   return (
     <>
-      <Box p={2} bg="bg.100">
+      <Box p={2}>
         <Flex alignItems="center" justifyContent={"space-between"}>
           <HStack spacing={8} alignItems={"center"}>
             <IconButton

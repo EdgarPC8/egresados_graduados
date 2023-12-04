@@ -1,5 +1,4 @@
-import { extendTheme } from '@chakra-ui/react';
-
+import { extendTheme } from "@chakra-ui/react";
 
 /*
         --primary-100:#3F51B5;
@@ -16,26 +15,27 @@ import { extendTheme } from '@chakra-ui/react';
       
 */
 const theme = extendTheme({
-    colors: {
-      primary: {
-        100: '#3F51B5',
-        200: '#757de8',
-        300: '#dedeff',
-      },
-      accent: {
-        100: '#FF4081',
-        200: '#ffe4ff',
-      },
-      text: {
-        100: '#212121',
-        200: '#484848',
-      },
-      bg: {
-        100: '#F5F5F5',
-        200: '#ebebeb',
-        300: '#c2c2c2',
-      },
+  colors: {
+    primary: {
+      100: "#3F51B5",
+      200: "#757de8",
+      300: "#dedeff",
     },
-  });
+    accent: {
+      100: "#FF4081",
+      200: "#ffe4ff",
+    },
+    text: {
+      100: "#212121",
+      200: "#484848",
+      300: "#344767",
+    },
+    bg: {
+      100: "#f8f9fa",
+      200: "#ebebeb",
+      300: "#c2c2c2",
+    },
+  },
+});
 
 export default theme;

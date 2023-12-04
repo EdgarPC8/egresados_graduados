@@ -30,7 +30,7 @@ export const addLanguages = async (data) =>
   await axios.post("/cv/addLanguages", data);
 
 export const editLanguages = async (id, data) =>
-  await axios.put(`cv/editLanguages/${id}`, data);
+  await axios.put(`/cv/editLanguages/${id}`, data);
 
 export const deleteLanguages = async (data) =>
   await axios.delete(`/cv/deleteLanguages/${data}`);
@@ -60,7 +60,7 @@ export const getAllIntellectualProduction = async () =>
   await axios.get("/cv/getAllIntellectualProduction");
 
 export const addIntellectualProduction = async (id, data) =>
-  await axios.post(`cv/addIntellectualProduction/${id}`, data);
+  await axios.post(`/cv/addIntellectualProduction/${id}`, data);
 
 export const editIntellectualProduction = async (data) =>
   await axios.put("/cv/editIntellectualProduction", data);
