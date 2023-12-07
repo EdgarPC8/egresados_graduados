@@ -44,7 +44,7 @@ function FormAcademicTraining() {
 
   function clear() {
     setIsEditing(false);
-    setId(0);
+    setId(false);
     setFormAcademic(initialFormAcademic);
   }
 
@@ -56,6 +56,8 @@ function FormAcademicTraining() {
       console.error("Error al obtener datos académicos:", error);
     }
   }
+
+  
   const handleSubmit = async (event) => {
     event.preventDefault();
     try {
@@ -266,7 +268,7 @@ function FormAcademicTraining() {
             ]}
             keyValues={[
               "type",
-              "obtainedTittle",
+              "obtainedTitle",
               "educationalInstitution",
               "date",
               "place",

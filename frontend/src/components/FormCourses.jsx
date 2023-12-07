@@ -27,7 +27,7 @@ import Modal from "../components/AlertDialog";
 
 function FormCourses() {
   const initialFormCourses = {
-    starDate: "",
+    startDate: "",
     endDate: "",
     place: "",
     type: "",
@@ -75,13 +75,14 @@ function FormCourses() {
   };
 
   const handleChange = (event) => {
-    const { name, value } = event.target;
-    setFormCourse({ ...formCourse, [name]: value });
+    // const { name, value } = event.target;
+    console.log(event.target)
+    // setFormCourse({ ...formCourse, [name]: value });
   };
 
   const handleEditRow = (row, event) => {
     const {
-      starDate,
+      startDate,
       endDate,
       place,
       type,
@@ -95,7 +96,7 @@ function FormCourses() {
     setId(row.id);
 
     setFormCourse({
-      starDate,
+      startDate,
       endDate,
       place,
       type,
@@ -150,7 +151,7 @@ function FormCourses() {
                   size="md"
                   type="date"
                   name="startDate"
-                  value={formCourse.starDate}
+                  value={formCourse.startDate}
                   onChange={handleChange}
                 />
               </InputGroup>
@@ -288,8 +289,8 @@ function FormCourses() {
               "organized_by",
               "place",
               "duration",
-              "start_date",
-              "end_date",
+              "startDate",
+              "endDate",
               "type_participation",
             ]}
             data={datosCoursesWorkshops}

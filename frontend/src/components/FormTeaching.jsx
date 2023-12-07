@@ -253,8 +253,8 @@ function FormTeaching() {
             header={[
               "Institución",
               "Materia",
-              "Fecha",
-              "Fecha",
+              "Fecha Inicio",
+              "Fecha Fin",
               "Modalidad",
               "Lugar",
               "País",
@@ -263,8 +263,8 @@ function FormTeaching() {
             keyValues={[
               "educational_institution",
               "subject",
-              "start_date",
-              "end_date",
+              "startDate",
+              "endDate",
               "modality",
               "place",
               "country",

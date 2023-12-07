@@ -1,7 +1,4 @@
 
-
-
-
 export const Usuario = {
     cuentas:
         [
@@ -14,7 +11,7 @@ export const Usuario = {
             ],
             ['1104661598', '$2b$10$p49gCto6b2liCqoQoSMDyu8/EmT1t3cwJe6HALeZNgXxZHx7rJMRu', [1, 2], {
                 userData: { ci: 1104661598, firstName: 'Edgar', secondName: 'Patricio', firstLastName: 'Torres', secondLastName: 'Condolo' },
-                professionals: { ci: 1104661598, firstName: 'Edgar', secondName: 'Patricio', firstLastName: 'Torres', secondLastName: 'Condolo', birthDate: '2000-07-05', gender: 'M', direction: 'Cariamanga', homePhone: '', cellPhone: '(593) 96-923-9601', personalEmail: 'adgarortegapc8@gmail.com', institutionalEmail: 'ep_torres@marianosamaniego.edu.ec', image: 'assets/fotos_perfil/124.jpg', },
+                professionals: { ci: 1104661598, firstName: 'Edgar', secondName: 'Patricio', firstLastName: 'Torres', secondLastName: 'Condolo', birthDate: '2000-07-05', gender: 'M', direction: 'Cariamanga', homePhone: '', cellPhone: '(593) 96-923-9601', personalEmail: 'edgartorrespc8@gmail.com', institutionalEmail: 'ep_torres@marianosamaniego.edu.ec', image: 'assets/fotos_perfil/124.jpg', },
             }
             ],
             ['1104765209', '$2b$10$p49gCto6b2liCqoQoSMDyu8/EmT1t3cwJe6HALeZNgXxZHx7rJMRu', [2], {

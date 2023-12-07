@@ -6,7 +6,7 @@ export const addAcademicTraining = async (data) =>
   await axios.post("/cv/addAcademicTraining", data);
 
 export const editAcademicTraining = async (id, data) =>
-  await axios.put(`/cv/editAcademicTraining${id}`, data);
+  await axios.put(`/cv/editAcademicTraining/${id}`, data);
 
 export const deleteAcademicTraining = async (data) =>
   await axios.delete(`/cv/deleteAcademicTraining/${data}`);

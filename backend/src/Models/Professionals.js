@@ -70,7 +70,7 @@ export const Professionals = sequelize.define(
       type: DataTypes.STRING(50),
       defaultValue: null,
     },
-    placebBirth: {
+    placeBirth: {
       type: DataTypes.STRING(100),
       defaultValue: null,
     },
