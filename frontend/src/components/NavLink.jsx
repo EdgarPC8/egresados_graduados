@@ -1,4 +1,4 @@
-import { Box, Button } from "@chakra-ui/react";
+import { Box, Button, Center } from "@chakra-ui/react";
 import { FiHome } from "react-icons/fi";
 
 const NavLink = (props) => {
@@ -7,8 +7,8 @@ const NavLink = (props) => {
     <Button
       px={2}
       py={1}
-      bg="gray.800"
-      color="white"
+      bg="white"
+      color="bg.400"
       rounded="md"
       leftIcon={icon}
       _hover={{

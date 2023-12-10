@@ -5,7 +5,7 @@ import HomeIcon from "/homeicon.svg";
 
 function HomePage() {
   return (
-    <Box p={20} ml="200px">
+    <Box p={20}>
       <Heading>Bienvenido</Heading>
       <Text mb={5}>
         Explora currículos detallados de estudiantes calificados. Encuentra el
@@ -21,9 +21,8 @@ function HomePage() {
         </Button>
       </Link>
       <Box boxSize="300px">
-        <Image src={HomeIcon}/>
+        <Image src={HomeIcon} />
       </Box>
-
     </Box>
   );
 }

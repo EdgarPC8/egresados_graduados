@@ -29,9 +29,9 @@ const AuthProvider = ({ children }) => {
 
       const { data } = await getOneUser(verify.data.userId);
       setUser(data);
-
     } catch (error) {
-      console.error("Error loading user profile:", error);
+      return;
+      // console.error("Error loading user profile:", error);
     }
   };
 
@@ -90,7 +90,15 @@ const AuthProvider = ({ children }) => {
 
   return (
     <AuthContext.Provider
-      value={{ signin, errors, logout, isAuthenticated, isLoading, user, loadUserProfile }}
+      value={{
+        signin,
+        errors,
+        logout,
+        isAuthenticated,
+        isLoading,
+        user,
+        loadUserProfile,
+      }}
     >
       {children}
     </AuthContext.Provider>

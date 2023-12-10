@@ -54,8 +54,9 @@ function LoginPage() {
   return (
     <Container
       maxW="lg"
-      py={{ base: "12", md: "24" }}
-      px={{ base: "0", sm: "8" }}
+      alignItems="center"
+      // py={{ base: "12", md: "24" }}
+      // px={{ base: "0", sm: "8" }}
     >
       <Stack spacing="7">
         <Stack spacing="6">
