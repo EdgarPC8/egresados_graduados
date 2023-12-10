@@ -1,12 +1,12 @@
 import { Professionals } from "../Models/Professionals.js";
 
-const getAllProfessionals = async (req, res) => {
+export const getAllProfessionals = async (req, res) => {
   const professionals = await Professionals.findAll();
   res.json(professionals);
 };
 
 
-const addProfessional = async (req, res) => {
+export const addProfessional = async (req, res) => {
   const data = req.body; // Suponiendo que los datos están en el cuerpo de la solicitud
   try {
     const newProfessional = await Professionals.create(data);
@@ -17,7 +17,21 @@ const addProfessional = async (req, res) => {
     });
   }
 };
+export const getProfessionalsById = async (req, res) => {
+  const id = req.params.userId ;
+  try {
+    const professional = await Professionals.findAll(
+      {
+        where:{
+          idUser:id
+        }
+      }
+    );
+    res.json(professional);
+  } catch (error) {
+    res.status(500).json({
+      message: error.message,
+    });
+  }
 
-
-
-export { getAllProfessionals, addProfessional };
+};

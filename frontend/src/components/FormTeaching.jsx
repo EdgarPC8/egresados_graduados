@@ -253,8 +253,8 @@ function FormTeaching() {
             header={[
               "Institución",
               "Materia",
-              "Fecha",
-              "Fecha",
+              "Fecha Inicio",
+              "Fecha Fin",
               "Modalidad",
               "Lugar",
               "País",

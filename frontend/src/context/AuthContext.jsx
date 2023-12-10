@@ -1,5 +1,9 @@
 import { createContext, useContext, useState, useEffect } from "react";
-import { loginRequest, verifyTokenRequest } from "../api/userRequest";
+import {
+  getOneUser,
+  loginRequest,
+  verifyTokenRequest,
+} from "../api/userRequest";
 
 const AuthContext = createContext();
 
@@ -17,6 +21,19 @@ const AuthProvider = ({ children }) => {
   const [errors, setErrors] = useState({});
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
+  const [user, setUser] = useState({ roles: [] });
+
+  const loadUserProfile = async () => {
+    try {
+      const verify = await verifyTokenRequest();
+
+      const { data } = await getOneUser(verify.data.userId);
+      setUser(data);
+
+    } catch (error) {
+      console.error("Error loading user profile:", error);
+    }
+  };
 
   const signin = async (user) => {
     // console.log(user)
@@ -61,18 +78,19 @@ const AuthProvider = ({ children }) => {
       try {
         const res = await verifyTokenRequest();
         setIsAuthenticated(true);
-        console.log(res);
+        // console.log(res);
       } catch (error) {
         setIsAuthenticated(false);
         setIsLoading(false);
       }
     };
     checkLogin();
+    loadUserProfile();
   }, []);
 
   return (
     <AuthContext.Provider
-      value={{ signin, errors, logout, isAuthenticated, isLoading }}
+      value={{ signin, errors, logout, isAuthenticated, isLoading, user, loadUserProfile }}
     >
       {children}
     </AuthContext.Provider>

@@ -86,8 +86,8 @@ function LoginPage() {
                   )}
 
                   <FormControl>
-                    <FormLabel htmlFor="email">Correo</FormLabel>
-                    <Input id="email" name="email" />
+                    <FormLabel htmlFor="username">Nombre de usuario</FormLabel>
+                    <Input id="username" name="username" />
                   </FormControl>
                   <FormControl>
                     <FormLabel>Contraseña</FormLabel>
@@ -107,7 +107,6 @@ function LoginPage() {
                     </Select>
                   </FormControl>
                 </Stack>
-              </Stack>
                 <Button
                   bg="primary.200"
                   color="white"
@@ -118,6 +117,7 @@ function LoginPage() {
                 >
                   Iniciar Sesión
                 </Button>
+              </Stack>
             </form>
           </Box>
         </Stack>

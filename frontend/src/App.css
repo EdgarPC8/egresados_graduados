@@ -1,12 +1,16 @@
 @font-face {
-  font-family: 'inter';
-  src: url('./fonts/static/Inter-Regular.ttf') format('truetype');
+  font-family: "inter";
+  src: url("./fonts/static/Inter-Regular.ttf") format("truetype");
   /* Puedes agregar más formatos de fuente aquí para mejor compatibilidad con navegadores */
 }
 
 #root {
-  font-family: 'inter', sans-serif;
+  font-family: "inter", sans-serif;
 }
 
-
-
+/* html,
+body {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+} */

@@ -11,14 +11,14 @@ import { UserRoles } from "../Models/UserRoles.js";
 // agregarUsuario("admin", "contraseña", 1);
 
 const login = async (req, res) => {
-  const { email, password, rol } = req.body;
+  const { username, password, rol } = req.body;
 
   //Verificar si existe
 
   // console.log(user);
   try {
     const user = await Users.findOne({
-      where: { email },
+      where: { username },
       include: {
         model: Roles,
         where: { rol },
@@ -40,7 +40,7 @@ const login = async (req, res) => {
     }
 
     const payload = {
-      userId: user.id_user,
+      userId: user.userId,
       userEmail: user.email,
       userRol: user.roles[0].rol,
     };

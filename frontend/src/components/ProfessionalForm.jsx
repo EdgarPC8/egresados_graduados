@@ -9,21 +9,72 @@ import {
   Select,
   Button,
 } from "@chakra-ui/react";
-// import { addProfessional } from "../api/cvRequest";
+import { useEffect, useState, useRef } from "react";
+import {
+  getProfessionalsById,
+} from "../api/professionalRequest.js";
+import {
+  verifyTokenRequest,
+} from "../api/userRequest.js";
+import DataTable from "../components/DataTables";
+import Modal from "../components/AlertDialog";
+
 
 function ProfessionalForm() {
+  const form = useRef(null);
+  let initialFormProfessional={
+    ci:"",
+    firstName:"",
+    secondName:"",
+    firstLastName:"",
+    secondLastName:"",
+    bloodType:"",
+    birthDate:"",
+    gender:"",
+    civilStatus:"",
+    nationality:"",
+    placeBirth:"",
+    placeResidence:"",
+    direction:"",
+    homePhone:"",
+    cellPhone:"",
+    personalEmail:"",
+    institutionalEmail:"",
+    image:"",
+    idUser:""
+  }
+  const [formProfessional, setFormProfessional] = useState(initialFormProfessional);
+
+
+  async function fetchData() {
+    try {
+      const res = await verifyTokenRequest();
+      const idUser=res.data.userId;
+      const { data } = await getProfessionalsById(idUser);
+      setFormProfessional(data[0]);
+      // console.log(formProfessional)
+    } catch (error) {
+      console.error("Error al obtener datos académicos:", error);
+    }
+  }
+  
   const handleSubmit = async (event) => {
-    // event.preventDefault();
-    // const dataForm = Object.fromEntries(new FormData(event.target));
-    // try {
-    //   const { data } = await addProfessional(dataForm);
-    //   console.log(data);
-    // } catch (error) {
-    //   console.error("Error en getAllProfessionals:", error);
-    // }
+    event.preventDefault();
   };
+  const handleChange = (event) => {
+    const { name, value } = event.target;
+    setFormProfessional({ ...formProfessional, [name]: value });
+  };
+ 
+  useEffect(() => {
+    fetchData();
+  }, []);
+  // useEffect(() => {
+  //   console.log(formProfessional);
+  //   setFormProfessional(formProfessional);
+  // }, [formProfessional]);
   return (
-    <form onSubmit={handleSubmit}>
+    <form onSubmit={handleSubmit}ref={form}>
       <Grid templateColumns={{ base: "1fr", md: "9fr 1fr" }} gap={4} mt={2}>
         <GridItem order={{ base: 2, md: 1 }}>
           <Heading as="h3" size="md" textAlign="left">
@@ -34,6 +85,8 @@ function ProfessionalForm() {
               <InputGroup>
                 <InputLeftAddon children="Cedula" />
                 <Input
+                  value={formProfessional.ci?formProfessional.ci:""}
+                  onChange={handleChange}
                   type="number"
                   placeholder="Cedula"
                   name="ci"
@@ -41,14 +94,18 @@ function ProfessionalForm() {
                 />
               </InputGroup>
             </GridItem>
-            <GridItem></GridItem>
+            <GridItem>
+
+            </GridItem>
             <GridItem fontSize={"sm"}>
               <InputGroup>
                 <InputLeftAddon children="Primer Apellido" />
                 <Input
                   type="text"
                   placeholder="Primer Apellido"
-                  name="firstLastname"
+                  name="firstLastName"
+                  value={formProfessional.firstLastName?formProfessional.firstLastName:""}
+                  onChange={handleChange}
                 />
               </InputGroup>
             </GridItem>
@@ -58,7 +115,9 @@ function ProfessionalForm() {
                 <Input
                   type="text"
                   placeholder="Segundo Apellido"
-                  name="secondLastname"
+                  name="secondLastName"
+                  value={formProfessional.secondLastName?formProfessional.secondLastName:""}
+                  onChange={handleChange}
                 />
               </InputGroup>
             </GridItem>
@@ -68,7 +127,9 @@ function ProfessionalForm() {
                 <Input
                   type="text"
                   placeholder="Primer Nombre"
-                  name="firstname"
+                  name="firstName"
+                  value={formProfessional.firstName?formProfessional.firstName:""}
+                  onChange={handleChange}
                 />
               </InputGroup>
             </GridItem>
@@ -78,7 +139,8 @@ function ProfessionalForm() {
                 <Input
                   type="text"
                   placeholder="Segundo Nombre"
-                  name="second_name"
+                  name="secondName"value={formProfessional.secondName?formProfessional.secondName:""}
+                  onChange={handleChange}
                 />
               </InputGroup>
             </GridItem>
@@ -86,7 +148,8 @@ function ProfessionalForm() {
             <GridItem fontSize={"sm"}>
               <InputGroup>
                 <InputLeftAddon children="Genero" />
-                <Select placeholder="Seleccione una opción" name="gender">
+                <Select placeholder="Seleccione una opción" name="gender"value={formProfessional.gender?formProfessional.gender:""}
+                  onChange={handleChange}>
                   <option value="F">Femenino</option>
                   <option value="M">Masculino</option>
                 </Select>
@@ -99,6 +162,8 @@ function ProfessionalForm() {
                   type="text"
                   placeholder="Tipo de Sangre"
                   name="bloodType"
+                  value={formProfessional.bloodType?formProfessional.bloodType:""}
+                  onChange={handleChange}
                 />
               </InputGroup>
             </GridItem>
@@ -110,6 +175,8 @@ function ProfessionalForm() {
                   size="md"
                   type="date"
                   name="birthDate"
+                  value={formProfessional.birthDate?formProfessional.birthDate:""}
+                  onChange={handleChange}
                   required
                 />
               </InputGroup>
@@ -117,7 +184,10 @@ function ProfessionalForm() {
             <GridItem fontSize={"sm"}>
               <InputGroup>
                 <InputLeftAddon children="Estado Civil" />
-                <Select placeholder="Seleccione una opción" name="civilStatus">
+                <Select placeholder="Seleccione una opción" name="civilStatus"
+                value={formProfessional.civilStatus?formProfessional.civilStatus:""}
+                  onChange={handleChange}
+                  >
                   <option value="option1">Soltero</option>
                   <option value="option2">Viudo</option>
                   <option value="option3">Casado</option>
@@ -125,14 +195,14 @@ function ProfessionalForm() {
                 </Select>
               </InputGroup>
             </GridItem>
-
             <GridItem fontSize={"sm"}>
               <InputGroup>
                 <InputLeftAddon children="Nacionalidad" />
                 <Input
                   type="text"
                   placeholder="Nacionalidad"
-                  name="nationality"
+                  name="nationality"value={formProfessional.nationality?formProfessional.nationality:""}
+                  onChange={handleChange}
                 />
               </InputGroup>
             </GridItem>
@@ -142,17 +212,20 @@ function ProfessionalForm() {
                 <Input
                   type="tel"
                   placeholder="Teléfono de domicilio"
-                  name="homePhone"
+                  name="homePhone"value={formProfessional.homePhone?formProfessional.homePhone:""}
+                  onChange={handleChange}
                 />
               </InputGroup>
             </GridItem>
+
             <GridItem fontSize={"sm"}>
               <InputGroup>
                 <InputLeftAddon children="Teléfono de celular" />
                 <Input
                   type="tel"
                   placeholder="Teléfono de celular"
-                  name="cellphone"
+                  name="cellPhone"value={formProfessional.cellPhone?formProfessional.cellPhone:""}
+                  onChange={handleChange}
                 />
               </InputGroup>
             </GridItem>
@@ -162,17 +235,20 @@ function ProfessionalForm() {
                 <Input
                   type="text"
                   placeholder="Lugar de Nacimiento"
-                  name="placeBirth"
+                  name="placeBirth"value={formProfessional.placeBirth?formProfessional.placeBirth:""}
+                  onChange={handleChange}
                 />
               </InputGroup>
             </GridItem>
+
             <GridItem fontSize={"sm"}>
               <InputGroup>
                 <InputLeftAddon children="Dirección de domicilio" />
                 <Input
                   type="text"
                   placeholder="Dirección de domicilio"
-                  name="direction"
+                  name="direction"value={formProfessional.direction?formProfessional.direction:""}
+                  onChange={handleChange}
                 />
               </InputGroup>
             </GridItem>
@@ -182,7 +258,8 @@ function ProfessionalForm() {
                 <Input
                   type="text"
                   placeholder="Lugar de residencia"
-                  name="placeResidence"
+                  name="placeResidence"value={formProfessional.placeResidence?formProfessional.placeResidence:""}
+                  onChange={handleChange}
                 />
               </InputGroup>
             </GridItem>
@@ -192,7 +269,8 @@ function ProfessionalForm() {
                 <Input
                   type="email"
                   placeholder="Correo Electrónico Institucional"
-                  name="institutionalEmail"
+                  name="institutionalEmail"value={formProfessional.institutionalEmail?formProfessional.institutionalEmail:""}
+                  onChange={handleChange}
                 />
               </InputGroup>
             </GridItem>
@@ -202,7 +280,8 @@ function ProfessionalForm() {
                 <Input
                   type="email"
                   placeholder="Correo Electrónico Personal"
-                  name="personalEmail"
+                  name="personalEmail"value={formProfessional.personalEmail?formProfessional.personalEmail:""}
+                  onChange={handleChange}
                 />
               </InputGroup>
             </GridItem>
@@ -249,7 +328,7 @@ function ProfessionalForm() {
           margin={"auto"}
         >
           <Button type="submit" mt={4} bg="primary.200" color={"white"}>
-            Guardar
+            Guardar Cambios
           </Button>
         </GridItem>
       </Grid>

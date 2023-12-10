@@ -55,6 +55,7 @@ export const getAllProfessionalExperience = async (req, res) => {
   res.json(professionals);
 };
 
+
 export const addLanguages = async (req, res) => {
   const data = req.body; // Suponiendo que los datos están en el cuerpo de la solicitud
   try {
@@ -160,10 +161,11 @@ export const addAcademicTraining = async (req, res) => {
 };
 export const editAcademicTraining = async (req, res) => {
   const newData = req.body; // Suponiendo que los datos están en el cuerpo de la solicitud
+  const academicId = req.params.academicId; // Suponiendo que los datos están en el cuerpo de la solicitud
   try {
     const updatedAcademicTraining = await AcademicTraining.update(
       newData, // Aquí defines los campos y sus nuevos valores a actualizar
-      req.params.academicId // Aquí estableces la condición para la actualización
+      {where:{id:academicId}}// Aquí estableces la condición para la actualización
     );
     res.json({ message: "Editado con éxito" });
   } catch (error) {
@@ -204,10 +206,11 @@ export const addTeachingExperience = async (req, res) => {
 };
 export const editTeachingExperience = async (req, res) => {
   const newData = req.body; // Suponiendo que los datos están en el cuerpo de la solicitud
+  const id = req.params.teachingId ; // Suponiendo que los datos están en el cuerpo de la solicitud
   try {
     const updatedTeachingExperience = await TeachingExperience.update(
       newData, // Aquí defines los campos y sus nuevos valores a actualizar
-      req.params.teachingId // Aquí estableces la condición para la actualización
+      {where:{id:id}}// Aquí estableces la condición para la actualización
     );
     res.json({ message: "Editado con éxito" });
   } catch (error) {

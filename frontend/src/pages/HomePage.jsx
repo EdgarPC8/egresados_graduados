@@ -5,7 +5,7 @@ import HomeIcon from "/homeicon.svg";
 
 function HomePage() {
   return (
-    <Box p={20}>
+    <Box p={20} ml="200px">
       <Heading>Bienvenido</Heading>
       <Text mb={5}>
         Explora currículos detallados de estudiantes calificados. Encuentra el

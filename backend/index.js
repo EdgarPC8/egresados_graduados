@@ -36,6 +36,11 @@ const corsOptions = {
 
 app.use(cors(corsOptions));
 
+app.use(express.json());
+
+app.use("/photos", express.static("userPhotos"));
+
+
 app.use("/api/auth", authRoutes);
 app.use("/api/professionals", professionalsRoutes);
 app.use("/api/cv", cvRoutes);
@@ -43,13 +48,13 @@ app.use("/api/quiz", quizRoutes);
 app.use("/api/linguiGeo", linguiGeoRoutes);
 app.use("/api/user", userRoutes);
 
+
 async function main() {
   try {
     // await sequelize.authenticate();
     await sequelize.sync({ force: true });
-    await insertData();
-
     console.log("Conección realizada con éxito.");
+    await insertData();
     app.listen(PORT, () => {
       console.log(`Backend escuchando en el puesto ${PORT}`);
     });
