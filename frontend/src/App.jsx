@@ -11,12 +11,14 @@ import CV from "./pages/CV.jsx";
 import Quiz from "./pages/Quiz.jsx";
 import Profile from "./pages/Profile.jsx";
 import { Toaster } from "react-hot-toast";
+import Fonts from "./theme/Fonts.jsx";
 
 function App() {
   return (
     <ChakraProvider theme={customTheme}>
       <AuthProvider>
         <BrowserRouter>
+          <Fonts />
           <Navbar />
 
           <Toaster />

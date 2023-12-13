@@ -1,5 +1,6 @@
 import { extendTheme } from "@chakra-ui/react";
 
+
 /*
         --primary-100:#3F51B5;
     --primary-200:#757de8;
@@ -15,6 +16,11 @@ import { extendTheme } from "@chakra-ui/react";
       
 */
 const theme = extendTheme({
+  fonts: {
+    heading: `'Inter-SemiBold', sans-serif`,
+    body: `'Inter-Regular', sans-serif`,
+  },
+
   colors: {
     primary: {
       100: "#3F51B5",
@@ -34,7 +40,7 @@ const theme = extendTheme({
       100: "#f8f9fa",
       200: "#ebebeb",
       300: "#c2c2c2",
-      400: "#2f2e41"
+      400: "#2f2e41",
     },
   },
 });

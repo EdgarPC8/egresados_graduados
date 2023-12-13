@@ -1,5 +1,6 @@
 import { Roles } from "../Models/Roles.js";
 import { Users } from "../Models/Users.js";
+import bycrypt from "bcrypt";
 
 const addUser = async (req, res) => {
   try {
@@ -88,4 +89,37 @@ const updateDataUser = async (req, res) => {
   }
 };
 
-export { addUser, getRoles, getOneUser, updateDataUser };
+const changePassword = async (req, res) => {
+  const { currentPassword, newPassword } = req.body;
+
+  try {
+    const user = await Users.findOne({
+      attributes: ["password"],
+      where: { userId: req.params.userId },
+    });
+
+    const isCorrectPassword = await bycrypt.compare(
+      currentPassword,
+      user.password
+    );
+
+    if (!isCorrectPassword) {
+      throw new Error("La contraseña actual proporcianda no es válida");
+    }
+
+    const passgenerate = await bycrypt.hash(newPassword, 10);
+
+    const newPass = await Users.update(
+      { password: passgenerate },
+      { where: { userId: req.params.userId } }
+    );
+    res.json({ message: "Contraseña actualizada con éxito" });
+  } catch (e) {
+    return res.status(400).json({
+      error: "Bad Request",
+      message: e.message,
+    });
+  }
+};
+
+export { addUser, getRoles, getOneUser, updateDataUser, changePassword };

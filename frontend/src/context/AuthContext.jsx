@@ -28,6 +28,7 @@ const AuthProvider = ({ children }) => {
       const verify = await verifyTokenRequest();
 
       const { data } = await getOneUser(verify.data.userId);
+      // console.log(data)
       setUser(data);
     } catch (error) {
       return;
@@ -63,6 +64,8 @@ const AuthProvider = ({ children }) => {
       }, 5000);
     }
   }, [errors]);
+
+  
 
   // Verifica si tiene token el usuario
   useEffect(() => {

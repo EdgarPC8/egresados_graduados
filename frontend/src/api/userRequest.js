@@ -23,9 +23,17 @@ const updateDataUser = async (userId, userData) =>
     },
   });
 
+const changePasswordRequest = async (userId, data) =>
+  await axios.put(`/user/changePassword/${userId}`, data, {
+    headers: {
+      Authorization: token,
+    },
+  });
+
 export {
   loginRequest,
   verifyTokenRequest,
+  changePasswordRequest,
   getRoles,
   getOneUser,
   updateDataUser,

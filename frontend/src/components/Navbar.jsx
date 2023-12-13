@@ -88,19 +88,10 @@ const Navbar = () => {
               size={"md"}
               icon={<HamburgerIcon />}
               aria-label={"Open Menu"}
+              ref={btnRef}
               onClick={onOpen}
-              display={{ md: "none" }}
             />
 
-            {isAuthenticated && (
-              <IconButton
-                size={"md"}
-                icon={<HamburgerIcon />}
-                aria-label={"Open Menu"}
-                ref={btnRef}
-                onClick={onOpen}
-              />
-            )}
             <HStack
               as={"nav"}
               spacing={4}

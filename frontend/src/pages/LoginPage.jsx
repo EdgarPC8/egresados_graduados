@@ -22,7 +22,7 @@ import { useNavigate } from "react-router-dom";
 import { getRoles } from "../api/userRequest";
 
 function LoginPage() {
-  const { signin, isAuthenticated, errors } = useAuth();
+  const { signin, isAuthenticated, errors, loadUserProfile } = useAuth();
   const [roles, setRoles] = useState([]);
 
   // console.log(errors)
@@ -35,6 +35,7 @@ function LoginPage() {
     const data = Object.fromEntries(new FormData(event.target));
     // console.log(JSON.stringify(data));
     signin(data);
+    loadUserProfile();
   };
 
   useEffect(() => {
@@ -55,6 +56,7 @@ function LoginPage() {
     <Container
       maxW="lg"
       alignItems="center"
+      
       // py={{ base: "12", md: "24" }}
       // px={{ base: "0", sm: "8" }}
     >

@@ -16,6 +16,13 @@ import {
   Spinner,
   FormHelperText,
   CloseButton,
+  Modal,
+  ModalOverlay,
+  ModalContent,
+  ModalHeader,
+  ModalFooter,
+  ModalBody,
+  ModalCloseButton,
   Container,
   SimpleGrid,
 } from "@chakra-ui/react";
@@ -26,6 +33,7 @@ import PasswordInput from "../components/PasswordInput";
 
 import { FiEdit2 } from "react-icons/fi";
 import {
+  changePasswordRequest,
   getOneUser,
   updateDataUser,
   verifyTokenRequest,
@@ -34,6 +42,7 @@ import { urlPhotos } from "../api/axios";
 import { useAuth } from "../context/AuthContext";
 
 function Profile() {
+  const { isOpen, onOpen, onClose } = useDisclosure();
   const initialFormProfile = {
     email: "",
     ci: "",
@@ -62,6 +71,19 @@ function Profile() {
   const handleChange = (event) => {
     const { name, value } = event.target;
     setForm({ ...form, [name]: value });
+  };
+
+  const changePassword = async (event) => {
+    event.preventDefault();
+    const passwords = Object.fromEntries(new FormData(event.target));
+
+    // try {
+
+    toast.promise(changePasswordRequest(user.userId, passwords), {
+      loading: "Actualizando...",
+      success: (d) => d.data.message,
+      error: (e) => e.response.data.message,
+    });
   };
 
   const handleSubmit = async (event) => {
@@ -290,6 +312,9 @@ function Profile() {
                       onChange={handleChange}
                     />
                   </FormControl>
+                  <Button bg="primary.300" onClick={onOpen}>
+                    Cambiar Contraseña
+                  </Button>
                 </Stack>
               </GridItem>
             </Grid>
@@ -309,6 +334,42 @@ function Profile() {
           </Box>
         </form>
       )}
+
+      <Modal isOpen={isOpen} onClose={onClose}>
+        <ModalOverlay />
+        <form onSubmit={changePassword}>
+          <ModalContent>
+            <ModalHeader color="text.300">Cambiar Contraseña</ModalHeader>
+            <ModalCloseButton />
+            <ModalBody>
+              <FormControl>
+                <FormLabel>Contraseña actual</FormLabel>
+                <PasswordInput nameInput="currentPassword" />
+              </FormControl>
+
+              <FormControl mt={4}>
+                <FormLabel>Nueva Contraseña</FormLabel>
+                <PasswordInput nameInput="newPassword" />
+              </FormControl>
+            </ModalBody>
+
+            <ModalFooter>
+              <Button
+                bg="primary.200"
+                color="white"
+                _hover={{
+                  bg: "primary.100",
+                }}
+                mr={3}
+                type="submit"
+              >
+                Guardar
+              </Button>
+              <Button onClick={onClose}>Cerrar</Button>
+            </ModalFooter>
+          </ModalContent>
+        </form>
+      </Modal>
     </Center>
   );
 }
