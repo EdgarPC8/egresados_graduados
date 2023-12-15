@@ -13,7 +13,7 @@ export const Usuario = {
           secondName: "Alexander",
           firstLastName: "Briceño",
           secondLastName: "Sarango",
-          photo: "1702160032983-799944285.jpg"
+          photo: "1702603732288-767719682.jpg"
         },
         professionals: {
           ci: 1106011420,

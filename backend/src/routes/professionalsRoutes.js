@@ -4,11 +4,16 @@ import {
   addProfessional,
   getProfessionalsById,
 } from "../controllers/ProfessionalsControllers.js";
+import { isAuthenticated } from "../middlewares/authMiddelware.js";
 
 const router = Router();
 
-router.get("/getAllProfessionals", getAllProfessionals);
-router.get("/getProfessionalsById/:userId", getProfessionalsById);
-router.post("/addProfessional", addProfessional);
+router.get("/getAllProfessionals", isAuthenticated, getAllProfessionals);
+router.get(
+  "/getProfessionalsById/:userId",
+  isAuthenticated,
+  getProfessionalsById
+);
+router.post("/addProfessional", isAuthenticated, addProfessional);
 
 export default router;

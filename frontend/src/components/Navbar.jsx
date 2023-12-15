@@ -7,6 +7,7 @@ import {
   Menu,
   MenuButton,
   Avatar,
+  Text,
   MenuList,
   MenuItem,
   useDisclosure,
@@ -15,6 +16,7 @@ import {
   VStack,
   Image,
   Flex,
+  Center,
   AvatarBadge,
   Drawer,
   DrawerBody,
@@ -113,11 +115,19 @@ const Navbar = () => {
           </HStack>
 
           {isAuthenticated ? (
-            <Link to="/perfil">
-              <Avatar size={"sm"} mr="10px" src={`${urlPhotos}/${user.photo}`}>
-                <AvatarBadge boxSize="1.25em" bg="green.500" />
-              </Avatar>
-            </Link>
+            <Flex>
+              <Center>
+                <Link to="/perfil">
+                  <Avatar
+                    size={"sm"}
+                    mr="10px"
+                    src={`${urlPhotos}/${user.photo}`}
+                  >
+                    <AvatarBadge boxSize="1.25em" bg="green.500" />
+                  </Avatar>
+                </Link>
+              </Center>
+            </Flex>
           ) : isOpen ? (
             ""
           ) : (

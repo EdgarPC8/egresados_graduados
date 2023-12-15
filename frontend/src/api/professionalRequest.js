@@ -1,8 +1,12 @@
 import axios from "./axios.js";
+import { token } from "./axios.js";
 
 export const getProfessionalsById = async (data) =>
-  await axios.get(`/professionals/getProfessionalsById/${data}`);
-
+  await axios.get(`/professionals/getProfessionalsById/${data}`, {
+    headers: {
+      Authorization: token,
+    },
+  });
 
 // export const getAllProfessionals = async () =>
 //   await axios.get("/cv/getAllProfessionals");

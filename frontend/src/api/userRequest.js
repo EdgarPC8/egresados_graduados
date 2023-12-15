@@ -1,6 +1,5 @@
 import axios from "./axios.js";
-
-const token = `Bearer ${window.localStorage.getItem("token")}`;
+import { token } from "./axios.js";
 
 const loginRequest = async (data) => await axios.post("/auth/login", data);
 
@@ -13,7 +12,12 @@ const verifyTokenRequest = async () =>
 
 const getRoles = async () => await axios.get("/user/roles");
 
-const getOneUser = async (userId) => await axios.get(`/user/${userId}`);
+const getOneUser = async (userId) =>
+  await axios.get(`/user/${userId}`, {
+    headers: {
+      Authorization: token,
+    },
+  });
 
 const updateDataUser = async (userId, userData) =>
   await axios.put(`/user/${userId}`, userData, {

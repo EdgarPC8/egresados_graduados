@@ -8,56 +8,53 @@ import {
   InputGroup,
   Select,
   Button,
+  Image,
 } from "@chakra-ui/react";
 import { useEffect, useState, useRef } from "react";
-import {
-  getProfessionalsById,
-} from "../api/professionalRequest.js";
-import {
-  verifyTokenRequest,
-} from "../api/userRequest.js";
+import { getProfessionalsById } from "../api/professionalRequest.js";
+import { verifyTokenRequest } from "../api/userRequest.js";
 import DataTable from "../components/DataTables";
 import Modal from "../components/AlertDialog";
 
-
 function ProfessionalForm() {
   const form = useRef(null);
-  let initialFormProfessional={
-    ci:"",
-    firstName:"",
-    secondName:"",
-    firstLastName:"",
-    secondLastName:"",
-    bloodType:"",
-    birthDate:"",
-    gender:"",
-    civilStatus:"",
-    nationality:"",
-    placeBirth:"",
-    placeResidence:"",
-    direction:"",
-    homePhone:"",
-    cellPhone:"",
-    personalEmail:"",
-    institutionalEmail:"",
-    image:"",
-    idUser:""
-  }
-  const [formProfessional, setFormProfessional] = useState(initialFormProfessional);
-
+  let initialFormProfessional = {
+    ci: "",
+    firstName: "",
+    secondName: "",
+    firstLastName: "",
+    secondLastName: "",
+    bloodType: "",
+    birthDate: "",
+    gender: "",
+    civilStatus: "",
+    nationality: "",
+    placeBirth: "",
+    placeResidence: "",
+    direction: "",
+    homePhone: "",
+    cellPhone: "",
+    personalEmail: "",
+    institutionalEmail: "",
+    image: "",
+    idUser: "",
+  };
+  const [formProfessional, setFormProfessional] = useState(
+    initialFormProfessional
+  );
 
   async function fetchData() {
     try {
       const res = await verifyTokenRequest();
-      const idUser=res.data.userId;
+      const idUser = res.data.userId;
       const { data } = await getProfessionalsById(idUser);
-      setFormProfessional(data[0]);
+      // setFormProfessional(data[0]);
       // console.log(formProfessional)
     } catch (error) {
       console.error("Error al obtener datos académicos:", error);
     }
   }
-  
+
   const handleSubmit = async (event) => {
     event.preventDefault();
   };
@@ -65,7 +62,7 @@ function ProfessionalForm() {
     const { name, value } = event.target;
     setFormProfessional({ ...formProfessional, [name]: value });
   };
- 
+
   useEffect(() => {
     fetchData();
   }, []);
@@ -74,7 +71,7 @@ function ProfessionalForm() {
   //   setFormProfessional(formProfessional);
   // }, [formProfessional]);
   return (
-    <form onSubmit={handleSubmit}ref={form}>
+    <form onSubmit={handleSubmit} ref={form}>
       <Grid templateColumns={{ base: "1fr", md: "9fr 1fr" }} gap={4} mt={2}>
         <GridItem order={{ base: 2, md: 1 }}>
           <Heading as="h3" size="md" textAlign="left">
@@ -85,7 +82,7 @@ function ProfessionalForm() {
               <InputGroup>
                 <InputLeftAddon children="Cedula" />
                 <Input
-                  value={formProfessional.ci?formProfessional.ci:""}
+                  value={formProfessional.ci ? formProfessional.ci : ""}
                   onChange={handleChange}
                   type="number"
                   placeholder="Cedula"
@@ -94,9 +91,7 @@ function ProfessionalForm() {
                 />
               </InputGroup>
             </GridItem>
-            <GridItem>
-
-            </GridItem>
+            <GridItem></GridItem>
             <GridItem fontSize={"sm"}>
               <InputGroup>
                 <InputLeftAddon children="Primer Apellido" />
@@ -104,7 +99,11 @@ function ProfessionalForm() {
                   type="text"
                   placeholder="Primer Apellido"
                   name="firstLastName"
-                  value={formProfessional.firstLastName?formProfessional.firstLastName:""}
+                  value={
+                    formProfessional.firstLastName
+                      ? formProfessional.firstLastName
+                      : ""
+                  }
                   onChange={handleChange}
                 />
               </InputGroup>
@@ -116,7 +115,11 @@ function ProfessionalForm() {
                   type="text"
                   placeholder="Segundo Apellido"
                   name="secondLastName"
-                  value={formProfessional.secondLastName?formProfessional.secondLastName:""}
+                  value={
+                    formProfessional.secondLastName
+                      ? formProfessional.secondLastName
+                      : ""
+                  }
                   onChange={handleChange}
                 />
               </InputGroup>
@@ -128,7 +131,9 @@ function ProfessionalForm() {
                   type="text"
                   placeholder="Primer Nombre"
                   name="firstName"
-                  value={formProfessional.firstName?formProfessional.firstName:""}
+                  value={
+                    formProfessional.firstName ? formProfessional.firstName : ""
+                  }
                   onChange={handleChange}
                 />
               </InputGroup>
@@ -139,7 +144,12 @@ function ProfessionalForm() {
                 <Input
                   type="text"
                   placeholder="Segundo Nombre"
-                  name="secondName"value={formProfessional.secondName?formProfessional.secondName:""}
+                  name="secondName"
+                  value={
+                    formProfessional.secondName
+                      ? formProfessional.secondName
+                      : ""
+                  }
                   onChange={handleChange}
                 />
               </InputGroup>
@@ -148,8 +158,12 @@ function ProfessionalForm() {
             <GridItem fontSize={"sm"}>
               <InputGroup>
                 <InputLeftAddon children="Genero" />
-                <Select placeholder="Seleccione una opción" name="gender"value={formProfessional.gender?formProfessional.gender:""}
-                  onChange={handleChange}>
+                <Select
+                  placeholder="Seleccione una opción"
+                  name="gender"
+                  value={formProfessional.gender ? formProfessional.gender : ""}
+                  onChange={handleChange}
+                >
                   <option value="F">Femenino</option>
                   <option value="M">Masculino</option>
                 </Select>
@@ -162,7 +176,9 @@ function ProfessionalForm() {
                   type="text"
                   placeholder="Tipo de Sangre"
                   name="bloodType"
-                  value={formProfessional.bloodType?formProfessional.bloodType:""}
+                  value={
+                    formProfessional.bloodType ? formProfessional.bloodType : ""
+                  }
                   onChange={handleChange}
                 />
               </InputGroup>
@@ -175,7 +191,9 @@ function ProfessionalForm() {
                   size="md"
                   type="date"
                   name="birthDate"
-                  value={formProfessional.birthDate?formProfessional.birthDate:""}
+                  value={
+                    formProfessional.birthDate ? formProfessional.birthDate : ""
+                  }
                   onChange={handleChange}
                   required
                 />
@@ -184,10 +202,16 @@ function ProfessionalForm() {
             <GridItem fontSize={"sm"}>
               <InputGroup>
                 <InputLeftAddon children="Estado Civil" />
-                <Select placeholder="Seleccione una opción" name="civilStatus"
-                value={formProfessional.civilStatus?formProfessional.civilStatus:""}
+                <Select
+                  placeholder="Seleccione una opción"
+                  name="civilStatus"
+                  value={
+                    formProfessional.civilStatus
+                      ? formProfessional.civilStatus
+                      : ""
+                  }
                   onChange={handleChange}
-                  >
+                >
                   <option value="option1">Soltero</option>
                   <option value="option2">Viudo</option>
                   <option value="option3">Casado</option>
@@ -201,7 +225,12 @@ function ProfessionalForm() {
                 <Input
                   type="text"
                   placeholder="Nacionalidad"
-                  name="nationality"value={formProfessional.nationality?formProfessional.nationality:""}
+                  name="nationality"
+                  value={
+                    formProfessional.nationality
+                      ? formProfessional.nationality
+                      : ""
+                  }
                   onChange={handleChange}
                 />
               </InputGroup>
@@ -212,7 +241,10 @@ function ProfessionalForm() {
                 <Input
                   type="tel"
                   placeholder="Teléfono de domicilio"
-                  name="homePhone"value={formProfessional.homePhone?formProfessional.homePhone:""}
+                  name="homePhone"
+                  value={
+                    formProfessional.homePhone ? formProfessional.homePhone : ""
+                  }
                   onChange={handleChange}
                 />
               </InputGroup>
@@ -224,7 +256,10 @@ function ProfessionalForm() {
                 <Input
                   type="tel"
                   placeholder="Teléfono de celular"
-                  name="cellPhone"value={formProfessional.cellPhone?formProfessional.cellPhone:""}
+                  name="cellPhone"
+                  value={
+                    formProfessional.cellPhone ? formProfessional.cellPhone : ""
+                  }
                   onChange={handleChange}
                 />
               </InputGroup>
@@ -235,7 +270,12 @@ function ProfessionalForm() {
                 <Input
                   type="text"
                   placeholder="Lugar de Nacimiento"
-                  name="placeBirth"value={formProfessional.placeBirth?formProfessional.placeBirth:""}
+                  name="placeBirth"
+                  value={
+                    formProfessional.placeBirth
+                      ? formProfessional.placeBirth
+                      : ""
+                  }
                   onChange={handleChange}
                 />
               </InputGroup>
@@ -247,7 +287,10 @@ function ProfessionalForm() {
                 <Input
                   type="text"
                   placeholder="Dirección de domicilio"
-                  name="direction"value={formProfessional.direction?formProfessional.direction:""}
+                  name="direction"
+                  value={
+                    formProfessional.direction ? formProfessional.direction : ""
+                  }
                   onChange={handleChange}
                 />
               </InputGroup>
@@ -258,7 +301,12 @@ function ProfessionalForm() {
                 <Input
                   type="text"
                   placeholder="Lugar de residencia"
-                  name="placeResidence"value={formProfessional.placeResidence?formProfessional.placeResidence:""}
+                  name="placeResidence"
+                  value={
+                    formProfessional.placeResidence
+                      ? formProfessional.placeResidence
+                      : ""
+                  }
                   onChange={handleChange}
                 />
               </InputGroup>
@@ -269,7 +317,12 @@ function ProfessionalForm() {
                 <Input
                   type="email"
                   placeholder="Correo Electrónico Institucional"
-                  name="institutionalEmail"value={formProfessional.institutionalEmail?formProfessional.institutionalEmail:""}
+                  name="institutionalEmail"
+                  value={
+                    formProfessional.institutionalEmail
+                      ? formProfessional.institutionalEmail
+                      : ""
+                  }
                   onChange={handleChange}
                 />
               </InputGroup>
@@ -280,7 +333,12 @@ function ProfessionalForm() {
                 <Input
                   type="email"
                   placeholder="Correo Electrónico Personal"
-                  name="personalEmail"value={formProfessional.personalEmail?formProfessional.personalEmail:""}
+                  name="personalEmail"
+                  value={
+                    formProfessional.personalEmail
+                      ? formProfessional.personalEmail
+                      : ""
+                  }
                   onChange={handleChange}
                 />
               </InputGroup>
@@ -315,10 +373,8 @@ function ProfessionalForm() {
           textAlign={"center"}
           margin={"auto"}
         >
-          <Box bg="primary.200" color="white" borderRadius="md" w={300} h={300}>
-            <Heading as="h3" mt={1}>
-              Foto Carnet
-            </Heading>
+          <Box color="white" borderRadius="md" w={300} h={300}>
+            <Image src="https://bit.ly/dan-abramov" borderRadius="full"></Image>
           </Box>
         </GridItem>
         <GridItem

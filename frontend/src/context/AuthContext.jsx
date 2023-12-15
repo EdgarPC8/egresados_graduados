@@ -31,8 +31,8 @@ const AuthProvider = ({ children }) => {
       // console.log(data)
       setUser(data);
     } catch (error) {
-      return;
-      // console.error("Error loading user profile:", error);
+      // return;
+      console.error("Error loading user profile:", error);
     }
   };
 
