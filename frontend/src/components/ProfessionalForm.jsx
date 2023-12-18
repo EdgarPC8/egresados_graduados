@@ -49,7 +49,7 @@ function ProfessionalForm() {
       const idUser = res.data.userId;
       const { data } = await getProfessionalsById(idUser);
       // setFormProfessional(data[0]);
-      // console.log(formProfessional)
+      console.log(data)
     } catch (error) {
       console.error("Error al obtener datos académicos:", error);
     }

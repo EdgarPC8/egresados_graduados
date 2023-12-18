@@ -32,6 +32,36 @@ export const Usuario = {
         },
       },
     ],
+    [
+      "1104661598",
+      "$2b$10$p49gCto6b2liCqoQoSMDyu8/EmT1t3cwJe6HALeZNgXxZHx7rJMRu",
+      [1, 2],
+      {
+        userInfo: {
+          ci: 1104661598,
+          firstName: "Edgar",
+          secondName: "Patricio",
+          firstLastName: "Torres",
+          secondLastName: "Condolo",
+          photo: "1702603732288-767719682.jpg"
+        },
+        professionals: {
+          ci: 1104661598,
+          firstName: "Edgar",
+          secondName: "Patricio",
+          firstLastName: "Torres",
+          secondLastName: "Condolo",
+          birthDate: "2000-07-05",
+          gender: "M",
+          direction: "Calle Centenario y 18 de Noviembre",
+          homePhone: "(07) 268-8460",
+          cellPhone: "(593) 96-923-6901",
+          personalEmail: "edgartorrespc8@gmail.com",
+          institutionalEmail: "ep_torres@marianosamaniego.edu.ec",
+          image: "assets/fotos_perfil/112.jpg",
+        },
+      },
+    ],
 
     [
       "1104765209",

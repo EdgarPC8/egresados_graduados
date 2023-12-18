@@ -17,6 +17,7 @@ app.use(express.json());
 const allowedOrigins = [
   // "http://dev.gym.com",
   "http://localhost",
+  "http://localhost:8888",
   "http://localhost:5173",
   "http://192.168.137.250:5173",
 ];
@@ -52,9 +53,9 @@ app.use("/api/user", userRoutes);
 async function main() {
   try {
     // await sequelize.authenticate();
-    await sequelize.sync({ force: true });
-    console.log("Conección realizada con éxito.");
-    await insertData();
+    // await sequelize.sync({ force: true });
+    // console.log("Conección realizada con éxito.");
+    // await insertData();
     app.listen(PORT, () => {
       console.log(`Backend escuchando en el puesto ${PORT}`);
     });
