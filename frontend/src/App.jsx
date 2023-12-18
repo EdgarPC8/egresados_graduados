@@ -10,8 +10,8 @@ import ProtectedRoute from "./components/ProtectedRoute.jsx";
 import CV from "./pages/CV.jsx";
 import Quiz from "./pages/Quiz.jsx";
 import Profile from "./pages/Profile.jsx";
-import { Toaster } from "react-hot-toast";
 import Fonts from "./theme/Fonts.jsx";
+import UserTable from "./components/UserTable.jsx";
 
 function App() {
   return (
@@ -21,7 +21,6 @@ function App() {
           <Fonts />
           <Navbar />
 
-          <Toaster />
 
           <Routes>
             <Route path="/" element={<HomePage />} />
@@ -31,6 +30,7 @@ function App() {
               <Route path="/cv" element={<CV />} />
               <Route path="/quiz" element={<Quiz />} />
               <Route path="/perfil" element={<Profile />} />
+              <Route path="/usuarios" element={<UserTable />} />
             </Route>
           </Routes>
         </BrowserRouter>

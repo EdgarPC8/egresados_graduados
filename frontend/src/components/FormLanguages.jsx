@@ -40,6 +40,7 @@ import {
 } from "../api/cvRequest";
 import DataTable from "../components/DataTables";
 import Modal from "../components/AlertDialog";
+import Tabl from "./Table";
 
 function FormLanguages() {
   const initialFormLenguages = {
@@ -49,6 +50,7 @@ function FormLanguages() {
     comprehensionLevel: "",
     typeCertification: "",
   };
+
   const [datosLanguages, setDatosLanguages] = useState([]);
   const [isEditing, setIsEditing] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -141,6 +143,46 @@ function FormLanguages() {
   useEffect(() => {
     fetchData();
   }, []);
+
+  const columns = [
+    {
+      header: "Idioma (diferente al hablado)",
+      accessorKey: "name",
+    },
+    {
+      header: "Hablado Básico/Medio/Alto",
+      accessorKey: "speakingLevel",
+    },
+    {
+      header: "Escritura Básico/Medio/Alto",
+      accessorKey: "writingLevel",
+    },
+    {
+      header: "Comprensión Básico/Medio/Alto",
+      accessorKey: "comprehensionLevel",
+    },
+    {
+      header: "Tipo de certificación",
+      accessorKey: "typeCertification",
+    },
+    {
+      header: "Accion",
+      cell: (props) => (
+        <Stack spacing={4} direction="row" align="center">
+          <Button bg="accent.200" onClick={(eve) => console.log("hola")}>
+            Editar
+          </Button>
+          <Button
+            bg="bg.400"
+            color="white"
+            onClick={(event) => handleEditRow(props.row.original, event)}
+          >
+            Eliminar
+          </Button>
+        </Stack>
+      ),
+    },
+  ];
 
   return (
     <form onSubmit={handleSubmit} ref={form}>
@@ -277,7 +319,9 @@ function FormLanguages() {
             title="Datos"
             message="¿Estas Seguro que deseas eliminar?"
           ></Modal>
-          <DataTable
+
+          <Tabl data={datosLanguages} columns={columns} />
+          {/* <DataTable
             header={[
               "Idioma (Diferente al nativo)",
               "Hablado Básico/Medio/Alto",
@@ -303,7 +347,7 @@ function FormLanguages() {
               buttonDelete: true,
               handleDeleteRow: handleDeleteRow,
             }}
-          />
+          /> */}
         </AccordionPanel>
       </AccordionItem>
     </form>

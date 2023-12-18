@@ -24,16 +24,9 @@ const AuthProvider = ({ children }) => {
   const [user, setUser] = useState({ roles: [] });
 
   const loadUserProfile = async () => {
-    try {
-      const verify = await verifyTokenRequest();
-
-      const { data } = await getOneUser(verify.data.userId);
-      // console.log(data)
-      setUser(data);
-    } catch (error) {
-      // return;
-      console.error("Error loading user profile:", error);
-    }
+    const verify = await verifyTokenRequest();
+    const { data } = await getOneUser(verify.data.userId);
+    setUser(data);
   };
 
   const signin = async (user) => {
@@ -42,9 +35,11 @@ const AuthProvider = ({ children }) => {
       const response = await loginRequest(user);
       const { data } = response;
       window.localStorage.setItem("token", data.token);
+      // const token = window.localStorage.getItem("token");
 
       if (response.status === 200) {
         setIsAuthenticated(true);
+        loadUserProfile();
       }
     } catch (error) {
       // console.log(error.response.data);
@@ -58,19 +53,8 @@ const AuthProvider = ({ children }) => {
   };
 
   useEffect(() => {
-    if (errors.message) {
-      setTimeout(() => {
-        setErrors({});
-      }, 5000);
-    }
-  }, [errors]);
-
-  
-
-  // Verifica si tiene token el usuario
-  useEffect(() => {
     const checkLogin = async () => {
-      const token = window.localStorage.getItem("token");
+      const token = `Bearer ${window.localStorage.getItem("token")}`;
 
       if (!token) {
         setIsAuthenticated(false);
@@ -81,6 +65,7 @@ const AuthProvider = ({ children }) => {
       try {
         const res = await verifyTokenRequest();
         setIsAuthenticated(true);
+
         // console.log(res);
       } catch (error) {
         setIsAuthenticated(false);
@@ -91,6 +76,16 @@ const AuthProvider = ({ children }) => {
     loadUserProfile();
   }, []);
 
+  useEffect(() => {
+    if (errors.message) {
+      setTimeout(() => {
+        setErrors({});
+      }, 5000);
+    }
+  }, [errors]);
+
+  // Verifica si tiene token el usuario
+
   return (
     <AuthContext.Provider
       value={{
@@ -100,7 +95,6 @@ const AuthProvider = ({ children }) => {
         isAuthenticated,
         isLoading,
         user,
-        loadUserProfile,
       }}
     >
       {children}

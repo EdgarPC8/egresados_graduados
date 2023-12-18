@@ -33,7 +33,14 @@ import { Link } from "react-router-dom";
 
 import NavLink from "./NavLink";
 
-import { FiHome, FiFile, FiAward, FiFileText, FiLogOut } from "react-icons/fi";
+import {
+  FiHome,
+  FiFile,
+  FiAward,
+  FiFileText,
+  FiUser,
+  FiLogOut,
+} from "react-icons/fi";
 
 import { HamburgerIcon, CloseIcon } from "@chakra-ui/icons";
 import { useAuth } from "../context/AuthContext";
@@ -78,6 +85,11 @@ const Navbar = () => {
       name: "Encuesta",
       path: "/quiz",
       icon: <FiFileText />,
+    },
+    {
+      name: "Usuarios",
+      path: "/usuarios",
+      icon: <FiUser />,
     },
   ];
 

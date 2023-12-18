@@ -10,18 +10,18 @@ import {
 import { useState } from "react";
 import { FiEye, FiEyeOff } from "react-icons/fi";
 
-function PasswordInput({ nameInput = null }) {
+function PasswordInput(props) {
   const [show, setShow] = useState(false);
 
   const handleClick = () => setShow(!show);
 
   return (
     <InputGroup size="md">
-      <Input pr="4.5rem" type={show ? "text" : "password"} name={nameInput} />
+      <Input pr="4.5rem" type={show ? "text" : "password"} {...props} />
       <InputRightElement width="4.5rem">
         <IconButton
           variant="text"
-          icon={show ? <FiEyeOff /> : <FiEye></FiEye>}
+          icon={show ? <FiEyeOff /> : <FiEye />}
           onClick={handleClick}
         />
       </InputRightElement>

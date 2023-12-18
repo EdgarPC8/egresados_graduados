@@ -22,7 +22,7 @@ import { useNavigate } from "react-router-dom";
 import { getRoles } from "../api/userRequest";
 
 function LoginPage() {
-  const { signin, isAuthenticated, errors, loadUserProfile } = useAuth();
+  const { signin, isAuthenticated, errors } = useAuth();
   const [roles, setRoles] = useState([]);
 
   // console.log(errors)
@@ -35,7 +35,6 @@ function LoginPage() {
     const data = Object.fromEntries(new FormData(event.target));
     // console.log(JSON.stringify(data));
     signin(data);
-    loadUserProfile();
   };
 
   useEffect(() => {
@@ -56,7 +55,7 @@ function LoginPage() {
     <Container
       maxW="lg"
       alignItems="center"
-      
+
       // py={{ base: "12", md: "24" }}
       // px={{ base: "0", sm: "8" }}
     >
@@ -94,10 +93,7 @@ function LoginPage() {
                   </FormControl>
                   <FormControl>
                     <FormLabel>Contraseña</FormLabel>
-                    <PasswordInput
-                      labelText="Contraseña"
-                      nameInput="password"
-                    />
+                    <PasswordInput name="password" />
                   </FormControl>
                   <FormControl>
                     <FormLabel htmlFor="roles">Roles disponibles</FormLabel>
@@ -111,11 +107,11 @@ function LoginPage() {
                   </FormControl>
                 </Stack>
                 <Button
-                  bg="primary.200"
+                  bg="ceruleanBlue.500"
                   color="white"
                   type="submit"
                   _hover={{
-                    bg: "primary.100",
+                    bg: "ceruleanBlue.600",
                   }}
                 >
                   Iniciar Sesión

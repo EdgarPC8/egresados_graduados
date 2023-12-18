@@ -6,7 +6,10 @@ const instance = axios.create({
   withCredentials: true,
 });
 
-export const token = `Bearer ${window.localStorage.getItem("token")}`;
+export const jwt = () => {
+  return `Bearer ${window.localStorage.getItem("token")}`;
+};
+ 
 
 export const urlPhotos = "http://localhost:3000/photos";
 

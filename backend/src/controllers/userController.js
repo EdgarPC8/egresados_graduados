@@ -1,22 +1,37 @@
 import { Roles } from "../Models/Roles.js";
 import { Users } from "../Models/Users.js";
 import bycrypt from "bcrypt";
+import jwt from "jsonwebtoken";
+import { Op } from "sequelize";
 
 const addUser = async (req, res) => {
   try {
-    const { email, password, rol } = req.body;
-    // crear un nuevo registro en la tabla users
-    const nuevousuario = await users.create({
-      email,
+    const {
+      ci,
+      username,
+      firstName,
+      secondName,
+      firstLastName,
+      secondLastName,
       password,
-      rol,
+    } = req.body;
+
+    const passgenerate = await bycrypt.hash(password, 10);
+
+    const photo = req.file ? req.file.filename : null;
+
+    const newUser = await Users.create({
+      ci,
+      username,
+      firstName,
+      secondName,
+      firstLastName,
+      password: passgenerate,
+      secondLastName,
+      photo,
     });
 
     res.json({ message: "usuario agregado con éxito" });
-
-    // // acción después de la creación exitosa del usuario
-    // console.log("usuario creado:", nuevousuario.tojson());
-    // return nuevousuario;
   } catch (error) {
     // manejo de errores si ocurre algún problema durante la creación del usuario
     console.error("error al crear el usuario:", error);
@@ -122,4 +137,37 @@ const changePassword = async (req, res) => {
   }
 };
 
-export { addUser, getRoles, getOneUser, updateDataUser, changePassword };
+const getUsers = async (req, res) => {
+  const token = req.headers["authorization"].split(" ")[1];
+  const decoded = jwt.verify(token, "privateKey");
+  console.log(decoded);
+
+  try {
+    const users = await Users.findAll({
+      attributes: [
+        "userId",
+        "username",
+        "ci",
+        "firstName",
+        "secondName",
+        "firstLastName",
+        "secondLastName",
+        "photo",
+      ],
+    });
+    res.json(users);
+  } catch (error) {
+    return res.status(500).json({
+      message: error.message,
+    });
+  }
+};
+
+export {
+  addUser,
+  getRoles,
+  getOneUser,
+  updateDataUser,
+  changePassword,
+  getUsers,
+};
