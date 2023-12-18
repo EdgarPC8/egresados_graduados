@@ -24,24 +24,20 @@ import {
   ModalBody,
   ModalCloseButton,
   Container,
+  useToast,
   SimpleGrid,
 } from "@chakra-ui/react";
 import { useEffect, useRef, useState, Fragment } from "react";
-import toast from "react-hot-toast";
 
 import PasswordInput from "../components/PasswordInput";
 
 import { FiEdit2 } from "react-icons/fi";
-import {
-  changePasswordRequest,
-  getOneUser,
-  updateDataUser,
-  verifyTokenRequest,
-} from "../api/userRequest";
+import { changePassword, updateUserData } from "../api/userRequest";
 import { urlPhotos } from "../api/axios";
 import { useAuth } from "../context/AuthContext";
 
 function Profile() {
+  const toast = useToast();
   const { isOpen, onOpen, onClose } = useDisclosure();
   const initialFormProfile = {
     email: "",
@@ -66,44 +62,50 @@ function Profile() {
     ? URL.createObjectURL(photo)
     : user.userId
     ? `${urlPhotos}/${user.photo}`
-    : "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQhf14RWxf6GFrK2A8CyOoXn4SEpZSBxuWOCs_T-A5peKF-fIpF&s";
+    : "/noPhoto.jpg";
 
   const handleChange = (event) => {
     const { name, value } = event.target;
     setForm({ ...form, [name]: value });
   };
 
-  const changePassword = async (event) => {
+  const newPassword = async (event) => {
     event.preventDefault();
     const passwords = Object.fromEntries(new FormData(event.target));
 
     // try {
 
-    toast.promise(changePasswordRequest(user.userId, passwords), {
-      loading: "Actualizando...",
-      success: (d) => d.data.message,
-      error: (e) => e.response.data.message,
+    toast.promise(changePassword(user.userId, passwords), {
+      loading: {
+        title: "Actualizando...",
+        position: "top-right",
+      },
+      success: (d) => ({
+        title: "Actualización",
+        description: d.data.message,
+        isClosable: true,
+      }),
+      error: (e) => ({
+        title: "Error",
+        description: e.response.data.message,
+        isClosable: true,
+      }),
     });
   };
 
   const handleSubmit = async (event) => {
     try {
       event.preventDefault();
-      const updateUser = await updateDataUser(form.userId, { ...form, photo });
+      const updateUser = await updateUserData(form.userId, { ...form, photo });
       loadUserProfile();
-      toast(
-        (t) => (
-          <>
-            Datos actualizados correctamente
-            <CloseButton onClick={() => toast.dismiss(t.id)} />
-          </>
-        ),
-        {
-          position: "top-center",
-          duration: 5000,
-          icon: "✅",
-        }
-      );
+      toast({
+        title: "Actualización",
+        description: "Datos actualizados correctamente",
+        status: "success",
+        duration: 9000,
+        isClosable: true,
+        position: "top-right",
+      });
     } catch (error) {
       console.log(error);
     }
@@ -178,51 +180,43 @@ function Profile() {
             </div>
           </Center>
 
-          <Heading as="h4" size="md" mt={10} mb={8} color="text.300">
+          <Heading as="h4" size="md" mt={10} mb={8} color="ceruleanBlue.900">
             Información del perfil
           </Heading>
 
           <Stack direction="row" spacing={3} mb={4}>
-            <Text as="b" color="text.300">
-              C.I:
-            </Text>
-            <Text color="text.300">{user.ci}</Text>
+            <Text as="b">C.I:</Text>
+            <Text>{user.ci}</Text>
           </Stack>
 
           <Stack direction="row" spacing={3} mb={4}>
-            <Text as="b" color="text.300">
-              Nombres completos:
-            </Text>
-            <Text color="text.300">
+            <Text as="b">Nombres completos:</Text>
+            <Text>
               {user.firstName} {user.secondName} {user.firstLastName}{" "}
               {user.secondLastName}
             </Text>
           </Stack>
           <Stack direction="row" spacing={3} mb={4}>
-            <Text as="b" color="text.300">
-              {user.roles.length > 1 ? "Roles:" : "Rol:"}
-            </Text>
+            <Text as="b">{user.roles.length > 1 ? "Roles:" : "Rol:"}</Text>
 
             {user.roles.map((rol, index) => (
               <Fragment key={index}>
-                <Text color="text.300">{rol.rol}</Text>
-                {index < user.roles.length - 1 && (
-                  <Text color="text.300">/</Text>
-                )}
+                <Text>{rol.rol}</Text>
+                {index < user.roles.length - 1 && <Text>/</Text>}
               </Fragment>
             ))}
           </Stack>
           {/* <Stack direction="row" spacing={3} mb={4}>
-              <Text as="b" color="text.300">
+              <Text as="b" >
                 Email:
               </Text>
-              <Text color="text.300"></Text>
+              <Text ></Text>
             </Stack> */}
         </Box>
       ) : (
         <form onSubmit={handleSubmit}>
           <Box m={10} boxShadow="md" p={7} borderRadius="xl" bg="white">
-            <Heading as="h4" size="md" mb={9} color="text.300">
+            <Heading as="h4" size="md" mb={9} color="ceruleanBlue.900">
               Editando información
             </Heading>
             <Center>
@@ -312,7 +306,7 @@ function Profile() {
                       onChange={handleChange}
                     />
                   </FormControl>
-                  <Button bg="primary.300" onClick={onOpen}>
+                  <Button bg="ceruleanBlue.200" onClick={onOpen}>
                     Cambiar Contraseña
                   </Button>
                 </Stack>
@@ -321,7 +315,7 @@ function Profile() {
             <Stack spacing={4} direction="row" align="center" mt="20px">
               <Button
                 type="submit"
-                bg="primary.200"
+                bg="ceruleanBlue.500"
                 color="white"
                 _hover={{
                   bg: "primary.100",
@@ -337,19 +331,19 @@ function Profile() {
 
       <Modal isOpen={isOpen} onClose={onClose}>
         <ModalOverlay />
-        <form onSubmit={changePassword}>
+        <form onSubmit={newPassword}>
           <ModalContent>
-            <ModalHeader color="text.300">Cambiar Contraseña</ModalHeader>
+            <ModalHeader>Cambiar Contraseña</ModalHeader>
             <ModalCloseButton />
             <ModalBody>
               <FormControl>
                 <FormLabel>Contraseña actual</FormLabel>
-                <PasswordInput nameInput="currentPassword" />
+                <PasswordInput name="currentPassword" />
               </FormControl>
 
               <FormControl mt={4}>
                 <FormLabel>Nueva Contraseña</FormLabel>
-                <PasswordInput nameInput="newPassword" />
+                <PasswordInput name="newPassword" />
               </FormControl>
             </ModalBody>
 

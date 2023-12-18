@@ -217,7 +217,7 @@ function ResumeForm() {
     });
   };
   return (
-    <Box  bg="bg.100">
+    <Box >
       <form onSubmit={handleSubmit} ref={form}>
         <Box fontSize={50}>
           <Container maxW={"container.xl"}>
@@ -238,7 +238,7 @@ function ResumeForm() {
             <Grid templateColumns={{ base: "1fr", md: "9fr" }} gap={4} mt={2}>
               <GridItem order={{ base: 2, md: 1 }}>
                 <Heading as="h3" size="md" textAlign="center">
-                  <Box bg="primary.200" color="white" p={2} borderRadius="md">
+                  <Box bg="ceruleanBlue.500" color="white" p={2} borderRadius="md">
                     DATOS DEL EGRESADO O GRADUADO/A
                   </Box>
                 </Heading>
@@ -358,7 +358,7 @@ function ResumeForm() {
           </Container>
           <Container py={2} maxW={"container.xl"} fontSize={"container.sm"}>
             <Heading as="h3" size="md" textAlign="center">
-              <Box bg="primary.200" color="white" p={2} borderRadius="md">
+              <Box bg="ceruleanBlue.500" color="white" p={2} borderRadius="md">
                 DATOS DEL TRABAJO Y ESTUDIO
               </Box>
             </Heading>
@@ -1026,15 +1026,14 @@ function ResumeForm() {
           position="fixed"
           bottom={4}
           right={4}
-          bg="bg.400"
+          bg="ceruleanBlue.500"
           color="white"
           size="lg"
           zIndex="tooltip"
           type="submit"
           _hover= {
             {
-              bg: "accent.200",
-              color: "bg.400"
+              bg: "ceruleanBlue.600",
             }
           }
         >

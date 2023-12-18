@@ -256,7 +256,7 @@ function ResumeForm() {
           mt={2}
         >
           <GridItem>
-            <Box bg="primary.100" color="white" p={2} borderRadius="md">
+            <Box bg="ceruleanBlue.500" color="white" p={2} borderRadius="md">
               <Heading as="h1" textAlign="center">
                 HOJA DE VIDA
               </Heading>
@@ -264,7 +264,7 @@ function ResumeForm() {
           </GridItem>
           <GridItem>
             <Box
-              bg="primary.100"
+              bg="ceruleanBlue.500"
               color="white"
               borderRadius="md"
               p={2}

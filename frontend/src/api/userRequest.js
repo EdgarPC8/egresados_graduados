@@ -1,44 +1,62 @@
-import axios from "./axios.js";
-import { token } from "./axios.js";
+import axios, { jwt } from "./axios.js";
+
+// const jwt = `Bearer ${window.localStorage.getItem("jwt")}`;
 
 const loginRequest = async (data) => await axios.post("/auth/login", data);
 
 const verifyTokenRequest = async () =>
   await axios.get("/auth/verifytoken", {
     headers: {
-      Authorization: token,
+      Authorization: jwt(),
     },
   });
 
-const getRoles = async () => await axios.get("/user/roles");
+const getRoles = async () => await axios.get("/users/roles");
 
 const getOneUser = async (userId) =>
-  await axios.get(`/user/${userId}`, {
+  await axios.get(`/users/${userId}`, {
     headers: {
-      Authorization: token,
+      Authorization: jwt(),
     },
   });
 
-const updateDataUser = async (userId, userData) =>
-  await axios.put(`/user/${userId}`, userData, {
+const updateUserData = async (userId, userData) =>
+  await axios.put(`/users/${userId}`, userData, {
     headers: {
       "Content-Type": "multipart/form-data",
-      Authorization: token,
+      Authorization: jwt(),
     },
   });
 
-const changePasswordRequest = async (userId, data) =>
-  await axios.put(`/user/changePassword/${userId}`, data, {
+const changePassword = async (userId, data) =>
+  await axios.put(`/users/changePassword/${userId}`, data, {
     headers: {
-      Authorization: token,
+      Authorization: jwt(),
+    },
+  });
+
+const getUsers = async () =>
+  await axios.get("/users", {
+    headers: {
+      Authorization: jwt(),
+    },
+  });
+
+const addUser = async (data) =>
+  await axios.post("/users", data, {
+    headers: {
+      Authorization: jwt(),
+      "Content-Type": "multipart/form-data",
     },
   });
 
 export {
   loginRequest,
   verifyTokenRequest,
-  changePasswordRequest,
+  changePassword,
   getRoles,
   getOneUser,
-  updateDataUser,
+  updateUserData,
+  getUsers,
+  addUser,
 };

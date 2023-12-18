@@ -1,5 +1,6 @@
 import axios from "./axios.js";
-import { token } from "./axios.js";
+
+const token = `Bearer ${window.localStorage.getItem("token")}`;
 
 export const getProfessionalsById = async (data) =>
   await axios.get(`/professionals/getProfessionalsById/${data}`, {

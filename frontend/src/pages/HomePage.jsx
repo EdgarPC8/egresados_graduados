@@ -13,9 +13,9 @@ function HomePage() {
       </Text>
       <Link to="/curriculos">
         <Button
-          bg="primary.200"
+          bg="ceruleanBlue.500"
           color="white"
-          _hover={{ color: "text.100", bg: "bg.200" }}
+          _hover={{ bg: "ceruleanBlue.600" }}
         >
           Explorar
         </Button>

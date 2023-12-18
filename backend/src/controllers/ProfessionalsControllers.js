@@ -19,7 +19,7 @@ export const addProfessional = async (req, res) => {
 export const getProfessionalsById = async (req, res) => {
   const id = req.params.userId;
   try {
-    const professional = await Professionals.findAll({
+    const professional = await Professionals.findOne({
       where: {
         userId: id,
       },

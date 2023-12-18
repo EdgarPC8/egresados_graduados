@@ -47,7 +47,7 @@ app.use("/api/professionals", professionalsRoutes);
 app.use("/api/cv", cvRoutes);
 app.use("/api/quiz", quizRoutes);
 app.use("/api/linguiGeo", linguiGeoRoutes);
-app.use("/api/user", userRoutes);
+app.use("/api/users", userRoutes);
 
 
 async function main() {
