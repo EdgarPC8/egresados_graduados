@@ -263,8 +263,8 @@ function FormBooks() {
               "type",
               "typeAuthorship",
               "isbN",
-              "editoralName",
-              "editoralOrigin",
+              "editorialName",
+              "editorialOrigin",
               "year",
             ]}
             data={datosBooks}

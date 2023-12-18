@@ -21,9 +21,8 @@ function HomePage() {
         </Button>
       </Link>
       <Box boxSize="300px">
-        <Image src={HomeIcon}/>
+        <Image src={HomeIcon} />
       </Box>
-
     </Box>
   );
 }

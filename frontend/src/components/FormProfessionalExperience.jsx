@@ -271,13 +271,13 @@ function FormProfessionalExperience() {
             ]}
             keyValues={[
               "nro",
-              "company_institution",
+              "companyInstitution",
               "position",
               "responsibilities",
-              "immediate_head",
+              "immediateHead",
               "telephone",
-              "start_date",
-              "end_date",
+              "startDate",
+              "endDate",
             ]}
             data={datosProfessionalExperience}
             title="Formación Academica"

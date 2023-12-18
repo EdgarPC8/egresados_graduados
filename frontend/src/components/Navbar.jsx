@@ -1,90 +1,99 @@
 import React from "react";
 import {
   Box,
-  Flex,
   Button,
   HStack,
+  Stack,
   Menu,
   MenuButton,
   Avatar,
+  Text,
   MenuList,
   MenuItem,
   useDisclosure,
   MenuDivider,
   IconButton,
-  Stack,
+  VStack,
   Image,
+  Flex,
+  Center,
+  AvatarBadge,
+  Drawer,
+  DrawerBody,
+  DrawerFooter,
+  DrawerHeader,
+  DrawerOverlay,
+  DrawerContent,
+  DrawerCloseButton,
+  Input,
 } from "@chakra-ui/react";
+import { useRef } from "react";
 
 import { Link } from "react-router-dom";
 
+import NavLink from "./NavLink";
+
+import { FiHome, FiFile, FiAward, FiFileText, FiLogOut } from "react-icons/fi";
+
 import { HamburgerIcon, CloseIcon } from "@chakra-ui/icons";
 import { useAuth } from "../context/AuthContext";
-
-const NavLink = (props) => {
-  const { children } = props;
-  return (
-    <Box
-      px={2}
-      py={1}
-      rounded={"md"}
-      _hover={{
-        textDecoration: "none",
-        bg: "bg.200",
-      }}
-    >
-      {children}
-    </Box>
-  );
-};
+import { urlPhotos } from "../api/axios";
 
 const Navbar = () => {
-  const Links = [
-    {
-      name: "Inicio",
-      path: "/",
-    },
-    {
-      name: "Curriculos",
-      path: "/curriculos",
-    },
-    {
-      name: "Hoja de Vida",
-      path: "/cv",
-    },
-    {
-      name: "Encuesta",
-      path: "/quiz",
-    },
-  ];
+  const btnRef = useRef();
+  const { isAuthenticated, logout, user } = useAuth();
+
+  const { isOpen, onOpen, onClose } = useDisclosure();
 
   const LinksToNoAuth = [
     {
       name: "Inicio",
       path: "/",
+      icon: <FiHome />,
     },
     {
       name: "Curriculos",
       path: "/curriculos",
+      icon: <FiHome />,
     },
-    
   ];
 
-  const { isAuthenticated, logout } = useAuth();
+  const Links = [
+    {
+      name: "Inicio",
+      path: "/",
+      icon: <FiHome />,
+    },
+    {
+      name: "Curriculos",
+      path: "/curriculos",
+      icon: <FiFile />,
+    },
+    {
+      name: "Hoja de Vida",
+      path: "/cv",
+      icon: <FiAward />,
+    },
+    {
+      name: "Encuesta",
+      path: "/quiz",
+      icon: <FiFileText />,
+    },
+  ];
 
-  const { isOpen, onOpen, onClose } = useDisclosure();
   return (
     <>
-      <Box p={2} bg="bg.100">
+      <Box p={2}>
         <Flex alignItems="center" justifyContent={"space-between"}>
           <HStack spacing={8} alignItems={"center"}>
             <IconButton
               size={"md"}
-              icon={isOpen ? <CloseIcon /> : <HamburgerIcon />}
+              icon={<HamburgerIcon />}
               aria-label={"Open Menu"}
-              display={{ md: "none" }}
-              onClick={isOpen ? onClose : onOpen}
+              ref={btnRef}
+              onClick={onOpen}
             />
+
             <HStack
               as={"nav"}
               spacing={4}
@@ -96,75 +105,83 @@ const Navbar = () => {
                 src="http://www.marianosamaniego.edu.ec/eva/pluginfile.php/1/core_admin/logo/0x200/1679244973/logoistms.jpeg"
                 alt="Dan Abramov"
               />
-              {!isAuthenticated
-                ? LinksToNoAuth.map((link) => (
-                    <Link to={link.path} key={link.name}>
-                      <NavLink>{link.name}</NavLink>
-                    </Link>
-                  ))
-                : Links.map((link) => (
-                    <Link to={link.path} key={link.name}>
-                      <NavLink>{link.name}</NavLink>
-                    </Link>
-                  ))}
+              {!isAuthenticated &&
+                LinksToNoAuth.map((link) => (
+                  <Link to={link.path} key={link.name}>
+                    <NavLink>{link.name}</NavLink>
+                  </Link>
+                ))}
             </HStack>
           </HStack>
-          {!isAuthenticated ? (
-            <Link to="/login">
-              <Button
-                bg="primary.200"
-                color="white"
-                _hover={{
-                  bg: "primary.100",
-                }}
-              >
-                Iniciar Sesión
-              </Button>
-            </Link>
-          ) : (
-            <Menu>
-              <MenuButton
-                as={Button}
-                rounded={"full"}
-                variant={"link"}
-                cursor={"pointer"}
-                minW={0}
-              >
-                <Avatar
-                  size={"sm"}
-                  src={
-                    "https://images.unsplash.com/photo-1493666438817-866a91353ca9?ixlib=rb-0.3.5&q=80&fm=jpg&crop=faces&fit=crop&h=200&w=200&s=b616b2c5b373a80ffc9636ba24f7a4a9"
-                  }
-                />
-              </MenuButton>
-              <MenuList>
-                <MenuItem>Perfil</MenuItem>
-                <MenuDivider />
-                <Link to="/login" onClick={logout}>
-                  <MenuItem>Salir</MenuItem>
+
+          {isAuthenticated ? (
+            <Flex>
+              <Center>
+                <Link to="/perfil">
+                  <Avatar
+                    size={"sm"}
+                    mr="10px"
+                    src={`${urlPhotos}/${user.photo}`}
+                  >
+                    <AvatarBadge boxSize="1.25em" bg="green.500" />
+                  </Avatar>
                 </Link>
-              </MenuList>
-            </Menu>
+              </Center>
+            </Flex>
+          ) : isOpen ? (
+            ""
+          ) : (
+            <Link to="/login">
+              <Button>Iniciar Sesión</Button>
+            </Link>
           )}
         </Flex>
-        {isOpen ? (
-          <Box pb={4} pt={4} display={{ md: "none" }}>
-            <Stack as={"nav"} spacing={4}>
-              {!isAuthenticated
-                ? LinksToNoAuth.map((link) => (
-                    <Link to={link.path} key={link.name}>
-                      <NavLink>{link.name}</NavLink>
-                    </Link>
-                  ))
-                : Links.map((link) => (
-                    <Link to={link.path} key={link.name}>
-                      <NavLink>{link.name}</NavLink>
-                    </Link>
-                  ))}
-            </Stack>
-          </Box>
-        ) : null}
       </Box>
+
+      <Drawer
+        isOpen={isOpen}
+        placement="left"
+        onClose={onClose}
+        finalFocusRef={btnRef}
+      >
+        <DrawerOverlay />
+        <DrawerContent>
+          <DrawerCloseButton />
+          {/* <DrawerHeader>Create your account</DrawerHeader> */}
+
+          <DrawerBody>
+            {isAuthenticated ? (
+              <Stack align="start" spacing={4} flex="1" mr={4}>
+                {Links.map((link) => (
+                  <Link to={link.path} key={link.name} onClick={onClose}>
+                    <NavLink icon={link.icon}>{link.name}</NavLink>
+                  </Link>
+                ))}
+              </Stack>
+            ) : (
+              <Stack align="start" spacing={4} flex="1" mr={4}>
+                {LinksToNoAuth.map((link) => (
+                  <Link to={link.path} key={link.name} onClick={onClose}>
+                    <NavLink icon={link.icon}>{link.name}</NavLink>
+                  </Link>
+                ))}
+              </Stack>
+            )}
+          </DrawerBody>
+
+          <DrawerFooter>
+            {isAuthenticated ? (
+              <Link to="/login">
+                <IconButton icon={<FiLogOut />} onClick={logout} />
+              </Link>
+            ) : (
+              <Link to="/login">
+                <Button>Iniciar Sesión</Button>
+              </Link>
+            )}
+          </DrawerFooter>
+        </DrawerContent>
+      </Drawer>
     </>
   );
 };

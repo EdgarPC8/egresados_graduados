@@ -22,7 +22,7 @@ import { useNavigate } from "react-router-dom";
 import { getRoles } from "../api/userRequest";
 
 function LoginPage() {
-  const { signin, isAuthenticated, errors } = useAuth();
+  const { signin, isAuthenticated, errors, loadUserProfile } = useAuth();
   const [roles, setRoles] = useState([]);
 
   // console.log(errors)
@@ -35,6 +35,7 @@ function LoginPage() {
     const data = Object.fromEntries(new FormData(event.target));
     // console.log(JSON.stringify(data));
     signin(data);
+    loadUserProfile();
   };
 
   useEffect(() => {
@@ -54,8 +55,10 @@ function LoginPage() {
   return (
     <Container
       maxW="lg"
-      py={{ base: "12", md: "24" }}
-      px={{ base: "0", sm: "8" }}
+      alignItems="center"
+      
+      // py={{ base: "12", md: "24" }}
+      // px={{ base: "0", sm: "8" }}
     >
       <Stack spacing="7">
         <Stack spacing="6">
@@ -86,10 +89,16 @@ function LoginPage() {
                   )}
 
                   <FormControl>
-                    <FormLabel htmlFor="email">Correo</FormLabel>
-                    <Input id="email" name="email" />
+                    <FormLabel htmlFor="username">Nombre de usuario</FormLabel>
+                    <Input id="username" name="username" />
                   </FormControl>
-                  <PasswordInput />
+                  <FormControl>
+                    <FormLabel>Contraseña</FormLabel>
+                    <PasswordInput
+                      labelText="Contraseña"
+                      nameInput="password"
+                    />
+                  </FormControl>
                   <FormControl>
                     <FormLabel htmlFor="roles">Roles disponibles</FormLabel>
                     <Select placeholder="Seleccione un rol" name="rol">

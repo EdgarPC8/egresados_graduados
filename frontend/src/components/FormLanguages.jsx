@@ -78,6 +78,18 @@ function FormLanguages() {
     setFormLanguage({ ...formLanguage, [name]: value });
   };
 
+  const handleChangeSpeaking = (value) => {
+    setFormLanguage({ ...formLanguage, speakingLevel: value });
+  };
+
+  const handleChangeWriting = (value) => {
+    setFormLanguage({ ...formLanguage, writingLevel: value });
+  };
+
+  const handleChangeComprehension = (value) => {
+    setFormLanguage({ ...formLanguage, comprehensionLevel: value });
+  };
+
   const handleSubmit = async (event) => {
     event.preventDefault();
     try {
@@ -179,7 +191,7 @@ function FormLanguages() {
                       m={"auto"}
                       name="speakingLevel"
                       value={formLanguage.speakingLevel}
-                      onChange={handleChange}
+                      onChange={handleChangeSpeaking}
                     >
                       <Stack spacing={5} direction="row">
                         <Radio colorScheme="green" value="">
@@ -203,7 +215,7 @@ function FormLanguages() {
                       m={"auto"}
                       name="writingLevel"
                       value={formLanguage.writingLevel}
-                      onChange={handleChange}
+                      onChange={handleChangeWriting}
                     >
                       <Stack spacing={5} direction="row">
                         <Radio colorScheme="green" value="">
@@ -227,7 +239,7 @@ function FormLanguages() {
                       m={"auto"}
                       name="comprehensionLevel"
                       value={formLanguage.comprehensionLevel}
-                      onChange={handleChange}
+                      onChange={handleChangeComprehension}
                     >
                       <Stack spacing={5} direction="row">
                         <Radio colorScheme="green" value="">

@@ -9,20 +9,28 @@ import { AuthProvider } from "./context/AuthContext.jsx";
 import ProtectedRoute from "./components/ProtectedRoute.jsx";
 import CV from "./pages/CV.jsx";
 import Quiz from "./pages/Quiz.jsx";
+import Profile from "./pages/Profile.jsx";
+import { Toaster } from "react-hot-toast";
+import Fonts from "./theme/Fonts.jsx";
 
 function App() {
   return (
     <ChakraProvider theme={customTheme}>
       <AuthProvider>
         <BrowserRouter>
+          <Fonts />
           <Navbar />
+
+          <Toaster />
+
           <Routes>
             <Route path="/" element={<HomePage />} />
             <Route path="/login" element={<LoginPage />} />
 
             <Route element={<ProtectedRoute />}>
               <Route path="/cv" element={<CV />} />
-              <Route path="/quiz" element={<Quiz/>} />
+              <Route path="/quiz" element={<Quiz />} />
+              <Route path="/perfil" element={<Profile />} />
             </Route>
           </Routes>
         </BrowserRouter>

@@ -5,12 +5,11 @@ export const getAllProfessionals = async (req, res) => {
   res.json(professionals);
 };
 
-
 export const addProfessional = async (req, res) => {
   const data = req.body; // Suponiendo que los datos están en el cuerpo de la solicitud
   try {
     const newProfessional = await Professionals.create(data);
-    res.json({ message: "Agregado con éxito" ,data:data});
+    res.json({ message: "Agregado con éxito", data: data });
   } catch (error) {
     res.status(500).json({
       message: error.message,
@@ -18,20 +17,17 @@ export const addProfessional = async (req, res) => {
   }
 };
 export const getProfessionalsById = async (req, res) => {
-  const id = req.params.userId ;
+  const id = req.params.userId;
   try {
-    const professional = await Professionals.findAll(
-      {
-        where:{
-          idUser:id
-        }
-      }
-    );
+    const professional = await Professionals.findAll({
+      where: {
+        userId: id,
+      },
+    });
     res.json(professional);
   } catch (error) {
     res.status(500).json({
       message: error.message,
     });
   }
-
 };
