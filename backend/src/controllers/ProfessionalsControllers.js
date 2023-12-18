@@ -21,7 +21,7 @@ export const getProfessionalsById = async (req, res) => {
   try {
     const professional = await Professionals.findOne({
       where: {
-        userId: id,
+        id: id,
       },
     });
     res.json(professional);
