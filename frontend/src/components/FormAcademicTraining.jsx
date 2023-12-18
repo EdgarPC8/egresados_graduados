@@ -57,7 +57,6 @@ function FormAcademicTraining() {
     }
   }
 
-  
   const handleSubmit = async (event) => {
     event.preventDefault();
     try {
@@ -239,7 +238,7 @@ function FormAcademicTraining() {
               <Button
                 type="submit"
                 mt={4}
-                bg="primary.200"
+                bg="ceruleanBlue.500"
                 color={"white"}
                 _hover={{ bg: "primary.100" }}
                 data-purpose="create"

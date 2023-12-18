@@ -76,7 +76,7 @@ function FormCourses() {
 
   const handleChange = (event) => {
     // const { name, value } = event.target;
-    console.log(event.target)
+    console.log(event.target);
     // setFormCourse({ ...formCourse, [name]: value });
   };
 
@@ -259,7 +259,12 @@ function FormCourses() {
               order={{ base: 1, md: 1 }}
               textAlign={"right"}
             >
-              <Button type="submit" mt={4} bg="primary.200" color={"white"}>
+              <Button
+                type="submit"
+                mt={4}
+                bg="ceruleanBlue.500"
+                color={"white"}
+              >
                 {!isEditing ? "Guardar" : "Editar"}
               </Button>
             </GridItem>

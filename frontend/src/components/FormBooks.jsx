@@ -235,7 +235,12 @@ function FormBooks() {
               order={{ base: 1, md: 1 }}
               textAlign={"right"}
             >
-              <Button type="submit" mt={4} bg="primary.200" color={"white"}>
+              <Button
+                type="submit"
+                mt={4}
+                bg="ceruleanBlue.500"
+                color={"white"}
+              >
                 {!isEditing ? "Guardar" : "Editar"}
               </Button>
             </GridItem>
@@ -275,7 +280,7 @@ function FormBooks() {
               buttonEdit: true,
               handleEditRow,
               buttonDelete: true,
-              handleDeleteRow
+              handleDeleteRow,
             }}
           />
         </AccordionPanel>

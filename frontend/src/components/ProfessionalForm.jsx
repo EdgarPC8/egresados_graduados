@@ -383,7 +383,7 @@ function ProfessionalForm() {
           textAlign={"center"}
           margin={"auto"}
         >
-          <Button type="submit" mt={4} bg="primary.200" color={"white"}>
+          <Button type="submit" mt={4} bg="ceruleanBlue.500" color={"white"}>
             Guardar Cambios
           </Button>
         </GridItem>

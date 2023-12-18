@@ -94,6 +94,7 @@ const AuthProvider = ({ children }) => {
         logout,
         isAuthenticated,
         isLoading,
+        loadUserProfile,
         user,
       }}
     >
