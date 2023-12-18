@@ -48,8 +48,8 @@ function ProfessionalForm() {
       const res = await verifyTokenRequest();
       const idUser = res.data.userId;
       const { data } = await getProfessionalsById(idUser);
-      // setFormProfessional(data[0]);
-      console.log(data)
+      setFormProfessional(data);
+      // console.log(data)
     } catch (error) {
       console.error("Error al obtener datos académicos:", error);
     }
