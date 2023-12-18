@@ -53,6 +53,43 @@ const insertDefaultUsers = async () => {
       };
     }
   );
+  const professionals = cuentas.map(
+    ([username, password, arrayRoles, { userInfo,professionals }]) => {
+      const {
+        ci,
+        firstName,
+        secondName,
+        firstLastName,
+        secondLastName,
+        birthDate,
+        gender,
+        direction,
+        homePhone,
+        cellPhone,
+        personalEmail,
+        institutionalEmail,
+        image
+      } = professionals;
+
+      return {
+        ci,
+        firstName,
+        secondName,
+        firstLastName,
+        secondLastName,
+        birthDate,
+        gender,
+        direction,
+        homePhone,
+        cellPhone,
+        personalEmail,
+        institutionalEmail,
+        image
+      };
+    }
+  );
+  const createdProfessionals = await Professionals.bulkCreate(professionals, { returning: true });
+
 
   const rolesUser = cuentas.map(([username, password, roles]) => {
     return roles;
@@ -70,6 +107,7 @@ const insertDefaultUsers = async () => {
 
   await UserRoles.bulkCreate(bulkUserRoles);
 };
+
 
 const insertData = async () => {
   await insertRoles();
