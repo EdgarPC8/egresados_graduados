@@ -1,91 +1,223 @@
-import axios from "./axios.js";
+import axios, { jwt } from "./axios.js";
 
 export const getAllAcademicTraining = async () =>
-  await axios.get("/cv/getAllAcademicTraining");
+  await axios.get("/cv/getAllAcademicTraining", {
+    headers: {
+      Authorization: jwt(),
+    },
+  });
 export const addAcademicTraining = async (data) =>
-  await axios.post("/cv/addAcademicTraining", data);
+  await axios.post("/cv/addAcademicTraining", data, {
+    headers: {
+      Authorization: jwt(),
+    },
+  });
 
 export const editAcademicTraining = async (id, data) =>
-  await axios.put(`/cv/editAcademicTraining/${id}`, data);
+  await axios.put(`/cv/editAcademicTraining/${id}`, data, {
+    headers: {
+      Authorization: jwt(),
+    },
+  });
 
 export const deleteAcademicTraining = async (data) =>
-  await axios.delete(`/cv/deleteAcademicTraining/${data}`);
+  await axios.delete(`/cv/deleteAcademicTraining/${data}`, {
+    headers: {
+      Authorization: jwt(),
+    },
+  });
 
 export const getAllProfessionalExperience = async () =>
-  await axios.get("/cv/getAllProfessionalExperience");
+  await axios.get("/cv/getAllProfessionalExperience", {
+    headers: {
+      Authorization: jwt(),
+    },
+  });
 
 export const addProfessionalExperience = async (data) =>
-  await axios.post("/cv/addProfessionalExperience", data);
+  await axios.post("/cv/addProfessionalExperience", data, {
+    headers: {
+      Authorization: jwt(),
+    },
+  });
 
 export const editProfessionalExperience = async (id, data) =>
-  await axios.put(`/cv/editProfessionalExperience/${id}`, data);
+  await axios.put(`/cv/editProfessionalExperience/${id}`, data, {
+    headers: {
+      Authorization: jwt(),
+    },
+  });
 
 export const deleteProfessionalExperience = async (data) =>
-  await axios.delete(`/cv/deleteProfessionalExperience/${data}`);
+  await axios.delete(`/cv/deleteProfessionalExperience/${data}`, {
+    headers: {
+      Authorization: jwt(),
+    },
+  });
 
 export const getAllLanguages = async () =>
-  await axios.get("/cv/getAllLanguages");
+  await axios.get("/cv/getAllLanguages", {
+    headers: {
+      Authorization: jwt(),
+    },
+  });
 
 export const addLanguages = async (data) =>
-  await axios.post("/cv/addLanguages", data);
+  await axios.post("/cv/addLanguages", data, {
+    headers: {
+      Authorization: jwt(),
+    },
+  });
 
 export const editLanguages = async (id, data) =>
-  await axios.put(`/cv/editLanguages/${id}`, data);
+  await axios.put(`/cv/editLanguages/${id}`, data, {
+    headers: {
+      Authorization: jwt(),
+    },
+  });
 
 export const deleteLanguages = async (data) =>
-  await axios.delete(`/cv/deleteLanguages/${data}`);
+  await axios.delete(`/cv/deleteLanguages/${data}`, {
+    headers: {
+      Authorization: jwt(),
+    },
+  });
 
 export const getAllAcademicProfessionalMerits = async () =>
-  await axios.get("/cv/getAllAcademicProfessionalMerits");
+  await axios.get("/cv/getAllAcademicProfessionalMerits", {
+    headers: {
+      Authorization: jwt(),
+    },
+  });
 export const addAcademicProfessionalMerits = async (data) =>
-  await axios.post("/cv/addAcademicProfessionalMerits", data);
+  await axios.post("/cv/addAcademicProfessionalMerits", data, {
+    headers: {
+      Authorization: jwt(),
+    },
+  });
 
 export const editAcademicProfessionalMerits = async (id, data) =>
-  await axios.put(`/cv/editAcademicProfessionalMerit/${id}`, data);
+  await axios.put(`/cv/editAcademicProfessionalMerit/${id}`, data, {
+    headers: {
+      Authorization: jwt(),
+    },
+  });
 
 export const deleteAcademicProfessionalMerits = async (data) =>
-  await axios.delete(`/cv/deleteAcademicProfessionalMerits/${data}`);
+  await axios.delete(`/cv/deleteAcademicProfessionalMerits/${data}`, {
+    headers: {
+      Authorization: jwt(),
+    },
+  });
 
-export const getAllBooks = async () => await axios.get("/cv/getAllBooks");
+export const getAllBooks = async () =>
+  await axios.get("/cv/getAllBooks", {
+    headers: {
+      Authorization: jwt(),
+    },
+  });
 
-export const addBooks = async (data) => await axios.post("/cv/addBooks", data);
+export const addBooks = async (data) =>
+  await axios.post("/cv/addBooks", data, {
+    headers: {
+      Authorization: jwt(),
+    },
+  });
 
 export const editBooks = async (id, data) =>
-  await axios.put(`/cv/editBooks/${id}`, data);
+  await axios.put(`/cv/editBooks/${id}`, data, {
+    headers: {
+      Authorization: jwt(),
+    },
+  });
 
 export const deleteBooks = async (data) =>
-  await axios.delete(`/cv/deleteBooks/${data}`);
+  await axios.delete(`/cv/deleteBooks/${data}`, {
+    headers: {
+      Authorization: jwt(),
+    },
+  });
 
 export const getAllIntellectualProduction = async () =>
-  await axios.get("/cv/getAllIntellectualProduction");
+  await axios.get("/cv/getAllIntellectualProduction", {
+    headers: {
+      Authorization: jwt(),
+    },
+  });
 
 export const addIntellectualProduction = async (id, data) =>
-  await axios.post(`/cv/addIntellectualProduction/${id}`, data);
+  await axios.post(`/cv/addIntellectualProduction/${id}`, data, {
+    headers: {
+      Authorization: jwt(),
+    },
+  });
 
 export const editIntellectualProduction = async (data) =>
-  await axios.put("/cv/editIntellectualProduction", data);
+  await axios.put("/cv/editIntellectualProduction", data, {
+    headers: {
+      Authorization: jwt(),
+    },
+  });
+
 export const deleteIntellectualProduction = async (data) =>
-  await axios.delete(`/cv/deleteIntellectualProduction/${data}`);
+  await axios.delete(`/cv/deleteIntellectualProduction/${data}`, {
+    headers: {
+      Authorization: jwt(),
+    },
+  });
 
 export const getAllCoursesWorkshops = async () =>
-  await axios.get("/cv/getAllCoursesWorkshops");
+  await axios.get("/cv/getAllCoursesWorkshops", {
+    headers: {
+      Authorization: jwt(),
+    },
+  });
+
 export const addCoursesWorkshops = async (data) =>
-  await axios.post("/cv/addCoursesWorkshops", data);
+  await axios.post("/cv/addCoursesWorkshops", data, {
+    headers: {
+      Authorization: jwt(),
+    },
+  });
 
 export const editCoursesWorkshops = async (id, data) =>
-  await axios.put(`/cv/editCoursesWorkshops/${id}`, data);
+  await axios.put(`/cv/editCoursesWorkshops/${id}`, data, {
+    headers: {
+      Authorization: jwt(),
+    },
+  });
 
 export const deleteCoursesWorkshops = async (data) =>
-  await axios.delete(`/cv/deleteCoursesWorkshops/${data}`);
+  await axios.delete(`/cv/deleteCoursesWorkshops/${data}`, {
+    headers: {
+      Authorization: jwt(),
+    },
+  });
 
 export const getAllTeachingExperience = async () =>
-  await axios.get("/cv/getAllTeachingExperience");
+  await axios.get("/cv/getAllTeachingExperience", {
+    headers: {
+      Authorization: jwt(),
+    },
+  });
 
 export const addTeachingExperience = async (data) =>
-  await axios.post("/cv/addTeachingExperience", data);
+  await axios.post("/cv/addTeachingExperience", data, {
+    headers: {
+      Authorization: jwt(),
+    },
+  });
 
 export const editTeachingExperience = async (id, data) =>
-  await axios.put(`/cv/editTeachingExperience/${id}`, data);
+  await axios.put(`/cv/editTeachingExperience/${id}`, data, {
+    headers: {
+      Authorization: jwt(),
+    },
+  });
 
 export const deleteTeachingExperience = async (data) =>
-  await axios.delete(`/cv/deleteTeachingExperience/${data}`);
+  await axios.delete(`/cv/deleteTeachingExperience/${data}`, {
+    headers: {
+      Authorization: jwt(),
+    },
+  });
