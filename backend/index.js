@@ -3,6 +3,7 @@ import authRoutes from "./src/routes/authRoutes.js";
 import professionalsRoutes from "./src/routes/professionalsRoutes.js";
 import cvRoutes from "./src/routes/cvRoutes.js";
 import quizRoutes from "./src/routes/quizRoutes.js";
+import chartsRoutes from "./src/routes/chartsRoutes.js";
 import linguiGeoRoutes from "./src/routes/linguisticsGeographyRoutes.js";
 import cors from "cors";
 import userRoutes from "./src/routes/userRoutes.js";
@@ -20,6 +21,7 @@ const allowedOrigins = [
   "http://localhost:8888",
   "http://localhost:5173",
   "http://192.168.137.250:5173",
+  "http://192.169.100.250:5173",
 ];
 
 const corsOptions = {
@@ -48,14 +50,15 @@ app.use("/api/cv", cvRoutes);
 app.use("/api/quiz", quizRoutes);
 app.use("/api/linguiGeo", linguiGeoRoutes);
 app.use("/api/users", userRoutes);
+app.use("/api/charts", chartsRoutes);
 
 
 async function main() {
   try {
     // await sequelize.authenticate();
-    // await sequelize.sync({ force: true });
+    await sequelize.sync({ force: true });
     // console.log("Conección realizada con éxito.");
-    // await insertData();
+    await insertData();
     app.listen(PORT, () => {
       console.log(`Backend escuchando en el puesto ${PORT}`);
     });

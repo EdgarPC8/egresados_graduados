@@ -8,6 +8,7 @@ import LoginPage from "./pages/LoginPage.jsx";
 import { AuthProvider } from "./context/AuthContext.jsx";
 import ProtectedRoute from "./components/ProtectedRoute.jsx";
 import CV from "./pages/CV.jsx";
+import Charts from "./pages/Charts.jsx";
 import Quiz from "./pages/Quiz.jsx";
 import Profile from "./pages/Profile.jsx";
 import Fonts from "./theme/Fonts.jsx";
@@ -31,6 +32,7 @@ function App() {
               <Route path="/quiz" element={<Quiz />} />
               <Route path="/perfil" element={<Profile />} />
               <Route path="/usuarios" element={<UserTable />} />
+              <Route path="/charts" element={<Charts />} />
             </Route>
           </Routes>
         </BrowserRouter>

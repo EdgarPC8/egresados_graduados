@@ -38,11 +38,46 @@ import {
   editResponses,
   deleteResponses,
 } from "../api/quizResquest.js";
+import { verifyTokenRequest } from "../api/userRequest.js";
+import { getProfessionalsById } from "../api/professionalRequest.js";
+
 import DataTable from "../components/DataTables";
+import Searcher from "../components/Searcher";
 import Modal from "../components/AlertDialog";
 
 function ResumeForm() {
   const form = useRef(null);
+  const carreras=[
+"TECNOLOGIA SUPERIOR EN ADMINISTRACION",
+"TECNOLOGIA SUPERIOR EN DESARROLLO DE SOFTWARE",
+"TECNOLOGIA SUPERIOR EN ELECTRICIDAD",
+"TECNOLOGIA SUPERIOR EN MECANICA AUTOMOTRIZ",
+  ]
+  
+  let initialFormProfessional = {
+    ci: "",
+    firstName: "",
+    secondName: "",
+    firstLastName: "",
+    secondLastName: "",
+    bloodType: "",
+    birthDate: "",
+    gender: "",
+    civilStatus: "",
+    nationality: "",
+    placeBirth: "",
+    placeResidence: "",
+    direction: "",
+    homePhone: "",
+    cellPhone: "",
+    personalEmail: "",
+    institutionalEmail: "",
+    image: "",
+    id: "",
+  };
+  const [formProfessional, setFormProfessional] = useState(
+    initialFormProfessional
+  );
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -50,7 +85,7 @@ function ResumeForm() {
 
     const encuesta = {
       idQuiz: 1,
-      userId: null,
+      userId: formProfessional.id,
       Questions: [
         {
           idQuestion: 1,
@@ -197,12 +232,13 @@ function ResumeForm() {
       ],
     };
     console.log("------------------------------------");
+    console.log(encuesta);
 
     encuesta.Questions.forEach((value) => {
       if ((value.textResponse || value.idOption) && !value.checkOptions) {
         value["idQuiz"] = encuesta.idQuiz;
         value["userId"] = encuesta.userId;
-        console.log(value);
+        // console.log(value);
         addResponses(value);
       } else if (value.checkOptions) {
         value.checkOptions.forEach((element) => {
@@ -216,6 +252,24 @@ function ResumeForm() {
       }
     });
   };
+  async function fetchData() {
+    try {
+      const res = await verifyTokenRequest();
+      const idUser = res.data.userId;
+      const { data } = await getProfessionalsById(idUser);
+      setFormProfessional(data);
+      // console.log(data)
+    } catch (error) {
+      console.error("Error al obtener datos académicos:", error);
+    }
+  }
+  const handleChange = (event) => {
+    const { name, value } = event.target;
+    setFormProfessional({ ...formProfessional, [name]: value });
+  };
+  useEffect(() => {
+    fetchData();
+  }, []);
   return (
     <Box >
       <form onSubmit={handleSubmit} ref={form}>
@@ -250,44 +304,53 @@ function ResumeForm() {
                   <GridItem fontSize={"sm"}>
                     <InputGroup>
                       <InputLeftAddon children="Primer Nombre" />
-                      <Input type="text" placeholder="Primer Nombre" />
+                      <Input type="text" placeholder="Primer Nombre" value={formProfessional.firstName? formProfessional.firstName: ""}
+                      onChange={handleChange}/>
                     </InputGroup>
                   </GridItem>
                   <GridItem fontSize={"sm"}>
                     <InputGroup>
                       <InputLeftAddon children="Primer Apellido" />
-                      <Input type="text" placeholder="Primer Apellido" />
+                      <Input type="text" placeholder="Primer Apellido"
+                      value={formProfessional.firstLastName? formProfessional.firstLastName: ""}
+                      onChange={handleChange} />
                     </InputGroup>
                   </GridItem>
                   <GridItem fontSize={"sm"}>
                     <InputGroup>
                       <InputLeftAddon children="Segundo Nombre" />
-                      <Input type="text" placeholder="Segundo Nombre" />
+                      <Input type="text" placeholder="Segundo Nombre" value={formProfessional.secondName? formProfessional.secondName: ""}
+                      onChange={handleChange} />
                     </InputGroup>
                   </GridItem>
                   <GridItem fontSize={"sm"}>
                     <InputGroup>
                       <InputLeftAddon children="Segundo Apellido" />
-                      <Input type="text" placeholder="Segundo Apellido" />
+                      <Input type="text" placeholder="Segundo Apellido" value={formProfessional.secondLastName? formProfessional.secondLastName: ""}
+                      onChange={handleChange}/>
                     </InputGroup>
                   </GridItem>
                   <GridItem fontSize={"sm"}>
                     <InputGroup>
                       <InputLeftAddon children="Cedula" />
-                      <Input type="text" placeholder="Cedula" />
+                      <Input type="text" placeholder="Cedula" 
+                      value={formProfessional.ci ? formProfessional.ci : ""}
+                      onChange={handleChange}/>
                     </InputGroup>
                   </GridItem>
 
                   <GridItem fontSize={"sm"}>
                     <InputGroup>
                       <InputLeftAddon children="Fecha de nacimiento" />
-                      <Input placeholder="Fecha" size="md" type="date" />
+                      <Input placeholder="Fecha" size="md" type="date" value={formProfessional.birthDate? formProfessional.birthDate: ""}
+                      onChange={handleChange}/>
                     </InputGroup>
                   </GridItem>
                   <GridItem fontSize={"sm"}>
                     <InputGroup>
                       <InputLeftAddon children="Genero" />
-                      <Select placeholder="Seleccione una opción">
+                      <Select placeholder="Seleccione una opción" value={formProfessional.gender? formProfessional.gender: ""}
+                      onChange={handleChange}>
                         <option value="F">Femenino</option>
                         <option value="M">Masculino</option>
                       </Select>
@@ -297,19 +360,22 @@ function ResumeForm() {
                   <GridItem fontSize={"sm"}>
                     <InputGroup>
                       <InputLeftAddon children="Email" />
-                      <Input type="text" placeholder="Email" />
+                      <Input type="text" placeholder="Email" value={formProfessional.personalEmail? formProfessional.personalEmail: ""}
+                      onChange={handleChange}/>
                     </InputGroup>
                   </GridItem>
                   <GridItem fontSize={"sm"}>
                     <InputGroup>
                       <InputLeftAddon children="Teléfono residencial" />
-                      <Input type="tel" placeholder="Teléfono residencial" />
+                      <Input type="tel" placeholder="Teléfono residencial" value={formProfessional.homePhone? formProfessional.homePhone: ""}
+                      onChange={handleChange}/>
                     </InputGroup>
                   </GridItem>
                   <GridItem fontSize={"sm"}>
                     <InputGroup>
                       <InputLeftAddon children="Teléfono de celular" />
-                      <Input type="tel" placeholder="Teléfono de celular" />
+                      <Input type="tel" placeholder="Teléfono de celular" value={formProfessional.cellPhone? formProfessional.cellPhone: ""}
+                      onChange={handleChange}/>
                     </InputGroup>
                   </GridItem>
                   <GridItem fontSize={"sm"}>
@@ -334,13 +400,13 @@ function ResumeForm() {
                   mt={2}
                 >
                   <GridItem fontSize={"sm"}>
+                  
+                  
                     <InputGroup>
                       <InputLeftAddon children="Carrera de la que Egresó" />
-                      <Input
-                        type="text"
-                        placeholder="Carrera de la que Egresó"
-                        name="question2"
-                      />
+                      <Searcher placeholder='Carrera de la que Egresó' data={carreras} name="question2">
+
+                      </Searcher>
                     </InputGroup>
                   </GridItem>
                   <GridItem fontSize={"sm"}>
@@ -766,12 +832,15 @@ function ResumeForm() {
                   <GridItem fontSize={"sm"}>
                     <FormControl>
                       <FormLabel>Carrera:</FormLabel>
-                      <Input
+                      {/* <Input
                         type="text"
                         variant="flushed"
                         placeholder="Carrera"
                         name="question17"
-                      />
+                      /> */}
+                      <Searcher placeholder='Carrera' data={carreras} name="question17">
+
+                      </Searcher>
                     </FormControl>
                   </GridItem>
                   <GridItem fontSize={"sm"}></GridItem>
@@ -818,12 +887,15 @@ function ResumeForm() {
                   <GridItem fontSize={"sm"}>
                     <FormControl>
                       <FormLabel>Carrera:</FormLabel>
-                      <Input
+                      <Searcher placeholder='Carrera' data={carreras} name="question20">
+
+                      </Searcher>
+                      {/* <Input
                         type="text"
                         variant="flushed"
                         placeholder="Carrera"
                         name="question20"
-                      />
+                      /> */}
                     </FormControl>
                   </GridItem>
                   <GridItem fontSize={"sm"}>
