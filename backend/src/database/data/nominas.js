@@ -2,23 +2,23 @@ export const NominasArray = [
   {ci:1150837498,profesional:"CALVA ABAD YESSENIA MARIBEL",gender:"F",registerCod:"2049-2023-2716282",dateRecord:"2023-07-10",country:"Ecuador",place:"Calvas",modality:"Hibrida",typeTraining:"Tercer Nivel Tecnológico Superior",title:"TECNOLOGO SUPERIOR EN ADMINISTRACION",career:"TECNOLOGIA SUPERIOR EN ADMINISTRACION",institution:"INSTITUTO SUPERIOR TECNOLÓGICO MARIANO SAMANIEGO",dateIssue:"2023-08-03",nomina:"2049330675",},
   {ci:1150056065,profesional:"ESCALERAS RUEDA JOHANA ELIZABETH",gender:"F",registerCod:"2049-2023-2716283",dateRecord:"2023-07-10",country:"Ecuador",place:"Calvas",modality:"Hibrida",typeTraining:"Tercer Nivel Tecnológico Superior",title:"TECNOLOGO SUPERIOR EN ADMINISTRACION",career:"TECNOLOGIA SUPERIOR EN ADMINISTRACION",institution:"INSTITUTO SUPERIOR TECNOLÓGICO MARIANO SAMANIEGO",dateIssue:"2023-08-03",nomina:"2049330675",},
   {ci:1104978588,profesional:"JARAMILLO FLORES MARIA ROCIO",gender:"F",registerCod:"2049-2023-2716284",dateRecord:"2023-07-10",country:"Ecuador",place:"Calvas",modality:"Hibrida",typeTraining:"Tercer Nivel Tecnológico Superior",title:"TECNOLOGO SUPERIOR EN ADMINISTRACION",career:"TECNOLOGIA SUPERIOR EN ADMINISTRACION",institution:"INSTITUTO SUPERIOR TECNOLÓGICO MARIANO SAMANIEGO",dateIssue:"2023-08-03",nomina:"2049330675",},
-  {ci:1105531907,profesional:"PEREZ COSTA ESTEFANIA DEL CISNE",gender:"E",registerCod:"2049-2023-2716285",dateRecord:"2023-07-10",country:"Ecuador",place:"Calvas",modality:"Hibrida",typeTraining:"Tercer Nivel Tecnológico Superior",title:"TECNOLOGO SUPERIOR EN ADMINISTRACION",career:"TECNOLOGIA SUPERIOR EN ADMINISTRACION",institution:"INSTITUTO SUPERIOR TECNOLÓGICO MARIANO SAMANIEGO",dateIssue:"2023-08-03",nomina:"2049330675",},
-  {ci:1105335960,profesional:"AJILA JIMENEZ DANIELA DEL CARMEN",gender:"J",registerCod:"2049-2023-2716286",dateRecord:"2023-07-10",country:"Ecuador",place:"Calvas",modality:"Hibrida",typeTraining:"Tercer Nivel Tecnológico Superior",title:"TECNOLOGO SUPERIOR EN ADMINISTRACION",career:"TECNOLOGIA SUPERIOR EN ADMINISTRACION",institution:"INSTITUTO SUPERIOR TECNOLÓGICO MARIANO SAMANIEGO",dateIssue:"2023-08-03",nomina:"2049330675",},
+  {ci:1105531907,profesional:"PEREZ COSTA ESTEFANIA DEL CISNE",gender:"F",registerCod:"2049-2023-2716285",dateRecord:"2023-07-10",country:"Ecuador",place:"Calvas",modality:"Hibrida",typeTraining:"Tercer Nivel Tecnológico Superior",title:"TECNOLOGO SUPERIOR EN ADMINISTRACION",career:"TECNOLOGIA SUPERIOR EN ADMINISTRACION",institution:"INSTITUTO SUPERIOR TECNOLÓGICO MARIANO SAMANIEGO",dateIssue:"2023-08-03",nomina:"2049330675",},
+  {ci:1105335960,profesional:"AJILA JIMENEZ DANIELA DEL CARMEN",gender:"F",registerCod:"2049-2023-2716286",dateRecord:"2023-07-10",country:"Ecuador",place:"Calvas",modality:"Hibrida",typeTraining:"Tercer Nivel Tecnológico Superior",title:"TECNOLOGO SUPERIOR EN ADMINISTRACION",career:"TECNOLOGIA SUPERIOR EN ADMINISTRACION",institution:"INSTITUTO SUPERIOR TECNOLÓGICO MARIANO SAMANIEGO",dateIssue:"2023-08-03",nomina:"2049330675",},
   {ci:1151180005,profesional:"SANTORUM CHALAN GILDA DONICIA",gender:"F",registerCod:"2049-2023-2716287",dateRecord:"2023-07-10",country:"Ecuador",place:"Calvas",modality:"Hibrida",typeTraining:"Tercer Nivel Tecnológico Superior",title:"TECNOLOGO SUPERIOR EN ADMINISTRACION",career:"TECNOLOGIA SUPERIOR EN ADMINISTRACION",institution:"INSTITUTO SUPERIOR TECNOLÓGICO MARIANO SAMANIEGO",dateIssue:"2023-08-03",nomina:"2049330675",},
   {ci:1105338683,profesional:"SOLANO BARRAGAN MARIUXI ARELIS",gender:"F",registerCod:"2049-2023-2716288",dateRecord:"2023-07-10",country:"Ecuador",place:"Calvas",modality:"Hibrida",typeTraining:"Tercer Nivel Tecnológico Superior",title:"TECNOLOGO SUPERIOR EN ADMINISTRACION",career:"TECNOLOGIA SUPERIOR EN ADMINISTRACION",institution:"INSTITUTO SUPERIOR TECNOLÓGICO MARIANO SAMANIEGO",dateIssue:"2023-08-03",nomina:"2049330675",},
   {ci:1150454302,profesional:"JIMENEZ RETETE ZENAIDA MARITZA",gender:"F",registerCod:"2049-2023-2716289",dateRecord:"2023-07-10",country:"Ecuador",place:"Calvas",modality:"Hibrida",typeTraining:"Tercer Nivel Tecnológico Superior",title:"TECNOLOGO SUPERIOR EN ADMINISTRACION",career:"TECNOLOGIA SUPERIOR EN ADMINISTRACION",institution:"INSTITUTO SUPERIOR TECNOLÓGICO MARIANO SAMANIEGO",dateIssue:"2023-08-03",nomina:"2049330675",},
   {ci:1105711111,profesional:"PINEDA ACARO NELSON FERNANDO",gender:"M",registerCod:"2049-2023-2716290",dateRecord:"2023-07-10",country:"Ecuador",place:"Calvas",modality:"Hibrida",typeTraining:"Tercer Nivel Tecnológico Superior",title:"TECNOLOGO SUPERIOR EN ADMINISTRACION",career:"TECNOLOGIA SUPERIOR EN ADMINISTRACION",institution:"INSTITUTO SUPERIOR TECNOLÓGICO MARIANO SAMANIEGO",dateIssue:"2023-08-03",nomina:"2049330675",},
   {ci:1105576423,profesional:"SERRANO GONZAGA JEAN FRANKLIN",gender:"M",registerCod:"2049-2023-2716291",dateRecord:"2023-07-10",country:"Ecuador",place:"Calvas",modality:"Hibrida",typeTraining:"Tercer Nivel Tecnológico Superior",title:"TECNOLOGO SUPERIOR EN ADMINISTRACION",career:"TECNOLOGIA SUPERIOR EN ADMINISTRACION",institution:"INSTITUTO SUPERIOR TECNOLÓGICO MARIANO SAMANIEGO",dateIssue:"2023-08-03",nomina:"2049330675",},
   {ci:1105265845,profesional:"NARVAEZ OJEDA JOSE ANGEL",gender:"M",registerCod:"2049-2023-2716292",dateRecord:"2023-07-10",country:"Ecuador",place:"Calvas",modality:"Hibrida",typeTraining:"Tercer Nivel Tecnológico Superior",title:"TECNOLOGO SUPERIOR EN ADMINISTRACION",career:"TECNOLOGIA SUPERIOR EN ADMINISTRACION",institution:"INSTITUTO SUPERIOR TECNOLÓGICO MARIANO SAMANIEGO",dateIssue:"2023-08-03",nomina:"2049330675",},
-  {ci:1105268732,profesional:"MONCAYO PEÑA MILADY DE LOS ANGELES",gender:"E",registerCod:"2049-2023-2716293",dateRecord:"2023-07-10",country:"Ecuador",place:"Calvas",modality:"Hibrida",typeTraining:"Tercer Nivel Tecnológico Superior",title:"TECNOLOGO SUPERIOR EN ADMINISTRACION",career:"TECNOLOGIA SUPERIOR EN ADMINISTRACION",institution:"INSTITUTO SUPERIOR TECNOLÓGICO MARIANO SAMANIEGO",dateIssue:"2023-08-03",nomina:"2049330675",},
+  {ci:1105268732,profesional:"MONCAYO PEÑA MILADY DE LOS ANGELES",gender:"F",registerCod:"2049-2023-2716293",dateRecord:"2023-07-10",country:"Ecuador",place:"Calvas",modality:"Hibrida",typeTraining:"Tercer Nivel Tecnológico Superior",title:"TECNOLOGO SUPERIOR EN ADMINISTRACION",career:"TECNOLOGIA SUPERIOR EN ADMINISTRACION",institution:"INSTITUTO SUPERIOR TECNOLÓGICO MARIANO SAMANIEGO",dateIssue:"2023-08-03",nomina:"2049330675",},
   {ci:1150968350,profesional:"JARAMILLO JIMENEZ DALIA ISABEL",gender:"F",registerCod:"2049-2023-2716294",dateRecord:"2023-07-10",country:"Ecuador",place:"Calvas",modality:"Hibrida",typeTraining:"Tercer Nivel Tecnológico Superior",title:"TECNOLOGO SUPERIOR EN ADMINISTRACION",career:"TECNOLOGIA SUPERIOR EN ADMINISTRACION",institution:"INSTITUTO SUPERIOR TECNOLÓGICO MARIANO SAMANIEGO",dateIssue:"2023-08-03",nomina:"2049330675",},
   {ci:1150738050,profesional:"BALLESTEROS VALLADARES MIGUEL ANIBAL",gender:"M",registerCod:"2049-2023-2716295",dateRecord:"2023-07-10",country:"Ecuador",place:"Calvas",modality:"Hibrida",typeTraining:"Tercer Nivel Tecnológico Superior",title:"TECNOLOGO SUPERIOR EN ADMINISTRACION",career:"TECNOLOGIA SUPERIOR EN ADMINISTRACION",institution:"INSTITUTO SUPERIOR TECNOLÓGICO MARIANO SAMANIEGO",dateIssue:"2023-08-03",nomina:"2049330675",},
   {ci:1105918013,profesional:"CALVA JIMENEZ ANGELA PAULINA",gender:"F",registerCod:"2049-2023-2716296",dateRecord:"2023-07-10",country:"Ecuador",place:"Calvas",modality:"Hibrida",typeTraining:"Tercer Nivel Tecnológico Superior",title:"TECNOLOGO SUPERIOR EN ADMINISTRACION",career:"TECNOLOGIA SUPERIOR EN ADMINISTRACION",institution:"INSTITUTO SUPERIOR TECNOLÓGICO MARIANO SAMANIEGO",dateIssue:"2023-08-03",nomina:"2049330675",},
   {ci:1105272692,profesional:"TROYA TAMAYO PEDRO JOEL",gender:"M",registerCod:"2049-2023-2716297",dateRecord:"2023-07-10",country:"Ecuador",place:"Calvas",modality:"Hibrida",typeTraining:"Tercer Nivel Tecnológico Superior",title:"TECNOLOGO SUPERIOR EN ADMINISTRACION",career:"TECNOLOGIA SUPERIOR EN ADMINISTRACION",institution:"INSTITUTO SUPERIOR TECNOLÓGICO MARIANO SAMANIEGO",dateIssue:"2023-08-03",nomina:"2049330675",},
   {ci:1150847778,profesional:"JIMENEZ CHUQUIMARCA EMILY MISHELLE",gender:"F",registerCod:"2049-2023-2716298",dateRecord:"2023-07-10",country:"Ecuador",place:"Calvas",modality:"Hibrida",typeTraining:"Tercer Nivel Tecnológico Superior",title:"TECNOLOGO SUPERIOR EN ADMINISTRACION",career:"TECNOLOGIA SUPERIOR EN ADMINISTRACION",institution:"INSTITUTO SUPERIOR TECNOLÓGICO MARIANO SAMANIEGO",dateIssue:"2023-08-03",nomina:"2049330675",},
-  {ci:1150156592,profesional:"JARAMILLO TORRES JULIANA DEL CISNE",gender:"A",registerCod:"2049-2023-2716299",dateRecord:"2023-07-10",country:"Ecuador",place:"Calvas",modality:"Hibrida",typeTraining:"Tercer Nivel Tecnológico Superior",title:"TECNOLOGO SUPERIOR EN ADMINISTRACION",career:"TECNOLOGIA SUPERIOR EN ADMINISTRACION",institution:"INSTITUTO SUPERIOR TECNOLÓGICO MARIANO SAMANIEGO",dateIssue:"2023-08-03",nomina:"2049330675",},
+  {ci:1150156592,profesional:"JARAMILLO TORRES JULIANA DEL CISNE",gender:"F",registerCod:"2049-2023-2716299",dateRecord:"2023-07-10",country:"Ecuador",place:"Calvas",modality:"Hibrida",typeTraining:"Tercer Nivel Tecnológico Superior",title:"TECNOLOGO SUPERIOR EN ADMINISTRACION",career:"TECNOLOGIA SUPERIOR EN ADMINISTRACION",institution:"INSTITUTO SUPERIOR TECNOLÓGICO MARIANO SAMANIEGO",dateIssue:"2023-08-03",nomina:"2049330675",},
   {ci:1105711038,profesional:"ABAD ERAS TANIA MARIBEL",gender:"F",registerCod:"2049-2023-2782620",dateRecord:"2023-10-10",country:"Ecuador",place:"Calvas",modality:"Hibrida",typeTraining:"Tercer Nivel Tecnológico Superior",title:"TECNOLOGO SUPERIOR EN ADMINISTRACION",career:"TECNOLOGIA SUPERIOR EN ADMINISTRACION",institution:"INSTITUTO SUPERIOR TECNOLÓGICO MARIANO SAMANIEGO",dateIssue:"2023-11-24",nomina:"2049344162",},
-  {ci:1150058657,profesional:"CALVA REATEGUI NAYELY DEL ROCIO",gender:"A",registerCod:"2049-2023-2782621",dateRecord:"2023-10-10",country:"Ecuador",place:"Calvas",modality:"Hibrida",typeTraining:"Tercer Nivel Tecnológico Superior",title:"TECNOLOGO SUPERIOR EN ADMINISTRACION",career:"TECNOLOGIA SUPERIOR EN ADMINISTRACION",institution:"INSTITUTO SUPERIOR TECNOLÓGICO MARIANO SAMANIEGO",dateIssue:"2023-11-24",nomina:"2049344162",},
+  {ci:1150058657,profesional:"CALVA REATEGUI NAYELY DEL ROCIO",gender:"F",registerCod:"2049-2023-2782621",dateRecord:"2023-10-10",country:"Ecuador",place:"Calvas",modality:"Hibrida",typeTraining:"Tercer Nivel Tecnológico Superior",title:"TECNOLOGO SUPERIOR EN ADMINISTRACION",career:"TECNOLOGIA SUPERIOR EN ADMINISTRACION",institution:"INSTITUTO SUPERIOR TECNOLÓGICO MARIANO SAMANIEGO",dateIssue:"2023-11-24",nomina:"2049344162",},
   {ci:1105295040,profesional:"CHUQUIRIMA TANDAZO LUIS ANGEL",gender:"M",registerCod:"2049-2023-2782622",dateRecord:"2023-10-10",country:"Ecuador",place:"Calvas",modality:"Hibrida",typeTraining:"Tercer Nivel Tecnológico Superior",title:"TECNOLOGO SUPERIOR EN ADMINISTRACION",career:"TECNOLOGIA SUPERIOR EN ADMINISTRACION",institution:"INSTITUTO SUPERIOR TECNOLÓGICO MARIANO SAMANIEGO",dateIssue:"2023-11-24",nomina:"2049344162",},
   {ci:1103524185,profesional:"CUEVA NARVAEZ GLADYS SONIA",gender:"F",registerCod:"2049-2023-2782623",dateRecord:"2023-10-31",country:"Ecuador",place:"Calvas",modality:"Hibrida",typeTraining:"Tercer Nivel Tecnológico Superior",title:"TECNOLOGO SUPERIOR EN ADMINISTRACION",career:"TECNOLOGIA SUPERIOR EN ADMINISTRACION",institution:"INSTITUTO SUPERIOR TECNOLÓGICO MARIANO SAMANIEGO",dateIssue:"2023-11-24",nomina:"2049344162",},
   {ci:1105967150,profesional:"DIAZ PAUTE MISHELL ESTEFANIA",gender:"F",registerCod:"2049-2023-2782624",dateRecord:"2023-10-31",country:"Ecuador",place:"Calvas",modality:"Hibrida",typeTraining:"Tercer Nivel Tecnológico Superior",title:"TECNOLOGO SUPERIOR EN ADMINISTRACION",career:"TECNOLOGIA SUPERIOR EN ADMINISTRACION",institution:"INSTITUTO SUPERIOR TECNOLÓGICO MARIANO SAMANIEGO",dateIssue:"2023-11-24",nomina:"2049344162",},
@@ -36,12 +36,12 @@ export const NominasArray = [
   {ci:1104878184,profesional:"TINITANA VEGA YADIRA ALEXANDRA",gender:"F",registerCod:"2049-2023-2782636",dateRecord:"2023-10-11",country:"Ecuador",place:"Calvas",modality:"Hibrida",typeTraining:"Tercer Nivel Tecnológico Superior",title:"TECNOLOGO SUPERIOR EN ADMINISTRACION",career:"TECNOLOGIA SUPERIOR EN ADMINISTRACION",institution:"INSTITUTO SUPERIOR TECNOLÓGICO MARIANO SAMANIEGO",dateIssue:"2023-11-24",nomina:"2049344162",},
   {ci:1150354866,profesional:"TORRES SANCHEZ GLADYS XIMENA",gender:"F",registerCod:"2049-2023-2782637",dateRecord:"2023-10-11",country:"Ecuador",place:"Calvas",modality:"Hibrida",typeTraining:"Tercer Nivel Tecnológico Superior",title:"TECNOLOGO SUPERIOR EN ADMINISTRACION",career:"TECNOLOGIA SUPERIOR EN ADMINISTRACION",institution:"INSTITUTO SUPERIOR TECNOLÓGICO MARIANO SAMANIEGO",dateIssue:"2023-11-24",nomina:"2049344162",},
   {ci:1104277593,profesional:"OLMEDO CARRION ALISON ROSARIO",gender:"F",registerCod:"2049-2023-2782638",dateRecord:"2023-10-11",country:"Ecuador",place:"Calvas",modality:"Hibrida",typeTraining:"Tercer Nivel Tecnológico Superior",title:"TECNOLOGO SUPERIOR EN ADMINISTRACION",career:"TECNOLOGIA SUPERIOR EN ADMINISTRACION",institution:"INSTITUTO SUPERIOR TECNOLÓGICO MARIANO SAMANIEGO",dateIssue:"2023-11-24",nomina:"2049344162",},
-  {ci:1105249559,profesional:"HERRERA VEINTIMILLA DIANA DEL CISNE",gender:"E",registerCod:"2049-2023-2782639",dateRecord:"2023-10-31",country:"Ecuador",place:"Calvas",modality:"Hibrida",typeTraining:"Tercer Nivel Tecnológico Superior",title:"TECNOLOGO SUPERIOR EN ADMINISTRACION",career:"TECNOLOGIA SUPERIOR EN ADMINISTRACION",institution:"INSTITUTO SUPERIOR TECNOLÓGICO MARIANO SAMANIEGO",dateIssue:"2023-11-24",nomina:"2049344162",},
+  {ci:1105249559,profesional:"HERRERA VEINTIMILLA DIANA DEL CISNE",gender:"F",registerCod:"2049-2023-2782639",dateRecord:"2023-10-31",country:"Ecuador",place:"Calvas",modality:"Hibrida",typeTraining:"Tercer Nivel Tecnológico Superior",title:"TECNOLOGO SUPERIOR EN ADMINISTRACION",career:"TECNOLOGIA SUPERIOR EN ADMINISTRACION",institution:"INSTITUTO SUPERIOR TECNOLÓGICO MARIANO SAMANIEGO",dateIssue:"2023-11-24",nomina:"2049344162",},
   {ci:1106033861,profesional:"SARANGO CAÑAR LENNY MERCEDES",gender:"F",registerCod:"2049-2023-2782640",dateRecord:"2023-11-06",country:"Ecuador",place:"Calvas",modality:"Hibrida",typeTraining:"Tercer Nivel Tecnológico Superior",title:"TECNOLOGO SUPERIOR EN ADMINISTRACION",career:"TECNOLOGIA SUPERIOR EN ADMINISTRACION",institution:"INSTITUTO SUPERIOR TECNOLÓGICO MARIANO SAMANIEGO",dateIssue:"2023-11-24",nomina:"2049344162",},
   {ci:1150623492,profesional:"TILLAGUANGO GUAMAN JOSE MANUEL",gender:"M",registerCod:"2049-2023-2782641",dateRecord:"2023-11-06",country:"Ecuador",place:"Calvas",modality:"Hibrida",typeTraining:"Tercer Nivel Tecnológico Superior",title:"TECNOLOGO SUPERIOR EN ADMINISTRACION",career:"TECNOLOGIA SUPERIOR EN ADMINISTRACION",institution:"INSTITUTO SUPERIOR TECNOLÓGICO MARIANO SAMANIEGO",dateIssue:"2023-11-24",nomina:"2049344162",},
   {ci:1720991189,profesional:"TORRES SARANGO RAQUEL ALEXANDRA",gender:"F",registerCod:"2049-2023-2782642",dateRecord:"2023-11-06",country:"Ecuador",place:"Calvas",modality:"Hibrida",typeTraining:"Tercer Nivel Tecnológico Superior",title:"TECNOLOGO SUPERIOR EN ADMINISTRACION",career:"TECNOLOGIA SUPERIOR EN ADMINISTRACION",institution:"INSTITUTO SUPERIOR TECNOLÓGICO MARIANO SAMANIEGO",dateIssue:"2023-11-24",nomina:"2049344162",},
   {ci:1104393903,profesional:"FERNANDEZ COLLAHUAZO MIRIAM LASTENIA",gender:"F",registerCod:"2049-2023-2782643",dateRecord:"2023-11-06",country:"Ecuador",place:"Calvas",modality:"Hibrida",typeTraining:"Tercer Nivel Tecnológico Superior",title:"TECNOLOGO SUPERIOR EN ADMINISTRACION",career:"TECNOLOGIA SUPERIOR EN ADMINISTRACION",institution:"INSTITUTO SUPERIOR TECNOLÓGICO MARIANO SAMANIEGO",dateIssue:"2023-11-24",nomina:"2049344162",},
-  {ci:1103938989,profesional:"HERRERA ROJAS TALIA DE LA NUBE",gender:"O",registerCod:"2049-2023-2782644",dateRecord:"2023-11-06",country:"Ecuador",place:"Calvas",modality:"Hibrida",typeTraining:"Tercer Nivel Tecnológico Superior",title:"TECNOLOGO SUPERIOR EN ADMINISTRACION",career:"TECNOLOGIA SUPERIOR EN ADMINISTRACION",institution:"INSTITUTO SUPERIOR TECNOLÓGICO MARIANO SAMANIEGO",dateIssue:"2023-11-24",nomina:"2049344162",},
+  {ci:1103938989,profesional:"HERRERA ROJAS TALIA DE LA NUBE",gender:"F",registerCod:"2049-2023-2782644",dateRecord:"2023-11-06",country:"Ecuador",place:"Calvas",modality:"Hibrida",typeTraining:"Tercer Nivel Tecnológico Superior",title:"TECNOLOGO SUPERIOR EN ADMINISTRACION",career:"TECNOLOGIA SUPERIOR EN ADMINISTRACION",institution:"INSTITUTO SUPERIOR TECNOLÓGICO MARIANO SAMANIEGO",dateIssue:"2023-11-24",nomina:"2049344162",},
   {ci:1105435604,profesional:"DIAZ CAMACHO GREIS TATIANA",gender:"F",registerCod:"2049-2023-2782645",dateRecord:"2023-11-06",country:"Ecuador",place:"Calvas",modality:"Hibrida",typeTraining:"Tercer Nivel Tecnológico Superior",title:"TECNOLOGO SUPERIOR EN ADMINISTRACION",career:"TECNOLOGIA SUPERIOR EN ADMINISTRACION",institution:"INSTITUTO SUPERIOR TECNOLÓGICO MARIANO SAMANIEGO",dateIssue:"2023-11-24",nomina:"2049344162",},
   {ci:1150808796,profesional:"MAZA SARANGO LADY ANABEL",gender:"F",registerCod:"2049-2023-2782646",dateRecord:"2023-11-06",country:"Ecuador",place:"Calvas",modality:"Hibrida",typeTraining:"Tercer Nivel Tecnológico Superior",title:"TECNOLOGO SUPERIOR EN ADMINISTRACION",career:"TECNOLOGIA SUPERIOR EN ADMINISTRACION",institution:"INSTITUTO SUPERIOR TECNOLÓGICO MARIANO SAMANIEGO",dateIssue:"2023-11-24",nomina:"2049344162",},
   {ci:1104185838,profesional:"PALTAN QUEZADA VICTOR MANUEL",gender:"M",registerCod:"2049-2023-2782647",dateRecord:"2023-11-06",country:"Ecuador",place:"Calvas",modality:"Hibrida",typeTraining:"Tercer Nivel Tecnológico Superior",title:"TECNOLOGO SUPERIOR EN ADMINISTRACION",career:"TECNOLOGIA SUPERIOR EN ADMINISTRACION",institution:"INSTITUTO SUPERIOR TECNOLÓGICO MARIANO SAMANIEGO",dateIssue:"2023-11-24",nomina:"2049344162",},
@@ -102,5 +102,108 @@ export const NominasArray = [
   {ci:1150898656,profesional:"TANDAZO RAMOS RICHARD MANUEL",gender:"M",registerCod:"2049-2023-2782830",dateRecord:"2023-11-07",country:"Ecuador",place:"Calvas",modality:"Hibrida",typeTraining:"Tercer Nivel Tecnológico Superior",title:"TECNOLOGO/A SUPERIOR EN MECANICA AUTOMOTRIZ",career:"TECNOLOGIA SUPERIOR EN MECANICA AUTOMOTRIZ",institution:"INSTITUTO SUPERIOR TECNOLÓGICO MARIANO SAMANIEGO",dateIssue:"2023-11-25",nomina:"2049344201",},
   {ci:1105240723,profesional:"MARTINEZ RIVAS DANNY ALEXANDER",gender:"M",registerCod:"2049-2023-2782831",dateRecord:"2023-10-11",country:"Ecuador",place:"Calvas",modality:"Hibrida",typeTraining:"Tercer Nivel Tecnológico Superior",title:"TECNOLOGO/A SUPERIOR EN MECANICA AUTOMOTRIZ",career:"TECNOLOGIA SUPERIOR EN MECANICA AUTOMOTRIZ",institution:"INSTITUTO SUPERIOR TECNOLÓGICO MARIANO SAMANIEGO",dateIssue:"2023-11-25",nomina:"2049344201",},
 ];
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
