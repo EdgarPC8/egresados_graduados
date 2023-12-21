@@ -35,12 +35,9 @@ function App() {
               <Route path="/quiz" element={<Quiz />} />
               <Route path="/perfil" element={<Profile />} />
               <Route path="/usuarios" element={<UserTable />} />
-<<<<<<< HEAD
               <Route path="/agregar-usuario" element={<FormAddUser />} />
               <Route path="/editar-usuario/:userId" element={<FormAddUser />} />
-=======
               <Route path="/charts" element={<Charts />} />
->>>>>>> c606493fc3bf7ca0cc50e58de8be273e12a799bf
             </Route>
           </Routes>
         </BrowserRouter>

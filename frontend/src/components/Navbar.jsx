@@ -45,6 +45,7 @@ import {
 import { HamburgerIcon, CloseIcon } from "@chakra-ui/icons";
 import { useAuth } from "../context/AuthContext";
 import { urlPhotos } from "../api/axios";
+import { FaChartPie } from "react-icons/fa";
 
 const Navbar = () => {
   const btnRef = useRef();
@@ -94,7 +95,7 @@ const Navbar = () => {
     {
       name: "Graficos",
       path: "/charts",
-      icon: <FiUser />,
+      icon: <FaChartPie />,
     },
   ];
 

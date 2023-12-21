@@ -55,17 +55,10 @@ app.use("/api/charts", chartsRoutes);
 
 async function main() {
   try {
-<<<<<<< HEAD
     await sequelize.authenticate();
     // await sequelize.sync({ force: true });
     // await insertData();
     // console.log("Conección realizada con éxito.");
-=======
-    // await sequelize.authenticate();
-    await sequelize.sync({ force: true });
-    // console.log("Conección realizada con éxito.");
-    await insertData();
->>>>>>> c606493fc3bf7ca0cc50e58de8be273e12a799bf
     app.listen(PORT, () => {
       console.log(`Backend escuchando en el puesto ${PORT}`);
     });
