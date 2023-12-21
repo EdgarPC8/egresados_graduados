@@ -9,7 +9,7 @@ import {
 export const addResponses= async (req, res) => {
   const data = req.body; // Suponiendo que los datos están en el cuerpo de la solicitud
   try {
-    const newProfessional = await Responses.create(data);
+    const newResponses = await Responses.create(data);
   res.json({ message: "Agregado con éxito" });
 
   } catch (error) {

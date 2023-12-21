@@ -8,6 +8,7 @@ import LoginPage from "./pages/LoginPage.jsx";
 import { AuthProvider } from "./context/AuthContext.jsx";
 import ProtectedRoute from "./components/ProtectedRoute.jsx";
 import CV from "./pages/CV.jsx";
+import Charts from "./pages/Charts.jsx";
 import Quiz from "./pages/Quiz.jsx";
 import Profile from "./pages/Profile.jsx";
 
@@ -34,8 +35,12 @@ function App() {
               <Route path="/quiz" element={<Quiz />} />
               <Route path="/perfil" element={<Profile />} />
               <Route path="/usuarios" element={<UserTable />} />
+<<<<<<< HEAD
               <Route path="/agregar-usuario" element={<FormAddUser />} />
               <Route path="/editar-usuario/:userId" element={<FormAddUser />} />
+=======
+              <Route path="/charts" element={<Charts />} />
+>>>>>>> c606493fc3bf7ca0cc50e58de8be273e12a799bf
             </Route>
           </Routes>
         </BrowserRouter>

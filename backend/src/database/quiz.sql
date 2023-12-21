@@ -44,19 +44,19 @@ INSERT INTO questions (idQuestion,idQuiz, idQuestionType, questionText) VALUES
 (11,1, 3, '¿Cuándo empezó a trabajar?'),
 (12,1, 3, '¿Cuál es la relación del trabajo que tiene con la carrera que estudió?'),
 (13,1, 3, '¿Cuál fue el factor que más contribuyo para que consiguiera su primer empleo?'),
--- (14,1,4, '¿Qué  conocimientos y habilidades son las más relevantes para el desempeño de sus actividades laborales actuales?'),
+(14,1,4, '¿Qué  conocimientos y habilidades son las más relevantes para el desempeño de sus actividades laborales actuales?'),
 (15,1, 3, '¿Cuál es su percepción general de los/las profesionales del ITSFMS?'),
--- (16,1,4, 'En su opinión, ¿Cuáles son las principales carencias que tiene el programa académico de la carrera en que se graduó?'),
+(16,1,4, 'En su opinión, ¿Cuáles son las principales carencias que tiene el programa académico de la carrera en que se graduó?'),
 (17,1,2, 'En su opinión, ¿Cuáles son las principales carencias que tiene el programa académico de la carrera en que se graduó? Carrera'),
 (18,1,1, 'En su opinión, ¿Cuáles son las principales carencias que tiene el programa académico de la carrera en que se graduó? Especifique'),
--- (19,1,4, '¿Que recomienda para estrechar las relaciones entre el ISTMS y los GRADUADOS?'),
+(19,1,4, '¿Que recomienda para estrechar las relaciones entre el ISTMS y los GRADUADOS?'),
 (20,1,2, '¿Que recomienda para estrechar las relaciones entre el ISTMS y los GRADUADOS? Carrera'),
 (21,1,1, '¿Que recomienda para estrechar las relaciones entre el ISTMS y los GRADUADOS? Especifique'),
 (22,1, 3, '¿Ha realizado usted estudios posteriores?'),
 (23,1, 2, '¿Ha realizado usted estudios posteriores? Carrera'),
 (24,1, 2, '¿Ha realizado usted estudios posteriores? Centro de Estudio'),
 (25,1, 2, '¿Ha realizado usted estudios posteriores? Año de titulación'),
--- (26,1, 2, '¿Ha realizado usted estudios posteriores? En Curso'),
+(26,1, 2, '¿Ha realizado usted estudios posteriores? En Curso'),
 (27,1, 3, '¿A qué actividades económicas se dedica la institución o empresa en la que trabaja?'),
 (28,1, 3, 'En su desempeño laboral que tan necesario es el dominio del idioma inglés');
 -- tabla opciones
@@ -82,7 +82,6 @@ INSERT INTO options (idQuestion,optionText) VALUES
 (13, 'Antecedentes que brinda la carrera'),
 (13, 'Recomendación de terceras personas'),
 (13, 'Otros'),
-
 (14, 'Gestiona, transfiere y desarrolla soluciones informáticas para ambientes corporativos'),
 (14, 'Explora problemas y genera diseños y soluciones inteligentes de sistemas informáticos mediante análisis de tecnología y costos de software y hardware'),
 (14, 'Conforma equipos, procesos y sistemas de desarrollo de tecnologías informáticas con destreza y habilidad'),
@@ -93,14 +92,11 @@ INSERT INTO options (idQuestion,optionText) VALUES
 (14, 'Conoce la importancia de la investigación en su propio proceso de formación'),
 (14, 'Afronta y actúa con confianza y seguridad el análisis y la solución de problemas que se encuentran en la profesión'),
 (14, 'Participa en procesos emprendedores'),
-
-
 (16, 'Falta de actualización en nuevos temas'),
 (16, 'Enseñanza de aplicaciones tecnológicas'),
 (16, 'Actualización de los nuevos programas en software'),
 (16, 'Capacitar continuamente al personal docente'),
 (16, 'Otros'),
-
 (19, 'Cursos de capacitación y actualización'),
 (19, 'Hacer reuniones anuales de egresados'),
 (19, 'Tener acceso a un directorio'),

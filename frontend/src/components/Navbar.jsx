@@ -91,6 +91,11 @@ const Navbar = () => {
       path: "/usuarios",
       icon: <FiUser />,
     },
+    {
+      name: "Graficos",
+      path: "/charts",
+      icon: <FiUser />,
+    },
   ];
 
   return (
