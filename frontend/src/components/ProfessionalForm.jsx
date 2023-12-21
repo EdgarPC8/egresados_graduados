@@ -403,7 +403,7 @@ function ProfessionalForm() {
               </InputGroup>
             </GridItem>
           </Grid>
-          <Grid templateColumns={{ base: "1fr", md: "1fr" }} gap={2} mt={2}>
+          {/* <Grid templateColumns={{ base: "1fr", md: "1fr" }} gap={2} mt={2}>
             <GridItem fontSize={"sm"} border="1px solid #ccc" borderRadius={8}>
               <Grid templateColumns={{ base: "1fr", md: "1fr 4fr" }}>
                 <GridItem fontSize={"lg"} margin={"auto"}>
@@ -425,7 +425,7 @@ function ProfessionalForm() {
                 </GridItem>
               </Grid>
             </GridItem>
-          </Grid>
+          </Grid> */}
         </GridItem>
         <GridItem
           order={{ base: 1, md: 1 }}

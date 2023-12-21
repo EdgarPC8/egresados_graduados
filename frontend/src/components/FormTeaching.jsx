@@ -18,6 +18,8 @@ import {
   AccordionPanel,
   AccordionIcon,
   AccordionButton,
+  Stack,
+  useToast,
 } from "@chakra-ui/react";
 import { useEffect, useState, useRef } from "react";
 import {
@@ -40,6 +42,8 @@ function FormTeaching() {
     place: "",
     country: "",
   };
+
+  const toast = useToast();
 
   const [dataTeachingExperience, setDataTeachingExperience] = useState([]);
   const [isEditing, setIsEditing] = useState(false);
@@ -73,25 +77,28 @@ function FormTeaching() {
           title: "Editando...",
           position: "top-right",
         },
-        success: (d) => ({
-          title: "Experiencia docente",
-          description: d.data.message,
-          isClosable: true,
-        }),
+        success: (d) => {
+          fetchData();
+          clear();
+          return {
+            title: "Experiencia docente",
+            description: d.data.message,
+            isClosable: true,
+         }
+        },
         error: (e) => ({
           title: "Error",
           description: e.response.data.message,
           isClosable: true,
         }),
       });
-
-      fetchData();
-      clear();
-
+      
       return;
     }
 
-    toast.promise(editTeachingExperience(id, formTeaching), {
+    console.log(formTeaching)
+
+    toast.promise(addTeachingExperience(formTeaching), {
       loading: {
         title: "Añadiendo...",
         position: "top-right",
@@ -111,14 +118,12 @@ function FormTeaching() {
       }),
     });
 
-    clear();
   };
 
   const handleChange = (event) => {
     const { name, value } = event.target;
     setFormTeaching({ ...formTeaching, [name]: value });
   };
-
   const handleEditRow = (row) => {
     const {
       educationalInstitution,

@@ -11,6 +11,7 @@ import {
   Select,
   Button,
   TableContainer,
+  useToast,
   Table,
   Th,
   Td,
@@ -43,6 +44,8 @@ import Modal from "../components/AlertDialog";
 import Tabl from "./Table";
 
 function FormLanguages() {
+
+  const toast = useToast()
   const initialFormLenguages = {
     name: "",
     speakingLevel: "",
@@ -93,17 +96,24 @@ function FormLanguages() {
   };
 
   const handleSubmit = async (event) => {
+    event.preventDefault();
+
     if (isEditing) {
       toast.promise(editLanguages(id, formLanguage), {
         loading: {
           title: "Editando...",
           position: "top-right",
         },
-        success: (d) => ({
+        success: (d) => {
+          fetchData();
+          clear();
+
+          return {
           title: "Idiomas",
           description: d.data.message,
           isClosable: true,
-        }),
+        }
+      },
         error: (e) => ({
           title: "Error",
           description: e.response.data.message,
@@ -111,9 +121,7 @@ function FormLanguages() {
         }),
       });
 
-      fetchData();
-      clear();
-
+      
       return;
     }
 

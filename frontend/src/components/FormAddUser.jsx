@@ -23,7 +23,7 @@ import { FiUser, FiUserPlus, FiHash, FiTag, FiEdit2 } from "react-icons/fi";
 import PasswordInput from "./PasswordInput";
 import { useState, useRef, useEffect } from "react";
 import { useParams } from "react-router-dom";
-import { getOneUser } from "../api/userRequest";
+import { getOneUser, addUser } from "../api/userRequest";
 import { urlPhotos } from "../api/axios";
 
 function FormAddUser() {

@@ -349,10 +349,10 @@ function Profile() {
 
             <ModalFooter>
               <Button
-                bg="primary.200"
+                bg="ceruleanBlue.500"
                 color="white"
                 _hover={{
-                  bg: "primary.100",
+                  bg: "ceruleanBlue.600",
                 }}
                 mr={3}
                 type="submit"

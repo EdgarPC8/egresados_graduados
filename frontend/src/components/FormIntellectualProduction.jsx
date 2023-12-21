@@ -21,6 +21,7 @@ import {
   getAllIntellectualProduction,
 } from "../api/cvRequest";
 
+
 import Modal from "../components/AlertDialog";
 import Tabl from "./Table";
 
@@ -78,11 +79,16 @@ function FormIntellectualProduction() {
           title: "Editando...",
           position: "top-right",
         },
-        success: (d) => ({
+        success: (d) => {
+          fetchData();
+          clear();
+
+          return {
           title: "Producción Intelectual",
           description: d.data.message,
           isClosable: true,
-        }),
+        }
+      },
         error: (e) => ({
           title: "Error",
           description: e.response.data.message,
@@ -90,9 +96,7 @@ function FormIntellectualProduction() {
         }),
       });
 
-      fetchData();
-
-      clear();
+      
 
       return;
     }
@@ -283,7 +287,7 @@ function FormIntellectualProduction() {
                 bg="ceruleanBlue.500"
                 color={"white"}
               >
-                Guardar
+                {!isEditing ? "Guardar" : "Editar"}
               </Button>
             </GridItem>
           </Grid>

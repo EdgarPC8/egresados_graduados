@@ -56,7 +56,9 @@ function FormAcademicTraining() {
   async function fetchData() {
     try {
       const { data } = await getAllAcademicTraining();
+      // console.log(data)
       setListAcademicTraining(data);
+      // console.log(data)
     } catch (error) {
       console.error("Error al obtener datos académicos:", error);
     }
@@ -71,21 +73,24 @@ function FormAcademicTraining() {
           title: "Editando...",
           position: "top-right",
         },
-        success: (d) => ({
-          title: "Formación académica",
-          description: d.data.message,
-          isClosable: true,
-        }),
+        success: (d) => {
+            fetchData();
+            clear();
+          return {
+            title: "Formación académica",
+            description: d.data.message,
+            isClosable: true,
+
+          }
+        },
         error: (e) => ({
           title: "Error",
           description: e.response.data.message,
           isClosable: true,
         }),
       });
-
-      fetchData();
-
-      clear();
+      
+      
 
       return;
     }

@@ -12,6 +12,7 @@ import {
   AccordionIcon,
   AccordionButton,
   RadioGroup,
+  useToast,
   Stack,
   Radio,
 } from "@chakra-ui/react";
@@ -27,6 +28,7 @@ import Modal from "../components/AlertDialog";
 import Tabl from "./Table";
 
 function FormCourses() {
+  const toast = useToast()
   const initialFormCourses = {
     startDate: "",
     endDate: "",
@@ -68,11 +70,16 @@ function FormCourses() {
           title: "Editando...",
           position: "top-right",
         },
-        success: (d) => ({
-          title: "Cursos",
-          description: d.data.message,
-          isClosable: true,
-        }),
+        success: (d) => {
+          fetchData();
+          clear();
+
+          return {
+            title: "Cursos",
+            description: d.data.message,
+            isClosable: true,
+          }
+        },
         error: (e) => ({
           title: "Error",
           description: e.response.data.message,
@@ -80,9 +87,7 @@ function FormCourses() {
         }),
       });
 
-      fetchData();
-
-      clear();
+      
 
       return;
     }
@@ -145,6 +150,13 @@ function FormCourses() {
     setIsModalOpen(true);
     setId(row.id);
   };
+
+
+  const handleChangeTypeParticiopation = (value) => {
+    setFormCourse({...formCourse, typeParticipation:value })
+    
+  }
+  
   const handleAcceptDelete = async () => {
     try {
       const { data } = await deleteCoursesWorkshops(id);
@@ -285,7 +297,7 @@ function FormCourses() {
                 <RadioGroup
                   m={"auto"}
                   value={formCourse.typeParticipation}
-                  onChange={handleChange}
+                  onChange={handleChangeTypeParticiopation}
                   name="typeParticipation"
                 >
                   <Stack spacing={5} direction="row">

@@ -13,6 +13,7 @@ import {
   Td,
   Tr,
   Thead,
+  Stack,
   Tbody,
   Tfoot,
   AccordionItem,
@@ -86,11 +87,15 @@ function FormProfessionalMerits() {
             title: "Editando...",
             position: "top-right",
           },
-          success: (d) => ({
+          success: (d) => {
+            fetchData();
+            clear();
+            return {
             title: "Méritos Académicos",
             description: d.data.message,
             isClosable: true,
-          }),
+           }
+          },
           error: (e) => ({
             title: "Error",
             description: e.response.data.message,
@@ -99,8 +104,7 @@ function FormProfessionalMerits() {
         }
       );
 
-      fetchData();
-      clear();
+     
 
       return;
     }

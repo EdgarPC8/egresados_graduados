@@ -19,6 +19,7 @@ import {
   useToast,
   AccordionIcon,
   AccordionButton,
+  Stack, 
 } from "@chakra-ui/react";
 import { useEffect, useState, useRef } from "react";
 import {
@@ -37,13 +38,13 @@ function FormBooks() {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const form = useRef(null);
 
-  const [id, setId] = useState(false);
+  const [id, setId] = useState(0);
 
   const initialFormBooks = {
     type: "",
     typeAuthorship: "",
-    editoralName: "",
-    editoralOrigin: "",
+    editorialName: "",
+    editorialOrigin: "",
     year: "",
     isbN: "",
     title: "",
@@ -79,11 +80,14 @@ function FormBooks() {
           title: "Editando...",
           position: "top-right",
         },
-        success: (d) => ({
+        success: (d) => {
+          fetchData();
+          clear();
+          return{
           title: "Libros",
           description: d.data.message,
           isClosable: true,
-        }),
+        }},
         error: (e) => ({
           title: "Error",
           description: e.response.data.message,
@@ -91,9 +95,7 @@ function FormBooks() {
         }),
       });
 
-      fetchData();
-
-      clear();
+      
 
       return;
     }
@@ -124,26 +126,25 @@ function FormBooks() {
   const handleEditRow = (row) => {
     form.current.scrollIntoView({ behavior: "smooth", block: "start" });
     const {
-      id,
+    
       title,
       type,
       typeAuthorship,
       isbN,
-      editoralName,
-      editoralOrigin,
+      editorialName,
+      editorialOrigin,
       year,
     } = row;
 
     setIsEditing(true);
     setId(row.id);
     setFormBook({
-      id,
       title,
       type,
       typeAuthorship,
       isbN,
-      editoralName,
-      editoralOrigin,
+      editorialName,
+      editorialOrigin,
       year,
     });
   };
@@ -247,8 +248,8 @@ function FormBooks() {
                 <Input
                   type="text"
                   placeholder="Nombre de Editorial"
-                  name="editoralName"
-                  value={formBook.editoralName}
+                  name="editorialName"
+                  value={formBook.editorialName}
                   onChange={handleChange}
                 />
               </InputGroup>
@@ -259,8 +260,8 @@ function FormBooks() {
                 <Input
                   type="text"
                   placeholder="(Nacional, Internacional)"
-                  name="editoralOrigin"
-                  value={formBook.editoralOrigin}
+                  name="editorialOrigin"
+                  value={formBook.editorialOrigin}
                   onChange={handleChange}
                 />
               </InputGroup>
