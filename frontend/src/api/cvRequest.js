@@ -145,15 +145,15 @@ export const getAllIntellectualProduction = async () =>
     },
   });
 
-export const addIntellectualProduction = async (id, data) =>
-  await axios.post(`/cv/addIntellectualProduction/${id}`, data, {
+export const editIntellectualProduction = async (id, data) =>
+  await axios.put(`/cv/editIntellectualProduction/${id}`, data, {
     headers: {
       Authorization: jwt(),
     },
   });
 
-export const editIntellectualProduction = async (data) =>
-  await axios.put("/cv/editIntellectualProduction", data, {
+export const addIntellectualProduction = async (data) =>
+  await axios.post("/cv/addIntellectualProduction", data, {
     headers: {
       Authorization: jwt(),
     },

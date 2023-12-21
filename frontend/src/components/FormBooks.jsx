@@ -16,6 +16,7 @@ import {
   Tfoot,
   AccordionItem,
   AccordionPanel,
+  useToast,
   AccordionIcon,
   AccordionButton,
 } from "@chakra-ui/react";
@@ -28,8 +29,10 @@ import {
 } from "../api/cvRequest";
 import DataTable from "../components/DataTables";
 import Modal from "../components/AlertDialog";
+import Tabl from "./Table";
 function FormBooks() {
-  const [datosBooks, setDatosBooks] = useState([]);
+  const toast = useToast();
+  const [dataBooks, setDataBooks] = useState([]);
   const [isEditing, setIsEditing] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const form = useRef(null);
@@ -62,28 +65,63 @@ function FormBooks() {
   async function fetchData() {
     try {
       const { data } = await getAllBooks();
-      setDatosBooks(data);
+      setDataBooks(data);
     } catch (error) {
       console.error("Error al obtener datos académicos:", error);
     }
   }
   const handleSubmit = async (event) => {
     event.preventDefault();
-    // const formData = Object.fromEntries(new FormData(event.target));
-    try {
-      if (isEditing) {
-        const { data } = await editBooks(id, formBook);
-        fetchData();
-      } else {
-        const { data } = await addBooks(formBook); // assuming addBooks is an asynchronous function
-        setDatosBooks([...datosBooks, formBook]); // Assuming the returned data is the newly added item
-      }
+
+    if (isEditing) {
+      toast.promise(editBooks(id, formBook), {
+        loading: {
+          title: "Editando...",
+          position: "top-right",
+        },
+        success: (d) => ({
+          title: "Libros",
+          description: d.data.message,
+          isClosable: true,
+        }),
+        error: (e) => ({
+          title: "Error",
+          description: e.response.data.message,
+          isClosable: true,
+        }),
+      });
+
+      fetchData();
+
       clear();
-    } catch (error) {
-      console.log(error);
+
+      return;
     }
+
+    toast.promise(addBooks(formBook), {
+      loading: {
+        title: "Añadiendo...",
+        position: "top-right",
+      },
+      success: (d) => {
+        setDataBooks([...dataBooks, formBook]);
+
+        return {
+          title: "Libros",
+          description: d.data.message,
+          isClosable: true,
+        };
+      },
+      error: (e) => ({
+        title: "Error",
+        description: e.response.data.message,
+        isClosable: true,
+      }),
+    });
+
+    clear();
   };
-  const handleEditRow = (row, event) => {
+  const handleEditRow = (row) => {
     form.current.scrollIntoView({ behavior: "smooth", block: "start" });
     const {
       id,
@@ -109,10 +147,11 @@ function FormBooks() {
       year,
     });
   };
-  const handleDeleteRow = async (row, event) => {
+  const handleDeleteRow = async (row) => {
     setIsModalOpen(true);
     setId(row.id);
   };
+
   const handleAcceptDelete = async () => {
     try {
       const { data } = await deleteBooks(id);
@@ -125,6 +164,41 @@ function FormBooks() {
   useEffect(() => {
     fetchData();
   }, []);
+
+  const columns = [
+    { header: "Titulo", accessorKey: "title" },
+    { header: "Tipo", accessorKey: "type" },
+    { header: "Tipo de Autoria", accessorKey: "typeAuthorship" },
+    { header: "ISB N.", accessorKey: "isbN" },
+    { header: "Nombre Editorial", accessorKey: "editorialName" },
+    { header: "Origen Editorial", accessorKey: "editorialOrigin" },
+    { header: "Año", accessorKey: "year" },
+
+    {
+      header: "Accion",
+      cell: (props) => (
+        <Stack spacing={4} direction="row" align="center">
+          <Button
+            colorScheme="yellow"
+            onClick={() => {
+              handleEditRow(props.row.original);
+            }}
+          >
+            Editar
+          </Button>
+          <Button
+            colorScheme="red"
+            onClick={() => {
+              handleDeleteRow(props.row.original);
+            }}
+          >
+            Eliminar
+          </Button>
+        </Stack>
+      ),
+    },
+  ];
+
   return (
     <form onSubmit={handleSubmit} ref={form}>
       <AccordionItem>
@@ -252,37 +326,7 @@ function FormBooks() {
             title="Datos"
             message="¿Estas Seguro que deseas eliminar?"
           ></Modal>
-          <DataTable
-            header={[
-              "Titulo",
-              "Tipo",
-              "Tipo de Autoria",
-              "ISB N.",
-              "Nombre Editorial",
-              "Origen Editorial",
-              "Año",
-              "Acción",
-            ]}
-            keyValues={[
-              "title",
-              "type",
-              "typeAuthorship",
-              "isbN",
-              "editorialName",
-              "editorialOrigin",
-              "year",
-            ]}
-            data={datosBooks}
-            title="Formación Academica"
-            defaultRowsPerPage={5}
-            numberRow={true}
-            buttons={{
-              buttonEdit: true,
-              handleEditRow,
-              buttonDelete: true,
-              handleDeleteRow,
-            }}
-          />
+          <Tabl columns={columns} data={dataBooks} />
         </AccordionPanel>
       </AccordionItem>
     </form>

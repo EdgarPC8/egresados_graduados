@@ -51,7 +51,7 @@ function FormLanguages() {
     typeCertification: "",
   };
 
-  const [datosLanguages, setDatosLanguages] = useState([]);
+  const [dataLanguages, setDataLanguages] = useState([]);
   const [isEditing, setIsEditing] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const form = useRef(null);
@@ -69,7 +69,7 @@ function FormLanguages() {
   async function fetchData() {
     try {
       const { data } = await getAllLanguages();
-      setDatosLanguages(data);
+      setDataLanguages(data);
     } catch (error) {
       console.error("Error al obtener datos académicos:", error);
     }
@@ -93,21 +93,54 @@ function FormLanguages() {
   };
 
   const handleSubmit = async (event) => {
-    event.preventDefault();
-    try {
-      if (isEditing) {
-        const { data } = await editLanguages(id, formLanguage);
-        fetchData();
-      } else {
-        const { data } = await addLanguages(formLanguage); // assuming addLanguages is an asynchronous function
-        setDatosLanguages([...datosLanguages, formLanguage]); // Assuming the returned data is the newly added item
-      }
+    if (isEditing) {
+      toast.promise(editLanguages(id, formLanguage), {
+        loading: {
+          title: "Editando...",
+          position: "top-right",
+        },
+        success: (d) => ({
+          title: "Idiomas",
+          description: d.data.message,
+          isClosable: true,
+        }),
+        error: (e) => ({
+          title: "Error",
+          description: e.response.data.message,
+          isClosable: true,
+        }),
+      });
+
+      fetchData();
       clear();
-    } catch (error) {
-      console.log(error);
+
+      return;
     }
+
+    toast.promise(addLanguages(formLanguage), {
+      loading: {
+        title: "Añadiendo...",
+        position: "top-right",
+      },
+      success: (d) => {
+        setDataLanguages([...dataLanguages, formLanguage]);
+
+        return {
+          title: "Idiomas",
+          description: d.data.message,
+          isClosable: true,
+        };
+      },
+      error: (e) => ({
+        title: "Error",
+        description: e.response.data.message,
+        isClosable: true,
+      }),
+    });
+
+    clear();
   };
-  const handleEditRow = (row, event) => {
+  const handleEditRow = (row) => {
     form.current.scrollIntoView({ behavior: "smooth", block: "start" });
     const {
       name,
@@ -127,7 +160,7 @@ function FormLanguages() {
       typeCertification,
     });
   };
-  const handleDeleteRow = async (row, event) => {
+  const handleDeleteRow = async (row) => {
     setIsModalOpen(true);
     setId(row.id);
   };
@@ -169,13 +202,19 @@ function FormLanguages() {
       header: "Accion",
       cell: (props) => (
         <Stack spacing={4} direction="row" align="center">
-          <Button bg="accent.200" onClick={(eve) => console.log("hola")}>
+          <Button
+            colorScheme="yellow"
+            onClick={() => {
+              handleEditRow(props.row.original);
+            }}
+          >
             Editar
           </Button>
           <Button
-            bg="bg.400"
-            color="white"
-            onClick={(event) => handleEditRow(props.row.original, event)}
+            colorScheme="red"
+            onClick={() => {
+              handleDeleteRow(props.row.original);
+            }}
           >
             Eliminar
           </Button>
@@ -325,34 +364,7 @@ function FormLanguages() {
             message="¿Estas Seguro que deseas eliminar?"
           ></Modal>
 
-          <Tabl data={datosLanguages} columns={columns} />
-          {/* <DataTable
-            header={[
-              "Idioma (Diferente al nativo)",
-              "Hablado Básico/Medio/Alto",
-              "Escritura Básico/Medio/Alto",
-              "Comprensión Básico/Medio/Alto",
-              "Tipo de Certificación",
-              "Acción",
-            ]}
-            keyValues={[
-              "name",
-              "speakingLevel",
-              "writingLevel",
-              "comprehensionLevel",
-              "typeCertification",
-            ]}
-            data={datosLanguages}
-            title="Idiomas"
-            defaultRowsPerPage={5}
-            numberRow={true}
-            buttons={{
-              buttonEdit: true,
-              handleEditRow: handleEditRow,
-              buttonDelete: true,
-              handleDeleteRow: handleDeleteRow,
-            }}
-          /> */}
+          <Tabl data={dataLanguages} columns={columns} />
         </AccordionPanel>
       </AccordionItem>
     </form>

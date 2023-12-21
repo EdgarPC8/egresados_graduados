@@ -29,6 +29,7 @@ import {
 } from "../api/cvRequest";
 import DataTable from "../components/DataTables";
 import Modal from "../components/AlertDialog";
+import Tabl from "./Table";
 
 function FormProfessionalExperience() {
   const initialFormProfessional = {
@@ -42,8 +43,9 @@ function FormProfessionalExperience() {
     endDate: "",
   };
 
-  const [datosProfessionalExperience, setDatosProfessionalExperience] =
-    useState([]);
+  const [dataProfessionalExperience, setDataProfessionalExperience] = useState(
+    []
+  );
   const [isEditing, setIsEditing] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const form = useRef(null);
@@ -62,30 +64,66 @@ function FormProfessionalExperience() {
   async function fetchData() {
     try {
       const { data } = await getAllProfessionalExperience();
-      setDatosProfessionalExperience(data);
+      setDataProfessionalExperience(data);
     } catch (error) {
       console.error("Error al obtener datos académicos:", error);
     }
   }
   const handleSubmit = async (event) => {
     event.preventDefault();
-    try {
-      if (isEditing) {
-        const { data } = await editProfessionalExperience(id, formProfessional);
-        fetchData();
-      } else {
-        const { data } = await addProfessionalExperience(formProfessional);
-        setDatosProfessionalExperience([
-          ...datosProfessionalExperience,
+
+    if (isEditing) {
+      toast.promise(editProfessionalExperience(id, formProfessional), {
+        loading: {
+          title: "Editando...",
+          position: "top-right",
+        },
+        success: (d) => ({
+          title: "Experiencia Profesional",
+          description: d.data.message,
+          isClosable: true,
+        }),
+        error: (e) => ({
+          title: "Error",
+          description: e.response.data.message,
+          isClosable: true,
+        }),
+      });
+
+      fetchData();
+
+      clear();
+
+      return;
+    }
+
+    toast.promise(addProfessionalExperience(formProfessional), {
+      loading: {
+        title: "Añadiendo...",
+        position: "top-right",
+      },
+      success: (d) => {
+        setDataProfessionalExperience([
+          ...dataProfessionalExperience,
           formProfessional,
         ]);
-      }
-      clear();
-    } catch (error) {
-      console.log(error);
-    }
+
+        return {
+          title: "Experiencia Profesional",
+          description: d.data.message,
+          isClosable: true,
+        };
+      },
+      error: (e) => ({
+        title: "Error",
+        description: e.response.data.message,
+        isClosable: true,
+      }),
+    });
+
+    clear();
   };
-  const handleEditRow = (row, event) => {
+  const handleEditRow = (row) => {
     const {
       nro,
       companyInstitution,
@@ -118,7 +156,7 @@ function FormProfessionalExperience() {
     setFormProfessional({ ...formProfessional, [name]: value });
   };
 
-  const handleDeleteRow = async (row, event) => {
+  const handleDeleteRow = async (row) => {
     setIsModalOpen(true);
     setId(row.id);
   };
@@ -134,6 +172,45 @@ function FormProfessionalExperience() {
   useEffect(() => {
     fetchData();
   }, []);
+
+  const columns = [
+    { header: "Nro.", accessorKey: "nro" },
+    { header: "Empresa/Institución", accessorKey: "companyInstitution" },
+    { header: "Cargo", accessorKey: "position" },
+    {
+      header: "Responsabilidades y/o Actividades",
+      accessorKey: "responsibilities",
+    },
+    { header: "Jefe Inmediato", accessorKey: "immediateHead" },
+    { header: "Teléfono", accessorKey: "telephone" },
+    { header: "Fecha Inicio", accessorKey: "startDate" },
+    { header: "Fecha Fin", accessorKey: "endDate" },
+
+    {
+      header: "Accion",
+      cell: (props) => (
+        <Stack spacing={4} direction="row" align="center">
+          <Button
+            colorScheme="yellow"
+            onClick={() => {
+              handleEditRow(props.row.original);
+            }}
+          >
+            Editar
+          </Button>
+          <Button
+            colorScheme="red"
+            onClick={() => {
+              handleDeleteRow(props.row.original);
+            }}
+          >
+            Eliminar
+          </Button>
+        </Stack>
+      ),
+    },
+  ];
+
   return (
     <form onSubmit={handleSubmit} ref={form}>
       <AccordionItem>
@@ -262,39 +339,7 @@ function FormProfessionalExperience() {
             title="Datos"
             message="¿Estas Seguro que deseas eliminar?"
           ></Modal>
-          <DataTable
-            header={[
-              "Nro.",
-              "Empresa/Institución",
-              "Cargo",
-              "Responsabilidades y/o Actividades",
-              "Jefe Inmediato",
-              "Teléfono",
-              "Fecha Inicio",
-              "Fecha Fin",
-              "Acción",
-            ]}
-            keyValues={[
-              "nro",
-              "companyInstitution",
-              "position",
-              "responsibilities",
-              "immediateHead",
-              "telephone",
-              "startDate",
-              "endDate",
-            ]}
-            data={datosProfessionalExperience}
-            title="Formación Academica"
-            defaultRowsPerPage={5}
-            numberRow={true}
-            buttons={{
-              buttonEdit: true,
-              handleEditRow: handleEditRow,
-              buttonDelete: true,
-              handleDeleteRow: handleDeleteRow,
-            }}
-          />
+          <Tabl columns={columns} data={dataProfessionalExperience} />
         </AccordionPanel>
       </AccordionItem>
     </form>

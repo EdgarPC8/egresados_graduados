@@ -6,6 +6,7 @@ import {
   changePassword,
   getUsers,
   addUser,
+  deleteUser,
 } from "../controllers/userController.js";
 import {
   upload,
@@ -21,5 +22,6 @@ router.put("/:userId", isAuthenticated, uploadUpdatePhoto, updateDataUser);
 router.put("/changePassword/:userId", isAuthenticated, changePassword);
 router.post("/", isAuthenticated, upload, addUser);
 router.get("/", isAuthenticated, getUsers);
+router.delete("/:userId", isAuthenticated, deleteUser);
 
 export default router;

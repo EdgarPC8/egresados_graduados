@@ -248,7 +248,7 @@ function ResumeForm() {
   // }
 
   return (
-    <Box fontSize={50} mb={100}>
+    <Box mb={100}>
       <Container maxW={"container.xl"}>
         <Grid
           templateColumns={{ base: "8fr 1fr", md: "8fr 1fr" }}

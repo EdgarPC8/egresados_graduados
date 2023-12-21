@@ -19,6 +19,7 @@ import {
   AccordionPanel,
   AccordionIcon,
   AccordionButton,
+  useToast,
 } from "@chakra-ui/react";
 import { useEffect, useState, useRef } from "react";
 import {
@@ -29,6 +30,7 @@ import {
 } from "../api/cvRequest";
 import DataTable from "../components/DataTables";
 import Modal from "../components/AlertDialog";
+import Tabl from "./Table";
 
 function FormProfessionalMerits() {
   const initialProfessionalMerits = {
@@ -40,7 +42,9 @@ function FormProfessionalMerits() {
     location: "",
   };
 
-  const [datosAcademicProfessionalMerits, setDatosAcademicProfessionalMerits] =
+  const toast = useToast();
+
+  const [dataAcademicProfessionalMerits, setDataAcademicProfessionalMerits] =
     useState([]);
   const [isEditing, setIsEditing] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -60,7 +64,7 @@ function FormProfessionalMerits() {
   async function fetchData() {
     try {
       const { data } = await getAllAcademicProfessionalMerits();
-      setDatosAcademicProfessionalMerits(data);
+      setDataAcademicProfessionalMerits(data);
     } catch (error) {
       console.error("Error al obtener datos académicos:", error);
     }
@@ -73,28 +77,61 @@ function FormProfessionalMerits() {
 
   const handleSubmit = async (event) => {
     event.preventDefault();
-    try {
-      if (isEditing) {
-        const { data } = await editAcademicProfessionalMerits(
-          id,
-          formProfessionalMerits
-        );
-        fetchData();
-      } else {
-        const { data } = await addAcademicProfessionalMerits(
-          formProfessionalMerits
-        );
-        setDatosAcademicProfessionalMerits([
-          ...datosAcademicProfessionalMerits,
+
+    if (isEditing) {
+      toast.promise(
+        editAcademicProfessionalMerits(id, formProfessionalMerits),
+        {
+          loading: {
+            title: "Editando...",
+            position: "top-right",
+          },
+          success: (d) => ({
+            title: "Méritos Académicos",
+            description: d.data.message,
+            isClosable: true,
+          }),
+          error: (e) => ({
+            title: "Error",
+            description: e.response.data.message,
+            isClosable: true,
+          }),
+        }
+      );
+
+      fetchData();
+      clear();
+
+      return;
+    }
+
+    toast.promise(addAcademicProfessionalMerits(formProfessionalMerits), {
+      loading: {
+        title: "Añadiendo...",
+        position: "top-right",
+      },
+      success: (d) => {
+        setDataAcademicProfessionalMerits([
+          ...dataAcademicProfessionalMerits,
           formProfessionalMerits,
         ]);
-      }
-      clear();
-    } catch (error) {
-      console.log(error);
-    }
+
+        return {
+          title: "Méritos Académicos",
+          description: d.data.message,
+          isClosable: true,
+        };
+      },
+      error: (e) => ({
+        title: "Error",
+        description: e.response.data.message,
+        isClosable: true,
+      }),
+    });
+
+    clear();
   };
-  const handleEditRow = (row, event) => {
+  const handleEditRow = (row) => {
     const { name, date, type, grantedBy, country, location } = row;
     form.current.scrollIntoView({ behavior: "smooth", block: "start" });
     setIsEditing(true);
@@ -108,7 +145,7 @@ function FormProfessionalMerits() {
       location,
     });
   };
-  const handleDeleteRow = async (row, event) => {
+  const handleDeleteRow = async (row) => {
     setIsModalOpen(true);
     setId(row.id);
   };
@@ -124,6 +161,40 @@ function FormProfessionalMerits() {
   useEffect(() => {
     fetchData();
   }, []);
+
+  const columns = [
+    { header: "Nombre", accessorKey: "name" },
+    { header: "Fecha", accessorKey: "date" },
+    { header: "Tipo", accessorKey: "type" },
+    { header: "Otorgado Por", accessorKey: "grantedBy" },
+    { header: "País", accessorKey: "country" },
+    { header: "Lugar", accessorKey: "location" },
+
+    {
+      header: "Accion",
+      cell: (props) => (
+        <Stack spacing={4} direction="row" align="center">
+          <Button
+            colorScheme="yellow"
+            onClick={() => {
+              handleEditRow(props.row.original);
+            }}
+          >
+            Editar
+          </Button>
+          <Button
+            colorScheme="red"
+            onClick={() => {
+              handleDeleteRow(props.row.original);
+            }}
+          >
+            Eliminar
+          </Button>
+        </Stack>
+      ),
+    },
+  ];
+
   return (
     <form onSubmit={handleSubmit} ref={form}>
       <AccordionItem>
@@ -239,35 +310,7 @@ function FormProfessionalMerits() {
             title="Datos"
             message="¿Estas Seguro que deseas eliminar?"
           ></Modal>
-          <DataTable
-            header={[
-              "Nombre",
-              "Fecha",
-              "Tipo",
-              "Otorgado Por",
-              "País",
-              "Lugar",
-              "Acción",
-            ]}
-            keyValues={[
-              "name",
-              "date",
-              "type",
-              "grantedBy",
-              "country",
-              "location",
-            ]}
-            data={datosAcademicProfessionalMerits}
-            title="Meritos Académicos"
-            defaultRowsPerPage={5}
-            numberRow={true}
-            buttons={{
-              buttonEdit: true,
-              handleEditRow: handleEditRow,
-              buttonDelete: true,
-              handleDeleteRow: handleDeleteRow,
-            }}
-          />
+          <Tabl columns={columns} data={dataAcademicProfessionalMerits} />
         </AccordionPanel>
       </AccordionItem>
     </form>

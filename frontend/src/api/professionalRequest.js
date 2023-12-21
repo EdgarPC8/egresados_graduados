@@ -1,21 +1,36 @@
-import axios from "./axios.js";
-
-const token = `Bearer ${window.localStorage.getItem("token")}`;
+import axios, { jwt } from "./axios.js";
 
 export const getProfessionalsById = async (data) =>
   await axios.get(`/professionals/getProfessionalsById/${data}`, {
     headers: {
-      Authorization: token,
+      Authorization: jwt(),
     },
   });
 
-// export const getAllProfessionals = async () =>
-//   await axios.get("/cv/getAllProfessionals");
-// export const addProfessionals = async (data) =>
-//   await axios.post("/cv/addProfessionals", data);
+export const getAllProfessionals = async () =>
+  await axios.get("/professionals/getAllProfessionals", {
+    headers: {
+      Authorization: jwt(),
+    },
+  });
 
-// export const editProfessionals = async (id, data) =>
-//   await axios.put(`/cv/editProfessionals${id}`, data);
+export const addProfessional = async (data) =>
+  await axios.post("/professionals/addProfessionals", data, {
+    headers: {
+      Authorization: jwt(),
+    },
+  });
 
-// export const deleteProfessionals = async (data) =>
-//   await axios.delete(`/cv/deleteProfessionals/${data}`);
+export const editProfessional = async (id, data) =>
+  await axios.put(`/professionals/editProfessionals/${id}`, data, {
+    headers: {
+      Authorization: jwt(),
+    },
+  });
+
+export const deleteProfessional = async (data) =>
+  await axios.delete(`/professionals/deleteProfessionals/${data}`, {
+    headers: {
+      Authorization: jwt(),
+    },
+  });

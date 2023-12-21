@@ -24,6 +24,7 @@ import {
 } from "../api/cvRequest";
 import DataTable from "../components/DataTables";
 import Modal from "../components/AlertDialog";
+import Tabl from "./Table";
 
 function FormCourses() {
   const initialFormCourses = {
@@ -37,7 +38,7 @@ function FormCourses() {
     organizedBy: "",
   };
 
-  const [datosCoursesWorkshops, setDatosCoursesWorkshops] = useState([]);
+  const [dataCourseWorkShops, setDatasCoursesWorkshops] = useState([]);
   const [isEditing, setIsEditing] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const form = useRef(null);
@@ -48,7 +49,7 @@ function FormCourses() {
   async function fetchData() {
     try {
       const { data } = await getAllCoursesWorkshops();
-      setDatosCoursesWorkshops(data);
+      setDatasCoursesWorkshops(data);
     } catch (error) {
       console.error("Error al obtener datos académicos:", error);
     }
@@ -60,27 +61,60 @@ function FormCourses() {
   }
   const handleSubmit = async (event) => {
     event.preventDefault();
-    try {
-      if (isEditing) {
-        const { data } = await editCoursesWorkshops(id, formCourse);
-        fetchData();
-      } else {
-        const { data } = await addCoursesWorkshops(formCourse); // assuming addCoursesWorkshops is an asynchronous function
-        setDatosCoursesWorkshops([...datosCoursesWorkshops, formCourse]); // Assuming the returned data is the newly added item
-      }
+
+    if (isEditing) {
+      toast.promise(editCoursesWorkshops(id, formCourse), {
+        loading: {
+          title: "Editando...",
+          position: "top-right",
+        },
+        success: (d) => ({
+          title: "Cursos",
+          description: d.data.message,
+          isClosable: true,
+        }),
+        error: (e) => ({
+          title: "Error",
+          description: e.response.data.message,
+          isClosable: true,
+        }),
+      });
+
+      fetchData();
+
       clear();
-    } catch (error) {
-      console.log(error);
+
+      return;
     }
+
+    toast.promise(addCoursesWorkshops(formCourse), {
+      loading: {
+        title: "Añadiendo...",
+        position: "top-right",
+      },
+      success: (d) => {
+        setDatasCoursesWorkshops([...dataCourseWorkShops, formCourse]);
+        return {
+          title: "Cursos",
+          description: d.data.message,
+          isClosable: true,
+        };
+      },
+      error: (e) => ({
+        title: "Error",
+        description: e.response.data.message,
+        isClosable: true,
+      }),
+    });
+    clear();
   };
 
   const handleChange = (event) => {
-    // const { name, value } = event.target;
-    console.log(event.target);
-    // setFormCourse({ ...formCourse, [name]: value });
+    const { name, value } = event.target;
+    setFormCourse({ ...formCourse, [name]: value });
   };
 
-  const handleEditRow = (row, event) => {
+  const handleEditRow = (row) => {
     const {
       startDate,
       endDate,
@@ -107,7 +141,7 @@ function FormCourses() {
     });
   };
 
-  const handleDeleteRow = async (row, event) => {
+  const handleDeleteRow = async (row) => {
     setIsModalOpen(true);
     setId(row.id);
   };
@@ -124,6 +158,44 @@ function FormCourses() {
   useEffect(() => {
     fetchData();
   }, []);
+
+  const columns = [
+    { header: "Tipo", accessorKey: "type" },
+    { header: "Nombre", accessorKey: "name" },
+    { header: "Organizado Por:", accessorKey: "organizedBy" },
+    { header: "Lugar", accessorKey: "place" },
+    { header: "Duracion(Horas)", accessorKey: "duration" },
+    { header: "Fecha Inicio", accessorKey: "startDate" },
+    { header: "Fecha Fin", accessorKey: "endDate" },
+    {
+      header: "Tipo de Participación Asistente/Expositor",
+      accessorKey: "typeParticipation",
+    },
+
+    {
+      header: "Accion",
+      cell: (props) => (
+        <Stack spacing={4} direction="row" align="center">
+          <Button
+            colorScheme="yellow"
+            onClick={() => {
+              handleEditRow(props.row.original);
+            }}
+          >
+            Editar
+          </Button>
+          <Button
+            colorScheme="red"
+            onClick={() => {
+              handleDeleteRow(props.row.original);
+            }}
+          >
+            Eliminar
+          </Button>
+        </Stack>
+      ),
+    },
+  ];
   return (
     <form onSubmit={handleSubmit} ref={form}>
       <AccordionItem>
@@ -276,39 +348,7 @@ function FormCourses() {
             title="Datos"
             message="¿Estas Seguro que deseas eliminar?"
           ></Modal>
-          <DataTable
-            header={[
-              "Tipo",
-              "Nombre",
-              "Organizado Por:",
-              "Lugar",
-              "Duracion(Horas)",
-              "Fecha Inicio",
-              "Fecha Fin",
-              "Tipo de Participación Asistente/Expositor",
-              "Acción",
-            ]}
-            keyValues={[
-              "type",
-              "name",
-              "organizedBy",
-              "place",
-              "duration",
-              "startDate",
-              "endDate",
-              "typeParticipation",
-            ]}
-            data={datosCoursesWorkshops}
-            title="Cursos"
-            defaultRowsPerPage={5}
-            numberRow={true}
-            buttons={{
-              buttonEdit: true,
-              handleEditRow: handleEditRow,
-              buttonDelete: true,
-              handleDeleteRow: handleDeleteRow,
-            }}
-          />
+          <Tabl columns={columns} data={dataCourseWorkShops} />
         </AccordionPanel>
       </AccordionItem>
     </form>

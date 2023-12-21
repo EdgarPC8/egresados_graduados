@@ -28,6 +28,7 @@ import {
 } from "../api/cvRequest";
 import DataTable from "../components/DataTables";
 import Modal from "../components/AlertDialog";
+import Tabl from "./Table";
 
 function FormTeaching() {
   const initialFormTeaching = {
@@ -40,7 +41,7 @@ function FormTeaching() {
     country: "",
   };
 
-  const [datosTeachingExperience, setDatosTeachingExperience] = useState([]);
+  const [dataTeachingExperience, setDataTeachingExperience] = useState([]);
   const [isEditing, setIsEditing] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const form = useRef(null);
@@ -53,28 +54,64 @@ function FormTeaching() {
     setId(false);
     setFormTeaching(initialFormTeaching);
   }
+
   async function fetchData() {
     try {
       const { data } = await getAllTeachingExperience();
-      setDatosTeachingExperience(data);
+      setDataTeachingExperience(data);
     } catch (error) {
       console.error("Error al obtener datos académicos:", error);
     }
   }
+
   const handleSubmit = async (event) => {
     event.preventDefault();
-    try {
-      if (isEditing) {
-        const { data } = await editTeachingExperience(id, formTeaching);
-        fetchData();
-      } else {
-        const { data } = await addTeachingExperience(formTeaching); // assuming addTeachingExperience is an asynchronous function
-        setDatosTeachingExperience([...datosTeachingExperience, formTeaching]); // Assuming the returned data is the newly added item
-      }
+
+    if (isEditing) {
+      toast.promise(editTeachingExperience(id, formTeaching), {
+        loading: {
+          title: "Editando...",
+          position: "top-right",
+        },
+        success: (d) => ({
+          title: "Experiencia docente",
+          description: d.data.message,
+          isClosable: true,
+        }),
+        error: (e) => ({
+          title: "Error",
+          description: e.response.data.message,
+          isClosable: true,
+        }),
+      });
+
+      fetchData();
       clear();
-    } catch (error) {
-      console.log(error);
+
+      return;
     }
+
+    toast.promise(editTeachingExperience(id, formTeaching), {
+      loading: {
+        title: "Añadiendo...",
+        position: "top-right",
+      },
+      success: (d) => {
+        setDataTeachingExperience([...dataTeachingExperience, formTeaching]);
+        return {
+          title: "Experiencia docente",
+          description: d.data.message,
+          isClosable: true,
+        };
+      },
+      error: (e) => ({
+        title: "Error",
+        description: e.response.data.message,
+        isClosable: true,
+      }),
+    });
+
+    clear();
   };
 
   const handleChange = (event) => {
@@ -82,7 +119,7 @@ function FormTeaching() {
     setFormTeaching({ ...formTeaching, [name]: value });
   };
 
-  const handleEditRow = (row, event) => {
+  const handleEditRow = (row) => {
     const {
       educationalInstitution,
       subject,
@@ -105,7 +142,7 @@ function FormTeaching() {
       country,
     });
   };
-  const handleDeleteRow = async (row, event) => {
+  const handleDeleteRow = async (row) => {
     setIsModalOpen(true);
     setId(row.id);
   };
@@ -121,6 +158,39 @@ function FormTeaching() {
   useEffect(() => {
     fetchData();
   }, []);
+
+  const columns = [
+    { header: "Institución", accessorKey: "educationalInstitution" },
+    { header: "Materia", accessorKey: "subject" },
+    { header: "Fecha Inicio", accessorKey: "startDate" },
+    { header: "Fecha Fin", accessorKey: "endDate" },
+    { header: "Modalidad", accessorKey: "modality" },
+    { header: "Lugar", accessorKey: "place" },
+    { header: "País", accessorKey: "country" },
+    {
+      header: "Accion",
+      cell: (props) => (
+        <Stack spacing={4} direction="row" align="center">
+          <Button
+            colorScheme="yellow"
+            onClick={() => {
+              handleEditRow(props.row.original);
+            }}
+          >
+            Editar
+          </Button>
+          <Button
+            colorScheme="red"
+            onClick={() => {
+              handleDeleteRow(props.row.original);
+            }}
+          >
+            Eliminar
+          </Button>
+        </Stack>
+      ),
+    },
+  ];
 
   return (
     <form onSubmit={handleSubmit} ref={form}>
@@ -237,7 +307,12 @@ function FormTeaching() {
               order={{ base: 1, md: 1 }}
               textAlign={"right"}
             >
-              <Button type="submit" mt={4} bg="ceruleanBlue.500" color={"white"}>
+              <Button
+                type="submit"
+                mt={4}
+                bg="ceruleanBlue.500"
+                color={"white"}
+              >
                 {!isEditing ? "Guardar" : "Editar"}
               </Button>
             </GridItem>
@@ -249,37 +324,7 @@ function FormTeaching() {
             title="Datos"
             message="¿Estas Seguro que deseas eliminar?"
           ></Modal>
-          <DataTable
-            header={[
-              "Institución",
-              "Materia",
-              "Fecha Inicio",
-              "Fecha Fin",
-              "Modalidad",
-              "Lugar",
-              "País",
-              "Acción",
-            ]}
-            keyValues={[
-              "educationalInstitution",
-              "subject",
-              "startDate",
-              "endDate",
-              "modality",
-              "place",
-              "country",
-            ]}
-            data={datosTeachingExperience}
-            title="Experiencia Docente"
-            defaultRowsPerPage={5}
-            numberRow={true}
-            buttons={{
-              buttonEdit: true,
-              handleEditRow: handleEditRow,
-              buttonDelete: true,
-              handleDeleteRow: handleDeleteRow,
-            }}
-          />
+          <Tabl columns={columns} data={dataTeachingExperience} />
         </AccordionPanel>
       </AccordionItem>
     </form>

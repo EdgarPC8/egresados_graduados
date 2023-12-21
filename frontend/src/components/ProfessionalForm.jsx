@@ -9,15 +9,23 @@ import {
   Select,
   Button,
   Image,
+  useToast,
 } from "@chakra-ui/react";
 import { useEffect, useState, useRef } from "react";
-import { getProfessionalsById } from "../api/professionalRequest.js";
+import {
+  editProfessional,
+  getProfessionalsById,
+} from "../api/professionalRequest.js";
 import { verifyTokenRequest } from "../api/userRequest.js";
 import DataTable from "../components/DataTables";
 import Modal from "../components/AlertDialog";
 
 function ProfessionalForm() {
   const form = useRef(null);
+  const toast = useToast();
+  const [isEditing, setIsEditing] = useState(false);
+  const [id, setId] = useState(0);
+
   let initialFormProfessional = {
     ci: "",
     firstName: "",
@@ -48,15 +56,69 @@ function ProfessionalForm() {
       const res = await verifyTokenRequest();
       const idUser = res.data.userId;
       const { data } = await getProfessionalsById(idUser);
+      if (!data) {
+        return;
+      }
       setFormProfessional(data);
-      // console.log(data)
+      setIsEditing(true);
+      setId(data.id);
+      
     } catch (error) {
       console.error("Error al obtener datos académicos:", error);
     }
   }
 
+  const clear = () => {
+    setIsEditing(false);
+    setId(false);
+    setFormProfessional(initialFormProfessional);
+  };
+
   const handleSubmit = async (event) => {
     event.preventDefault();
+
+    if (isEditing) {
+      toast.promise(editProfessional(id, formProfessional), {
+        loading: {
+          title: "Editando...",
+          position: "top-right",
+        },
+        success: (d) => ({
+          title: "Información profesional",
+          description: d.data.message,
+          isClosable: true,
+        }),
+        error: (e) => ({
+          title: "Error",
+          description: e.response.data.message,
+          isClosable: true,
+        }),
+      });
+
+      fetchData();
+      clear();
+
+      return;
+    }
+
+    toast.promise(editPro(id, formProfessional), {
+      loading: {
+        title: "Añadiendo...",
+        position: "top-right",
+      },
+      success: (d) => ({
+        title: "Información profesional",
+        description: d.data.message,
+        isClosable: true,
+      }),
+      error: (e) => ({
+        title: "Error",
+        description: e.response.data.message,
+        isClosable: true,
+      }),
+    });
+
+    clear();
   };
   const handleChange = (event) => {
     const { name, value } = event.target;
@@ -66,10 +128,7 @@ function ProfessionalForm() {
   useEffect(() => {
     fetchData();
   }, []);
-  // useEffect(() => {
-  //   console.log(formProfessional);
-  //   setFormProfessional(formProfessional);
-  // }, [formProfessional]);
+
   return (
     <form onSubmit={handleSubmit} ref={form}>
       <Grid templateColumns={{ base: "1fr", md: "9fr 1fr" }} gap={4} mt={2}>
@@ -384,7 +443,7 @@ function ProfessionalForm() {
           margin={"auto"}
         >
           <Button type="submit" mt={4} bg="ceruleanBlue.500" color={"white"}>
-            Guardar Cambios
+            {isEditing ? "Editar" : "Guardar"}
           </Button>
         </GridItem>
       </Grid>

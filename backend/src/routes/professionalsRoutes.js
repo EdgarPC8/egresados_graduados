@@ -3,6 +3,7 @@ import {
   getAllProfessionals,
   addProfessional,
   getProfessionalsById,
+  editProfessional,
 } from "../controllers/ProfessionalsControllers.js";
 import { isAuthenticated } from "../middlewares/authMiddelware.js";
 
@@ -14,6 +15,7 @@ router.get(
   isAuthenticated,
   getProfessionalsById
 );
-router.post("/addProfessional", isAuthenticated, addProfessional);
+router.post("/addProfessionals", isAuthenticated, addProfessional);
+router.put("/editProfessionals/:professionalId", isAuthenticated, editProfessional);
 
 export default router;

@@ -163,11 +163,28 @@ const getUsers = async (req, res) => {
   }
 };
 
+const deleteUser = async (req, res) => {
+  try {
+    const removingUser = await Users.destroy({
+      where: {
+        userId: req.params.userId,
+      },
+    });
+
+    res.json({ message: "Usuario eleminado con éxito" });
+  } catch (error) {
+    return res.status(500).json({
+      message: error.message,
+    });
+  }
+};
+
 export {
   addUser,
   getRoles,
   getOneUser,
   updateDataUser,
   changePassword,
+  deleteUser,
   getUsers,
 };

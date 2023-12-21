@@ -6,12 +6,12 @@ function Fonts() {
       styles={`
               @font-face {
                   font-family: "Inter-SemiBold";
-                  src: url("./fonts/static/Inter-SemiBold.ttf") format("truetype");
+                  src: url('fonts/static/Inter-SemiBold.ttf') format("truetype");
               } 
 
             @font-face {
                   font-family: "Inter-Regular";
-                  src: url("./fonts/static/Inter-Regular.ttf") format("truetype");
+                  src: url('fonts/static/Inter-Regular.ttf') format("truetype");
               } 
         `}
     />

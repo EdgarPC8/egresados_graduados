@@ -50,6 +50,13 @@ const addUser = async (data) =>
     },
   });
 
+const removeUser = async (userId) =>
+  await axios.delete(`/users/${userId}`, {
+    headers: {
+      Authorization: jwt(),
+    },
+  });
+
 export {
   loginRequest,
   verifyTokenRequest,
@@ -59,4 +66,5 @@ export {
   updateUserData,
   getUsers,
   addUser,
+  removeUser,
 };

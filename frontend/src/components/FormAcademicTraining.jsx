@@ -11,6 +11,8 @@ import {
   AccordionPanel,
   AccordionIcon,
   AccordionButton,
+  useToast,
+  Stack,
 } from "@chakra-ui/react";
 import { useEffect, useState, useRef } from "react";
 import {
@@ -21,8 +23,11 @@ import {
 } from "../api/cvRequest";
 import DataTable from "../components/DataTables";
 import Modal from "../components/AlertDialog";
+import Tabl from "./Table";
 
 function FormAcademicTraining() {
+  const toast = useToast();
+
   const initialFormAcademic = {
     type: "",
     date: "",
@@ -59,21 +64,55 @@ function FormAcademicTraining() {
 
   const handleSubmit = async (event) => {
     event.preventDefault();
-    try {
-      if (isEditing) {
-        const { data } = await editAcademicTraining(id, formAcademic);
-        fetchData();
-      } else {
-        const { data } = await addAcademicTraining(formAcademic);
 
-        setListAcademicTraining([...ListAcademicTraining, formAcademic]);
-      }
+    if (isEditing) {
+      toast.promise(editAcademicTraining(id, formAcademic), {
+        loading: {
+          title: "Editando...",
+          position: "top-right",
+        },
+        success: (d) => ({
+          title: "Formación académica",
+          description: d.data.message,
+          isClosable: true,
+        }),
+        error: (e) => ({
+          title: "Error",
+          description: e.response.data.message,
+          isClosable: true,
+        }),
+      });
+
+      fetchData();
+
       clear();
-    } catch (error) {
-      console.log(error);
+
+      return;
     }
+
+    toast.promise(addAcademicTraining(formAcademic), {
+      loading: {
+        title: "Añadiendo...",
+        position: "top-right",
+      },
+      success: (d) => {
+        setListAcademicTraining([...ListAcademicTraining, formAcademic]);
+
+        return {
+          title: "Formación académica",
+          description: d.data.message,
+          isClosable: true,
+        };
+      },
+      error: (e) => ({
+        title: "Error",
+        description: e.response.data.message,
+        isClosable: true,
+      }),
+    });
+    clear();
   };
-  const handleEditRow = (row, event) => {
+  const handleEditRow = (row) => {
     form.current.scrollIntoView({ behavior: "smooth", block: "start" });
     const {
       type,
@@ -103,7 +142,7 @@ function FormAcademicTraining() {
     setFormAcademic({ ...formAcademic, [name]: value });
   };
 
-  const handleDeleteRow = async (row, event) => {
+  const handleDeleteRow = async (row) => {
     setIsModalOpen(true);
     setId(row.id);
   };
@@ -119,6 +158,83 @@ function FormAcademicTraining() {
   useEffect(() => {
     fetchData();
   }, []);
+
+  // const dataExample = [
+  //   {
+  //     type: "Book",
+  //     obtainedTitle: "The Catcher in the Rye",
+  //     educationalInstitution: "Not Applicable",
+  //     date: "Not Applicable",
+  //     place: "Not Applicable",
+  //     country: "Not Applicable",
+  //     senescytRegistrationN: "Not Applicable",
+  //   },
+  //   {
+  //     type: "Book",
+  //     obtainedTitle: "To Kill a Mockingbird",
+  //     educationalInstitution: "Not Applicable",
+  //     date: "Not Applicable",
+  //     place: "Not Applicable",
+  //     country: "Not Applicable",
+  //     senescytRegistrationN: "Not Applicable",
+  //   },
+  // ];
+
+  const columns = [
+    {
+      header: "Tipo",
+      accessorKey: "type",
+    },
+    {
+      header: "Título Obtenido",
+      accessorKey: "obtainedTitle",
+    },
+    {
+      header: "Institución Educativa",
+      accessorKey: "educationalInstitution",
+    },
+    {
+      header: "Fecha",
+      accessorKey: "date",
+    },
+    {
+      header: "Lugar",
+      accessorKey: "place",
+    },
+    {
+      header: "País",
+      accessorKey: "country",
+    },
+    {
+      header: "Nro de registro senescyt",
+      accessorKey: "senescytRegistrationN",
+    },
+
+    {
+      header: "Accion",
+      cell: (props) => (
+        <Stack spacing={4} direction="row" align="center">
+          <Button
+            colorScheme="yellow"
+            onClick={() => {
+              handleEditRow(props.row.original);
+            }}
+          >
+            Editar
+          </Button>
+          <Button
+            colorScheme="red"
+            onClick={() => {
+              handleDeleteRow(props.row.original);
+            }}
+          >
+            Eliminar
+          </Button>
+        </Stack>
+      ),
+    },
+  ];
+
   return (
     <form onSubmit={handleSubmit} ref={form}>
       <AccordionItem>
@@ -254,37 +370,7 @@ function FormAcademicTraining() {
             title="Datos"
             message="¿Estas Seguro que deseas eliminar?"
           ></Modal>
-          <DataTable
-            header={[
-              "Tipo",
-              "Título Obtenido",
-              "Institución Educativa",
-              "Fecha",
-              "Lugar",
-              "País",
-              "Nro. de registro SENESCYT",
-              "Acción",
-            ]}
-            keyValues={[
-              "type",
-              "obtainedTitle",
-              "educationalInstitution",
-              "date",
-              "place",
-              "country",
-              "senescytRegistrationN",
-            ]}
-            data={ListAcademicTraining}
-            title="Formación Academica"
-            defaultRowsPerPage={5}
-            numberRow={true}
-            buttons={{
-              buttonEdit: true,
-              handleEditRow,
-              buttonDelete: true,
-              handleDeleteRow,
-            }}
-          />
+          <Tabl columns={columns} data={ListAcademicTraining} />
         </AccordionPanel>
       </AccordionItem>
     </form>

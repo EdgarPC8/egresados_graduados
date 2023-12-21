@@ -6,21 +6,193 @@ import {
   InputLeftAddon,
   InputGroup,
   Button,
-  TableContainer,
-  Table,
-  Th,
-  Tr,
-  Thead,
-  Tfoot,
   AccordionItem,
   AccordionPanel,
   AccordionIcon,
   AccordionButton,
+  useToast,
+  Stack,
 } from "@chakra-ui/react";
+import { useEffect, useState } from "react";
+import {
+  addIntellectualProduction,
+  deleteIntellectualProduction,
+  editIntellectualProduction,
+  getAllIntellectualProduction,
+} from "../api/cvRequest";
+
+import Modal from "../components/AlertDialog";
+import Tabl from "./Table";
 
 function FormIntellectualProduction() {
+  const toast = useToast();
+
+  const [isEditing, setIsEditing] = useState(false);
+  const [id, setId] = useState(0);
+
+  const [dataIntellectualProduction, setDataIntellectualProduction] = useState(
+    []
+  );
+
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
+  const initialFormIntellectual = {
+    type: "",
+    name: "",
+    typeAuthorship: "",
+    date: "",
+    webLink: "",
+  };
+
+  const [form, setForm] = useState(initialFormIntellectual);
+
+  const handleChange = (event) => {
+    const { name, value } = event.target;
+    setForm({ ...form, [name]: value });
+  };
+
+  const clear = () => {
+    setIsEditing(false);
+    setId(0);
+    setForm(initialFormIntellectual);
+  };
+
+  const handleEditRow = (row) => {
+    const { type, name, typeAuthorship, date, webLink } = row;
+    setIsEditing(true);
+    setForm({ type, name, typeAuthorship, date, webLink });
+    setId(row.id);
+  };
+
+  const handleDeleteRow = (row) => {
+    setIsModalOpen(true);
+    setId(row.id);
+  };
+
+  const handleSubmit = (event) => {
+    event.preventDefault();
+
+    if (isEditing) {
+      toast.promise(editIntellectualProduction(id, form), {
+        loading: {
+          title: "Editando...",
+          position: "top-right",
+        },
+        success: (d) => ({
+          title: "Producción Intelectual",
+          description: d.data.message,
+          isClosable: true,
+        }),
+        error: (e) => ({
+          title: "Error",
+          description: e.response.data.message,
+          isClosable: true,
+        }),
+      });
+
+      fetchData();
+
+      clear();
+
+      return;
+    }
+
+    toast.promise(addIntellectualProduction(form), {
+      loading: {
+        title: "Añadiendo...",
+        position: "top-right",
+      },
+      success: (d) => {
+        setDataIntellectualProduction([...dataIntellectualProduction, form]);
+
+        return {
+          title: "Producción Intelectual",
+          description: d.data.message,
+          isClosable: true,
+        };
+      },
+      error: (e) => ({
+        title: "Error",
+        description: e.response.data.message,
+        isClosable: true,
+      }),
+    });
+
+    clear();
+  };
+
+  const handleAcceptDelete = async () => {
+    try {
+      const { data } = await deleteIntellectualProduction(id);
+      fetchData();
+      clear();
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const fetchData = async () => {
+    try {
+      const { data } = await getAllIntellectualProduction();
+      setDataIntellectualProduction(data);
+    } catch (error) {
+      console.error("Error al obtener datos académicos:", error);
+    }
+  };
+
+  useEffect(() => {
+    fetchData();
+  }, []);
+
+  const columns = [
+    {
+      header: "Tipo",
+      accessorKey: "type",
+    },
+    {
+      header: "Nombre",
+      accessorKey: "name",
+    },
+    {
+      header: "Tipo de Autoría",
+      accessorKey: "typeAuthorship",
+    },
+    {
+      header: "Fecha",
+      accessorKey: "date",
+    },
+    {
+      header: "Enlace web",
+      accessorKey: "webLink",
+    },
+
+    {
+      header: "Accion",
+      cell: (props) => (
+        <Stack spacing={4} direction="row" align="center">
+          <Button
+            colorScheme="yellow"
+            onClick={() => {
+              handleEditRow(props.row.original);
+            }}
+          >
+            Editar
+          </Button>
+          <Button
+            colorScheme="red"
+            onClick={() => {
+              handleDeleteRow(props.row.original);
+            }}
+          >
+            Eliminar
+          </Button>
+        </Stack>
+      ),
+    },
+  ];
+
   return (
-    <form>
+    <form onSubmit={handleSubmit}>
       <AccordionItem>
         <h2>
           <AccordionButton>
@@ -40,7 +212,13 @@ function FormIntellectualProduction() {
             <GridItem fontSize={"sm"}>
               <InputGroup>
                 <InputLeftAddon children="Tipo" />
-                <Input type="text" placeholder="Tipo" name="type" />
+                <Input
+                  type="text"
+                  placeholder="Tipo"
+                  name="type"
+                  onChange={handleChange}
+                  value={form.type}
+                />
               </InputGroup>
             </GridItem>
             <GridItem fontSize={"sm"}>
@@ -49,14 +227,23 @@ function FormIntellectualProduction() {
                 <Input
                   type="text"
                   placeholder="Tipo de Autoria"
-                  name="type_authorship"
+                  name="typeAuthorship"
+                  onChange={handleChange}
+                  value={form.typeAuthorship}
                 />
               </InputGroup>
             </GridItem>
             <GridItem fontSize={"sm"}>
               <InputGroup>
                 <InputLeftAddon children="Fecha Inicio" />
-                <Input placeholder="Fecha" size="md" type="date" name="date" />
+                <Input
+                  placeholder="Fecha"
+                  size="md"
+                  type="date"
+                  name="date"
+                  onChange={handleChange}
+                  value={form.date}
+                />
               </InputGroup>
             </GridItem>
           </Grid>
@@ -64,13 +251,25 @@ function FormIntellectualProduction() {
             <GridItem fontSize={"sm"}>
               <InputGroup>
                 <InputLeftAddon children="Nombre/Titulo" />
-                <Input type="text" placeholder="Nombre/Titulo" name="name" />
+                <Input
+                  type="text"
+                  placeholder="Nombre/Titulo"
+                  name="name"
+                  onChange={handleChange}
+                  value={form.name}
+                />
               </InputGroup>
             </GridItem>
             <GridItem fontSize={"sm"}>
               <InputGroup>
                 <InputLeftAddon children="Enlace Web" />
-                <Input type="text" placeholder="Enlace Web" name="web_link" />
+                <Input
+                  type="text"
+                  placeholder="Enlace Web"
+                  name="webLink"
+                  onChange={handleChange}
+                  value={form.webLink}
+                />
               </InputGroup>
             </GridItem>
             <GridItem
@@ -88,41 +287,16 @@ function FormIntellectualProduction() {
               </Button>
             </GridItem>
           </Grid>
-          <TableContainer mb={4}>
-            <Table size="sm">
-              <Thead>
-                <Tr>
-                  <Th>#</Th>
-                  <Th>Tipo</Th>
-                  <Th>Nombre/Titulo</Th>
-                  <Th>Tipo de Autoria</Th>
-                  <Th>Fecha</Th>
-                  <Th>Enlace Web</Th>
-                </Tr>
-              </Thead>
-              {/* {datosIntellectual_production ? (
-            <Tbody>
-              {datosIntellectual_production.map((item, index) => (
-                <Tr key={index}>
-                  <Td>{index + 1}</Td>
-                  <Td>{item.type}</Td>
-                  <Td>{item.name}</Td>
-                  <Td>{item.type_authorship}</Td>
-                  <Td>{reorderDate(item.date)}</Td>
-                  <Td>{item.web_link}</Td>
-                </Tr>
-              ))}
-            </Tbody>
-          ) : (
-            <Tbody>
-              <Tr>
-                <Td colSpan="7">Cargando datos...</Td>
-              </Tr>
-            </Tbody>
-          )} */}
-              <Tfoot></Tfoot>
-            </Table>
-          </TableContainer>
+
+          <Modal
+            isOpen={isModalOpen}
+            onClose={() => setIsModalOpen(false)}
+            onAccept={handleAcceptDelete}
+            title="Datos"
+            message="¿Estas Seguro que deseas eliminar?"
+          />
+
+          <Tabl columns={columns} data={dataIntellectualProduction} />
         </AccordionPanel>
       </AccordionItem>
     </form>
