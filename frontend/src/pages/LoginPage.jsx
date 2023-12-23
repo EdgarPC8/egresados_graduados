@@ -13,6 +13,7 @@ import {
   AlertIcon,
   AlertTitle,
   AlertDescription,
+  Link,
 } from "@chakra-ui/react";
 
 import PasswordInput from "../components/PasswordInput";
@@ -65,7 +66,7 @@ function LoginPage() {
             <Heading size={{ base: "xs", md: "sm" }}>
               Inicia Sesión en tu cuenta.
             </Heading>
-            <Text>Es un gusto tener de vuelta 😄</Text>
+            <Text>Es un gusto tenerte de vuelta 😄</Text>
           </Stack>
           <Box
             py={{ base: "0", sm: "8" }}

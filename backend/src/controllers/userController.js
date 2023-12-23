@@ -178,7 +178,6 @@ const deleteUser = async (req, res) => {
     });
   }
 };
-
 export {
   addUser,
   getRoles,

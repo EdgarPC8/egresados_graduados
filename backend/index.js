@@ -7,6 +7,7 @@ import chartsRoutes from "./src/routes/chartsRoutes.js";
 import linguiGeoRoutes from "./src/routes/linguisticsGeographyRoutes.js";
 import cors from "cors";
 import userRoutes from "./src/routes/userRoutes.js";
+import registerRoutes from "./src/routes/registerRoutes.js";
 import { sequelize } from "./src/database/connection.js";
 import { insertData } from "./src/database/insertData.js";
 
@@ -51,6 +52,7 @@ app.use("/api/quiz", quizRoutes);
 app.use("/api/linguiGeo", linguiGeoRoutes);
 app.use("/api/users", userRoutes);
 app.use("/api/charts", chartsRoutes);
+app.use("/api/register", registerRoutes);
 
 
 async function main() {
