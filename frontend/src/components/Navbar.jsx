@@ -149,9 +149,16 @@ const Navbar = () => {
           ) : isOpen ? (
             ""
           ) : (
-            <Link to="/login">
-              <Button>Iniciar Sesión</Button>
-            </Link>
+            <Flex alignItems="center">
+              <HStack spacing={4}>
+                <Link to="/register">
+                  <Button>Registrarse</Button>
+                </Link>
+                <Link to="/login">
+                  <Button>Iniciar Sesión</Button>
+                </Link>
+              </HStack>
+            </Flex>
           )}
         </Flex>
       </Box>
@@ -193,11 +200,17 @@ const Navbar = () => {
                 <IconButton icon={<FiLogOut />} onClick={logout} />
               </Link>
             ) : (
-              <Link to="/login">
-                <Button>Iniciar Sesión</Button>
-              </Link>
+              <>
+                <Link to="/register">
+                  <Button onClick={onClose}>Registrarse</Button>
+                </Link>
+                <Link to="/login">
+                  <Button onClick={onClose} mr={4}>Iniciar Sesión</Button>
+                </Link>
+              </>
             )}
           </DrawerFooter>
+
         </DrawerContent>
       </Drawer>
     </>

@@ -18,6 +18,8 @@ import {
   AccordionPanel,
   AccordionIcon,
   AccordionButton,
+  Stack,
+  useToast,
 } from "@chakra-ui/react";
 import { useEffect, useState, useRef } from "react";
 import {
@@ -26,7 +28,7 @@ import {
   editTeachingExperience,
   deleteTeachingExperience,
 } from "../api/cvRequest";
-import DataTable from "../components/DataTables";
+
 import Modal from "../components/AlertDialog";
 import Tabl from "./Table";
 
@@ -40,6 +42,8 @@ function FormTeaching() {
     place: "",
     country: "",
   };
+
+  const toast = useToast();
 
   const [dataTeachingExperience, setDataTeachingExperience] = useState([]);
   const [isEditing, setIsEditing] = useState(false);
@@ -73,11 +77,15 @@ function FormTeaching() {
           title: "Editando...",
           position: "top-right",
         },
-        success: (d) => ({
-          title: "Experiencia docente",
-          description: d.data.message,
-          isClosable: true,
-        }),
+        success: (d) => {
+          fetchData();
+          clear();
+          return {
+            title: "Experiencia docente",
+            description: d.data.message,
+            isClosable: true,
+          };
+        },
         error: (e) => ({
           title: "Error",
           description: e.response.data.message,
@@ -85,40 +93,39 @@ function FormTeaching() {
         }),
       });
 
-      fetchData();
-      clear();
-
       return;
     }
 
-    toast.promise(editTeachingExperience(id, formTeaching), {
-      loading: {
-        title: "Añadiendo...",
-        position: "top-right",
-      },
-      success: (d) => {
-        setDataTeachingExperience([...dataTeachingExperience, formTeaching]);
-        return {
-          title: "Experiencia docente",
-          description: d.data.message,
-          isClosable: true,
-        };
-      },
-      error: (e) => ({
-        title: "Error",
-        description: e.response.data.message,
-        isClosable: true,
-      }),
-    });
+    console.log(formTeaching);
 
-    clear();
+    toast.promise(
+      addTeachingExperience({ ...formTeaching, professionalId: user.userId }),
+      {
+        loading: {
+          title: "Añadiendo...",
+          position: "top-right",
+        },
+        success: (d) => {
+          setDataTeachingExperience([...dataTeachingExperience, formTeaching]);
+          return {
+            title: "Experiencia docente",
+            description: d.data.message,
+            isClosable: true,
+          };
+        },
+        error: (e) => ({
+          title: "Error",
+          description: e.response.data.message,
+          isClosable: true,
+        }),
+      }
+    );
   };
 
   const handleChange = (event) => {
     const { name, value } = event.target;
     setFormTeaching({ ...formTeaching, [name]: value });
   };
-
   const handleEditRow = (row) => {
     const {
       educationalInstitution,

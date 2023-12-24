@@ -97,7 +97,7 @@ export const addAcademicProfessionalMerits = async (data) =>
   });
 
 export const editAcademicProfessionalMerits = async (id, data) =>
-  await axios.put(`/cv/editAcademicProfessionalMerit/${id}`, data, {
+  await axios.put(`/cv/editAcademicProfessionalMerits/${id}`, data, {
     headers: {
       Authorization: jwt(),
     },

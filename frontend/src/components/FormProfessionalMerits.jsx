@@ -13,6 +13,7 @@ import {
   Td,
   Tr,
   Thead,
+  Stack,
   Tbody,
   Tfoot,
   AccordionItem,
@@ -31,8 +32,11 @@ import {
 import DataTable from "../components/DataTables";
 import Modal from "../components/AlertDialog";
 import Tabl from "./Table";
+import { useAuth } from "../context/AuthContext";
 
 function FormProfessionalMerits() {
+  const { user } = useAuth();
+
   const initialProfessionalMerits = {
     name: "",
     date: "",
@@ -86,11 +90,15 @@ function FormProfessionalMerits() {
             title: "Editando...",
             position: "top-right",
           },
-          success: (d) => ({
-            title: "Méritos Académicos",
-            description: d.data.message,
-            isClosable: true,
-          }),
+          success: (d) => {
+            fetchData();
+            clear();
+            return {
+              title: "Méritos Académicos",
+              description: d.data.message,
+              isClosable: true,
+            };
+          },
           error: (e) => ({
             title: "Error",
             description: e.response.data.message,
@@ -99,35 +107,38 @@ function FormProfessionalMerits() {
         }
       );
 
-      fetchData();
-      clear();
-
       return;
     }
 
-    toast.promise(addAcademicProfessionalMerits(formProfessionalMerits), {
-      loading: {
-        title: "Añadiendo...",
-        position: "top-right",
-      },
-      success: (d) => {
-        setDataAcademicProfessionalMerits([
-          ...dataAcademicProfessionalMerits,
-          formProfessionalMerits,
-        ]);
-
-        return {
-          title: "Méritos Académicos",
-          description: d.data.message,
-          isClosable: true,
-        };
-      },
-      error: (e) => ({
-        title: "Error",
-        description: e.response.data.message,
-        isClosable: true,
+    toast.promise(
+      addAcademicProfessionalMerits({
+        ...formProfessionalMerits,
+        professionalId: user.userId,
       }),
-    });
+      {
+        loading: {
+          title: "Añadiendo...",
+          position: "top-right",
+        },
+        success: (d) => {
+          setDataAcademicProfessionalMerits([
+            ...dataAcademicProfessionalMerits,
+            formProfessionalMerits,
+          ]);
+
+          return {
+            title: "Méritos Académicos",
+            description: d.data.message,
+            isClosable: true,
+          };
+        },
+        error: (e) => ({
+          title: "Error",
+          description: e.response.data.message,
+          isClosable: true,
+        }),
+      }
+    );
 
     clear();
   };

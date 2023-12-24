@@ -130,7 +130,12 @@ export const editAcademicProfessionalMerits = async (req, res) => {
     const updatedAcademicProfessionalMerits =
       await AcademicProfessionalMerits.update(
         newData, // Aquí defines los campos y sus nuevos valores a actualizar
-        req.params.meritId // Aquí estableces la condición para la actualización
+        {
+          where: {
+            id: req.params.meritId
+          }
+        }
+         // Aquí estableces la condición para la actualización
       );
     res.json({ message: "Editado con éxito" });
   } catch (error) {
@@ -375,7 +380,11 @@ export const editBooks = async (req, res) => {
   try {
     const updatedBooks = await Books.update(
       newData, // Aquí defines los campos y sus nuevos valores a actualizar
-      req.params.bookId // Aquí estableces la condición para la actualización
+      {
+        where: {
+          id: req.params.bookId
+        }
+      } // Aquí estableces la condición para la actualización
     );
     res.json({ message: "Editado con éxito" });
   } catch (error) {

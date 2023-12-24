@@ -24,9 +24,11 @@ import {
 import DataTable from "../components/DataTables";
 import Modal from "../components/AlertDialog";
 import Tabl from "./Table";
+import { useAuth } from "../context/AuthContext";
 
 function FormAcademicTraining() {
   const toast = useToast();
+  const { user } = useAuth();
 
   const initialFormAcademic = {
     type: "",
@@ -71,11 +73,15 @@ function FormAcademicTraining() {
           title: "Editando...",
           position: "top-right",
         },
-        success: (d) => ({
-          title: "Formación académica",
-          description: d.data.message,
-          isClosable: true,
-        }),
+        success: (d) => {
+          fetchData();
+          clear();
+          return {
+            title: "Formación académica",
+            description: d.data.message,
+            isClosable: true,
+          };
+        },
         error: (e) => ({
           title: "Error",
           description: e.response.data.message,
@@ -83,33 +89,32 @@ function FormAcademicTraining() {
         }),
       });
 
-      fetchData();
-
-      clear();
-
       return;
     }
 
-    toast.promise(addAcademicTraining(formAcademic), {
-      loading: {
-        title: "Añadiendo...",
-        position: "top-right",
-      },
-      success: (d) => {
-        setListAcademicTraining([...ListAcademicTraining, formAcademic]);
+    toast.promise(
+      addAcademicTraining({ ...formAcademic, professionalId: user.userId }),
+      {
+        loading: {
+          title: "Añadiendo...",
+          position: "top-right",
+        },
+        success: (d) => {
+          setListAcademicTraining([...ListAcademicTraining, formAcademic]);
 
-        return {
-          title: "Formación académica",
-          description: d.data.message,
+          return {
+            title: "Formación académica",
+            description: d.data.message,
+            isClosable: true,
+          };
+        },
+        error: (e) => ({
+          title: "Error",
+          description: e.response.data.message,
           isClosable: true,
-        };
-      },
-      error: (e) => ({
-        title: "Error",
-        description: e.response.data.message,
-        isClosable: true,
-      }),
-    });
+        }),
+      }
+    );
     clear();
   };
   const handleEditRow = (row) => {

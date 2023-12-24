@@ -84,21 +84,22 @@ function FormProfessionalExperience() {
           title: "Editando...",
           position: "top-right",
         },
-        success: (d) => ({
+        
+        success: (d) => {
+          fetchData();
+          clear();
+          return{
           title: "Experiencia Profesional",
           description: d.data.message,
           isClosable: true,
-        }),
+          }
+        },
         error: (e) => ({
           title: "Error",
           description: e.response.data.message,
           isClosable: true,
         }),
       });
-
-      fetchData();
-
-      clear();
 
       return;
     }

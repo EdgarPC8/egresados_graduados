@@ -5,10 +5,12 @@ import "./App.css";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import HomePage from "./pages/HomePage.jsx";
 import LoginPage from "./pages/LoginPage.jsx";
+import RegisterPage from "./pages/RegisterPage.jsx";
 import { AuthProvider } from "./context/AuthContext.jsx";
 import ProtectedRoute from "./components/ProtectedRoute.jsx";
 import CV from "./pages/CV.jsx";
 import Charts from "./pages/Charts.jsx";
+import Resumes from "./pages/Resumes.jsx";
 import Quiz from "./pages/Quiz.jsx";
 import Profile from "./pages/Profile.jsx";
 
@@ -29,6 +31,8 @@ function App() {
           <Routes>
             <Route path="/" element={<HomePage />} />
             <Route path="/login" element={<LoginPage />} />
+            <Route path="/register" element={<RegisterPage />} />
+
 
             <Route element={<ProtectedRoute />}>
               <Route path="/cv" element={<CV />} />
@@ -38,6 +42,7 @@ function App() {
               <Route path="/agregar-usuario" element={<FormAddUser />} />
               <Route path="/editar-usuario/:userId" element={<FormAddUser />} />
               <Route path="/charts" element={<Charts />} />
+              <Route path="/curriculos" element={<Resumes />} />
             </Route>
           </Routes>
         </BrowserRouter>

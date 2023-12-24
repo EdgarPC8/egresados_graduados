@@ -27,6 +27,7 @@ const data02 = [
     { name: 'F', value: 30 },
     { name: 'M', value: 170 },
 ];
+
 const COLORS = ['#0088FE', '#00C49F', '#FFBB28', '#FF8042'];
 const GENDER_COLORS = {
     'F': '#FF1493', // Rosa para F
@@ -114,7 +115,7 @@ function ChartsCareers() {
             <Flex justifyContent="center" alignItems="center" mt={5}>
                 <Box>
                     <Flex direction="column">
-                        <Heading size="sm">Leyenda</Heading>
+                        <Heading mb={5} size="sm">Carreras</Heading>
                         {
                             ListGroupCareers && ListGroupCareers[0] && ListGroupCareers[0].length > 0 &&
                             ListGroupCareers[0].map((entry, index) => (
