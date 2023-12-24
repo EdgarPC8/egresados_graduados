@@ -1,25 +1,15 @@
 import { sequelize } from "../database/connection.js";
 import { DataTypes } from "sequelize";
-
-// id int (11)  PRIMARY KEY AUTO_INCREMENT,
-//     ci varchar (11) DEFAULT NULL,
-//     first_name varchar(50) DEFAULT NULL,
-//     second_name varchar(50) DEFAULT NULL,
-//     first_last_name varchar(50) DEFAULT NULL,
-//     second_last_name varchar(50) DEFAULT NULL,
-//     birthday_date varchar(20) DEFAULT NULL,
-//     gender varchar(5) DEFAULT NULL,
-//     blood_type varchar(10) DEFAULT NULL,
-//     civil_status varchar(50) DEFAULT NULL,
-//     nationality varchar(50) DEFAULT NULL,
-//     place_birth varchar(50) DEFAULT NULL,
-//     place_residence varchar(100) DEFAULT NULL,
-//     direction TEXT DEFAULT NULL,
-//     home_phone varchar(20) DEFAULT NULL,
-//     cell_phone varchar(20) DEFAULT NULL,
-//     personal_email varchar(60) DEFAULT NULL,
-//     institutional_email varchar(60) DEFAULT NULL,
-//     imagen TEXT DEFAULT NULL
+import {
+  AcademicProfessionalMerits,
+  AcademicTraining,
+  Books,
+  CoursesWorkshops,
+  IntellectualProduction,
+  Languages,
+  ProfessionalExperience,
+  TeachingExperience,
+} from "./CV.js";
 
 export const Professionals = sequelize.define(
   "professionals",
@@ -107,3 +97,83 @@ export const Professionals = sequelize.define(
     timestamps: false,
   }
 );
+
+Professionals.hasMany(AcademicTraining, {
+  foreignKey: "professionalId",
+  sourceKey: "id",
+});
+
+AcademicTraining.belongsTo(Professionals, {
+  foreignKey: "professionalId",
+  sourceKey: "id",
+});
+
+Professionals.hasMany(TeachingExperience, {
+  foreignKey: "professionalId",
+  sourceKey: "id",
+});
+
+TeachingExperience.belongsTo(Professionals, {
+  foreignKey: "professionalId",
+  sourceKey: "id",
+});
+
+Professionals.hasMany(CoursesWorkshops, {
+  foreignKey: "professionalId",
+  sourceKey: "id",
+});
+
+CoursesWorkshops.belongsTo(Professionals, {
+  foreignKey: "professionalId",
+  sourceKey: "id",
+});
+
+Professionals.hasMany(IntellectualProduction, {
+  foreignKey: "professionalId",
+  sourceKey: "id",
+});
+
+IntellectualProduction.belongsTo(Professionals, {
+  foreignKey: "professionalId",
+  sourceKey: "id",
+});
+
+Professionals.hasMany(Books, {
+  foreignKey: "professionalId",
+  sourceKey: "id",
+});
+
+Books.belongsTo(Professionals, {
+  foreignKey: "professionalId",
+  sourceKey: "id",
+});
+
+Professionals.hasMany(AcademicProfessionalMerits, {
+  foreignKey: "professionalId",
+  sourceKey: "id",
+});
+
+AcademicProfessionalMerits.belongsTo(Professionals, {
+  foreignKey: "professionalId",
+  sourceKey: "id",
+});
+
+Professionals.hasMany(Languages, {
+  foreignKey: "professionalId",
+  sourceKey: "id",
+});
+
+Languages.belongsTo(Professionals, {
+  foreignKey: "professionalId",
+  sourceKey: "id",
+});
+
+Professionals.hasMany(ProfessionalExperience, {
+  foreignKey: "professionalId",
+  sourceKey: "id",
+});
+
+ProfessionalExperience.belongsTo(Professionals, {
+  foreignKey: "professionalId",
+  sourceKey: "id",
+});

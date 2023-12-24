@@ -17,7 +17,9 @@ import {
   AccordionItem,
   AccordionPanel,
   AccordionIcon,
+  Stack,
   AccordionButton,
+  useToast,
 } from "@chakra-ui/react";
 
 import { useEffect, useState, useRef } from "react";
@@ -30,10 +32,14 @@ import {
 import DataTable from "../components/DataTables";
 import Modal from "../components/AlertDialog";
 import Tabl from "./Table";
+import { useAuth } from "../context/AuthContext";
 
 function FormProfessionalExperience() {
+  const { user } = useAuth();
+  const toast = useToast();
+
   const initialFormProfessional = {
-    nro: "",
+    // nro: "",
     companyInstitution: "",
     position: "",
     responsibilities: "",
@@ -97,29 +103,35 @@ function FormProfessionalExperience() {
       return;
     }
 
-    toast.promise(addProfessionalExperience(formProfessional), {
-      loading: {
-        title: "Añadiendo...",
-        position: "top-right",
-      },
-      success: (d) => {
-        setDataProfessionalExperience([
-          ...dataProfessionalExperience,
-          formProfessional,
-        ]);
-
-        return {
-          title: "Experiencia Profesional",
-          description: d.data.message,
-          isClosable: true,
-        };
-      },
-      error: (e) => ({
-        title: "Error",
-        description: e.response.data.message,
-        isClosable: true,
+    toast.promise(
+      addProfessionalExperience({
+        ...formProfessional,
+        professsionalId: user.userId,
       }),
-    });
+      {
+        loading: {
+          title: "Añadiendo...",
+          position: "top-right",
+        },
+        success: (d) => {
+          setDataProfessionalExperience([
+            ...dataProfessionalExperience,
+            formProfessional,
+          ]);
+
+          return {
+            title: "Experiencia Profesional",
+            description: d.data.message,
+            isClosable: true,
+          };
+        },
+        error: (e) => ({
+          title: "Error",
+          description: e.response.data.message,
+          isClosable: true,
+        }),
+      }
+    );
 
     clear();
   };
@@ -139,7 +151,7 @@ function FormProfessionalExperience() {
     setIsEditing(true);
     setId(row.id);
 
-    setFormProfessional(
+    setFormProfessional({
       nro,
       companyInstitution,
       position,
@@ -147,8 +159,8 @@ function FormProfessionalExperience() {
       immediateHead,
       telephone,
       startDate,
-      endDate
-    );
+      endDate,
+    });
   };
 
   const handleChange = (event) => {

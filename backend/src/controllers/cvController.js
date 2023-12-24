@@ -21,12 +21,20 @@ export const addProfessionalExperience = async (req, res) => {
   }
   res.json({ message: "Agregado con éxito" });
 };
+
+
+
 export const editProfessionalExperience = async (req, res) => {
   const newData = req.body;
   try {
     const updatedProfessionalExperience = await ProfessionalExperience.update(
       newData, // Aquí defines los campos y sus nuevos valores a actualizar
-      req.params.experienceId // Aquí estableces la condición para la actualización
+      {
+        where: {
+          id: req.params.experienceId,
+        },
+      }
+      // Aquí estableces la condición para la actualización
     );
     res.json({ message: "Editado con éxito" });
   } catch (error) {
