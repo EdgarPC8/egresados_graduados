@@ -2,7 +2,7 @@
 import { sequelize } from "../database/connection.js";
 import { Users } from "../Models/Users.js";
 import bycrypt from "bcrypt";
-import { createAccessToken } from "../libs/jwt.js";
+import { createAccessToken, verifyJWT } from "../libs/jwt.js";
 import jwt from "jsonwebtoken";
 import { Roles } from "../Models/Roles.js";
 import { UserRoles } from "../Models/UserRoles.js";
@@ -55,12 +55,12 @@ const login = async (req, res) => {
   }
 };
 
-const verifytoken = (req, res) => {
+const verifytoken = async (req, res) => {
   const token = req.headers["authorization"].split(" ")[1];
   if (!token) return res.status(401).json({ message: "Unauthorized" });
 
   try {
-    const decoded = jwt.verify(token, "privateKey");
+    const decoded = await verifyJWT(token);
     res.json(decoded);
   } catch (error) {
     return res.status(401).json({ message: "Unauthorized" });
