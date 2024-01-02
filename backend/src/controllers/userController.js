@@ -2,7 +2,8 @@ import { Roles } from "../Models/Roles.js";
 import { Users } from "../Models/Users.js";
 import bycrypt from "bcrypt";
 import jwt from "jsonwebtoken";
-import { Op } from "sequelize";
+import { logger } from "../log/LogActivity.js";
+import { UserRoles } from "../Models/UserRoles.js";
 
 const addUser = async (req, res) => {
   try {
@@ -14,6 +15,7 @@ const addUser = async (req, res) => {
       firstLastName,
       secondLastName,
       password,
+      rol,
     } = req.body;
 
     const passgenerate = await bycrypt.hash(password, 10);
@@ -32,6 +34,18 @@ const addUser = async (req, res) => {
     });
 
     res.json({ message: "usuario agregado con éxito" });
+
+    const userRoles = rol.map((roleId) => {
+      return { userId: newUser.userId, roleId };
+    });
+
+    await UserRoles.bulkCreate(userRoles);
+
+    logger({
+      httpMethod: req.method,
+      action: `Se agrego un nuevo usuario: ${newUser.username} ${newUser.ci}`,
+      endPoint: req.originalUrl,
+    });
   } catch (error) {
     // manejo de errores si ocurre algún problema durante la creación del usuario
     console.error("error al crear el usuario:", error);

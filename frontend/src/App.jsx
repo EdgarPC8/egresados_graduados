@@ -17,25 +17,26 @@ import Profile from "./pages/Profile.jsx";
 import UserTable from "./components/UserTable.jsx";
 import FormAddUser from "./components/FormAddUser.jsx";
 
-import "@fontsource/inter"
+import "@fontsource/inter";
 import "@fontsource/inter/600.css";
+import Logger from "./pages/Logger.jsx";
 
 function App() {
   return (
     <ChakraProvider theme={customTheme}>
       <AuthProvider>
         <BrowserRouter>
-        
           <Navbar />
 
           <Routes>
             <Route path="/" element={<HomePage />} />
             <Route path="/login" element={<LoginPage />} />
-            <Route path="/register" element={<RegisterPage />} />
 
+            <Route path="/register" element={<RegisterPage />} />
 
             <Route element={<ProtectedRoute />}>
               <Route path="/cv" element={<CV />} />
+              <Route path="/actividad" element={<Logger />} />
               <Route path="/quiz" element={<Quiz />} />
               <Route path="/perfil" element={<Profile />} />
               <Route path="/usuarios" element={<UserTable />} />

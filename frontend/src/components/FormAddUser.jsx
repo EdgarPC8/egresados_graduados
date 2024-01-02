@@ -14,8 +14,10 @@ import {
   Heading,
   Button,
   Flex,
+  Checkbox,
   Spacer,
   useToast,
+  FormLabel,
 } from "@chakra-ui/react";
 
 import { FiUser, FiUserPlus, FiHash, FiTag, FiEdit2 } from "react-icons/fi";
@@ -23,7 +25,7 @@ import { FiUser, FiUserPlus, FiHash, FiTag, FiEdit2 } from "react-icons/fi";
 import PasswordInput from "./PasswordInput";
 import { useState, useRef, useEffect } from "react";
 import { useParams } from "react-router-dom";
-import { getOneUser, addUser } from "../api/userRequest";
+import { getOneUser, addUser, getRoles } from "../api/userRequest";
 import { urlPhotos } from "../api/axios";
 
 function FormAddUser() {
@@ -34,21 +36,25 @@ function FormAddUser() {
     username: "",
     firstName: "",
     secondName: "",
+    password: "",
     firstLastName: "",
     secondLastName: "",
+    rol: [],
   };
 
   const [photo, setPhoto] = useState(null);
   const hiddenFileInput = useRef();
 
   const [form, setForm] = useState(initialForm);
+  const [roles, setRoles] = useState([]);
   const handleSubmit = async (event) => {
     event.preventDefault();
-    const formData = new FormData(event.target);
-    formData.append("photo", photo);
-    const data = Object.fromEntries(formData);
+    // const formData = new FormData(event.target);
+    // formData.append("photo", photo);
+    // console.log(form)
+    // const data = Object.fromEntries(formData);
 
-    toast.promise(addUser(data), {
+    toast.promise(addUser(form), {
       loading: {
         title: "Añadiendo...",
         position: "top-right",
@@ -88,6 +94,21 @@ function FormAddUser() {
     setForm({ ...form, [name]: value });
   };
 
+  const handleChangeCheck = ({ rolId, isChecked }) => {
+    setForm((prevForm) => {
+      const exist = prevForm.rol.includes(rolId);
+      const newRol =
+        !exist && isChecked
+          ? [...prevForm.rol, rolId]
+          : prevForm.rol.filter((rol) => rol !== rolId);
+      return { ...prevForm, rol: newRol };
+    });
+  };
+
+  useEffect(() => {
+    console.log(form);
+  }, [form]);
+
   useEffect(() => {
     const fetchUser = async () => {
       if (userId) {
@@ -102,6 +123,11 @@ function FormAddUser() {
         }
       }
     };
+    const loadRoles = async () => {
+      const { data } = await getRoles();
+      setRoles(data);
+    };
+    loadRoles();
 
     fetchUser();
   }, []);
@@ -196,6 +222,22 @@ function FormAddUser() {
                   <FormControl>
                     <InputGroup>
                       <InputLeftElement pointerEvents="none">
+                        <Icon as={FiTag} color="gray.400" />
+                      </InputLeftElement>
+
+                      <Input
+                        type="text"
+                        placeholder="Primer Nombre"
+                        name="firstName"
+                        onChange={handleChange}
+                        value={form.firstName}
+                        variant="flushed"
+                      />
+                    </InputGroup>
+                  </FormControl>
+                  <FormControl>
+                    <InputGroup>
+                      <InputLeftElement pointerEvents="none">
                         <Icon as={FiUser} color="gray.400" />
                       </InputLeftElement>
 
@@ -244,6 +286,36 @@ function FormAddUser() {
                     </InputGroup>
                   </FormControl>
 
+                  <FormControl>
+                    <PasswordInput
+                      name="password"
+                      onChange={handleChange}
+                      value={form.password}
+                      variant="flushed"
+                      placeholder="contraseña"
+                    />
+                  </FormControl>
+
+                  <FormControl mt={6}>
+                    <FormLabel color="gray.600">Roles</FormLabel>
+                    <Stack spacing={5} direction="row">
+                      {roles.map((rol) => (
+                        <Checkbox
+                          key={rol.id}
+                          value={rol.id}
+                          onChange={(e) =>
+                            handleChangeCheck({
+                              rolId: rol.id,
+                              isChecked: e.target.checked,
+                            })
+                          }
+                        >
+                          {rol.rol}
+                        </Checkbox>
+                      ))}
+                    </Stack>
+                  </FormControl>
+
                   <Flex
                     direction={{ base: "column", md: "row" }}
                     alignItems={{ base: "stretch", md: "center" }}
@@ -258,12 +330,12 @@ function FormAddUser() {
                       }}
                       isDisabled={
                         !(
-                          form.ci?.trim() &&
-                          form.username.trim() &&
-                          form.firstName?.trim() &&
-                          form.secondName?.trim() &&
-                          form.firstLastName?.trim() &&
-                          form.secondLastName?.trim()
+                          form.ci.trim() &&
+                          form.firstLastName.trim() &&
+                          form.firstName.trim() &&
+                          form.secondName.trim() &&
+                          form.secondLastName.trim() &&
+                          form.rol.length
                         )
                       }
                     >
