@@ -37,12 +37,11 @@
 
 // export default Resumes;
 
+import React, { useState, useEffect } from "react";
+import { PDFViewer } from "@react-pdf/renderer";
+import PDFDocument from "../components/PDFDocument";
 
-import React, { useState, useEffect } from 'react';
-import { PDFViewer } from '@react-pdf/renderer';
-import PDFDocument from '../components/PDFDocument';
-
-const Resumes = () => {
+function Resumes() {
   const [showPDF, setShowPDF] = useState(false);
 
   useEffect(() => {
@@ -54,31 +53,33 @@ const Resumes = () => {
     <>
       {showPDF && (
         <PDFViewer width="100%" height="500px">
-          <PDFDocument data={{
-    ci: '1104661598',
-    firstName: 'Edgar',
-    secondName: 'Patricio',
-    firstLastName: 'Torres',
-    secondLastName: 'Condolo',
-    bloodType: 'A+',
-    birthDate: '2000-07-05',
-    gender: 'M',
-    civilStatus: 'Soltero',
-    nationality: 'Ecuatoriana',
-    placeBirth: 'Cariamanga',
-    placeResidence: 'Cariamanga',
-    direction: 'Calle Centenario y 18 de Noviembre',
-    homePhone: '(07) 268-8460',
-    cellPhone: '(593) 96-923-6901',
-    personalEmail: 'edgartorrespc8@gmail.com',
-    institutionalEmail: 'ep_torres@marianosamaniego.edu.ec',
-    image: '',
-} }/>
+          <PDFDocument
+            data={{
+              ci: "1104661598",
+              firstName: "Edgar",
+              secondName: "Patricio",
+              firstLastName: "Torres",
+              secondLastName: "Condolo",
+              bloodType: "A+",
+              birthDate: "2000-07-05",
+              gender: "M",
+              civilStatus: "Soltero",
+              nationality: "Ecuatoriana",
+              placeBirth: "Cariamanga",
+              placeResidence: "Cariamanga",
+              direction: "Calle Centenario y 18 de Noviembre",
+              homePhone: "(07) 268-8460",
+              cellPhone: "(593) 96-923-6901",
+              personalEmail: "edgartorrespc8@gmail.com",
+              institutionalEmail: "ep_torres@marianosamaniego.edu.ec",
+              image: "",
+            }}
+          />
         </PDFViewer>
       )}
     </>
   );
-};
+}
 
 export default Resumes;
 
@@ -94,13 +95,6 @@ export default Resumes;
 // };
 
 // export default Resumes;
-
-
-
-
-
-
-
 
 // const navigate = useNavigate();
 // const toast = useToast();
@@ -172,7 +166,7 @@ export default Resumes;
 //       <Stack spacing={4} direction="row" align="center">
 //         <Button
 //           colorScheme="yellow"
-//           onClick={() => navigate(`/editar-usuario/${props.row.original.userId}`)  
+//           onClick={() => navigate(`/editar-usuario/${props.row.original.userId}`)
 //         }
 //         >
 //           Editar
@@ -205,7 +199,8 @@ export default Resumes;
 
 //   fetchUsers();
 // }, [user]);
-   {/* <Box p={10}>
+{
+  /* <Box p={10}>
         <Flex alignItems="center" gap="2">
           <Box p="2">
             <Heading size="md">Curriculos</Heading>
@@ -248,4 +243,5 @@ export default Resumes;
             </AlertDialogContent>
           </AlertDialogOverlay>
         </AlertDialog>
-      </Box> */}
+      </Box> */
+}

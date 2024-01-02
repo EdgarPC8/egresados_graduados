@@ -289,10 +289,10 @@ export const ProfessionalExperience = sequelize.define(
       primaryKey: true,
       autoIncrement: true,
     },
-    nro: {
-      type: DataTypes.STRING(11),
-      defaultValue: null,
-    },
+    // nro: {
+    //   type: DataTypes.STRING(11),
+    //   defaultValue: null,
+    // },
     companyInstitution: {
       type: DataTypes.STRING(50),
       defaultValue: null,

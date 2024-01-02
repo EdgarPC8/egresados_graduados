@@ -21,11 +21,12 @@ import {
   getAllIntellectualProduction,
 } from "../api/cvRequest";
 
-
 import Modal from "../components/AlertDialog";
 import Tabl from "./Table";
+import { useAuth } from "../context/AuthContext";
 
 function FormIntellectualProduction() {
+  const { user } = useAuth();
   const toast = useToast();
 
   const [isEditing, setIsEditing] = useState(false);
@@ -84,11 +85,11 @@ function FormIntellectualProduction() {
           clear();
 
           return {
-          title: "Producción Intelectual",
-          description: d.data.message,
-          isClosable: true,
-        }
-      },
+            title: "Producción Intelectual",
+            description: d.data.message,
+            isClosable: true,
+          };
+        },
         error: (e) => ({
           title: "Error",
           description: e.response.data.message,
@@ -96,31 +97,32 @@ function FormIntellectualProduction() {
         }),
       });
 
-      
-
       return;
     }
 
-    toast.promise(addIntellectualProduction(form), {
-      loading: {
-        title: "Añadiendo...",
-        position: "top-right",
-      },
-      success: (d) => {
-        setDataIntellectualProduction([...dataIntellectualProduction, form]);
+    toast.promise(
+      addIntellectualProduction({ ...form, professsionalId: user.userId }),
+      {
+        loading: {
+          title: "Añadiendo...",
+          position: "top-right",
+        },
+        success: (d) => {
+          setDataIntellectualProduction([...dataIntellectualProduction, form]);
 
-        return {
-          title: "Producción Intelectual",
-          description: d.data.message,
+          return {
+            title: "Producción Intelectual",
+            description: d.data.message,
+            isClosable: true,
+          };
+        },
+        error: (e) => ({
+          title: "Error",
+          description: e.response.data.message,
           isClosable: true,
-        };
-      },
-      error: (e) => ({
-        title: "Error",
-        description: e.response.data.message,
-        isClosable: true,
-      }),
-    });
+        }),
+      }
+    );
 
     clear();
   };

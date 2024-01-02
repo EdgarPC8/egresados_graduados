@@ -11,7 +11,6 @@ import {
   Select,
   Button,
   TableContainer,
-  useToast,
   Table,
   Th,
   Td,
@@ -26,6 +25,7 @@ import {
   AccordionIcon,
   AccordionButton,
   RadioGroup,
+  useToast,
   Stack,
   Radio,
   Flex,
@@ -42,10 +42,11 @@ import {
 import DataTable from "../components/DataTables";
 import Modal from "../components/AlertDialog";
 import Tabl from "./Table";
+import { useAuth } from "../context/AuthContext";
 
 function FormLanguages() {
-
-  const toast = useToast()
+  const { user } = useAuth();
+  const toast = useToast();
   const initialFormLenguages = {
     name: "",
     speakingLevel: "",
@@ -97,6 +98,7 @@ function FormLanguages() {
 
   const handleSubmit = async (event) => {
     event.preventDefault();
+    // setFormLanguage({ ...formLanguage, professionalId: user.userId });
 
     if (isEditing) {
       toast.promise(editLanguages(id, formLanguage), {
@@ -107,13 +109,12 @@ function FormLanguages() {
         success: (d) => {
           fetchData();
           clear();
-
           return {
-          title: "Idiomas",
-          description: d.data.message,
-          isClosable: true,
-        }
-      },
+            title: "Idiomas",
+            description: d.data.message,
+            isClosable: true,
+          };
+        },
         error: (e) => ({
           title: "Error",
           description: e.response.data.message,
@@ -121,30 +122,32 @@ function FormLanguages() {
         }),
       });
 
-      
       return;
     }
 
-    toast.promise(addLanguages(formLanguage), {
-      loading: {
-        title: "Añadiendo...",
-        position: "top-right",
-      },
-      success: (d) => {
-        setDataLanguages([...dataLanguages, formLanguage]);
+    toast.promise(
+      addLanguages({ ...formLanguage, professionalId: user.userId }),
+      {
+        loading: {
+          title: "Añadiendo...",
+          position: "top-right",
+        },
+        success: (d) => {
+          setDataLanguages([...dataLanguages, formLanguage]);
 
-        return {
-          title: "Idiomas",
-          description: d.data.message,
+          return {
+            title: "Idiomas",
+            description: d.data.message,
+            isClosable: true,
+          };
+        },
+        error: (e) => ({
+          title: "Error",
+          description: e.response.data.message,
           isClosable: true,
-        };
-      },
-      error: (e) => ({
-        title: "Error",
-        description: e.response.data.message,
-        isClosable: true,
-      }),
-    });
+        }),
+      }
+    );
 
     clear();
   };
@@ -283,7 +286,7 @@ function FormLanguages() {
                       onChange={handleChangeSpeaking}
                     >
                       <Stack spacing={5} direction="row">
-                        <Radio colorScheme="green" value="">
+                        <Radio colorScheme="green" value="Ninguno">
                           Ninguno
                         </Radio>
                         <Radio colorScheme="green" value="Básico">
@@ -307,7 +310,7 @@ function FormLanguages() {
                       onChange={handleChangeWriting}
                     >
                       <Stack spacing={5} direction="row">
-                        <Radio colorScheme="green" value="">
+                        <Radio colorScheme="green" value="Ninguno">
                           Ninguno
                         </Radio>
                         <Radio colorScheme="green" value="Básico">
@@ -331,7 +334,7 @@ function FormLanguages() {
                       onChange={handleChangeComprehension}
                     >
                       <Stack spacing={5} direction="row">
-                        <Radio colorScheme="green" value="">
+                        <Radio colorScheme="green" value="Ninguno">
                           Ninguno
                         </Radio>
                         <Radio colorScheme="green" value="Básico">

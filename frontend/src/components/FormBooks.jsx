@@ -19,7 +19,7 @@ import {
   useToast,
   AccordionIcon,
   AccordionButton,
-  Stack, 
+  Stack,
 } from "@chakra-ui/react";
 import { useEffect, useState, useRef } from "react";
 import {
@@ -31,7 +31,9 @@ import {
 import DataTable from "../components/DataTables";
 import Modal from "../components/AlertDialog";
 import Tabl from "./Table";
+import { useAuth } from "../context/AuthContext";
 function FormBooks() {
+  const { user } = useAuth();
   const toast = useToast();
   const [dataBooks, setDataBooks] = useState([]);
   const [isEditing, setIsEditing] = useState(false);
@@ -83,11 +85,12 @@ function FormBooks() {
         success: (d) => {
           fetchData();
           clear();
-          return{
-          title: "Libros",
-          description: d.data.message,
-          isClosable: true,
-        }},
+          return {
+            title: "Libros",
+            description: d.data.message,
+            isClosable: true,
+          };
+        },
         error: (e) => ({
           title: "Error",
           description: e.response.data.message,
@@ -95,12 +98,10 @@ function FormBooks() {
         }),
       });
 
-      
-
       return;
     }
 
-    toast.promise(addBooks(formBook), {
+    toast.promise(addBooks({ ...formBook, professionalId: user.userId }), {
       loading: {
         title: "Añadiendo...",
         position: "top-right",
@@ -126,7 +127,6 @@ function FormBooks() {
   const handleEditRow = (row) => {
     form.current.scrollIntoView({ behavior: "smooth", block: "start" });
     const {
-    
       title,
       type,
       typeAuthorship,

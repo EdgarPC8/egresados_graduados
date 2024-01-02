@@ -1,4 +1,3 @@
-import { where } from "sequelize";
 import {
   AcademicTraining,
   TeachingExperience,
@@ -9,6 +8,7 @@ import {
   Languages,
   ProfessionalExperience,
 } from "../Models/CV.js";
+import { getHeaderToken, verifyJWT } from "../libs/jwt.js";
 
 export const addProfessionalExperience = async (req, res) => {
   const data = req.body; // Suponiendo que los datos están en el cuerpo de la solicitud
@@ -21,12 +21,18 @@ export const addProfessionalExperience = async (req, res) => {
   }
   res.json({ message: "Agregado con éxito" });
 };
+
 export const editProfessionalExperience = async (req, res) => {
   const newData = req.body;
   try {
     const updatedProfessionalExperience = await ProfessionalExperience.update(
       newData, // Aquí defines los campos y sus nuevos valores a actualizar
-      req.params.experienceId // Aquí estableces la condición para la actualización
+      {
+        where: {
+          id: req.params.experienceId,
+        },
+      }
+      // Aquí estableces la condición para la actualización
     );
     res.json({ message: "Editado con éxito" });
   } catch (error) {
@@ -35,6 +41,7 @@ export const editProfessionalExperience = async (req, res) => {
     });
   }
 };
+
 export const deleteProfessionalExperience = async (req, res) => {
   const experienceId = req.params.experienceId;
   try {
@@ -50,8 +57,15 @@ export const deleteProfessionalExperience = async (req, res) => {
     });
   }
 };
+
 export const getAllProfessionalExperience = async (req, res) => {
-  const professionals = await ProfessionalExperience.findAll();
+  const token = getHeaderToken(req);
+  const user = await verifyJWT(token);
+  const professionals = await ProfessionalExperience.findAll({
+    where: {
+      professionalId: user.userId,
+    },
+  });
   res.json(professionals);
 };
 
@@ -66,6 +80,7 @@ export const addLanguages = async (req, res) => {
   }
   res.json({ message: "Agregado con éxito" });
 };
+
 export const editLanguages = async (req, res) => {
   const newData = req.body; // Suponiendo que los datos están en el cuerpo de la solicitud
   try {
@@ -85,6 +100,7 @@ export const editLanguages = async (req, res) => {
     });
   }
 };
+
 export const deleteLanguages = async (req, res) => {
   const languageId = req.params.languageId;
   try {
@@ -100,8 +116,16 @@ export const deleteLanguages = async (req, res) => {
     });
   }
 };
+
 export const getAllLanguages = async (req, res) => {
-  const professionals = await Languages.findAll();
+  const token = getHeaderToken(req);
+  const user = await verifyJWT(token);
+
+  const professionals = await Languages.findAll({
+    where: {
+      professionalId: user.userId,
+    },
+  });
   res.json(professionals);
 };
 
@@ -116,6 +140,7 @@ export const addAcademicProfessionalMerits = async (req, res) => {
   }
   res.json({ message: "Agregado con éxito" });
 };
+
 export const editAcademicProfessionalMerits = async (req, res) => {
   const newData = req.body; // Suponiendo que los datos están en el cuerpo de la solicitud
   try {
@@ -124,10 +149,10 @@ export const editAcademicProfessionalMerits = async (req, res) => {
         newData, // Aquí defines los campos y sus nuevos valores a actualizar
         {
           where: {
-            id: req.params.meritId
-          }
+            id: req.params.meritId,
+          },
         }
-         // Aquí estableces la condición para la actualización
+        // Aquí estableces la condición para la actualización
       );
     res.json({ message: "Editado con éxito" });
   } catch (error) {
@@ -136,6 +161,7 @@ export const editAcademicProfessionalMerits = async (req, res) => {
     });
   }
 };
+
 export const deleteAcademicProfessionalMerits = async (req, res) => {
   const meritId = req.params.meritId;
   try {
@@ -152,8 +178,16 @@ export const deleteAcademicProfessionalMerits = async (req, res) => {
     });
   }
 };
+
 export const getAllAcademicProfessionalMerits = async (req, res) => {
-  const professionals = await AcademicProfessionalMerits.findAll();
+  const token = getHeaderToken(req);
+  const user = await verifyJWT(token);
+
+  const professionals = await AcademicProfessionalMerits.findAll({
+    where: {
+      professionalId: user.userId,
+    },
+  });
   res.json(professionals);
 };
 
@@ -168,6 +202,7 @@ export const addAcademicTraining = async (req, res) => {
   }
   res.json({ message: "Agregado con éxito" });
 };
+
 export const editAcademicTraining = async (req, res) => {
   const newData = req.body; // Suponiendo que los datos están en el cuerpo de la solicitud
   try {
@@ -182,6 +217,7 @@ export const editAcademicTraining = async (req, res) => {
     });
   }
 };
+
 export const deleteAcademicTraining = async (req, res) => {
   try {
     const updatedAcademicTraining = await AcademicTraining.destroy({
@@ -196,8 +232,13 @@ export const deleteAcademicTraining = async (req, res) => {
     });
   }
 };
+
 export const getAllAcademicTraining = async (req, res) => {
-  const professionals = await AcademicTraining.findAll();
+  const token = getHeaderToken(req);
+  const user = await verifyJWT(token);
+  const professionals = await AcademicTraining.findAll({
+    where: { professionalId: user.userId },
+  });
   res.json(professionals);
 };
 
@@ -212,6 +253,7 @@ export const addTeachingExperience = async (req, res) => {
   }
   res.json({ message: "Agregado con éxito" });
 };
+
 export const editTeachingExperience = async (req, res) => {
   const newData = req.body; // Suponiendo que los datos están en el cuerpo de la solicitud
   const id = req.params.teachingId; // Suponiendo que los datos están en el cuerpo de la solicitud
@@ -227,6 +269,7 @@ export const editTeachingExperience = async (req, res) => {
     });
   }
 };
+
 export const deleteTeachingExperience = async (req, res) => {
   const teachingId = req.params.teachingId;
   try {
@@ -242,8 +285,15 @@ export const deleteTeachingExperience = async (req, res) => {
     });
   }
 };
+
 export const getAllTeachingExperience = async (req, res) => {
-  const professionals = await TeachingExperience.findAll();
+  const token = getHeaderToken(req);
+  const user = await verifyJWT(token);
+  const professionals = await TeachingExperience.findAll({
+    where: {
+      professionalId: user.userId,
+    },
+  });
   res.json(professionals);
 };
 
@@ -258,6 +308,7 @@ export const addCoursesWorkshops = async (req, res) => {
     });
   }
 };
+
 export const editCoursesWorkshops = async (req, res) => {
   const newData = req.body;
   try {
@@ -276,6 +327,7 @@ export const editCoursesWorkshops = async (req, res) => {
     });
   }
 };
+
 export const deleteCoursesWorkshops = async (req, res) => {
   try {
     const updatedCoursesWorkshops = await CoursesWorkshops.destroy({
@@ -290,9 +342,16 @@ export const deleteCoursesWorkshops = async (req, res) => {
     });
   }
 };
+
 export const getAllCoursesWorkshops = async (req, res) => {
   try {
-    const professionals = await CoursesWorkshops.findAll();
+    const token = getHeaderToken(req);
+    const user = await verifyJWT(token);
+    const professionals = await CoursesWorkshops.findAll({
+      where: {
+        professionalId: user.userId,
+      },
+    });
     res.json(professionals);
   } catch (error) {
     res.status(500).json({
@@ -312,6 +371,7 @@ export const addIntellectualProduction = async (req, res) => {
     });
   }
 };
+
 export const editIntellectualProduction = async (req, res) => {
   const newData = req.body; // Suponiendo que los datos están en el cuerpo de la solicitud
   try {
@@ -331,6 +391,7 @@ export const editIntellectualProduction = async (req, res) => {
     });
   }
 };
+
 export const deleteIntellectualProduction = async (req, res) => {
   try {
     const deleteIntellectualProduction = await IntellectualProduction.destroy({
@@ -345,9 +406,16 @@ export const deleteIntellectualProduction = async (req, res) => {
     });
   }
 };
+
 export const getAllIntellectualProduction = async (req, res) => {
   try {
-    const professionals = await IntellectualProduction.findAll();
+    const token = getHeaderToken(req);
+    const user = await verifyJWT(token);
+    const professionals = await IntellectualProduction.findAll({
+      where: {
+        professionalId: user.userId,
+      },
+    });
     res.json(professionals);
   } catch (error) {
     res.status(500).json({
@@ -367,6 +435,7 @@ export const addBooks = async (req, res) => {
     });
   }
 };
+
 export const editBooks = async (req, res) => {
   const newData = req.body; // Suponiendo que los datos están en el cuerpo de la solicitud
   try {
@@ -374,8 +443,8 @@ export const editBooks = async (req, res) => {
       newData, // Aquí defines los campos y sus nuevos valores a actualizar
       {
         where: {
-          id: req.params.bookId
-        }
+          id: req.params.bookId,
+        },
       } // Aquí estableces la condición para la actualización
     );
     res.json({ message: "Editado con éxito" });
@@ -385,6 +454,8 @@ export const editBooks = async (req, res) => {
     });
   }
 };
+
+
 export const deleteBooks = async (req, res) => {
   const bookId = req.params.bookId;
   try {
@@ -400,7 +471,14 @@ export const deleteBooks = async (req, res) => {
     });
   }
 };
+
 export const getAllBooks = async (req, res) => {
-  const professionals = await Books.findAll();
+  const token = getHeaderToken(req);
+  const user = await verifyJWT(token);
+  const professionals = await Books.findAll({
+    where: {
+      professionalId: user.userId,
+    },
+  });
   res.json(professionals);
 };

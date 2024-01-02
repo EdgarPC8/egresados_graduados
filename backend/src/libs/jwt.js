@@ -14,5 +14,17 @@ function createAccessToken({ payload }) {
   });
 }
 
+function getHeaderToken(req) {
+  return req.headers["authorization"].split(" ")[1];
+}
 
-export { createAccessToken };
+function verifyJWT(token) {
+  return new Promise((resolve, reject) => {
+    jwt.verify(token, "privateKey", (err, token) => {
+      if (err) reject(err);
+      resolve(token);
+    });
+  });
+}
+
+export { createAccessToken, getHeaderToken, verifyJWT };

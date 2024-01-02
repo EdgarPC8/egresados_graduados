@@ -8,6 +8,7 @@ import linguiGeoRoutes from "./src/routes/linguisticsGeographyRoutes.js";
 import cors from "cors";
 import userRoutes from "./src/routes/userRoutes.js";
 import registerRoutes from "./src/routes/registerRoutes.js";
+import logRoutes from "./src/routes/logRoutes.js";
 import { sequelize } from "./src/database/connection.js";
 import { insertData } from "./src/database/insertData.js";
 
@@ -21,8 +22,6 @@ const allowedOrigins = [
   "http://localhost",
   "http://localhost:8888",
   "http://localhost:5173",
-  "http://192.168.137.250:5173",
-  "http://192.169.100.250:5173",
 ];
 
 const corsOptions = {
@@ -44,7 +43,6 @@ app.use(express.json());
 
 app.use("/photos", express.static("userPhotos"));
 
-
 app.use("/api/auth", authRoutes);
 app.use("/api/professionals", professionalsRoutes);
 app.use("/api/cv", cvRoutes);
@@ -53,7 +51,7 @@ app.use("/api/linguiGeo", linguiGeoRoutes);
 app.use("/api/users", userRoutes);
 app.use("/api/charts", chartsRoutes);
 app.use("/api/register", registerRoutes);
-
+app.use("/api/logs", logRoutes);
 
 async function main() {
   try {

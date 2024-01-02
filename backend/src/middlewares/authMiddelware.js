@@ -9,7 +9,7 @@ const isAuthenticated = (req, res, next) => {
 
     jwt.verify(token, "privateKey", (err, user) => {
       if (err) return res.status(403).json({ message: "Invalid token" });
-      console.log(user);
+      // console.log(user);
       next();
     });
   } catch (error) {

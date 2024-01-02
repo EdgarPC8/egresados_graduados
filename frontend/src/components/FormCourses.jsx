@@ -26,9 +26,11 @@ import {
 import DataTable from "../components/DataTables";
 import Modal from "../components/AlertDialog";
 import Tabl from "./Table";
+import { useAuth } from "../context/AuthContext";
 
 function FormCourses() {
-  const toast = useToast()
+  const { user } = useAuth();
+  const toast = useToast();
   const initialFormCourses = {
     startDate: "",
     endDate: "",
@@ -78,7 +80,7 @@ function FormCourses() {
             title: "Cursos",
             description: d.data.message,
             isClosable: true,
-          }
+          };
         },
         error: (e) => ({
           title: "Error",
@@ -87,30 +89,31 @@ function FormCourses() {
         }),
       });
 
-      
-
       return;
     }
 
-    toast.promise(addCoursesWorkshops(formCourse), {
-      loading: {
-        title: "Añadiendo...",
-        position: "top-right",
-      },
-      success: (d) => {
-        setDatasCoursesWorkshops([...dataCourseWorkShops, formCourse]);
-        return {
-          title: "Cursos",
-          description: d.data.message,
+    toast.promise(
+      addCoursesWorkshops({ ...formCourse, professionalId: user.userId }),
+      {
+        loading: {
+          title: "Añadiendo...",
+          position: "top-right",
+        },
+        success: (d) => {
+          setDatasCoursesWorkshops([...dataCourseWorkShops, formCourse]);
+          return {
+            title: "Cursos",
+            description: d.data.message,
+            isClosable: true,
+          };
+        },
+        error: (e) => ({
+          title: "Error",
+          description: e.response.data.message,
           isClosable: true,
-        };
-      },
-      error: (e) => ({
-        title: "Error",
-        description: e.response.data.message,
-        isClosable: true,
-      }),
-    });
+        }),
+      }
+    );
     clear();
   };
 
@@ -151,12 +154,10 @@ function FormCourses() {
     setId(row.id);
   };
 
-
   const handleChangeTypeParticiopation = (value) => {
-    setFormCourse({...formCourse, typeParticipation:value })
-    
-  }
-  
+    setFormCourse({ ...formCourse, typeParticipation: value });
+  };
+
   const handleAcceptDelete = async () => {
     try {
       const { data } = await deleteCoursesWorkshops(id);

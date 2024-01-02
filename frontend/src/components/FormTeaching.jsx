@@ -28,7 +28,7 @@ import {
   editTeachingExperience,
   deleteTeachingExperience,
 } from "../api/cvRequest";
-import DataTable from "../components/DataTables";
+
 import Modal from "../components/AlertDialog";
 import Tabl from "./Table";
 
@@ -84,7 +84,7 @@ function FormTeaching() {
             title: "Experiencia docente",
             description: d.data.message,
             isClosable: true,
-         }
+          };
         },
         error: (e) => ({
           title: "Error",
@@ -92,32 +92,34 @@ function FormTeaching() {
           isClosable: true,
         }),
       });
-      
+
       return;
     }
 
-    console.log(formTeaching)
+    console.log(formTeaching);
 
-    toast.promise(addTeachingExperience(formTeaching), {
-      loading: {
-        title: "Añadiendo...",
-        position: "top-right",
-      },
-      success: (d) => {
-        setDataTeachingExperience([...dataTeachingExperience, formTeaching]);
-        return {
-          title: "Experiencia docente",
-          description: d.data.message,
+    toast.promise(
+      addTeachingExperience({ ...formTeaching, professionalId: user.userId }),
+      {
+        loading: {
+          title: "Añadiendo...",
+          position: "top-right",
+        },
+        success: (d) => {
+          setDataTeachingExperience([...dataTeachingExperience, formTeaching]);
+          return {
+            title: "Experiencia docente",
+            description: d.data.message,
+            isClosable: true,
+          };
+        },
+        error: (e) => ({
+          title: "Error",
+          description: e.response.data.message,
           isClosable: true,
-        };
-      },
-      error: (e) => ({
-        title: "Error",
-        description: e.response.data.message,
-        isClosable: true,
-      }),
-    });
-
+        }),
+      }
+    );
   };
 
   const handleChange = (event) => {
