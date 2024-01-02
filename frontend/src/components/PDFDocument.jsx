@@ -63,29 +63,32 @@ const styles = StyleSheet.create({
     table: {
         width: '100%',
         marginBottom: 10,
+        borderTop: 1,
+        borderRight: 1,
+        borderColor: '#000',
     },
     tableRow: {
         flexDirection: 'row',
+        borderBottomWidth: 1,
+        borderColor: '#000',
+
     },
     tableColTh: {
         fontSize: 10,
         flex: 1,
         padding: 5,
-        borderWidth: 1,
-        borderColor: '#000',
-        borderStyle: 'solid',
         textAlign: 'center',
         backgroundColor: '#f2f2f2', // Color de fondo para los encabezados
-        fontWeight: 700, // Aplicar negrita de manera más explícita
+        borderLeftWidth: 1,
+        borderColor: '#000',
     },
     tableColTd: {
         fontSize: 10,
         flex: 1,
         padding: 5,
-        borderWidth: 1,
-        borderColor: '#000',
-        borderStyle: 'solid',
         textAlign: 'center',
+        borderLeftWidth: 1,
+        borderColor: '#000',
     },
 });
 
@@ -125,11 +128,11 @@ const PDFDocument = ({ data }) => {
     }
     const ExperienciaDocente = {
         header: [
-            { width: '50%', title: 'Institución'},
+            { width: '50%', title: 'Institución' },
             { width: '50%', title: 'Materia' },
-            { width: '50%', title: 'Fecha Inicio'},
-            { width: '50%', title: 'Fecha Fin'},
-            { width: '50%', title: 'Modalidad'},
+            { width: '50%', title: 'Fecha Inicio' },
+            { width: '50%', title: 'Fecha Fin' },
+            { width: '50%', title: 'Modalidad' },
             { width: '50%', title: 'Lugar' },
             { width: '50%', title: 'País' },
         ],
@@ -139,46 +142,232 @@ const PDFDocument = ({ data }) => {
     }
     const Cursos = {
         header: [
-            { width: '50%', title: 'Tipo'},
+            { width: '50%', title: 'Tipos' },
             { width: '50%', title: 'Nombre' },
-            { width: '50%', title: 'Organizado Por:'},
-            { width: '50%', title: 'Lugar'},
-            { width: '50%', title: 'Duracion(Horas)'},
-            { width: '50%', title: 'Fecha Inicio' },
-            { width: '50%', title: 'Fecha Fin' },
-            { width: '50%', title: 'Tipo de Participación'},
+            { width: '50%', title: 'Organizado por:' },
+            { width: '50%', title: 'Lugar' },
+            { width: '30%', title: 'Duracion (Horas)' },
+            {
+                width: '80%', row: [
+                    { col: [{ title: 'Fechas de Realización' }] },
+                    {
+                        col: [
+                            { title: 'Fecha Inicio' }, { title: 'Fecha Fin' }
+                        ]
+                    }
+                ]
+            },
+
+            { width: '40%', title: 'Tipo de Participación' },
         ],
         values: [
-            { 0: "dedede", 1: "Todededrres", 2: "deded", 3: "bng", 4: "gfhfgh", 5: "fghfgh", 6: "hgfhfgh",7:'DEDED'},
+            { 0: "wqwqw", 1: "Todededrres", 2: "deded", 3: "bng", 4: "gfhfgh", 5: "05-07-2000", 6: "05-07-2000", 7: 'DEDED' },
+        ],
+        valuesPorcentajes: [
+            "50%",
+            "50%",
+            "50%",
+            "50%",
+            "30%",
+            "40%",
+            "40%",
+            "40%",
+        ],
+    };
+    const ProduccionIntelectual = {
+        header: [
+            { width: '50%', title: 'Tipo' },
+            { width: '50%', title: 'Nombre/Titulo' },
+            { width: '50%', title: 'Tipo de Autoria' },
+            { width: '50%', title: 'Fecha' },
+            { width: '50%', title: 'Enlace Web' },
+        ],
+        values: [
+            { 0: "dedede", 1: "Todededrres", 2: "deded", 3: "bng", 4: "gfhfgh"},
+        ],
+    }
+    const Libros = {
+        header: [
+            { width: '50%', title: 'Titulo' },
+            { width: '50%', title: 'Tipo' },
+            { width: '50%', title: 'Tipo de Autoria' },
+            { width: '50%', title: 'ISB N' },
+            {
+                width: '80%', row: [
+                    { col: [{ title: 'Editorial' }] },
+                    {
+                        col: [
+                            { title: 'Nombre' }, { title: 'Origen' }
+                        ]
+                    }
+                ]
+            },
+            { width: '50%', title: 'Año' },
+        ],
+        values: [
+            { 0: "dedede", 1: "Todededrres", 2: "deded", 3: "bng", 4: "gfhfgh", 5: "gfhfgh", 6: "gfhfgh"},
+        ],
+        valuesPorcentajes: [
+            "50%",
+            "50%",
+            "50%",
+            "50%",
+            "40%",
+            "40%",
+            "50%",
+        ],
+    }
+    const MeritosAcademicos = {
+        header: [
+            { width: '50%', title: 'Nombre' },
+            { width: '50%', title: 'Fecha' },
+            { width: '50%', title: 'Tipo' },
+            { width: '50%', title: 'Otorgado por' },
+            { width: '50%', title: 'Pais' },
+            { width: '50%', title: 'Lugar' },
+        ],
+        values: [
+            { 0: "dedede", 1: "Todededrres", 2: "deded", 3: "bng", 4: "gfhfgh", 5: "gfhfgh"},
+        ],
+    }
+    const Idiomas = {
+        header: [
+            { width: '30%', title: 'Idioma' },
+            {
+                width: '90%', row: [
+                    { col: [{ title: 'Nivel de dominio' }] },
+                    {
+                        col: [
+                            { title: 'Hablado' }, { title: 'Escritura' },{ title: 'Comprensión' }
+                        ]
+                    }
+                ]
+            },
+            { width: '50%', title: 'Tipo de Certificación' },
+           
+        ],
+        values: [
+            { 0: "dedede", 1: "Medio", 2: "Alto", 3: "Alto", 4: "gfhfgh"},
+        ],
+        valuesPorcentajes: [
+            "30%",
+            "30%",
+            "30%",
+            "30%",
+            "50%",
+        ],
+    }
+    const ExperienciaProfesional = {
+        header: [
+            { width: '50%', title: 'Empresa/Institución' },
+            { width: '50%', title: 'Cargo' },
+            { width: '50%', title: 'Responsabilidades y/o Actividades' },
+            { width: '50%', title: 'Jefe Inmediato' },
+            { width: '50%', title: 'Teléfono' },
+            { width: '50%', title: 'Fecha Inicio' },
+            { width: '50%', title: 'Fecha Fin' },
+        ],
+        values: [
+            { 0: "dedede", 1: "Todededrres", 2: "deded", 3: "bng", 4: "gfhfgh", 5: "gfhfgh", 6: "gfhfgh"},
         ],
     }
     const renderTable = (Table) => {
         const calcColumnWidth = (widthPercentage) => {
             return { flexBasis: widthPercentage };
         };
+    
+        const getCellContent = (rowIndex, colIndex) => {
+            const cellData = Table.values[rowIndex][colIndex];
+            return <Text>{cellData}</Text>;
+        };
+    
+        const numRows = Table.header.reduce((acc, col) => (col.row ? Math.max(acc, col.row.length) : acc), 0);
+    
+        const getPorcentaje = (colIndex, colCount) => {
+            const totalColumns = colCount || 1;
+            return Table.valuesPorcentajes && Table.valuesPorcentajes[colIndex]
+                ? Table.valuesPorcentajes[colIndex]
+                : (100 / totalColumns).toString() + '%';
+        };
+    
         return (
             <View style={styles.table}>
                 <View style={styles.tableRow}>
-                    {/* Encabezado */}
                     {Table.header.map((col, colIndex) => (
-                        <View style={{ ...styles.tableColTh, ...calcColumnWidth(col.width) }} key={colIndex}>
-                            <Text>{col.title}</Text>
-                        </View>
+                        col.row ? (
+                            <View
+                                style={{
+                                    ...styles.tableColTh,
+                                    ...calcColumnWidth(col.width),
+                                    padding: 0
+                                }}
+                                key={colIndex}
+                            >
+                                {col.row.map((rowObj, rowIndex) => (
+                                    <View
+                                        style={{
+                                            ...styles.tableRow,
+                                            borderBottomWidth: rowIndex === numRows - 1 ? 0 : 1, // Última fila sin borde inferior
+                                        }}
+                                        key={rowIndex}
+                                    >
+                                        {rowObj.col.map((column, columnIndex) => (
+                                            <View
+                                                style={{
+                                                    ...styles.tableColTd,
+                                                    ...calcColumnWidth(getPorcentaje(columnIndex, rowObj.col.length)),
+                                                    borderLeftWidth: columnIndex === 0 ? 0 : 1, // Primer columna sin borde izquierdo
+                                                }}
+                                                key={columnIndex}
+                                            >
+                                                {column.title && (
+                                                    <Text>
+                                                        {column.title}
+                                                    </Text>
+                                                )}
+                                            </View>
+                                        ))}
+                                    </View>
+                                ))}
+                            </View>
+                        ) : (
+                            <View
+                                style={{
+                                    ...styles.tableColTh,
+                                    ...calcColumnWidth(col.width),
+                                }}
+                                key={colIndex}
+                            >
+                                <Text>
+                                    {col.title}
+                                </Text>
+                            </View>
+                        )
                     ))}
                 </View>
-                {/* Datos */}
+    
                 {Table.values.map((row, rowIndex) => (
                     <View style={styles.tableRow} key={rowIndex}>
-                        {Object.keys(row).map((key, colIndex) => (
-                            <View style={{ ...styles.tableColTd, ...calcColumnWidth(Table.header[colIndex].width) }} key={colIndex}>
-                                <Text>{row[key]}</Text>
-                            </View>
-                        ))}
+                        {Object.keys(row).map((key, colIndex) => {
+                            const width = getPorcentaje(colIndex, Object.keys(row).length);
+                            return (
+                                <View
+                                    style={{
+                                        ...styles.tableColTd,
+                                        ...calcColumnWidth(width),
+                                    }}
+                                    key={colIndex}
+                                >
+                                    {getCellContent(rowIndex, colIndex)}
+                                </View>
+                            );
+                        })}
                     </View>
                 ))}
             </View>
         );
     };
+    
     const renderPersonalData = () => {
         return (
             personalInfo.map((info, index) => (
@@ -218,10 +407,30 @@ const PDFDocument = ({ data }) => {
                 <View style={styles.section}>
                     <Text style={styles.subTitle}>Experiencia Docente</Text>
                     {renderTable(ExperienciaDocente)}
-                </View> */}
+                </View>
                 <View style={styles.section}>
                     <Text style={styles.subTitle}>CURSOS, TALLERES, SEMINARIOS, CONGRESOS Y /U OTROS</Text>
                     {renderTable(Cursos)}
+                </View> */}
+                <View style={styles.section}>
+                    <Text style={styles.subTitle}>Produccion Intelectual</Text>
+                    {renderTable(ProduccionIntelectual)}
+                </View>
+                <View style={styles.section}>
+                    <Text style={styles.subTitle}>Libros</Text>
+                    {renderTable(Libros)}
+                </View>
+                <View style={styles.section}>
+                    <Text style={styles.subTitle}>Meritos Academicos</Text>
+                    {renderTable(MeritosAcademicos)}
+                </View>
+                <View style={styles.section}>
+                    <Text style={styles.subTitle}>Idiomas</Text>
+                    {renderTable(Idiomas)}
+                </View>
+                <View style={styles.section}>
+                    <Text style={styles.subTitle}>Experiencia Profesional</Text>
+                    {renderTable(ExperienciaProfesional)}
                 </View>
             </Page>
         </Document>
@@ -229,6 +438,3 @@ const PDFDocument = ({ data }) => {
 };
 
 export default PDFDocument;
-
-
-
