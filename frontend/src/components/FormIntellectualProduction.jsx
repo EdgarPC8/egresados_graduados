@@ -101,7 +101,7 @@ function FormIntellectualProduction() {
     }
 
     toast.promise(
-      addIntellectualProduction({ ...form, professsionalId: user.userId }),
+      addIntellectualProduction({ ...form, professionalId: user.userId }),
       {
         loading: {
           title: "Añadiendo...",

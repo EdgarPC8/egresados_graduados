@@ -1,5 +1,7 @@
 import React from 'react';
-import { PDFViewer, Document, Page, Text, View, StyleSheet } from '@react-pdf/renderer';
+import { PDFViewer, Document, Page, Text, View, StyleSheet,Image } from '@react-pdf/renderer';
+import { urlPhotos } from "../api/axios";
+
 
 const styles = StyleSheet.create({
     row: {
@@ -33,7 +35,7 @@ const styles = StyleSheet.create({
         textAlign: 'center',
     },
     subTitle: {
-        fontSize: 10,
+        fontSize: 14,
         fontWeight: 'bold',
         marginBottom: 5,
     },
@@ -54,12 +56,8 @@ const styles = StyleSheet.create({
     photo: {
         width: 100,
         height: 100,
-        borderRadius: 50,
-        backgroundColor: 'lightgray',
-        justifyContent: 'center',
-        alignItems: 'center',
-        overflow: 'hidden',
-    },
+        marginTop:20,
+      },
     table: {
         width: '100%',
         marginBottom: 10,
@@ -92,7 +90,10 @@ const styles = StyleSheet.create({
     },
 });
 
-const PDFDocument = ({ data }) => {
+const PDFDocument = ({ data,cv }) => {
+
+
+    const imageURL = `${urlPhotos}/${data.image}`;
     const personalInfo = [
         { label: 'Cedula', value: data.ci },
         { label: 'Primer Apellido', value: data.firstName },
@@ -112,6 +113,7 @@ const PDFDocument = ({ data }) => {
         { label: 'Correo Institucional', value: data.institutionalEmail },
         { label: 'Correo Personal', value: data.personalEmail },
     ];
+
     const FormacionAcademica = {
         header: [
             { width: '50%', title: 'Tipo' },
@@ -268,16 +270,18 @@ const PDFDocument = ({ data }) => {
             { width: '50%', title: 'Fecha Fin' },
         ],
         values: [
-            { 0: "dedede", 1: "Todededrres", 2: "deded", 3: "bng", 4: "gfhfgh", 5: "gfhfgh", 6: "gfhfgh"},
+            { uno: "dedede", dos: "Todededrres", tres: "deded", cuatro: "bng", cinco: "gfhfgh", seis: "gfhfgh", siete: "gfhfgh"},
         ],
     }
+
+
     const renderTable = (Table) => {
         const calcColumnWidth = (widthPercentage) => {
             return { flexBasis: widthPercentage };
         };
     
-        const getCellContent = (rowIndex, colIndex) => {
-            const cellData = Table.values[rowIndex][colIndex];
+        const getCellContent = (rowIndex, colKey) => {
+            const cellData = Table.values[rowIndex][colKey];
             return <Text>{cellData}</Text>;
         };
     
@@ -380,60 +384,41 @@ const PDFDocument = ({ data }) => {
             ))
         );
     };
-
-
     return (
         <Document>
-            <Page size="A4" style={styles.page}>
-                <Text style={styles.titleInstitution}>INSTITUTO SUPERIOR TECNOLÓGICO "MARIANO SAMANIEGO"</Text>
-                {/* <View style={styles.section}>
-                    <Text style={styles.heading}>HOJA DE VIDA</Text>
-                    <View style={styles.row}>
-                        <View style={styles.Infocol}>
-                            <Text style={styles.subTitle}>Datos Personales</Text>
-                            {renderPersonalData()}
-                        </View>
-                        <View style={styles.photoCol}>
-                            <Text style={styles.subTitle}>Foto</Text>
-                            <View style={styles.photo}>
-                            </View>
-                        </View>
+        <Page size="A4" style={styles.page}>
+            <Text style={styles.titleInstitution}>INSTITUTO SUPERIOR TECNOLÓGICO "MARIANO SAMANIEGO"</Text>
+            <View style={styles.section}>
+                <Text style={styles.heading}>HOJA DE VIDA</Text>
+                <View style={styles.row}>
+                    <View style={styles.Infocol}>
+                        <Text style={styles.subTitle}>Datos Personales</Text>
+                        {renderPersonalData()}
+                    </View>
+                    {/* <View style={styles.photoCol}>
+                        <Text style={styles.subTitle}>Foto</Text>
+                        <View style={styles.photo}></View>
+                    </View> */}
+                    <View style={styles.photoCol}>
+                    <Image src={imageURL} style={styles.photo} />
                     </View>
                 </View>
-                <View style={styles.section}>
-                    <Text style={styles.subTitle}>Formacion Academica</Text>
-                    {renderTable(FormacionAcademica)}
-                </View>
-                <View style={styles.section}>
-                    <Text style={styles.subTitle}>Experiencia Docente</Text>
-                    {renderTable(ExperienciaDocente)}
-                </View>
-                <View style={styles.section}>
-                    <Text style={styles.subTitle}>CURSOS, TALLERES, SEMINARIOS, CONGRESOS Y /U OTROS</Text>
-                    {renderTable(Cursos)}
-                </View> */}
-                <View style={styles.section}>
-                    <Text style={styles.subTitle}>Produccion Intelectual</Text>
-                    {renderTable(ProduccionIntelectual)}
-                </View>
-                <View style={styles.section}>
-                    <Text style={styles.subTitle}>Libros</Text>
-                    {renderTable(Libros)}
-                </View>
-                <View style={styles.section}>
-                    <Text style={styles.subTitle}>Meritos Academicos</Text>
-                    {renderTable(MeritosAcademicos)}
-                </View>
-                <View style={styles.section}>
-                    <Text style={styles.subTitle}>Idiomas</Text>
-                    {renderTable(Idiomas)}
-                </View>
-                <View style={styles.section}>
-                    <Text style={styles.subTitle}>Experiencia Profesional</Text>
-                    {renderTable(ExperienciaProfesional)}
-                </View>
-            </Page>
-        </Document>
+            </View>
+
+            {Object.entries(cv).map(([section, data]) => {
+                const { values, title = '' } = data;
+                if (values && values.length > 0) {
+                    return (
+                        <View style={styles.section} key={section}>
+                            <Text style={styles.subTitle}>{title}</Text>
+                            {renderTable(data)}
+                        </View>
+                    );
+                }
+                return null;
+            })}
+        </Page>
+    </Document>
     );
 };
 

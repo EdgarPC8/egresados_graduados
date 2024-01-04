@@ -271,10 +271,10 @@ function ProfessionalForm() {
                   }
                   onChange={handleChange}
                 >
-                  <option value="option1">Soltero</option>
-                  <option value="option2">Viudo</option>
-                  <option value="option3">Casado</option>
-                  <option value="option3">Divorciado</option>
+                  <option value="Soltero">Soltero</option>
+                  <option value="Viudo">Viudo</option>
+                  <option value="Casado">Casado</option>
+                  <option value="Divorciado">Divorciado</option>
                 </Select>
               </InputGroup>
             </GridItem>
