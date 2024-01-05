@@ -16,12 +16,10 @@ import {
   getAllIntellectualProduction,
   getAllCoursesWorkshops,
   getAllTeachingExperience,
+  getProfessionalExperienceById,
 } from "../api/cvRequest";
 function Resumes() {
   const [showPDF, setShowPDF] = useState(false);
-  const form = useRef(null);
-  const [isEditing, setIsEditing] = useState(false);
-  const [id, setId] = useState(0);
 
   let initialFormProfessional = {
     ci: "",
@@ -156,7 +154,7 @@ function Resumes() {
   return (
     <>
       {showPDF && (
-        <PDFViewer width="100%" height="500px">
+        <PDFViewer width="100%" height="600px">
           <PDFDocument
             data={formProfessional}
             cv={{

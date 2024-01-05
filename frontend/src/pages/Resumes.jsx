@@ -99,7 +99,7 @@ function Resumes() {
 
       cell: (props) => (
         <Stack spacing={4} direction="row" align="center">
-            <Link to="/cvPdf" target="_blank">
+            <Link to="/cvProfessionalPdf" target="_blank">
 
           <Button
             colorScheme="red"
