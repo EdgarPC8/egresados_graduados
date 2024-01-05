@@ -34,16 +34,28 @@ function App() {
 
             <Route path="/register" element={<RegisterPage />} />
 
-            <Route element={<ProtectedRoute />}>
+            <Route
+              element={
+                <ProtectedRoute
+                  requiredRol={["profesional", "administrador"]}
+                />
+              }
+            >
               <Route path="/cv" element={<CV />} />
-              <Route path="/actividad" element={<Logger />} />
+
               <Route path="/quiz" element={<Quiz />} />
               <Route path="/perfil" element={<Profile />} />
+
+              <Route path="/charts" element={<Charts />} />
+              <Route path="/curriculos" element={<Resumes />} />
+            </Route>
+
+            
+            <Route element={<ProtectedRoute requiredRol={["administrador"]} />}>
+              <Route path="/actividad" element={<Logger />} />
               <Route path="/usuarios" element={<UserTable />} />
               <Route path="/agregar-usuario" element={<FormAddUser />} />
               <Route path="/editar-usuario/:userId" element={<FormAddUser />} />
-              <Route path="/charts" element={<Charts />} />
-              <Route path="/curriculos" element={<Resumes />} />
             </Route>
           </Routes>
         </BrowserRouter>

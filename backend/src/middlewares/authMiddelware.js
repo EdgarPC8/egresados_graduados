@@ -1,17 +1,17 @@
-import jwt from "jsonwebtoken";
+import { getHeaderToken, verifyJWT } from "../libs/jwt.js";
 
-const isAuthenticated = (req, res, next) => {
+const isAuthenticated = async (req, res, next) => {
   try {
-    const token = req.headers["authorization"].split(" ")[1];
+    const authorizationHeader = req.headers["authorization"];
 
-    if (!token)
+    if (!authorizationHeader)
       return res.status(401).json({ message: "No token, unauthorized" });
 
-    jwt.verify(token, "privateKey", (err, user) => {
-      if (err) return res.status(403).json({ message: "Invalid token" });
-      // console.log(user);
-      next();
-    });
+    const token = getHeaderToken(req);
+
+    const verify = await verifyJWT(token);
+
+    next();
   } catch (error) {
     return res.status(500).json({
       message: error.message,
