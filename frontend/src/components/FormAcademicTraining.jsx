@@ -30,15 +30,7 @@ function FormAcademicTraining() {
   const toast = useToast();
   const { user } = useAuth();
 
-  const initialFormAcademic = {
-    type: "",
-    date: "",
-    place: "",
-    country: "",
-    obtainedTitle: "",
-    educationalInstitution: "",
-    senescytRegistrationN: "",
-  };
+  const initialFormAcademic = {type: "",date: "",place: "",country: "",obtainedTitle: "",educationalInstitution: "",senescytRegistrationN: "",};
 
   const [ListAcademicTraining, setListAcademicTraining] = useState([]);
   const [isEditing, setIsEditing] = useState(false);

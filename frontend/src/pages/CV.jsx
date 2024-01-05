@@ -5,6 +5,7 @@ import FormAcademicTraining from "../components/FormAcademicTraining.jsx";
 import FormBooks from "../components/FormBooks.jsx";
 import FormCourses from "../components/FormCourses.jsx";
 import FormIntellectualProduction from "../components/FormIntellectualProduction.jsx";
+import { FaEye } from "react-icons/fa";
 
 import {
   ChakraProvider,
@@ -42,6 +43,8 @@ import FormLanguages from "../components/FormLanguages.jsx";
 import FormProfessionalExperience from "../components/FormProfessionalExperience.jsx";
 import FormProfessionalMerits from "../components/FormProfessionalMerits.jsx";
 import FormTeaching from "../components/FormTeaching.jsx";
+import { Link } from "react-router-dom";
+
 
 function ResumeForm() {
   return (
@@ -67,12 +70,23 @@ function ResumeForm() {
               p={2}
               alignItems="center"
             >
-              <Heading as="h3" fontSize="xl">
+              <Heading as="h1" textAlign="center">
+                <Link to="/cvPdf" target="_blank">
+                <Button
+            colorScheme="red"
+            leftIcon={<FaEye />}
+          >
+            PDF
+          </Button>
+                </Link>
+              </Heading>
+              
+              {/* <Heading as="h3" fontSize="xl">
                 CÓDIGO
-              </Heading>
-              <Heading as="h3" fontSize={{ base: 10, md: "md" }}>
+              </Heading> */}
+              {/* <Heading as="h3" fontSize={{ base: 10, md: "md" }}>
                 2131323x2342
-              </Heading>
+              </Heading> */}
             </Box>
           </GridItem>
         </Grid>

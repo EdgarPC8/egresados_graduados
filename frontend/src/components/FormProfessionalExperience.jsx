@@ -70,6 +70,7 @@ function FormProfessionalExperience() {
   async function fetchData() {
     try {
       const { data } = await getAllProfessionalExperience();
+      console.log(data)
       setDataProfessionalExperience(data);
     } catch (error) {
       console.error("Error al obtener datos académicos:", error);
@@ -103,11 +104,10 @@ function FormProfessionalExperience() {
 
       return;
     }
-
     toast.promise(
       addProfessionalExperience({
         ...formProfessional,
-        professsionalId: user.userId,
+        professionalId: user.userId,
       }),
       {
         loading: {
