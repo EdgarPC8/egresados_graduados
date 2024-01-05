@@ -42,7 +42,15 @@ const login = async (req, res) => {
     const payload = {
       userId: user.userId,
       userEmail: user.email,
-      userRol: user.roles[0].rol,
+      loginRol: rol,
+      firstName: user.firstName,
+      secondName: user.secondName,
+      firstLastName: user.firstLastName,
+      secondLastName: user.secondLastName,
+      username: user.username,
+      photo: user.photo,
+      roles: user.roles,
+      ci: user.ci
     };
 
     //Crear token JWT
@@ -61,6 +69,7 @@ const verifytoken = async (req, res) => {
 
   try {
     const decoded = await verifyJWT(token);
+
     res.json(decoded);
   } catch (error) {
     return res.status(401).json({ message: "Unauthorized" });

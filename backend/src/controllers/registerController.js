@@ -1,8 +1,8 @@
-import { Roles } from "../Models/Roles.js";
 import { Users } from "../Models/Users.js";
 import bycrypt from "bcrypt";
-import jwt from "jsonwebtoken";
-import { Op } from "sequelize";
+
+import { logger } from "../log/LogActivity.js";
+import { UserRoles } from "../Models/UserRoles.js";
 
 export const registerUser = async (req, res) => {
   try {
@@ -31,11 +31,18 @@ export const registerUser = async (req, res) => {
       photo,
     });
 
+    // rol por defecto "profesional" cuando se registre un usuario
+    const rol = await UserRoles.create({ userId: newUser.userId, rolId: 2 });
+
+    logger({
+      httpMethod: req.method,
+      endPoint: req.originalUrl,
+      action: "Usuario registrado",
+    });
+
     res.json({ message: "usuario agregado con éxito" });
   } catch (error) {
     // manejo de errores si ocurre algún problema durante la creación del usuario
     console.error("error al crear el usuario:", error);
   }
 };
-
-

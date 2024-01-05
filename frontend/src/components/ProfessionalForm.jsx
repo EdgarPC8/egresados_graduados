@@ -10,6 +10,7 @@ import {
   Button,
   Image,
   useToast,
+  Center,
 } from "@chakra-ui/react";
 import { useEffect, useState, useRef } from "react";
 import {
@@ -19,8 +20,11 @@ import {
 import { verifyTokenRequest } from "../api/userRequest.js";
 import DataTable from "../components/DataTables";
 import Modal from "../components/AlertDialog";
+import { useAuth } from "../context/AuthContext.jsx";
+import { urlPhotos } from "../api/axios.js";
 
 function ProfessionalForm() {
+  const { user } = useAuth();
   const form = useRef(null);
   const toast = useToast();
   const [isEditing, setIsEditing] = useState(false);
@@ -62,7 +66,6 @@ function ProfessionalForm() {
       setFormProfessional(data);
       setIsEditing(true);
       setId(data.id);
-      
     } catch (error) {
       console.error("Error al obtener datos académicos:", error);
     }
@@ -432,9 +435,12 @@ function ProfessionalForm() {
           textAlign={"center"}
           margin={"auto"}
         >
-          <Box color="white" borderRadius="md" w={300} h={300}>
-            <Image src="https://bit.ly/dan-abramov" borderRadius="full"></Image>
-          </Box>
+          <Center w={200} h={200}>
+            <Image
+              src={`${urlPhotos}/${user.photo}`}
+              borderRadius="full"
+            ></Image>
+          </Center>
         </GridItem>
         <GridItem
           colSpan={2}

@@ -25,7 +25,12 @@ import { FiUser, FiUserPlus, FiHash, FiTag, FiEdit2 } from "react-icons/fi";
 import PasswordInput from "./PasswordInput";
 import { useState, useRef, useEffect } from "react";
 import { useParams } from "react-router-dom";
-import { getOneUser, addUser, getRoles } from "../api/userRequest";
+import {
+  getOneUser,
+  addUser,
+  getRoles,
+  updateUserData,
+} from "../api/userRequest";
 import { urlPhotos } from "../api/axios";
 
 function FormAddUser() {
@@ -39,20 +44,42 @@ function FormAddUser() {
     password: "",
     firstLastName: "",
     secondLastName: "",
-    rol: [],
+    roles: [],
   };
 
   const [photo, setPhoto] = useState(null);
   const hiddenFileInput = useRef();
 
   const [form, setForm] = useState(initialForm);
-  const [roles, setRoles] = useState([]);
+  const [rolesList, setRolesList] = useState([]);
   const handleSubmit = async (event) => {
     event.preventDefault();
+    console.log(form);
     // const formData = new FormData(event.target);
     // formData.append("photo", photo);
     // console.log(form)
     // const data = Object.fromEntries(formData);
+
+    if (userId) {
+      toast.promise(updateUserData(userId, form), {
+        loading: {
+          title: "Editando...",
+          position: "top-right",
+        },
+        success: (d) => ({
+          title: "Usuario",
+          description: d.data.message,
+          isClosable: true,
+        }),
+        error: (e) => ({
+          title: "Error",
+          description: e.response.data.message,
+          isClosable: true,
+        }),
+      });
+
+      return;
+    }
 
     toast.promise(addUser(form), {
       loading: {
@@ -79,7 +106,9 @@ function FormAddUser() {
   const handleFileChange = (event) => {
     const files = event.target.files;
     if (files.length > 0) {
+      
       setPhoto(files[0]);
+      setForm({ ...form, photo: files[0] });
     }
   };
 
@@ -96,16 +125,17 @@ function FormAddUser() {
 
   const handleChangeCheck = ({ rolId, isChecked }) => {
     setForm((prevForm) => {
-      const exist = prevForm.rol.includes(rolId);
+      const exist = prevForm.roles.includes(rolId);
       const newRol =
         !exist && isChecked
-          ? [...prevForm.rol, rolId]
-          : prevForm.rol.filter((rol) => rol !== rolId);
-      return { ...prevForm, rol: newRol };
+          ? [...prevForm.roles, rolId]
+          : prevForm.roles.filter((roles) => roles !== rolId);
+      return { ...prevForm, roles: newRol };
     });
   };
 
   useEffect(() => {
+    // console.log(rolesList);
     console.log(form);
   }, [form]);
 
@@ -115,9 +145,18 @@ function FormAddUser() {
         try {
           const { data } = await getOneUser(userId);
           // setPhoto(data.photo)
-          // console.log(data)
+          const { roles: list } = data;
 
-          setForm(data);
+          setForm({
+            ci: data.ci,
+            username: data.username,
+            firstName: data.firstName,
+            secondName: data.secondName,
+            photo: data.photo,
+            firstLastName: data.firstLastName,
+            secondLastName: data.secondLastName,
+            roles: list.map((rol) => rol.user_roles.roleId),
+          });
         } catch (error) {
           console.log(error);
         }
@@ -125,7 +164,7 @@ function FormAddUser() {
     };
     const loadRoles = async () => {
       const { data } = await getRoles();
-      setRoles(data);
+      setRolesList(data);
     };
     loadRoles();
 
@@ -286,31 +325,36 @@ function FormAddUser() {
                     </InputGroup>
                   </FormControl>
 
-                  <FormControl>
-                    <PasswordInput
-                      name="password"
-                      onChange={handleChange}
-                      value={form.password}
-                      variant="flushed"
-                      placeholder="contraseña"
-                    />
-                  </FormControl>
+                  {!userId ? (
+                    <FormControl>
+                      <PasswordInput
+                        name="password"
+                        onChange={handleChange}
+                        value={form.password}
+                        variant="flushed"
+                        placeholder="contraseña"
+                      />
+                    </FormControl>
+                  ) : (
+                    ""
+                  )}
 
                   <FormControl mt={6}>
                     <FormLabel color="gray.600">Roles</FormLabel>
                     <Stack spacing={5} direction="row">
-                      {roles.map((rol) => (
+                      {rolesList.map((roles, idx) => (
                         <Checkbox
-                          key={rol.id}
-                          value={rol.id}
+                          key={roles.id}
+                          value={roles.id}
+                          isChecked={form.roles.includes(roles.id)}
                           onChange={(e) =>
                             handleChangeCheck({
-                              rolId: rol.id,
+                              rolId: roles.id,
                               isChecked: e.target.checked,
                             })
                           }
                         >
-                          {rol.rol}
+                          {roles.rol}
                         </Checkbox>
                       ))}
                     </Stack>
@@ -330,12 +374,12 @@ function FormAddUser() {
                       }}
                       isDisabled={
                         !(
-                          form.ci.trim() &&
-                          form.firstLastName.trim() &&
-                          form.firstName.trim() &&
-                          form.secondName.trim() &&
-                          form.secondLastName.trim() &&
-                          form.rol.length
+                          form.ci &&
+                          form.firstLastName &&
+                          form.firstName &&
+                          form.secondName &&
+                          form.secondLastName &&
+                          form.roles.length
                         )
                       }
                     >

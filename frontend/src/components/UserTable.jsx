@@ -18,6 +18,7 @@ import {
   AlertDialogContent,
   AlertDialogOverlay,
   Box,
+  Image,
   Heading,
   Spacer,
   Flex,
@@ -83,8 +84,10 @@ function UserTable() {
       header: "Foto",
       accessorKey: "photo",
       cell: (props) => (
-        <Avatar
-          name={props.row.original.firstName}
+        <Image
+          boxSize="50px"
+          borderRadius="full"
+          objectFit="cover"
           src={
             props.row.original.photo &&
             `${urlPhotos}/${props.row.original.photo}`
@@ -99,8 +102,9 @@ function UserTable() {
         <Stack spacing={4} direction="row" align="center">
           <Button
             colorScheme="yellow"
-            onClick={() => navigate(`/editar-usuario/${props.row.original.userId}`)  
-          }
+            onClick={() =>
+              navigate(`/editar-usuario/${props.row.original.userId}`)
+            }
           >
             Editar
           </Button>

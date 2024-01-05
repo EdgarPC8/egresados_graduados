@@ -25,8 +25,8 @@ const AuthProvider = ({ children }) => {
 
   const loadUserProfile = async () => {
     const verify = await verifyTokenRequest();
-    const { data } = await getOneUser(verify.data.userId);
-    setUser(data);
+
+    setUser(verify.data);
   };
 
   const signin = async (user) => {
@@ -52,26 +52,27 @@ const AuthProvider = ({ children }) => {
     setIsAuthenticated(false);
   };
 
+  const checkLogin = async () => {
+    const token = `Bearer ${window.localStorage.getItem("token")}`;
+
+    if (!token) {
+      setIsAuthenticated(false);
+      setIsLoading(false);
+      return;
+    }
+
+    try {
+      const res = await verifyTokenRequest();
+      setIsAuthenticated(true);
+
+      // console.log(res);
+    } catch (error) {
+      setIsAuthenticated(false);
+      setIsLoading(false);
+    }
+  };
+
   useEffect(() => {
-    const checkLogin = async () => {
-      const token = `Bearer ${window.localStorage.getItem("token")}`;
-
-      if (!token) {
-        setIsAuthenticated(false);
-        setIsLoading(false);
-        return;
-      }
-
-      try {
-        const res = await verifyTokenRequest();
-        setIsAuthenticated(true);
-
-        // console.log(res);
-      } catch (error) {
-        setIsAuthenticated(false);
-        setIsLoading(false);
-      }
-    };
     checkLogin();
     loadUserProfile();
   }, []);

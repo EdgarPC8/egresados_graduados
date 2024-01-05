@@ -33,7 +33,7 @@ const diskStorageToUpdatePhoto = multer.diskStorage({
 
     const updatePhotoUser = await Users.update(
       { photo: newPhoto },
-      { where: { userId: req.body.userId } }
+      { where: { userId: req.params.userId } }
     );
     callback(null, newPhoto);
   },

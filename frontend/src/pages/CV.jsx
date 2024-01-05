@@ -47,24 +47,6 @@ import { Link } from "react-router-dom";
 
 
 function ResumeForm() {
-  // Definición del estado inicial usando useState
-  const [datosAcademic_training, setDatosAcademic_training] = useState(null);
-  const [datosTeaching_experience, setDatosTeaching_experience] =
-    useState(null);
-  const [datosCourses_workshops, setDatosCourses_workshops] = useState(null);
-  const [datosIntellectual_production, setDatosIntellectual_production] =
-    useState(null);
-  const [datosBooks, setDatosBooks] = useState(null);
-  const [
-    datosAcademic_professional_merits,
-    setDatosAcademic_professional_merits,
-  ] = useState(null);
-  const [datosLanguages, setDatosLanguages] = useState(null);
-  const [datosProfessional_experience, setDatosProfessional_experience] =
-    useState(null);
-
-  const dataTableRef1 = useRef();
-
   return (
     <Box mb={100}>
       <Container maxW={"container.xl"}>

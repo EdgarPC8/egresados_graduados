@@ -15,7 +15,7 @@ const addUser = async (req, res) => {
       firstLastName,
       secondLastName,
       password,
-      rol,
+      roles,
     } = req.body;
 
     const passgenerate = await bycrypt.hash(password, 10);
@@ -35,9 +35,11 @@ const addUser = async (req, res) => {
 
     res.json({ message: "usuario agregado con éxito" });
 
-    const userRoles = rol.map((roleId) => {
+    const userRoles = roles.map((roleId) => {
       return { userId: newUser.userId, roleId };
     });
+
+    console.log(userRoles);
 
     await UserRoles.bulkCreate(userRoles);
 
@@ -70,6 +72,7 @@ const getOneUser = async (req, res) => {
         "userId",
         "firstName",
         "secondName",
+        "username",
         "ci",
         "firstLastName",
         "secondLastName",
@@ -92,12 +95,14 @@ const getOneUser = async (req, res) => {
 };
 
 const updateDataUser = async (req, res) => {
-  const { ci, firstName, secondName, firstLastName, secondLastName } = req.body;
+  const { ci, firstName, username, secondName, firstLastName, secondLastName } =
+    req.body;
 
   try {
     const userUpdate = await Users.update(
       {
         ci,
+        username,
         firstName,
         secondName,
         firstLastName,
@@ -110,7 +115,12 @@ const updateDataUser = async (req, res) => {
       }
     );
 
-    res.json(userUpdate);
+    res.json({ message: "usuario editado con éxito" });
+    logger({
+      httpMethod: req.method,
+      endPoint: req.originalUrl,
+      action: `Usuario editado: ${ci} ${firstName}`,
+    });
   } catch (error) {
     res.status(500).json({
       message: error.message,
@@ -143,6 +153,11 @@ const changePassword = async (req, res) => {
       { where: { userId: req.params.userId } }
     );
     res.json({ message: "Contraseña actualizada con éxito" });
+    logger({
+      httpMethod: req.method,
+      endPoint: req.originalUrl,
+      action: "Contraseña cambiada",
+    });
   } catch (e) {
     return res.status(400).json({
       error: "Bad Request",
@@ -186,6 +201,11 @@ const deleteUser = async (req, res) => {
     });
 
     res.json({ message: "Usuario eleminado con éxito" });
+    logger({
+      httpMethod: req.method,
+      endPoint: req.originalUrl,
+      action: "Usuario eliminado",
+    });
   } catch (error) {
     return res.status(500).json({
       message: error.message,

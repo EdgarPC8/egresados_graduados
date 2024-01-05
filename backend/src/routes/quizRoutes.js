@@ -12,7 +12,7 @@ const router = Router();
 router.post("/addResponses", isAuthenticated, addResponses);
 router.get("/getAllResponses", isAuthenticated, getAllResponses);
 router.put("/editResponses", isAuthenticated, editResponses);
-router.delete("/deleteResponses/:taskId", isAuthenticated, deleteResponses);
+router.delete("/deleteResponses/:responseId", isAuthenticated, deleteResponses);
 
 // router.post("/", addLanguages);
 

@@ -26,6 +26,7 @@ import {
   DrawerContent,
   DrawerCloseButton,
   Input,
+  Badge,
 } from "@chakra-ui/react";
 import { useRef } from "react";
 
@@ -40,6 +41,7 @@ import {
   FiFileText,
   FiUser,
   FiLogOut,
+  FiTarget,
 } from "react-icons/fi";
 
 import { HamburgerIcon, CloseIcon } from "@chakra-ui/icons";
@@ -66,38 +68,50 @@ const Navbar = () => {
     },
   ];
 
-  const Links = [
-    {
-      name: "Inicio",
-      path: "/",
-      icon: <FiHome />,
-    },
-    {
-      name: "Curriculos",
-      path: "/curriculos",
-      icon: <FiFile />,
-    },
-    {
-      name: "Hoja de Vida",
-      path: "/cv",
-      icon: <FiAward />,
-    },
-    {
-      name: "Encuesta",
-      path: "/quiz",
-      icon: <FiFileText />,
-    },
-    {
-      name: "Usuarios",
-      path: "/usuarios",
-      icon: <FiUser />,
-    },
-    {
-      name: "Graficos",
-      path: "/charts",
-      icon: <FaChartPie />,
-    },
-  ];
+  const Links = {
+    programador: [
+      {
+        name: "Actividad",
+        path: "/actividad",
+        icon: <FiTarget />,
+      },
+    ],
+
+    administrador: [
+      {
+        name: "Inicio",
+        path: "/",
+        icon: <FiHome />,
+      },
+      {
+        name: "Usuarios",
+        path: "/usuarios",
+        icon: <FiUser />,
+      },
+      {
+        name: "Graficos",
+        path: "/charts",
+        icon: <FaChartPie />,
+      },
+    ],
+    profesional: [
+      {
+        name: "Curriculos",
+        path: "/curriculos",
+        icon: <FiFile />,
+      },
+      {
+        name: "Hoja de Vida",
+        path: "/cv",
+        icon: <FiAward />,
+      },
+      {
+        name: "Encuesta",
+        path: "/quiz",
+        icon: <FiFileText />,
+      },
+    ],
+  };
 
   return (
     <>
@@ -135,6 +149,7 @@ const Navbar = () => {
           {isAuthenticated ? (
             <Flex>
               <Center>
+                <Badge colorScheme='purple' mr={5}>{user.loginRol}</Badge>
                 <Link to="/perfil">
                   <Avatar
                     size={"sm"}
@@ -177,7 +192,7 @@ const Navbar = () => {
           <DrawerBody>
             {isAuthenticated ? (
               <Stack align="start" spacing={4} flex="1" mr={4}>
-                {Links.map((link) => (
+                {Links[user.loginRol].map((link) => (
                   <Link to={link.path} key={link.name} onClick={onClose}>
                     <NavLink icon={link.icon}>{link.name}</NavLink>
                   </Link>
@@ -205,12 +220,13 @@ const Navbar = () => {
                   <Button onClick={onClose}>Registrarse</Button>
                 </Link>
                 <Link to="/login">
-                  <Button onClick={onClose} mr={4}>Iniciar Sesión</Button>
+                  <Button onClick={onClose} mr={4}>
+                    Iniciar Sesión
+                  </Button>
                 </Link>
               </>
             )}
           </DrawerFooter>
-
         </DrawerContent>
       </Drawer>
     </>
