@@ -94,13 +94,13 @@ const Navbar = () => {
         path: "/charts",
         icon: <FaChartPie />,
       },
-    ],
-    profesional: [
       {
         name: "Curriculos",
         path: "/curriculos",
         icon: <FiFile />,
       },
+    ],
+    profesional: [
       {
         name: "Hoja de Vida",
         path: "/cv",

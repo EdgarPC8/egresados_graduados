@@ -17,9 +17,20 @@ import {
   getAllCoursesWorkshops,
   getAllTeachingExperience,
   getProfessionalExperienceById,
+  getLanguagesById,
+  getAcademicProfessionalMeritsById,
+  getAcademicTrainingById,
+  getTeachingExperienceById,
+  getCoursesWorkshopsById,
+  getIntellectualProductionById,
+  getBooksById,
 } from "../api/cvRequest";
+import { useParams } from "react-router-dom";
+
 function Resumes() {
   const [showPDF, setShowPDF] = useState(false);
+  const { userId } = useParams();
+
 
   let initialFormProfessional = {
     ci: "",
@@ -55,19 +66,20 @@ function Resumes() {
   const [ListTeachingExperience, setListTeachingExperience] = useState([]);
   async function fetchData() {
     try {
-      const res = await verifyTokenRequest();
-      const idUser = res.data.userId;
-      const resProfessionals = await getProfessionalsById(idUser);
+      // const res = await verifyTokenRequest();
+      // const idUser = res.data.userId;
+      const resProfessionals = await getProfessionalsById(userId);
+
       const professionalData = resProfessionals.data;
 
-      const resAcademicTraining = await getAllAcademicTraining();
-      const resProfessionalExperience = await getAllProfessionalExperience();
-      const resLanguages = await getAllLanguages();
-      const resAcademicProfessionalMerits = await getAllAcademicProfessionalMerits();
-      const resBooks = await getAllBooks();
-      const resIntellectualProduction = await getAllIntellectualProduction();
-      const resCoursesWorkshops = await getAllCoursesWorkshops();
-      const resTeachingExperience = await getAllTeachingExperience();
+      const resAcademicTraining = await getProfessionalExperienceById(userId);
+      const resProfessionalExperience = await getLanguagesById(userId);
+      const resLanguages = await getAcademicProfessionalMeritsById(userId);
+      const resAcademicProfessionalMerits = await getAcademicTrainingById(userId);
+      const resBooks = await getTeachingExperienceById(userId);
+      const resIntellectualProduction = await getCoursesWorkshopsById(userId);
+      const resCoursesWorkshops = await getIntellectualProductionById(userId);
+      const resTeachingExperience = await getBooksById(userId);
 
       const academicTrainingData = resAcademicTraining.data.map(objeto => {
         const { type, obtainedTitle, educationalInstitution, date, place, country, senescytRegistrationN, } = objeto;

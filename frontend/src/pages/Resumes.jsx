@@ -99,16 +99,16 @@ function Resumes() {
 
       cell: (props) => (
         <Stack spacing={4} direction="row" align="center">
-            <Link to="/cvProfessionalPdf" target="_blank">
 
           <Button
             colorScheme="red"
             leftIcon={<FaEye />}
+            onClick={() =>
+              navigate(`/cvProfessionalPdf/${props.row.original.userId}`)
+            }
           >
             PDF
           </Button>
-          </Link>
-
         </Stack>
       ),
     },

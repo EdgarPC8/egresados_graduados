@@ -61,7 +61,7 @@ function App() {
               <Route path="/charts" element={<Charts />} />
               <Route path="/curriculos" element={<Resumes />} />
               <Route path="/cvPdf" element={<CvPdf />} />
-              <Route path="/cvProfessionalPdf" element={<CvProfessionalPdf />} />
+              <Route path="/cvProfessionalPdf/:userId" element={<CvProfessionalPdf />} />
             </Route>
           </Routes>
         </BrowserRouter>
