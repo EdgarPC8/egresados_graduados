@@ -12,6 +12,7 @@ import CV from "./pages/CV.jsx";
 import Charts from "./pages/Charts.jsx";
 import Resumes from "./pages/Resumes.jsx";
 import CvPdf from "./pages/CvPdf.jsx";
+import CvProfessionalPdf from "./components/CvProfessionalPdf.jsx";
 import Quiz from "./pages/Quiz.jsx";
 import Profile from "./pages/Profile.jsx";
 
@@ -60,6 +61,7 @@ function App() {
               <Route path="/charts" element={<Charts />} />
               <Route path="/curriculos" element={<Resumes />} />
               <Route path="/cvPdf" element={<CvPdf />} />
+              <Route path="/cvProfessionalPdf" element={<CvProfessionalPdf />} />
             </Route>
           </Routes>
         </BrowserRouter>

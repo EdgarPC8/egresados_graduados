@@ -16,13 +16,10 @@ import {
   getAllIntellectualProduction,
   getAllCoursesWorkshops,
   getAllTeachingExperience,
+  getProfessionalExperienceById,
 } from "../api/cvRequest";
 function Resumes() {
   const [showPDF, setShowPDF] = useState(false);
-  const form = useRef(null);
-  const [isEditing, setIsEditing] = useState(false);
-  const [id, setId] = useState(0);
-
   let initialFormProfessional = {
     ci: "",
     firstName: "",
@@ -60,6 +57,10 @@ function Resumes() {
       const res = await verifyTokenRequest();
       const idUser = res.data.userId;
       const resProfessionals = await getProfessionalsById(idUser);
+      const resPrueba = await getProfessionalExperienceById(idUser);
+
+      console.log(resPrueba)
+
       const professionalData = resProfessionals.data;
 
       const resAcademicTraining = await getAllAcademicTraining();

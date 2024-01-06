@@ -1,12 +1,12 @@
 import {
+  ProfessionalExperience,
+  Languages,
+  AcademicProfessionalMerits,
   AcademicTraining,
   TeachingExperience,
   CoursesWorkshops,
   IntellectualProduction,
   Books,
-  AcademicProfessionalMerits,
-  Languages,
-  ProfessionalExperience,
 } from "../Models/CV.js";
 import { getHeaderToken, verifyJWT } from "../libs/jwt.js";
 
@@ -21,7 +21,6 @@ export const addProfessionalExperience = async (req, res) => {
   }
   res.json({ message: "Agregado con éxito" });
 };
-
 export const editProfessionalExperience = async (req, res) => {
   const newData = req.body;
   try {
@@ -41,7 +40,6 @@ export const editProfessionalExperience = async (req, res) => {
     });
   }
 };
-
 export const deleteProfessionalExperience = async (req, res) => {
   const experienceId = req.params.experienceId;
   try {
@@ -57,13 +55,21 @@ export const deleteProfessionalExperience = async (req, res) => {
     });
   }
 };
-
 export const getAllProfessionalExperience = async (req, res) => {
   const token = getHeaderToken(req);
   const user = await verifyJWT(token);
   const professionals = await ProfessionalExperience.findAll({
     where: {
       professionalId: user.userId,
+    },
+  });
+  res.json(professionals);
+};
+export const getProfessionalExperienceById = async (req, res) => {
+  const userId=req.params.experienceId
+  const professionals = await ProfessionalExperience.findAll({
+    where: {
+      professionalId: userId,
     },
   });
   res.json(professionals);
@@ -80,7 +86,6 @@ export const addLanguages = async (req, res) => {
   }
   res.json({ message: "Agregado con éxito" });
 };
-
 export const editLanguages = async (req, res) => {
   const newData = req.body; // Suponiendo que los datos están en el cuerpo de la solicitud
   try {
@@ -100,7 +105,6 @@ export const editLanguages = async (req, res) => {
     });
   }
 };
-
 export const deleteLanguages = async (req, res) => {
   const languageId = req.params.languageId;
   try {
@@ -116,7 +120,6 @@ export const deleteLanguages = async (req, res) => {
     });
   }
 };
-
 export const getAllLanguages = async (req, res) => {
   const token = getHeaderToken(req);
   const user = await verifyJWT(token);
@@ -128,7 +131,15 @@ export const getAllLanguages = async (req, res) => {
   });
   res.json(professionals);
 };
-
+export const getLanguagesById = async (req, res) => {
+  const userId=req.params.languageId
+  const professionals = await Languages.findAll({
+    where: {
+      professionalId: userId,
+    },
+  });
+  res.json(professionals);
+};
 export const addAcademicProfessionalMerits = async (req, res) => {
   const data = req.body; // Suponiendo que los datos están en el cuerpo de la solicitud
   try {
@@ -140,7 +151,6 @@ export const addAcademicProfessionalMerits = async (req, res) => {
   }
   res.json({ message: "Agregado con éxito" });
 };
-
 export const editAcademicProfessionalMerits = async (req, res) => {
   const newData = req.body; // Suponiendo que los datos están en el cuerpo de la solicitud
   try {
@@ -161,7 +171,6 @@ export const editAcademicProfessionalMerits = async (req, res) => {
     });
   }
 };
-
 export const deleteAcademicProfessionalMerits = async (req, res) => {
   const meritId = req.params.meritId;
   try {
@@ -178,7 +187,6 @@ export const deleteAcademicProfessionalMerits = async (req, res) => {
     });
   }
 };
-
 export const getAllAcademicProfessionalMerits = async (req, res) => {
   const token = getHeaderToken(req);
   const user = await verifyJWT(token);
@@ -190,7 +198,15 @@ export const getAllAcademicProfessionalMerits = async (req, res) => {
   });
   res.json(professionals);
 };
-
+export const getAcademicProfessionalMeritsById = async (req, res) => {
+  const userId=req.params.meritId
+  const professionals = await AcademicProfessionalMerits.findAll({
+    where: {
+      professionalId: userId,
+    },
+  });
+  res.json(professionals);
+};
 export const addAcademicTraining = async (req, res) => {
   const data = req.body; // Suponiendo que los datos están en el cuerpo de la solicitud
   try {
@@ -202,7 +218,6 @@ export const addAcademicTraining = async (req, res) => {
   }
   res.json({ message: "Agregado con éxito" });
 };
-
 export const editAcademicTraining = async (req, res) => {
   const newData = req.body; // Suponiendo que los datos están en el cuerpo de la solicitud
   try {
@@ -217,7 +232,6 @@ export const editAcademicTraining = async (req, res) => {
     });
   }
 };
-
 export const deleteAcademicTraining = async (req, res) => {
   try {
     const updatedAcademicTraining = await AcademicTraining.destroy({
@@ -232,7 +246,6 @@ export const deleteAcademicTraining = async (req, res) => {
     });
   }
 };
-
 export const getAllAcademicTraining = async (req, res) => {
   const token = getHeaderToken(req);
   const user = await verifyJWT(token);
@@ -241,7 +254,15 @@ export const getAllAcademicTraining = async (req, res) => {
   });
   res.json(professionals);
 };
-
+export const getAcademicTrainingById = async (req, res) => {
+  const userId=req.params.academicId
+  const professionals = await AcademicTraining.findAll({
+    where: {
+      professionalId: userId,
+    },
+  });
+  res.json(professionals);
+};
 export const addTeachingExperience = async (req, res) => {
   const data = req.body; // Suponiendo que los datos están en el cuerpo de la solicitud
   try {
@@ -253,7 +274,6 @@ export const addTeachingExperience = async (req, res) => {
   }
   res.json({ message: "Agregado con éxito" });
 };
-
 export const editTeachingExperience = async (req, res) => {
   const newData = req.body; // Suponiendo que los datos están en el cuerpo de la solicitud
   const id = req.params.teachingId; // Suponiendo que los datos están en el cuerpo de la solicitud
@@ -269,7 +289,6 @@ export const editTeachingExperience = async (req, res) => {
     });
   }
 };
-
 export const deleteTeachingExperience = async (req, res) => {
   const teachingId = req.params.teachingId;
   try {
@@ -285,7 +304,6 @@ export const deleteTeachingExperience = async (req, res) => {
     });
   }
 };
-
 export const getAllTeachingExperience = async (req, res) => {
   const token = getHeaderToken(req);
   const user = await verifyJWT(token);
@@ -296,7 +314,15 @@ export const getAllTeachingExperience = async (req, res) => {
   });
   res.json(professionals);
 };
-
+export const getTeachingExperienceById = async (req, res) => {
+  const userId=req.params.teachingId
+  const professionals = await TeachingExperience.findAll({
+    where: {
+      professionalId: userId,
+    },
+  });
+  res.json(professionals);
+};
 export const addCoursesWorkshops = async (req, res) => {
   const data = req.body; // Suponiendo que los datos están en el cuerpo de la solicitud
   try {
@@ -308,7 +334,6 @@ export const addCoursesWorkshops = async (req, res) => {
     });
   }
 };
-
 export const editCoursesWorkshops = async (req, res) => {
   const newData = req.body;
   try {
@@ -327,7 +352,6 @@ export const editCoursesWorkshops = async (req, res) => {
     });
   }
 };
-
 export const deleteCoursesWorkshops = async (req, res) => {
   try {
     const updatedCoursesWorkshops = await CoursesWorkshops.destroy({
@@ -342,7 +366,6 @@ export const deleteCoursesWorkshops = async (req, res) => {
     });
   }
 };
-
 export const getAllCoursesWorkshops = async (req, res) => {
   try {
     const token = getHeaderToken(req);
@@ -359,7 +382,15 @@ export const getAllCoursesWorkshops = async (req, res) => {
     });
   }
 };
-
+export const getCoursesWorkshopsById = async (req, res) => {
+  const userId=req.params.courseId
+  const professionals = await CoursesWorkshops.findAll({
+    where: {
+      professionalId: userId,
+    },
+  });
+  res.json(professionals);
+};
 export const addIntellectualProduction = async (req, res) => {
   const data = req.body; // Suponiendo que los datos están en el cuerpo de la solicitud
   try {
@@ -371,7 +402,6 @@ export const addIntellectualProduction = async (req, res) => {
     });
   }
 };
-
 export const editIntellectualProduction = async (req, res) => {
   const newData = req.body; // Suponiendo que los datos están en el cuerpo de la solicitud
   try {
@@ -391,7 +421,6 @@ export const editIntellectualProduction = async (req, res) => {
     });
   }
 };
-
 export const deleteIntellectualProduction = async (req, res) => {
   try {
     const deleteIntellectualProduction = await IntellectualProduction.destroy({
@@ -406,7 +435,6 @@ export const deleteIntellectualProduction = async (req, res) => {
     });
   }
 };
-
 export const getAllIntellectualProduction = async (req, res) => {
   try {
     const token = getHeaderToken(req);
@@ -423,7 +451,15 @@ export const getAllIntellectualProduction = async (req, res) => {
     });
   }
 };
-
+export const getIntellectualProductionById = async (req, res) => {
+  const userId=req.params.intellectualId
+  const professionals = await IntellectualProduction.findAll({
+    where: {
+      professionalId: userId,
+    },
+  });
+  res.json(professionals);
+};
 export const addBooks = async (req, res) => {
   const data = req.body; // Suponiendo que los datos están en el cuerpo de la solicitud
   try {
@@ -435,7 +471,6 @@ export const addBooks = async (req, res) => {
     });
   }
 };
-
 export const editBooks = async (req, res) => {
   const newData = req.body; // Suponiendo que los datos están en el cuerpo de la solicitud
   try {
@@ -454,8 +489,6 @@ export const editBooks = async (req, res) => {
     });
   }
 };
-
-
 export const deleteBooks = async (req, res) => {
   const bookId = req.params.bookId;
   try {
@@ -471,13 +504,21 @@ export const deleteBooks = async (req, res) => {
     });
   }
 };
-
 export const getAllBooks = async (req, res) => {
   const token = getHeaderToken(req);
   const user = await verifyJWT(token);
   const professionals = await Books.findAll({
     where: {
       professionalId: user.userId,
+    },
+  });
+  res.json(professionals);
+};
+export const getBooksById = async (req, res) => {
+  const userId=req.params.bookId
+  const professionals = await Books.findAll({
+    where: {
+      professionalId: userId,
     },
   });
   res.json(professionals);
