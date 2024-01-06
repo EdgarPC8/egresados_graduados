@@ -134,10 +134,10 @@ function FormAddUser() {
     });
   };
 
-  useEffect(() => {
-    // console.log(rolesList);
-    console.log(form);
-  }, [form]);
+  // useEffect(() => {
+  //   // console.log(rolesList);
+  //   console.log(form);
+  // }, [form]);
 
   useEffect(() => {
     const fetchUser = async () => {

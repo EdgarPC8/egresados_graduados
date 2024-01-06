@@ -25,6 +25,16 @@ const login = async (req, res) => {
       },
     });
 
+    const roles = await Users.findOne({
+      where: { userId: user.userId },
+      include: [
+        {
+          model: Roles,
+          attributes: ["rol"],
+        },
+      ],
+    });
+
     // console.log(user.roles.rol);
     // const userRol = user.roles.map((role) => role.rol);
     // const passgenerate = await bycrypt.hash("admin", 10);
@@ -49,8 +59,8 @@ const login = async (req, res) => {
       secondLastName: user.secondLastName,
       username: user.username,
       photo: user.photo,
-      roles: user.roles,
-      ci: user.ci
+      roles: roles.roles,
+      ci: user.ci,
     };
 
     //Crear token JWT

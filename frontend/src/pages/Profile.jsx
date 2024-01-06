@@ -52,6 +52,8 @@ function Profile() {
 
   const { user, loadUserProfile } = useAuth();
 
+  
+
   const [form, setForm] = useState(initialFormProfile);
   const [photo, setPhoto] = useState(null);
   const hiddenFileInput = useRef();

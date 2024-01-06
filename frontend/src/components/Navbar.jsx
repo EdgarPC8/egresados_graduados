@@ -55,6 +55,7 @@ const Navbar = () => {
 
   const { isOpen, onOpen, onClose } = useDisclosure();
 
+
   const LinksToNoAuth = [
     {
       name: "Inicio",

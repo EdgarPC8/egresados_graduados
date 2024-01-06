@@ -115,7 +115,17 @@ const updateDataUser = async (req, res) => {
       }
     );
 
+    
+
     res.json({ message: "usuario editado con éxito" });
+
+    // UserRoles.destroy({
+    //   where: {
+    //     userId: userUpdate.userId,
+    //     roleId
+    //   },
+    // });
+
     logger({
       httpMethod: req.method,
       endPoint: req.originalUrl,
