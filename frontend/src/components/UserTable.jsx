@@ -71,7 +71,6 @@ function UserTable() {
       header: "Cédula",
       accessorKey: "ci",
     },
-
     {
       header: "Nombres Completos",
       accessorKey: "fullname",
@@ -79,7 +78,6 @@ function UserTable() {
         `
         ${row.firstName} ${row.secondName} ${row.firstLastName} ${row.secondLastName}`,
     },
-
     {
       header: "Foto",
       accessorKey: "photo",
