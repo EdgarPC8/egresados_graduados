@@ -95,8 +95,15 @@ const getOneUser = async (req, res) => {
 };
 
 const updateDataUser = async (req, res) => {
-  const { ci, firstName, username, secondName, firstLastName, secondLastName } =
-    req.body;
+  const {
+    ci,
+    firstName,
+    username,
+    secondName,
+    firstLastName,
+    secondLastName,
+    roles,
+  } = req.body;
 
   try {
     const userUpdate = await Users.update(
@@ -115,22 +122,49 @@ const updateDataUser = async (req, res) => {
       }
     );
 
-    
+    if (roles.length) {
+      const findUserRoles = await UserRoles.findAll({
+        where: {
+          userId: req.params.userId,
+        },
+      });
 
-    res.json({ message: "usuario editado con éxito" });
+      const rolesToAdd = roles.filter(
+        (rolId) => !findUserRoles.some((rol) => rol.roleId.toString() === rolId)
+      );
 
-    // UserRoles.destroy({
-    //   where: {
-    //     userId: userUpdate.userId,
-    //     roleId
-    //   },
-    // });
+      const rolesToDelete = findUserRoles.filter(
+        (rol) => !roles.includes(rol.roleId.toString())
+      );
+
+      if (rolesToDelete.length) {
+        rolesToDelete.forEach((rol) => {
+          UserRoles.destroy({
+            where: {
+              userId: req.params.userId,
+              roleId: rol.roleId,
+            },
+          });
+        });
+      }
+
+      if (rolesToAdd.length) {
+        const rolesToAddBulk = rolesToAdd.map((roleId) => ({
+          userId: req.params.userId,
+          roleId: roleId,
+        }));
+
+        await UserRoles.bulkCreate(rolesToAddBulk);
+      }
+    }
 
     logger({
       httpMethod: req.method,
       endPoint: req.originalUrl,
       action: `Usuario editado: ${ci} ${firstName}`,
     });
+
+    res.json({ message: "usuario editado con éxito" });
   } catch (error) {
     res.status(500).json({
       message: error.message,
