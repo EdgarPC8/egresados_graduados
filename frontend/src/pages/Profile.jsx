@@ -16,6 +16,7 @@ import {
   Spinner,
   FormHelperText,
   CloseButton,
+  Avatar,
   Modal,
   ModalOverlay,
   ModalContent,
@@ -52,8 +53,6 @@ function Profile() {
 
   const { user, loadUserProfile } = useAuth();
 
-  
-
   const [form, setForm] = useState(initialFormProfile);
   const [photo, setPhoto] = useState(null);
   const hiddenFileInput = useRef();
@@ -70,6 +69,8 @@ function Profile() {
     const { name, value } = event.target;
     setForm({ ...form, [name]: value });
   };
+
+  console.log(user);
 
   const newPassword = async (event) => {
     event.preventDefault();
@@ -98,7 +99,10 @@ function Profile() {
   const handleSubmit = async (event) => {
     try {
       event.preventDefault();
-      const updateUser = await updateUserProfile(form.userId, { ...form, photo });
+      const updateUser = await updateUserProfile(form.userId, {
+        ...form,
+        photo,
+      });
       await loadUserProfile();
       toast({
         title: "Actualización",
@@ -172,13 +176,7 @@ function Profile() {
 
           <Center>
             <div style={{ position: "relative", display: "inline-block" }}>
-              <Image
-                boxSize="100px"
-                objectFit="cover"
-                borderRadius="full"
-                src={`${urlPhotos}/${user.photo}`}
-                alt="Dan Abramov"
-              />
+              <Avatar size='xl' src={`${urlPhotos}/${user.photo}`} />
             </div>
           </Center>
 
@@ -223,13 +221,14 @@ function Profile() {
             </Heading>
             <Center>
               <div style={{ position: "relative", display: "inline-block" }}>
-                <Image
+                {/* <Image
                   boxSize="100px"
                   objectFit="cover"
                   borderRadius="full"
                   src={photoUrl}
                   alt="Dan Abramov"
-                />
+                /> */}
+                <Avatar src={photoUrl} size="xl" />
                 <IconButton
                   bg="white"
                   style={{ position: "absolute", top: "0", right: "0" }}

@@ -8,8 +8,6 @@ const instance = axios.create({
   withCredentials: true,
 });
 
-
-
 export const jwt = () => {
   return `Bearer ${window.localStorage.getItem("token")}`;
 };
