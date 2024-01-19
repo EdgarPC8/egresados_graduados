@@ -99,7 +99,7 @@ function Profile() {
     try {
       event.preventDefault();
       const updateUser = await updateUserData(form.userId, { ...form, photo });
-      loadUserProfile();
+      await loadUserProfile();
       toast({
         title: "Actualización",
         description: "Datos actualizados correctamente",
@@ -201,7 +201,7 @@ function Profile() {
           <Stack direction="row" spacing={3} mb={4}>
             <Text as="b">{user.roles.length > 1 ? "Roles:" : "Rol:"}</Text>
 
-            {user.roles?.map((rol, index) => (
+            {user.roles.map((rol, index) => (
               <Fragment key={index}>
                 <Text>{rol.rol}</Text>
                 {index < user.roles.length - 1 && <Text>/</Text>}
