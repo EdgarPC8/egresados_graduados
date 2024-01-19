@@ -32,7 +32,7 @@ import { useEffect, useRef, useState, Fragment } from "react";
 import PasswordInput from "../components/PasswordInput";
 
 import { FiEdit2 } from "react-icons/fi";
-import { changePassword, updateUserData } from "../api/userRequest";
+import { changePassword, updateUserProfile } from "../api/userRequest";
 import { urlPhotos } from "../api/axios";
 import { useAuth } from "../context/AuthContext";
 
@@ -98,7 +98,7 @@ function Profile() {
   const handleSubmit = async (event) => {
     try {
       event.preventDefault();
-      const updateUser = await updateUserData(form.userId, { ...form, photo });
+      const updateUser = await updateUserProfile(form.userId, { ...form, photo });
       await loadUserProfile();
       toast({
         title: "Actualización",

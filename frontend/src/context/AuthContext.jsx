@@ -21,18 +21,33 @@ const AuthProvider = ({ children }) => {
   const [errors, setErrors] = useState({});
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
-  const [user, setUser] = useState({roles: []});
+  const [user, setUser] = useState({ roles: [] });
 
   const loadUserProfile = async () => {
     try {
       setIsLoading(false);
-      setIsAuthenticated(true)
-      const verify = await verifyTokenRequest();
-      if (verify.status === 200) {
-        setUser(verify.data);
+      setIsAuthenticated(true);
+      const session = await verifyTokenRequest();
+      const user = await getOneUser(session.data.userId);
+
+      const data = {
+        ci: user.data.ci,
+        firstLastName: user.data.firstLastName,
+        firstName: user.data.firstName,
+        photo: user.data.photo,
+        roles: user.data.roles,
+        secondLastName: user.data.secondLastName,
+        secondName: user.data.secondName,
+        userId: user.data.userId,
+        username: user.data.username,
+        loginRol: session.data.loginRol,
+      };
+
+      if (session.status === 200) {
+        setUser(data);
       }
     } catch (error) {
-      console.log(error)
+      console.log(error);
     }
   };
 

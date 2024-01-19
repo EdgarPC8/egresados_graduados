@@ -20,6 +20,14 @@ const getOneUser = async (userId) =>
     },
   });
 
+const updateUserProfile = async (userId, userData) =>
+  await axios.put(`/users/profile/${userId}`, userData, {
+    headers: {
+      "Content-Type": "multipart/form-data",
+      Authorization: jwt(),
+    },
+  });
+
 const updateUserData = async (userId, userData) =>
   await axios.put(`/users/${userId}`, userData, {
     headers: {
@@ -64,6 +72,7 @@ export {
   getRoles,
   getOneUser,
   updateUserData,
+  updateUserProfile,
   getUsers,
   addUser,
   removeUser,

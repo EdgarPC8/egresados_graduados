@@ -86,7 +86,31 @@ const getOneUser = async (req, res) => {
         },
       ],
     });
-    res.json(user);
+
+    const roles = await Users.findOne({
+      where: { userId: user.userId },
+      include: [
+        {
+          model: Roles,
+          attributes: ["rol"],
+        },
+      ],
+    });
+
+    const data = {
+      userId: user.userId,
+      userEmail: user.email,
+      firstName: user.firstName,
+      secondName: user.secondName,
+      firstLastName: user.firstLastName,
+      secondLastName: user.secondLastName,
+      username: user.username,
+      photo: user.photo,
+      roles: roles.roles,
+      ci: user.ci,
+    };
+
+    res.json(data);
   } catch (error) {
     res.status(500).json({
       message: error.message,
@@ -94,7 +118,7 @@ const getOneUser = async (req, res) => {
   }
 };
 
-const updateDataUser = async (req, res) => {
+const updateUserData = async (req, res) => {
   const {
     ci,
     firstName,
@@ -104,6 +128,8 @@ const updateDataUser = async (req, res) => {
     secondLastName,
     roles,
   } = req.body;
+
+  console.log(req.body);
 
   try {
     const userUpdate = await Users.update(
@@ -157,6 +183,41 @@ const updateDataUser = async (req, res) => {
         await UserRoles.bulkCreate(rolesToAddBulk);
       }
     }
+
+    logger({
+      httpMethod: req.method,
+      endPoint: req.originalUrl,
+      action: `Usuario editado: ${ci} ${firstName}`,
+    });
+
+    res.json({ message: "usuario editado con éxito" });
+  } catch (error) {
+    res.status(500).json({
+      message: error.message,
+    });
+  }
+};
+
+const updateUserProfile = async (req, res) => {
+  const { ci, firstName, username, secondName, firstLastName, secondLastName } =
+    req.body;
+
+  try {
+    const userUpdate = await Users.update(
+      {
+        ci,
+        username,
+        firstName,
+        secondName,
+        firstLastName,
+        secondLastName,
+      },
+      {
+        where: {
+          userId: req.params.userId,
+        },
+      }
+    );
 
     logger({
       httpMethod: req.method,
@@ -260,7 +321,8 @@ export {
   addUser,
   getRoles,
   getOneUser,
-  updateDataUser,
+  updateUserProfile,
+  updateUserData,
   changePassword,
   deleteUser,
   getUsers,
