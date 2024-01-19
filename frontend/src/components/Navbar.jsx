@@ -76,6 +76,36 @@ const Navbar = () => {
         path: "/actividad",
         icon: <FiTarget />,
       },
+      {
+        name: "Inicio",
+        path: "/",
+        icon: <FiHome />,
+      },
+      {
+        name: "Usuarios",
+        path: "/usuarios",
+        icon: <FiUser />,
+      },
+      {
+        name: "Graficos",
+        path: "/charts",
+        icon: <FaChartPie />,
+      },
+      {
+        name: "Curriculos",
+        path: "/curriculos",
+        icon: <FiFile />,
+      },
+      {
+        name: "Hoja de Vida",
+        path: "/cv",
+        icon: <FiAward />,
+      },
+      {
+        name: "Encuesta",
+        path: "/quiz",
+        icon: <FiFileText />,
+      },
     ],
 
     administrador: [

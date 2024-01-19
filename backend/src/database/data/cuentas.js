@@ -5,7 +5,7 @@ export const Usuario = {
     [
       "1106011420",
       "$2b$10$p49gCto6b2liCqoQoSMDyu8/EmT1t3cwJe6HALeZNgXxZHx7rJMRu",
-      [1, 2],
+      [1, 2,4],
       {
         userInfo: {
           ci: 1106011420,
@@ -35,7 +35,7 @@ export const Usuario = {
     [
       "1104661598",
       "$2b$10$p49gCto6b2liCqoQoSMDyu8/EmT1t3cwJe6HALeZNgXxZHx7rJMRu",
-      [1, 2],
+      [1, 2,4],
       {
         userInfo: {
           ci: 1104661598,
