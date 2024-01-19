@@ -27,7 +27,7 @@ function App() {
   return (
     <ChakraProvider theme={customTheme}>
       <AuthProvider>
-        <BrowserRouter>
+        <BrowserRouter basename="/alumni">
           <Navbar />
 
           <Routes>

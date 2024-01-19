@@ -156,8 +156,8 @@ function Resumes() {
   }, []);
   return (
     <>
-      {/* {showPDF && (
-        <PDFViewer width="100%" height="600px">
+      {showPDF && (
+        <PDFViewer width="100%" height="800px">
           <PDFDocument
             data={formProfessional}
             cv={{
@@ -315,7 +315,7 @@ function Resumes() {
             }}
           />
         </PDFViewer>
-      )} */}
+      )}
     </>
   );
 }

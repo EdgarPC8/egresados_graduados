@@ -91,6 +91,7 @@ const styles = StyleSheet.create({
 });
 
 const PDFDocument = ({ data,cv }) => {
+    console.log(data.image)
 
 
     const imageURL = `${urlPhotos}/${data.image}`;
@@ -114,165 +115,165 @@ const PDFDocument = ({ data,cv }) => {
         { label: 'Correo Personal', value: data.personalEmail },
     ];
 
-    const FormacionAcademica = {
-        header: [
-            { width: '50%', title: 'Tipo' },
-            { width: '50%', title: 'Titulo Obtenido' },
-            { width: '50%', title: 'Institucion educativa' },
-            { width: '50%', title: 'Fecha' },
-            { width: '50%', title: 'Lugar' },
-            { width: '50%', title: 'Pais' },
-            { width: '50%', title: 'Nro' },
-        ],
-        values: [
-            { 0: "dedede", 1: "Todededrres", 2: "deded", 3: "bng", 4: "gfhfgh", 5: "fghfgh", 6: "hgfhfgh", },
-        ],
-    }
-    const ExperienciaDocente = {
-        header: [
-            { width: '50%', title: 'Institución' },
-            { width: '50%', title: 'Materia' },
-            { width: '50%', title: 'Fecha Inicio' },
-            { width: '50%', title: 'Fecha Fin' },
-            { width: '50%', title: 'Modalidad' },
-            { width: '50%', title: 'Lugar' },
-            { width: '50%', title: 'País' },
-        ],
-        values: [
-            { 0: "dedede", 1: "Todededrres", 2: "deded", 3: "bng", 4: "gfhfgh", 5: "fghfgh", 6: "hgfhfgh", },
-        ],
-    }
-    const Cursos = {
-        header: [
-            { width: '50%', title: 'Tipos' },
-            { width: '50%', title: 'Nombre' },
-            { width: '50%', title: 'Organizado por:' },
-            { width: '50%', title: 'Lugar' },
-            { width: '30%', title: 'Duracion (Horas)' },
-            {
-                width: '80%', row: [
-                    { col: [{ title: 'Fechas de Realización' }] },
-                    {
-                        col: [
-                            { title: 'Fecha Inicio' }, { title: 'Fecha Fin' }
-                        ]
-                    }
-                ]
-            },
+    // const FormacionAcademica = {
+    //     header: [
+    //         { width: '50%', title: 'Tipo' },
+    //         { width: '50%', title: 'Titulo Obtenido' },
+    //         { width: '50%', title: 'Institucion educativa' },
+    //         { width: '50%', title: 'Fecha' },
+    //         { width: '50%', title: 'Lugar' },
+    //         { width: '50%', title: 'Pais' },
+    //         { width: '50%', title: 'Nro' },
+    //     ],
+    //     values: [
+    //         { 0: "dedede", 1: "Todededrres", 2: "deded", 3: "bng", 4: "gfhfgh", 5: "fghfgh", 6: "hgfhfgh", },
+    //     ],
+    // }
+    // const ExperienciaDocente = {
+    //     header: [
+    //         { width: '50%', title: 'Institución' },
+    //         { width: '50%', title: 'Materia' },
+    //         { width: '50%', title: 'Fecha Inicio' },
+    //         { width: '50%', title: 'Fecha Fin' },
+    //         { width: '50%', title: 'Modalidad' },
+    //         { width: '50%', title: 'Lugar' },
+    //         { width: '50%', title: 'País' },
+    //     ],
+    //     values: [
+    //         { 0: "dedede", 1: "Todededrres", 2: "deded", 3: "bng", 4: "gfhfgh", 5: "fghfgh", 6: "hgfhfgh", },
+    //     ],
+    // }
+    // const Cursos = {
+    //     header: [
+    //         { width: '50%', title: 'Tipos' },
+    //         { width: '50%', title: 'Nombre' },
+    //         { width: '50%', title: 'Organizado por:' },
+    //         { width: '50%', title: 'Lugar' },
+    //         { width: '30%', title: 'Duracion (Horas)' },
+    //         {
+    //             width: '80%', row: [
+    //                 { col: [{ title: 'Fechas de Realización' }] },
+    //                 {
+    //                     col: [
+    //                         { title: 'Fecha Inicio' }, { title: 'Fecha Fin' }
+    //                     ]
+    //                 }
+    //             ]
+    //         },
 
-            { width: '40%', title: 'Tipo de Participación' },
-        ],
-        values: [
-            { 0: "wqwqw", 1: "Todededrres", 2: "deded", 3: "bng", 4: "gfhfgh", 5: "05-07-2000", 6: "05-07-2000", 7: 'DEDED' },
-        ],
-        valuesPorcentajes: [
-            "50%",
-            "50%",
-            "50%",
-            "50%",
-            "30%",
-            "40%",
-            "40%",
-            "40%",
-        ],
-    };
-    const ProduccionIntelectual = {
-        header: [
-            { width: '50%', title: 'Tipo' },
-            { width: '50%', title: 'Nombre/Titulo' },
-            { width: '50%', title: 'Tipo de Autoria' },
-            { width: '50%', title: 'Fecha' },
-            { width: '50%', title: 'Enlace Web' },
-        ],
-        values: [
-            { 0: "dedede", 1: "Todededrres", 2: "deded", 3: "bng", 4: "gfhfgh"},
-        ],
-    }
-    const Libros = {
-        header: [
-            { width: '50%', title: 'Titulo' },
-            { width: '50%', title: 'Tipo' },
-            { width: '50%', title: 'Tipo de Autoria' },
-            { width: '50%', title: 'ISB N' },
-            {
-                width: '80%', row: [
-                    { col: [{ title: 'Editorial' }] },
-                    {
-                        col: [
-                            { title: 'Nombre' }, { title: 'Origen' }
-                        ]
-                    }
-                ]
-            },
-            { width: '50%', title: 'Año' },
-        ],
-        values: [
-            { 0: "dedede", 1: "Todededrres", 2: "deded", 3: "bng", 4: "gfhfgh", 5: "gfhfgh", 6: "gfhfgh"},
-        ],
-        valuesPorcentajes: [
-            "50%",
-            "50%",
-            "50%",
-            "50%",
-            "40%",
-            "40%",
-            "50%",
-        ],
-    }
-    const MeritosAcademicos = {
-        header: [
-            { width: '50%', title: 'Nombre' },
-            { width: '50%', title: 'Fecha' },
-            { width: '50%', title: 'Tipo' },
-            { width: '50%', title: 'Otorgado por' },
-            { width: '50%', title: 'Pais' },
-            { width: '50%', title: 'Lugar' },
-        ],
-        values: [
-            { 0: "dedede", 1: "Todededrres", 2: "deded", 3: "bng", 4: "gfhfgh", 5: "gfhfgh"},
-        ],
-    }
-    const Idiomas = {
-        header: [
-            { width: '30%', title: 'Idioma' },
-            {
-                width: '90%', row: [
-                    { col: [{ title: 'Nivel de dominio' }] },
-                    {
-                        col: [
-                            { title: 'Hablado' }, { title: 'Escritura' },{ title: 'Comprensión' }
-                        ]
-                    }
-                ]
-            },
-            { width: '50%', title: 'Tipo de Certificación' },
+    //         { width: '40%', title: 'Tipo de Participación' },
+    //     ],
+    //     values: [
+    //         { 0: "wqwqw", 1: "Todededrres", 2: "deded", 3: "bng", 4: "gfhfgh", 5: "05-07-2000", 6: "05-07-2000", 7: 'DEDED' },
+    //     ],
+    //     valuesPorcentajes: [
+    //         "50%",
+    //         "50%",
+    //         "50%",
+    //         "50%",
+    //         "30%",
+    //         "40%",
+    //         "40%",
+    //         "40%",
+    //     ],
+    // };
+    // const ProduccionIntelectual = {
+    //     header: [
+    //         { width: '50%', title: 'Tipo' },
+    //         { width: '50%', title: 'Nombre/Titulo' },
+    //         { width: '50%', title: 'Tipo de Autoria' },
+    //         { width: '50%', title: 'Fecha' },
+    //         { width: '50%', title: 'Enlace Web' },
+    //     ],
+    //     values: [
+    //         { 0: "dedede", 1: "Todededrres", 2: "deded", 3: "bng", 4: "gfhfgh"},
+    //     ],
+    // }
+    // const Libros = {
+    //     header: [
+    //         { width: '50%', title: 'Titulo' },
+    //         { width: '50%', title: 'Tipo' },
+    //         { width: '50%', title: 'Tipo de Autoria' },
+    //         { width: '50%', title: 'ISB N' },
+    //         {
+    //             width: '80%', row: [
+    //                 { col: [{ title: 'Editorial' }] },
+    //                 {
+    //                     col: [
+    //                         { title: 'Nombre' }, { title: 'Origen' }
+    //                     ]
+    //                 }
+    //             ]
+    //         },
+    //         { width: '50%', title: 'Año' },
+    //     ],
+    //     values: [
+    //         { 0: "dedede", 1: "Todededrres", 2: "deded", 3: "bng", 4: "gfhfgh", 5: "gfhfgh", 6: "gfhfgh"},
+    //     ],
+    //     valuesPorcentajes: [
+    //         "50%",
+    //         "50%",
+    //         "50%",
+    //         "50%",
+    //         "40%",
+    //         "40%",
+    //         "50%",
+    //     ],
+    // }
+    // const MeritosAcademicos = {
+    //     header: [
+    //         { width: '50%', title: 'Nombre' },
+    //         { width: '50%', title: 'Fecha' },
+    //         { width: '50%', title: 'Tipo' },
+    //         { width: '50%', title: 'Otorgado por' },
+    //         { width: '50%', title: 'Pais' },
+    //         { width: '50%', title: 'Lugar' },
+    //     ],
+    //     values: [
+    //         { 0: "dedede", 1: "Todededrres", 2: "deded", 3: "bng", 4: "gfhfgh", 5: "gfhfgh"},
+    //     ],
+    // }
+    // const Idiomas = {
+    //     header: [
+    //         { width: '30%', title: 'Idioma' },
+    //         {
+    //             width: '90%', row: [
+    //                 { col: [{ title: 'Nivel de dominio' }] },
+    //                 {
+    //                     col: [
+    //                         { title: 'Hablado' }, { title: 'Escritura' },{ title: 'Comprensión' }
+    //                     ]
+    //                 }
+    //             ]
+    //         },
+    //         { width: '50%', title: 'Tipo de Certificación' },
            
-        ],
-        values: [
-            { 0: "dedede", 1: "Medio", 2: "Alto", 3: "Alto", 4: "gfhfgh"},
-        ],
-        valuesPorcentajes: [
-            "30%",
-            "30%",
-            "30%",
-            "30%",
-            "50%",
-        ],
-    }
-    const ExperienciaProfesional = {
-        header: [
-            { width: '50%', title: 'Empresa/Institución' },
-            { width: '50%', title: 'Cargo' },
-            { width: '50%', title: 'Responsabilidades y/o Actividades' },
-            { width: '50%', title: 'Jefe Inmediato' },
-            { width: '50%', title: 'Teléfono' },
-            { width: '50%', title: 'Fecha Inicio' },
-            { width: '50%', title: 'Fecha Fin' },
-        ],
-        values: [
-            { uno: "dedede", dos: "Todededrres", tres: "deded", cuatro: "bng", cinco: "gfhfgh", seis: "gfhfgh", siete: "gfhfgh"},
-        ],
-    }
+    //     ],
+    //     values: [
+    //         { 0: "dedede", 1: "Medio", 2: "Alto", 3: "Alto", 4: "gfhfgh"},
+    //     ],
+    //     valuesPorcentajes: [
+    //         "30%",
+    //         "30%",
+    //         "30%",
+    //         "30%",
+    //         "50%",
+    //     ],
+    // }
+    // const ExperienciaProfesional = {
+    //     header: [
+    //         { width: '50%', title: 'Empresa/Institución' },
+    //         { width: '50%', title: 'Cargo' },
+    //         { width: '50%', title: 'Responsabilidades y/o Actividades' },
+    //         { width: '50%', title: 'Jefe Inmediato' },
+    //         { width: '50%', title: 'Teléfono' },
+    //         { width: '50%', title: 'Fecha Inicio' },
+    //         { width: '50%', title: 'Fecha Fin' },
+    //     ],
+    //     values: [
+    //         { uno: "dedede", dos: "Todededrres", tres: "deded", cuatro: "bng", cinco: "gfhfgh", seis: "gfhfgh", siete: "gfhfgh"},
+    //     ],
+    // }
 
 
     const renderTable = (Table) => {

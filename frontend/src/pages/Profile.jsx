@@ -98,16 +98,18 @@ function Profile() {
   const handleSubmit = async (event) => {
     try {
       event.preventDefault();
-      const updateUser = await updateUserData(form.userId, { ...form, photo });
-      await loadUserProfile();
-      toast({
-        title: "Actualización",
-        description: "Datos actualizados correctamente",
-        status: "success",
-        duration: 9000,
-        isClosable: true,
-        position: "top-right",
-      });
+
+      // const updateUser = await updateUserData(form.userId, { ...form, photo });
+      // await loadUserProfile();
+      // toast({
+      //   title: "Actualización",
+      //   description: "Datos actualizados correctamente",
+      //   status: "success",
+      //   duration: 9000,
+      //   isClosable: true,
+      //   position: "top-right",
+      // });
+      console.log(photo)
     } catch (error) {
       console.log(error);
     }
