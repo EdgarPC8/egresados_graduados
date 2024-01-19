@@ -119,7 +119,7 @@ function Resumes() {
       try {
         const userRequest = await getUsers();
 
-        setUsers(userRequest.data.filter((us) => us.userId !== user.userId));
+        setUsers(userRequest.data);
         // console.log(users);
       } catch (error) {
         console.error(error);

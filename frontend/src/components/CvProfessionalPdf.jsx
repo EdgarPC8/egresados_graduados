@@ -69,29 +69,30 @@ function Resumes() {
       // const res = await verifyTokenRequest();
       // const idUser = res.data.userId;
       const resProfessionals = await getProfessionalsById(userId);
-
       const professionalData = resProfessionals.data;
 
-      const resAcademicTraining = await getProfessionalExperienceById(userId);
-      const resProfessionalExperience = await getLanguagesById(userId);
-      const resLanguages = await getAcademicProfessionalMeritsById(userId);
-      const resAcademicProfessionalMerits = await getAcademicTrainingById(userId);
-      const resBooks = await getTeachingExperienceById(userId);
-      const resIntellectualProduction = await getCoursesWorkshopsById(userId);
-      const resCoursesWorkshops = await getIntellectualProductionById(userId);
-      const resTeachingExperience = await getBooksById(userId);
+      const resAcademicTraining = await getAcademicTrainingById(userId);
+      const resProfessionalExperience = await getProfessionalExperienceById(userId);
+      const resLanguages = await getLanguagesById(userId);
+      const resAcademicProfessionalMerits = await getAcademicProfessionalMeritsById(userId);
+      const resBooks = await getBooksById(userId);
+      const resIntellectualProduction = await getIntellectualProductionById(userId);
+      const resCoursesWorkshops = await getCoursesWorkshopsById(userId);
+      const resTeachingExperience = await getTeachingExperienceById(userId);
+
+
 
       const academicTrainingData = resAcademicTraining.data.map(objeto => {
         const { type, obtainedTitle, educationalInstitution, date, place, country, senescytRegistrationN, } = objeto;
         return { 0: type, 1: obtainedTitle, 2: educationalInstitution, 3: date, 4: place, 5: country, 6: senescytRegistrationN, }
       });
       const teachingData = resTeachingExperience.data.map(objeto => {
-        const { educationalInstitution,subject,startDate,endDate,modality,place,country } = objeto;
+        const { educationalInstitution, subject, startDate, endDate, modality, place, country } = objeto;
         return { 0: educationalInstitution, 1: subject, 2: startDate, 3: endDate, 4: modality, 5: place, 6: country }
       });
-     
+
       const coursesData = resCoursesWorkshops.data.map(objeto => {
-        const { 
+        const {
           startDate,
           endDate,
           place,
@@ -100,8 +101,8 @@ function Resumes() {
           typeParticipation,
           name,
           organizedBy
-         } = objeto;
-        return { 0:type, 1:name, 2:organizedBy, 3:place, 4:duration, 5:startDate, 6:endDate,7:typeParticipation }
+        } = objeto;
+        return { 0: type, 1: name, 2: organizedBy, 3: place, 4: duration, 5: startDate, 6: endDate, 7: typeParticipation }
       });
       const intellectualProductionData = resIntellectualProduction.data.map(objeto => {
         const { type,
@@ -119,7 +120,7 @@ function Resumes() {
           editorialOrigin,
           year,
           isbN,
-          title} = objeto;
+          title } = objeto;
         return { 0: title, 1: type, 2: typeAuthorship, 3: isbN, 4: editorialName, 5: editorialOrigin, 6: year }
       });
       const professionalMeritsData = resAcademicProfessionalMerits.data.map(objeto => {
@@ -146,14 +147,13 @@ function Resumes() {
       
       setFormProfessional(professionalData);
       setListAcademicTraining(academicTrainingData);
-      setListProfessionalExperience(teachingData);
-      setListLanguages(coursesData);
-      setListAcademicProfessionalMerits(intellectualProductionData);
+      setListProfessionalExperience(professionalExperienceData);
+      setListLanguages(languagesData);
+      setListAcademicProfessionalMerits(professionalMeritsData);
       setListBooks(booksData);
-      setListIntellectualProduction(professionalMeritsData);
-      setListCoursesWorkshops(languagesData);
-      setListTeachingExperience(professionalExperienceData);
-
+      setListIntellectualProduction(intellectualProductionData);
+      setListCoursesWorkshops(coursesData);
+      setListTeachingExperience(teachingData);
     } catch (error) {
       console.error("Error al obtener datos académicos:", error);
     }
@@ -166,7 +166,7 @@ function Resumes() {
   return (
     <>
       {showPDF && (
-        <PDFViewer width="100%" height="600px">
+        <PDFViewer width="100%" height="800px">
           <PDFDocument
             data={formProfessional}
             cv={{
