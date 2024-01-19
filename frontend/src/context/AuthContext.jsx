@@ -21,17 +21,18 @@ const AuthProvider = ({ children }) => {
   const [errors, setErrors] = useState({});
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
-  const [user, setUser] = useState({ roles: [] });
+  const [user, setUser] = useState({roles: []});
 
   const loadUserProfile = async () => {
     try {
       setIsLoading(false);
+      setIsAuthenticated(true)
       const verify = await verifyTokenRequest();
       if (verify.status === 200) {
         setUser(verify.data);
       }
     } catch (error) {
-      setErrors(error.response.data);
+      console.log(error)
     }
   };
 

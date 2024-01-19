@@ -17,9 +17,7 @@ import {
   Spacer,
   IconButton,
 } from "@chakra-ui/react";
-import { useEffect, useState } from "react";
-import { getUsers } from "../api/userRequest";
-import { urlPhotos } from "../api/axios";
+import { useState } from "react";
 import {
   FiChevronsLeft,
   FiChevronsRight,

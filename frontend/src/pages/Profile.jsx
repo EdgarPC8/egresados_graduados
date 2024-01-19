@@ -99,7 +99,7 @@ function Profile() {
     try {
       event.preventDefault();
       const updateUser = await updateUserData(form.userId, { ...form, photo });
-      loadUserProfile();
+      await loadUserProfile();
       toast({
         title: "Actualización",
         description: "Datos actualizados correctamente",

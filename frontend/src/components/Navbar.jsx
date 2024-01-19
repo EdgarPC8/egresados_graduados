@@ -51,10 +51,10 @@ import { FaChartPie } from "react-icons/fa";
 
 const Navbar = () => {
   const btnRef = useRef();
-  const { isAuthenticated, logout, user } = useAuth();
+  const { isAuthenticated, logout, user, isLoading } = useAuth();
 
   const { isOpen, onOpen, onClose } = useDisclosure();
-
+  
 
   const LinksToNoAuth = [
     {
@@ -180,7 +180,9 @@ const Navbar = () => {
           {isAuthenticated ? (
             <Flex>
               <Center>
-                <Badge colorScheme='purple' mr={5}>{user.loginRol}</Badge>
+                <Badge colorScheme="purple" mr={5}>
+                  {user.loginRol}
+                </Badge>
                 <Link to="/perfil">
                   <Avatar
                     size={"sm"}
@@ -218,16 +220,19 @@ const Navbar = () => {
         <DrawerOverlay />
         <DrawerContent>
           <DrawerCloseButton />
-          {/* <DrawerHeader>Create your account</DrawerHeader> */}
+          
+          
 
           <DrawerBody>
-            {isAuthenticated ? (
+            {!isLoading ? (
               <Stack align="start" spacing={4} flex="1" mr={4}>
-                {Links[user.loginRol].map((link) => (
-                  <Link to={link.path} key={link.name} onClick={onClose}>
-                    <NavLink icon={link.icon}>{link.name}</NavLink>
-                  </Link>
-                ))}
+                {user.loginRol && (
+                  Links[user.loginRol].map((link) => (
+                    <Link to={link.path} key={link.name} onClick={onClose}>
+                      <NavLink icon={link.icon}>{link.name}</NavLink>
+                    </Link>
+                  ))
+                ) }
               </Stack>
             ) : (
               <Stack align="start" spacing={4} flex="1" mr={4}>
