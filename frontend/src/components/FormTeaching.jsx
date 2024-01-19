@@ -31,6 +31,8 @@ import {
 
 import Modal from "../components/AlertDialog";
 import Tabl from "./Table";
+import { useAuth } from "../context/AuthContext";
+
 
 function FormTeaching() {
   const initialFormTeaching = {
@@ -44,6 +46,8 @@ function FormTeaching() {
   };
 
   const toast = useToast();
+  const { user } = useAuth();
+
 
   const [dataTeachingExperience, setDataTeachingExperience] = useState([]);
   const [isEditing, setIsEditing] = useState(false);
@@ -95,8 +99,6 @@ function FormTeaching() {
 
       return;
     }
-
-    console.log(formTeaching);
 
     toast.promise(
       addTeachingExperience({ ...formTeaching, professionalId: user.userId }),
