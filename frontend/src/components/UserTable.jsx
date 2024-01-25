@@ -82,10 +82,8 @@ function UserTable() {
       header: "Foto",
       accessorKey: "photo",
       cell: (props) => (
-        <Image
-          boxSize="50px"
-          borderRadius="full"
-          objectFit="cover"
+        <Avatar
+          name={props.row.original.firstName}
           src={
             props.row.original.photo &&
             `${urlPhotos}/${props.row.original.photo}`
