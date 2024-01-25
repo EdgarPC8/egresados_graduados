@@ -13,6 +13,7 @@ import {
   Avatar,
   Input,
   Flex,
+  Text,
   Center,
   Spacer,
   IconButton,
@@ -69,6 +70,9 @@ function Tabl({ data, columns }) {
               icon={<FiChevronLeft />}
               onClick={() => table.previousPage()}
             />
+            <Center>
+              <Text mx={3}>{table.getState().pagination.pageIndex + 1}</Text>
+            </Center>
             <IconButton
               icon={<FiChevronRight />}
               onClick={() => table.nextPage()}
