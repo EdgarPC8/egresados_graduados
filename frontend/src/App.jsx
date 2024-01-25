@@ -33,7 +33,6 @@ function App() {
           <Routes>
             <Route path="/" element={<HomePage />} />
             <Route path="/login" element={<LoginPage />} />
-
             <Route path="/register" element={<RegisterPage />} />
 
             <Route
@@ -44,17 +43,12 @@ function App() {
               }
             >
               <Route path="/cv" element={<CV />} />
-
               <Route path="/quiz" element={<Quiz />} />
               <Route path="/perfil" element={<Profile />} />
-
               <Route path="/charts" element={<Charts />} />
               <Route path="/curriculos" element={<Resumes />} />
               <Route path="/cvProfessionalPdf/:userId" element={<CvProfessionalPdf />} />
-
-
             </Route>
-
             
             <Route element={<ProtectedRoute requiredRol={["administrador","programador","profesional"]} />}>
               <Route path="/actividad" element={<Logger />} />

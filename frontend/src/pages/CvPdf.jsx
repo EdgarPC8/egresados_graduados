@@ -18,8 +18,11 @@ import {
   getAllTeachingExperience,
   getProfessionalExperienceById,
 } from "../api/cvRequest";
+import { useAuth } from "../context/AuthContext";
 function Resumes() {
   const [showPDF, setShowPDF] = useState(false);
+const { user, loadUserProfile } = useAuth();
+
   let initialFormProfessional = {
     ci: "",
     firstName: "",
@@ -54,14 +57,13 @@ function Resumes() {
   const [ListTeachingExperience, setListTeachingExperience] = useState([]);
   async function fetchData() {
     try {
-      const res = await verifyTokenRequest();
-      const idUser = res.data.userId;
+      const idUser = user.userId;
       const resProfessionals = await getProfessionalsById(idUser);
       const resPrueba = await getProfessionalExperienceById(idUser);
-
-      console.log(resPrueba)
+      resProfessionals.data.image=user.photo
 
       const professionalData = resProfessionals.data;
+
 
       const resAcademicTraining = await getAllAcademicTraining();
       const resProfessionalExperience = await getAllProfessionalExperience();

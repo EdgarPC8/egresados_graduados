@@ -8,6 +8,9 @@ import {
   getProfessionalsById,
 } from "../api/professionalRequest.js";
 import {
+  getOneUser,
+} from "../api/userRequest.js";
+import {
   getAllAcademicTraining,
   getAllProfessionalExperience,
   getAllLanguages,
@@ -27,7 +30,10 @@ import {
 } from "../api/cvRequest";
 import { useParams } from "react-router-dom";
 
+
+
 function Resumes() {
+
   const [showPDF, setShowPDF] = useState(false);
   const { userId } = useParams();
 
@@ -56,6 +62,7 @@ function Resumes() {
   const [formProfessional, setFormProfessional] = useState(
     initialFormProfessional
   );
+
   const [ListAcademicTraining, setListAcademicTraining] = useState([]);
   const [ListProfessionalExperience, setListProfessionalExperience] = useState([]);
   const [ListLanguages, setListLanguages] = useState([]);
@@ -68,7 +75,9 @@ function Resumes() {
     try {
       // const res = await verifyTokenRequest();
       // const idUser = res.data.userId;
+      const { data } = await getOneUser(userId);
       const resProfessionals = await getProfessionalsById(userId);
+      resProfessionals.data.image=data.photo
       const professionalData = resProfessionals.data;
 
       const resAcademicTraining = await getAcademicTrainingById(userId);

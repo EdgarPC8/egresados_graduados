@@ -89,7 +89,7 @@ function LoginPage() {
                   )}
 
                   <FormControl>
-                    <FormLabel htmlFor="username">Nombre de usuario</FormLabel>
+                    <FormLabel htmlFor="username">Usuario</FormLabel>
                     <Input id="username" name="username" />
                   </FormControl>
                   <FormControl>

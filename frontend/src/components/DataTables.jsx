@@ -92,7 +92,8 @@ function DataTable({ header, keyValues, data, numberRow = false, defaultRowsPerP
   };
 
   return (
-    <Box p={3} border="1px solid #ccc" borderRadius={8}>
+    <>
+     <Box p={3} border="1px solid #ccc" borderRadius={8}>
       <Grid gap={2} mt={2} mb={2} templateColumns={{base:"",md:"1fr 13fr" }} >
             <GridItem fontSize={"sm"}>
             <Select w={20} onChange={(e) => handleRowsPerPageChange(Number(e.target.value))}>
@@ -211,6 +212,8 @@ function DataTable({ header, keyValues, data, numberRow = false, defaultRowsPerP
         </Table>
       </TableContainer>
     </Box>
+    </>
+   
   );
 }
 

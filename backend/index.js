@@ -20,12 +20,12 @@ app.use(express.json());
 const allowedOrigins = [
   // "http://dev.gym.com",
   "http://localhost",
-  // "http://localhost:8888",
+  "http://localhost:8888",
   "http://localhost:5173",
-  // "http://192.168.137.250:5173",
+  "http://192.168.137.250:5173",
   "http://192.169.100.250:5173",
-  "http://192.168.137.250:8888",
-  "http://aplicaciones.marianosamaniego.edu.ec"
+  // "http://192.168.137.250:8888",
+  // "http://aplicaciones.marianosamaniego.edu.ec",
 ];
 
 const corsOptions = {

@@ -98,6 +98,8 @@ function Tabl({ data, columns }) {
                 <Th
                   key={header.id}
                   onClick={header.column.getToggleSortingHandler()}
+              whiteSpace="normal" // Permite el retorno de línea en lugar de desbordamiento
+
                 >
                   {header.isPlaceholder
                     ? null
@@ -120,7 +122,11 @@ function Tabl({ data, columns }) {
           {table.getRowModel().rows.map((row) => (
             <Tr key={row.id}>
               {row.getVisibleCells().map((cell) => (
-                <Td key={cell.id}>
+                <Td key={cell.id} 
+              whiteSpace="normal" // Permite el retorno de línea en lugar de desbordamiento
+
+                
+                >
                   {flexRender(cell.column.columnDef.cell, cell.getContext())}
                 </Td>
               ))}
