@@ -1,4 +1,5 @@
 import Tabl from "../components/Table";
+import DataTable from "../components/DataTables";
 import { useEffect, useState } from "react";
 import { addUser, getUsers, removeUser } from "../api/userRequest";
 import { urlPhotos } from "../api/axios";
@@ -114,6 +115,10 @@ function Resumes() {
     },
   ];
 
+
+  const headerprueba=["dede","edede","dede","edede","dede","edede","dede","edede","dede","ededessssssssssssdsdsdsdsdsdsdsdsdsdsdsdsdsdsdsdsdsdsdsdsdsdsdsdsdsdsdsdsdsdsdsdsdsdsdsdsdsdsdsdsdsdsdsdsddsdsdsd"]
+  const valuesprueba=["deded","deded","dede","edede","dede","edede","dede","edede","dede","ededesssssssssssssssssssssssss"]
+
   useEffect(() => {
     const fetchUsers = async () => {
       try {
@@ -134,7 +139,9 @@ function Resumes() {
 
   return (
     <>
-    <Box p={10}>
+ 
+
+      <Box p={10}>
         <Flex alignItems="center" gap="2">
           <Box p="2">
             <Heading size="md">Curriculos</Heading>
@@ -142,6 +149,9 @@ function Resumes() {
           <Spacer />
          
         </Flex>
+
+        {/* <DataTable header={headerprueba} keyValues={valuesprueba} data={["ddsdsd","dsdsdsssss"]}></DataTable> */}
+
         <Tabl data={users} columns={columns} />
 
         <AlertDialog

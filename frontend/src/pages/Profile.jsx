@@ -70,7 +70,6 @@ function Profile() {
     setForm({ ...form, [name]: value });
   };
 
-  console.log(user);
 
   const newPassword = async (event) => {
     event.preventDefault();
@@ -103,6 +102,8 @@ function Profile() {
         ...form,
         photo,
       });
+      console.log(photo)
+
       await loadUserProfile();
       toast({
         title: "Actualización",

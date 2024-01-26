@@ -11,6 +11,7 @@ import {
   Image,
   useToast,
   Center,
+  Avatar,
 } from "@chakra-ui/react";
 import { useEffect, useState, useRef } from "react";
 import {
@@ -436,10 +437,12 @@ function ProfessionalForm() {
           margin={"auto"}
         >
           <Center w={200} h={200}>
-            <Image
+            <Avatar
               src={`${urlPhotos}/${user.photo}`}
               borderRadius="full"
-            ></Image>
+              w={200}
+              h={200}
+            ></Avatar>
           </Center>
         </GridItem>
         <GridItem

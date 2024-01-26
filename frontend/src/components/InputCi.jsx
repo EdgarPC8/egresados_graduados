@@ -114,7 +114,7 @@ const InputCi = ({ setFormValid }) => {
 
       {!isValidCI(ci) && (
         <FormHelperText color="red" fontSize="sm">
-          Ingrése una cedula valida
+          Ingrése una cedula válida
         </FormHelperText>
       )}
 

@@ -54,8 +54,8 @@ const styles = StyleSheet.create({
         fontSize: 10,
     },
     photo: {
-        width: 100,
-        height: 100,
+        width: 148,
+        height: 184,
         marginTop:20,
       },
     table: {
@@ -91,9 +91,6 @@ const styles = StyleSheet.create({
 });
 
 const PDFDocument = ({ data,cv }) => {
-    console.log(data.image)
-
-
     const imageURL = `${urlPhotos}/${data.image}`;
     const personalInfo = [
         { label: 'Cedula', value: data.ci },

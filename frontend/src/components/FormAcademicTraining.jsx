@@ -181,32 +181,38 @@ function FormAcademicTraining() {
     {
       header: "Tipo",
       accessorKey: "type",
+      width: "10000000px", // Puedes ajustar el ancho según tus necesidades
     },
     {
       header: "Título Obtenido",
       accessorKey: "obtainedTitle",
+      width: "1500000px", // Puedes ajustar el ancho según tus necesidades
     },
     {
       header: "Institución Educativa",
       accessorKey: "educationalInstitution",
+      width: "200px", // Puedes ajustar el ancho según tus necesidades
     },
     {
       header: "Fecha",
       accessorKey: "date",
+      width: "100px", // Puedes ajustar el ancho según tus necesidades
     },
     {
       header: "Lugar",
       accessorKey: "place",
+      width: "150px", // Puedes ajustar el ancho según tus necesidades
     },
     {
       header: "País",
       accessorKey: "country",
+      width: "100px", // Puedes ajustar el ancho según tus necesidades
     },
     {
       header: "Nro de registro senescyt",
       accessorKey: "senescytRegistrationN",
+      width: "150px", // Puedes ajustar el ancho según tus necesidades
     },
-
     {
       header: "Accion",
       cell: (props) => (
@@ -229,8 +235,10 @@ function FormAcademicTraining() {
           </Button>
         </Stack>
       ),
+      width: "150px", // Puedes ajustar el ancho según tus necesidades
     },
   ];
+  
 
   return (
     <form onSubmit={handleSubmit} ref={form}>
