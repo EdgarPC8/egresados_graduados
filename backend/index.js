@@ -20,6 +20,7 @@ app.use(express.json());
 const allowedOrigins = [
   // "http://dev.gym.com",
   "http://localhost",
+  // "http://dev.alum.com",
   // "http://localhost:8888",
   "http://localhost:5173",
   // "http://192.168.137.250:5173",
