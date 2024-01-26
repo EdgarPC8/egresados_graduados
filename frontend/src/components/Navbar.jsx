@@ -165,8 +165,8 @@ const Navbar = () => {
               <Image
                 borderRadius="full"
                 boxSize="50px"
-                // src="http://www.marianosamaniego.edu.ec/eva/pluginfile.php/1/core_admin/logo/0x200/1679244973/logoistms.jpeg"
-                src="../public/logoistms.jpeg"
+                src="http://www.marianosamaniego.edu.ec/eva/pluginfile.php/1/core_admin/logo/0x200/1679244973/logoistms.jpeg"
+                // src="../public/logoistms.jpeg"
                 alt="Dan Abramov"
               />
               {!isAuthenticated &&
