@@ -20,6 +20,7 @@ import {
   AccordionButton,
   Stack,
   useToast,
+  Flex,
 } from "@chakra-ui/react";
 import { useEffect, useState, useRef } from "react";
 import {
@@ -32,6 +33,8 @@ import {
 import Modal from "../components/AlertDialog";
 import Tabl from "./Table";
 import { useAuth } from "../context/AuthContext";
+import HelpBox from "../components/HelpBox";
+
 
 
 function FormTeaching() {
@@ -169,11 +172,18 @@ function FormTeaching() {
   }, []);
 
   const columns = [
-    { header: "Institución", accessorKey: "educationalInstitution" },
-    { header: "Materia", accessorKey: "subject" },
+    { header: "Institución Educativa", accessorKey: "educationalInstitution" },
+    { header: "Materia /Componente Educativo", accessorKey: "subject" },
     { header: "Fecha Inicio", accessorKey: "startDate" },
     { header: "Fecha Fin", accessorKey: "endDate" },
-    { header: "Modalidad", accessorKey: "modality" },
+    { header: (
+      <>
+      <Flex>
+      Modalidad
+        <HelpBox title="Modalidad" message="(Presencial, Distancia, Online)"/>
+      </Flex>
+      </>
+    ), accessorKey: "modality" },
     { header: "Lugar", accessorKey: "place" },
     { header: "País", accessorKey: "country" },
     {

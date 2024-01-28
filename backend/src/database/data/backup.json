@@ -1,11 +1,69 @@
 {
   "ProfessionalExperienceBackup": [],
   "LanguagesBackup": [],
-  "AcademicProfessionalMeritsBackup": [],
-  "AcademicTrainingBackup": [],
-  "TeachingExperienceBackup": [],
-  "CoursesWorkshopsBackup": [],
-  "IntellectualProductionBackup": [],
+  "AcademicProfessionalMeritsBackup": [
+    {
+      "id": 1,
+      "name": "Ganador del II concurso de Reconocimiento a la Investigación Universitaria estudiantil Galardón Nacional 2014",
+      "date": "2014-08-26",
+      "type": "Nacional",
+      "grantedBy": "Secretaria de Educación Superior, Ciencia, Tecnología e Innovación ",
+      "country": "Ecuador",
+      "location": "Guauaquil",
+      "professionalId": 103
+    }
+  ],
+  "AcademicTrainingBackup": [
+    {
+      "id": 1,
+      "type": "Secundaria",
+      "date": "2016-01-27",
+      "place": "Cariamanga",
+      "country": "Ecuador",
+      "obtainedTitle": "BACHILLER TECNICO EN COMERCIO Y ADMINISTRACION ESPECIALIZACION INFORMATICA",
+      "educationalInstitution": "INSTITUTO TECNOLOGICO SUPERIOR MARIANO SAMANIEGO",
+      "senescytRegistrationN": "",
+      "professionalId": 103
+    }
+  ],
+  "TeachingExperienceBackup": [
+    {
+      "id": 1,
+      "educationalInstitution": "Escuela de Formacion y Capacitacion de Conductores Profesionales de Calvas.",
+      "subject": "Computacion Basica",
+      "startDate": "2017-01-02",
+      "endDate": "2017-10-27",
+      "modality": "Presencial",
+      "place": "Cariamanga",
+      "country": "Ecuador",
+      "professionalId": 103
+    }
+  ],
+  "CoursesWorkshopsBackup": [
+    {
+      "id": 1,
+      "type": "Curso",
+      "name": "MOOC: Formacion en docencia virtual en la Educacion Superior",
+      "organizedBy": "Instituto Superior Tecnologico de Babahoyo",
+      "place": "Virtual",
+      "duration": "40",
+      "startDate": "2020-04-20",
+      "endDate": "2020-05-08",
+      "typeParticipation": "Asistente",
+      "professionalId": 103
+    }
+  ],
+  "IntellectualProductionBackup": [
+    {
+      "id": 1,
+      "type": "Otro",
+      "name": "Las tecnologías de la Información y comunicación con énfasis en las aplicaciones móviles    Information and communication technologies with emphasis on mobile applications",
+      "typeAuthorship": "Principal",
+      "date": "2019-12-15",
+      "webLink": "http://biblioteca.marianosamaniego.edu.ec/biblio/media/digitales/Indexados_vol2.pdf",
+      "professionalId": 103
+    }
+  ],
   "BooksBackup": [],
   "UsersBackup": [
     {
@@ -1608,6 +1666,36 @@
       "httpMethod": "PUT",
       "action": "Se editó un profesional",
       "endPoint": "/api/professionals/editProfessionals/103"
+    },
+    {
+      "id": 7,
+      "httpMethod": "PUT",
+      "action": "Se editó un profesional",
+      "endPoint": "/api/professionals/editProfessionals/2"
+    },
+    {
+      "id": 8,
+      "httpMethod": "PUT",
+      "action": "Se editó un profesional",
+      "endPoint": "/api/professionals/editProfessionals/2"
+    },
+    {
+      "id": 9,
+      "httpMethod": "PUT",
+      "action": "Se editó un profesional",
+      "endPoint": "/api/professionals/editProfessionals/2"
+    },
+    {
+      "id": 10,
+      "httpMethod": "PUT",
+      "action": "Se editó un profesional",
+      "endPoint": "/api/professionals/editProfessionals/2"
+    },
+    {
+      "id": 11,
+      "httpMethod": "PUT",
+      "action": "Se editó un profesional",
+      "endPoint": "/api/professionals/editProfessionals/2"
     }
   ],
   "NominasBackup": [
@@ -3376,13 +3464,13 @@
       "secondName": "Patricio",
       "firstLastName": "Torres",
       "secondLastName": "Condolo",
-      "bloodType": null,
+      "bloodType": "A+",
       "birthDate": "2000-07-05",
       "gender": "M",
-      "civilStatus": null,
-      "nationality": null,
-      "placeBirth": null,
-      "placeResidence": null,
+      "civilStatus": "Soltero",
+      "nationality": "Ecuatoriana",
+      "placeBirth": "Cariamanga",
+      "placeResidence": "Cariamanga",
       "direction": "Calle Centenario y 18 de Noviembre",
       "homePhone": "(07) 268-8460",
       "cellPhone": "(593) 96-923-6901",

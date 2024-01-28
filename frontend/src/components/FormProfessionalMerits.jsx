@@ -21,8 +21,11 @@ import {
   AccordionIcon,
   AccordionButton,
   useToast,
+  Flex,
 } from "@chakra-ui/react";
 import { useEffect, useState, useRef } from "react";
+import HelpBox from "../components/HelpBox";
+
 import {
   addAcademicProfessionalMerits,
   getAllAcademicProfessionalMerits,
@@ -176,7 +179,14 @@ function FormProfessionalMerits() {
   const columns = [
     { header: "Nombre", accessorKey: "name" },
     { header: "Fecha", accessorKey: "date" },
-    { header: "Tipo", accessorKey: "type" },
+    { header: (
+      <>
+      <Flex>
+      Tipo
+        <HelpBox title="Tipo" message="(Nacional, Internacional)"/>
+      </Flex>
+      </>
+    ), accessorKey: "type" },
     { header: "Otorgado Por", accessorKey: "grantedBy" },
     { header: "País", accessorKey: "country" },
     { header: "Lugar", accessorKey: "location" },

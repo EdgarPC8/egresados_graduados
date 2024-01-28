@@ -20,7 +20,10 @@ import {
   Stack,
   AccordionButton,
   useToast,
+  Flex,
 } from "@chakra-ui/react";
+import HelpBox from "../components/HelpBox";
+
 
 import { useEffect, useState, useRef } from "react";
 import {
@@ -188,7 +191,14 @@ function FormProfessionalExperience() {
 
   const columns = [
     { header: "Nro.", accessorKey: "nro" },
-    { header: "Empresa/Institución", accessorKey: "companyInstitution" },
+    { header: (
+      <>
+      <Flex>
+      Empresa/Institución
+        <HelpBox title="Empresa/Institución" message="(comience por la última)"/>
+      </Flex>
+      </>
+    ), accessorKey: "companyInstitution" },
     { header: "Cargo", accessorKey: "position" },
     {
       header: "Responsabilidades y/o Actividades",
