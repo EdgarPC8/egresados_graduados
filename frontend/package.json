@@ -21,6 +21,7 @@
     "axios": "^1.6.0",
     "datatables.net": "^1.13.8",
     "datatables.net-bs5": "^1.13.8",
+    "file-saver": "^2.0.5",
     "framer-motion": "^10.16.4",
     "jquery": "^3.7.1",
     "react": "^18.2.0",

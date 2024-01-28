@@ -105,7 +105,7 @@ function ProfessionalForm() {
       return;
     }
 
-    toast.promise(editPro(id, formProfessional), {
+    toast.promise(editProfessional(id, formProfessional), {
       loading: {
         title: "Añadiendo...",
         position: "top-right",

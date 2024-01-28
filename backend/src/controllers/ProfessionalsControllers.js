@@ -9,13 +9,14 @@ const getAllProfessionals = async (req, res) => {
 const addProfessional = async (req, res) => {
   const data = req.body; // Suponiendo que los datos están en el cuerpo de la solicitud
   try {
-    const newProfessional = await Professionals.create(data);
+    // const newProfessional = await Professionals.create(data);
+    console.log(data)
     res.json({ message: "Agregado con éxito" });
-    logger({
-      httpMethod: req.method,
-      endPoint: req.originalUrl,
-      action: `Se agregó un profesional ${newProfessional.ci} ${newProfessional.firstName} ${newProfessional.firstLastName}`,
-    });
+    // logger({
+    //   httpMethod: req.method,
+    //   endPoint: req.originalUrl,
+    //   action: `Se agregó un profesional ${newProfessional.ci} ${newProfessional.firstName} ${newProfessional.firstLastName}`,
+    // });
   } catch (error) {
     res.status(500).json({
       message: error.message,

@@ -27,7 +27,6 @@ import { useEffect, useState } from "react";
 import { registerUser } from "../api/registerRequest";
 import { useNavigate } from "react-router-dom";
 
-
 function LoginPage() {
   const toast = useToast();
   const navigate = useNavigate();
@@ -47,7 +46,6 @@ function LoginPage() {
       const data = Object.fromEntries(new FormData(event.target));
       data.username = data.ci;
       //agrea el ci al username para uqe se guarde
-      
       toast.promise(registerUser(data), {
         loading: {
           title: "Registrando...",
@@ -56,6 +54,7 @@ function LoginPage() {
         success: (d) => {
           // aqui quiero que me rediriga a otra enlace
           navigate('/login');
+
   
           return {
             title: "Registracion",

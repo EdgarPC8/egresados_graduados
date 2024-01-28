@@ -2,6 +2,7 @@ import express from "express";
 import authRoutes from "./src/routes/authRoutes.js";
 import professionalsRoutes from "./src/routes/professionalsRoutes.js";
 import cvRoutes from "./src/routes/cvRoutes.js";
+import configRoutes from "./src/routes/configRoutes.js";
 import quizRoutes from "./src/routes/quizRoutes.js";
 import chartsRoutes from "./src/routes/chartsRoutes.js";
 import linguiGeoRoutes from "./src/routes/linguisticsGeographyRoutes.js";
@@ -21,9 +22,9 @@ const allowedOrigins = [
   // "http://dev.gym.com",
   "http://localhost",
   // "http://dev.alum.com",
-  // "http://localhost:8888",
-  // "http://localhost:5173",
-  // "http://192.168.137.250:5173",
+  "http://localhost:8888",
+  "http://localhost:5173",
+  "http://192.168.137.250:5173",
   // "http://192.169.100.250:5173",
   // "http://192.168.137.250:8888",
   "http://aplicaciones.marianosamaniego.edu.ec",
@@ -57,6 +58,7 @@ app.use("/api/users", userRoutes);
 app.use("/api/charts", chartsRoutes);
 app.use("/api/register", registerRoutes);
 app.use("/api/logs", logRoutes);
+app.use("/api/config", configRoutes);
 
 async function main() {
   try {

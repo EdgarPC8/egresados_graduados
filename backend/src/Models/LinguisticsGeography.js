@@ -1,7 +1,7 @@
 import { sequelize } from "../database/connection.js";
 import { DataTypes } from "sequelize";
 
-const Country = sequelize.define(
+export const Country = sequelize.define(
   "country",
   {
     id: {
@@ -23,7 +23,7 @@ const Country = sequelize.define(
   }
 );
 
-const Cod_country_lenguage = sequelize.define(
+export const Cod_country_lenguage = sequelize.define(
   "cod_coungry_lenguage",
   {
     id: {
@@ -44,7 +44,7 @@ const Cod_country_lenguage = sequelize.define(
     timestamps: false,
   }
 );
-const Province = sequelize.define(
+export const Province = sequelize.define(
   "tbl_province",
   {
     id: {
@@ -61,7 +61,7 @@ const Province = sequelize.define(
     timestamps: false,
   }
 );
-const Canton = sequelize.define(
+export const Canton = sequelize.define(
   "tbl_canton",
   {
     id: {
@@ -82,7 +82,7 @@ const Canton = sequelize.define(
     timestamps: false,
   }
 );
-const Parish = sequelize.define(
+export const Parish = sequelize.define(
   "tbl_parish",
   {
     id: {
