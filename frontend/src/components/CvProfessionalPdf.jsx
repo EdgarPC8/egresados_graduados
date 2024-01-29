@@ -29,9 +29,6 @@ import {
   getBooksById,
 } from "../api/cvRequest";
 import { useParams } from "react-router-dom";
-import { IntellectualProduction } from "../../../backend/src/Models/CV";
-
-
 
 function Resumes() {
 
