@@ -1630,74 +1630,7 @@
       "roleId": 2
     }
   ],
-  "LoggerBackup": [
-    {
-      "id": 1,
-      "httpMethod": "POST",
-      "action": "Usuario registrado",
-      "endPoint": "/api/register"
-    },
-    {
-      "id": 2,
-      "httpMethod": "POST",
-      "action": "Usuario registrado",
-      "endPoint": "/api/register"
-    },
-    {
-      "id": 3,
-      "httpMethod": "POST",
-      "action": "Usuario registrado",
-      "endPoint": "/api/register"
-    },
-    {
-      "id": 4,
-      "httpMethod": "PUT",
-      "action": "Se editó un profesional",
-      "endPoint": "/api/professionals/editProfessionals/103"
-    },
-    {
-      "id": 5,
-      "httpMethod": "PUT",
-      "action": "Se editó un profesional",
-      "endPoint": "/api/professionals/editProfessionals/103"
-    },
-    {
-      "id": 6,
-      "httpMethod": "PUT",
-      "action": "Se editó un profesional",
-      "endPoint": "/api/professionals/editProfessionals/103"
-    },
-    {
-      "id": 7,
-      "httpMethod": "PUT",
-      "action": "Se editó un profesional",
-      "endPoint": "/api/professionals/editProfessionals/2"
-    },
-    {
-      "id": 8,
-      "httpMethod": "PUT",
-      "action": "Se editó un profesional",
-      "endPoint": "/api/professionals/editProfessionals/2"
-    },
-    {
-      "id": 9,
-      "httpMethod": "PUT",
-      "action": "Se editó un profesional",
-      "endPoint": "/api/professionals/editProfessionals/2"
-    },
-    {
-      "id": 10,
-      "httpMethod": "PUT",
-      "action": "Se editó un profesional",
-      "endPoint": "/api/professionals/editProfessionals/2"
-    },
-    {
-      "id": 11,
-      "httpMethod": "PUT",
-      "action": "Se editó un profesional",
-      "endPoint": "/api/professionals/editProfessionals/2"
-    }
-  ],
+  "LoggerBackup": [],
   "NominasBackup": [
     {
       "id": 1,

@@ -12,6 +12,8 @@ import registerRoutes from "./src/routes/registerRoutes.js";
 import logRoutes from "./src/routes/logRoutes.js";
 import { sequelize } from "./src/database/connection.js";
 import { insertData } from "./src/database/insertData.js";
+import  loggerMiddleware from "./src/middlewares/loggerMiddleware.js";
+
 
 const app = express();
 const PORT = 3000;
@@ -42,16 +44,21 @@ const corsOptions = {
   optionsSuccessStatus: 200,
   credentials: true, // Permite el envío de cookies y encabezados de autenticación
 };
+app.use(loggerMiddleware);
+
 
 app.use(cors(corsOptions));
 
 app.use(express.json());
+// app.use((req, res, next) => {
+//   loggerMiddleware(req, res, () => next());
+// });
+
 
 app.use("/photos", express.static("userPhotos"));
-
 app.use("/api/auth", authRoutes);
 app.use("/api/professionals", professionalsRoutes);
-app.use("/api/cv", cvRoutes);
+app.use("/api/cv", cvRoutes,loggerMiddleware);
 app.use("/api/quiz", quizRoutes);
 app.use("/api/linguiGeo", linguiGeoRoutes);
 app.use("/api/users", userRoutes);
@@ -60,11 +67,13 @@ app.use("/api/register", registerRoutes);
 app.use("/api/logs", logRoutes);
 app.use("/api/config", configRoutes);
 
+
 async function main() {
   try {
     await sequelize.authenticate();
-    // await sequelize.sync({ force: true });
-    // await insertData();
+
+    await sequelize.sync({ force: true });
+    await insertData();
     console.log("Conección realizada con éxito.");
     app.listen(PORT, () => {
       console.log(`Backend escuchando en el puesto ${PORT}`);
