@@ -231,8 +231,8 @@ function ResumeForm() {
         },
       ],
     };
-    console.log("------------------------------------");
-    console.log(encuesta);
+    // console.log("------------------------------------");
+    // console.log(encuesta);
 
     encuesta.Questions.forEach((value) => {
       if ((value.textResponse || value.idOption) && !value.checkOptions) {

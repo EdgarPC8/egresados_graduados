@@ -67,10 +67,10 @@ const insertData = async () => {
 
   
   //  await Country.bulkCreate(jsonData.CountryBackup, { returning: true });
-  //  await Cod_country_lenguage.bulkCreate(jsonData.Cod_country_lenguageBackup, { returning: true });
-  //  await Province.bulkCreate(jsonData.ProvinceBackup, { returning: true });
-  //  await Canton.bulkCreate(jsonData.CantonBackup, { returning: true });
-  //  await Parish.bulkCreate(jsonData.ParishBackup, { returning: true });
+   await Cod_country_lenguage.bulkCreate(jsonData.Cod_country_lenguageBackup, { returning: true });
+   await Province.bulkCreate(jsonData.ProvinceBackup, { returning: true });
+   await Canton.bulkCreate(jsonData.CantonBackup, { returning: true });
+   await Parish.bulkCreate(jsonData.ParishBackup, { returning: true });
 
   } catch (error) {
     console.error("Error al insertar datos:", error);

@@ -15,6 +15,7 @@ import CvPdf from "./pages/CvPdf.jsx";
 import CvProfessionalPdf from "./components/CvProfessionalPdf.jsx";
 import Quiz from "./pages/Quiz.jsx";
 import Profile from "./pages/Profile.jsx";
+import Quizzes from "./pages/Quizzes.jsx";
 
 import UserTable from "./components/UserTable.jsx";
 import FormAddUser from "./components/FormAddUser.jsx";
@@ -38,20 +39,21 @@ function App() {
             <Route
               element={
                 <ProtectedRoute
-                  requiredRol={["profesional", "administrador","programador"]}
+                  requiredRol={["profesional","programador"]}
                 />
               }
             >
               <Route path="/cv" element={<CV />} />
               <Route path="/quiz" element={<Quiz />} />
               <Route path="/perfil" element={<Profile />} />
-              <Route path="/charts" element={<Charts />} />
-              <Route path="/curriculos" element={<Resumes />} />
-              <Route path="/cvProfessionalPdf/:userId" element={<CvProfessionalPdf />} />
+
             </Route>
             
-            <Route element={<ProtectedRoute requiredRol={["administrador","programador","profesional"]} />}>
+            <Route element={<ProtectedRoute requiredRol={["programador","administrador"]} />}>
+              <Route path="/cv" element={<CV />} />
               <Route path="/actividad" element={<Logger />} />
+              <Route path="/quiz" element={<Quiz />} />
+              <Route path="/perfil" element={<Profile />} />
               <Route path="/usuarios" element={<UserTable />} />
               <Route path="/agregar-usuario" element={<FormAddUser />} />
               <Route path="/editar-usuario/:userId" element={<FormAddUser />} />
@@ -59,6 +61,7 @@ function App() {
               <Route path="/curriculos" element={<Resumes />} />
               <Route path="/cvProfessionalPdf/:userId" element={<CvProfessionalPdf />} />
               <Route path="/cvPdf" element={<CvPdf />} />
+              <Route path="/quizzes" element={<Quizzes />} />
 
             </Route>
           </Routes>

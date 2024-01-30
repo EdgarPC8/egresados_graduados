@@ -8,8 +8,21 @@ export const getAllResponses = async () =>
       Authorization: jwt(),
     },
   });
+  export const getAllQuizzes = async () =>
+  await axios.get("/quiz/getAllQuizzes",{
+    headers: {
+      Authorization: jwt(),
+    },
+  });
 export const addResponses = async (data) =>
   await axios.post("/quiz/addResponses", data,{
+    headers: {
+      Authorization: jwt(),
+    },
+  });
+
+  export const addQuiz = async (data) =>
+  await axios.post("/quiz/addQuiz", data,{
     headers: {
       Authorization: jwt(),
     },
