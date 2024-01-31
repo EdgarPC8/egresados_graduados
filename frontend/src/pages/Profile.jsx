@@ -70,7 +70,6 @@ function Profile() {
     setForm({ ...form, [name]: value });
   };
 
-
   const newPassword = async (event) => {
     event.preventDefault();
     const passwords = Object.fromEntries(new FormData(event.target));
@@ -102,7 +101,7 @@ function Profile() {
         ...form,
         photo,
       });
-      console.log(photo)
+      console.log(photo);
 
       await loadUserProfile();
       toast({
@@ -177,7 +176,7 @@ function Profile() {
 
           <Center>
             <div style={{ position: "relative", display: "inline-block" }}>
-              <Avatar size='xl' src={`${urlPhotos}/${user.photo}`} />
+              <Avatar size="xl" src={`${urlPhotos}/${user.photo}`} />
             </div>
           </Center>
 
@@ -207,12 +206,6 @@ function Profile() {
               </Fragment>
             ))}
           </Stack>
-          {/* <Stack direction="row" spacing={3} mb={4}>
-              <Text as="b" >
-                Email:
-              </Text>
-              <Text ></Text>
-            </Stack> */}
         </Box>
       ) : (
         <form onSubmit={handleSubmit}>
@@ -222,13 +215,6 @@ function Profile() {
             </Heading>
             <Center>
               <div style={{ position: "relative", display: "inline-block" }}>
-                {/* <Image
-                  boxSize="100px"
-                  objectFit="cover"
-                  borderRadius="full"
-                  src={photoUrl}
-                  alt="Dan Abramov"
-                /> */}
                 <Avatar src={photoUrl} size="xl" />
                 <IconButton
                   bg="white"
@@ -245,7 +231,6 @@ function Profile() {
               onChange={handleFileChange}
               hidden
             />
-            {/* <Stack spacing={5} mt="20px"> */}
             <Grid templateColumns="repeat(2, 1fr)" mt="20px" gap={6}>
               <GridItem>
                 <Stack spacing="5">
@@ -281,15 +266,6 @@ function Profile() {
               </GridItem>
               <GridItem>
                 <Stack spacing="5">
-                  {/* <FormControl>
-                    <FormLabel>Email</FormLabel>
-                    <Input
-                      type="text"
-                      name="email"
-                      vale={form.email}
-                      onChange={handleChange}
-                    />
-                  </FormControl> */}
                   <FormControl>
                     <FormLabel>Primer Nombre</FormLabel>
                     <Input

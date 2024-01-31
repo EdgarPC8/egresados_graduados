@@ -4,6 +4,7 @@ import {
   loginRequest,
   verifyTokenRequest,
 } from "../api/userRequest";
+import { jwt } from "../api/axios";
 
 const AuthContext = createContext();
 
@@ -23,13 +24,44 @@ const AuthProvider = ({ children }) => {
   const [isLoading, setIsLoading] = useState(true);
   const [user, setUser] = useState({ roles: [] });
 
-  const loadUserProfile = async () => {
+  const signin = async (user) => {
     try {
+      const response = await loginRequest(user);
+      const { data } = response;
+      window.localStorage.setItem("token", data.token);
+
+      if (response.status === 200) {
+        setIsAuthenticated(true);
+        loadUserProfile();
+      }
+    } catch (error) {
+      // console.log(error.response.data);
+      setErrors(error);
+    }
+  };
+
+  const logout = async () => {
+    window.localStorage.removeItem("token");
+    setIsAuthenticated(false);
+  };
+
+  const checkLogin = async () => {
+  //  setIsAuthenticated(true) 
+    
+
+    if (!jwt()) {
+      setIsAuthenticated(false);
       setIsLoading(false);
-      setIsAuthenticated(true);
+      return;
+    }
+
+    
+
+    try {
       const session = await verifyTokenRequest();
       const user = await getOneUser(session.data.userId);
-
+      
+      
       const data = {
         ci: user.data.ci,
         firstLastName: user.data.firstLastName,
@@ -43,48 +75,12 @@ const AuthProvider = ({ children }) => {
         loginRol: session.data.loginRol,
       };
 
-      if (session.status === 200) {
+      // console.log(user)
+      if (session.status) {
         setUser(data);
-      }
-    } catch (error) {
-      console.log(error);
-    }
-  };
-
-  const signin = async (user) => {
-    try {
-      const response = await loginRequest(user);
-      const { data } = response;
-      window.localStorage.setItem("token", data.token);
-      // const token = window.localStorage.getItem("token");
-
-      if (response.status === 200) {
         setIsAuthenticated(true);
-        loadUserProfile();
+        setIsLoading(false);
       }
-    } catch (error) {
-      // console.log(error.response.data);
-      setErrors(error.response.data);
-    }
-  };
-
-  const logout = async () => {
-    window.localStorage.removeItem("token");
-    setIsAuthenticated(false);
-  };
-
-  const checkLogin = async () => {
-    const token = `Bearer ${window.localStorage.getItem("token")}`;
-
-    if (!token) {
-      setIsAuthenticated(false);
-      setIsLoading(false);
-      return;
-    }
-
-    try {
-      const res = await verifyTokenRequest();
-      setIsAuthenticated(true);
 
       // console.log(res);
     } catch (error) {
@@ -95,7 +91,6 @@ const AuthProvider = ({ children }) => {
 
   useEffect(() => {
     checkLogin();
-    loadUserProfile();
   }, []);
 
   useEffect(() => {
@@ -116,7 +111,6 @@ const AuthProvider = ({ children }) => {
         logout,
         isAuthenticated,
         isLoading,
-        loadUserProfile,
         user,
       }}
     >
