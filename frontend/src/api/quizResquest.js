@@ -27,7 +27,12 @@ export const addResponses = async (data) =>
       Authorization: jwt(),
     },
   });
-
+  export const editQuiz = async (id, data) =>
+  await axios.put(`/quiz/editQuiz/${id}`, data, {
+    headers: {
+      Authorization: jwt(),
+    },
+  });
 
 
 export const editResponses = async (data) =>

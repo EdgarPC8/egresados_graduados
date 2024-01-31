@@ -131,6 +131,8 @@ function FormTeaching() {
     const { name, value } = event.target;
     setFormTeaching({ ...formTeaching, [name]: value });
   };
+
+  
   const handleEditRow = (row) => {
     const {
       educationalInstitution,

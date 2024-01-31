@@ -46,7 +46,7 @@ function App() {
               <Route path="/cv" element={<CV />} />
               <Route path="/quiz" element={<Quiz />} />
               <Route path="/perfil" element={<Profile />} />
-
+              <Route path="/cvPdf" element={<CvPdf />} />
             </Route>
             
             <Route element={<ProtectedRoute requiredRol={["programador","administrador"]} />}>

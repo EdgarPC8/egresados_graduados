@@ -91,11 +91,11 @@ function Quizzes() {
 
       cell: (props) => (
         <Stack spacing={4} direction="row" align="center">
-          <Button
+           <Button
             colorScheme="yellow"
-            onClick={() =>
-              navigate(`/editar-usuario/${props.row.original.userId}`)
-            }
+            onClick={() => {
+              handleEditRow(props.row.original);
+            }}
           >
             Editar
           </Button>
@@ -120,6 +120,21 @@ function Quizzes() {
   const [formQuiz, setFormQuiz] = useState(
     initialFormQuiz
   );
+  const handleEditRow = (row) => {
+    const {
+      title,
+      description,
+      date,
+    } = row;
+    form.current.scrollIntoView({ behavior: "smooth", block: "start" });
+    setIsEditing(true);
+    setId(row.id);
+    setFormQuiz({
+      title,
+      description,
+      date,
+    });
+  };
 
   const handleSubmit = async (event) => {
     event.preventDefault();
@@ -252,7 +267,7 @@ function Quizzes() {
               </GridItem>
               <GridItem fontSize={"sm"}>
                 <Button type="submit" mt={4} bg="ceruleanBlue.500" color={"white"}>
-                  Guardar
+                {!isEditing ? "Guardar" : "Editar"}
                 </Button>
               </GridItem>
 
