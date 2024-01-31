@@ -13,6 +13,7 @@ import {
   AccordionButton,
   useToast,
   Stack,
+  Flex,
 } from "@chakra-ui/react";
 import { useEffect, useState, useRef } from "react";
 import {
@@ -22,15 +23,19 @@ import {
   deleteAcademicTraining,
 } from "../api/cvRequest";
 import DataTable from "../components/DataTables";
+import HelpBox from "../components/HelpBox";
 import Modal from "../components/AlertDialog";
 import Tabl from "./Table";
 import { useAuth } from "../context/AuthContext";
+import { reorderDate } from "../helpers/date.js";
+import { EditIcon, DeleteIcon } from '@chakra-ui/icons';
+
 
 function FormAcademicTraining() {
   const toast = useToast();
   const { user } = useAuth();
 
-  const initialFormAcademic = {type: "",date: "",place: "",country: "",obtainedTitle: "",educationalInstitution: "",senescytRegistrationN: "",};
+  const initialFormAcademic = { type: "", date: "", place: "", country: "", obtainedTitle: "", educationalInstitution: "", senescytRegistrationN: "", };
 
   const [ListAcademicTraining, setListAcademicTraining] = useState([]);
   const [isEditing, setIsEditing] = useState(false);
@@ -156,32 +161,19 @@ function FormAcademicTraining() {
     fetchData();
   }, []);
 
-  // const dataExample = [
-  //   {
-  //     type: "Book",
-  //     obtainedTitle: "The Catcher in the Rye",
-  //     educationalInstitution: "Not Applicable",
-  //     date: "Not Applicable",
-  //     place: "Not Applicable",
-  //     country: "Not Applicable",
-  //     senescytRegistrationN: "Not Applicable",
-  //   },
-  //   {
-  //     type: "Book",
-  //     obtainedTitle: "To Kill a Mockingbird",
-  //     educationalInstitution: "Not Applicable",
-  //     date: "Not Applicable",
-  //     place: "Not Applicable",
-  //     country: "Not Applicable",
-  //     senescytRegistrationN: "Not Applicable",
-  //   },
-  // ];
-
   const columns = [
     {
-      header: "Tipo",
+      header: (
+        <>
+        <Flex>
+        Tipo
+          <HelpBox title="Tipo de Formacion Academica" message="(Secundaria, Tercer Nivel, Cuarto Nivel)"/>
+        </Flex>
+        </>
+      ),
       accessorKey: "type",
       width: "10000000px", // Puedes ajustar el ancho según tus necesidades
+    
     },
     {
       header: "Título Obtenido",
@@ -223,6 +215,7 @@ function FormAcademicTraining() {
               handleEditRow(props.row.original);
             }}
           >
+            {/* <EditIcon /> */}
             Editar
           </Button>
           <Button
@@ -231,6 +224,7 @@ function FormAcademicTraining() {
               handleDeleteRow(props.row.original);
             }}
           >
+            {/* <DeleteIcon /> */}
             Eliminar
           </Button>
         </Stack>
@@ -238,7 +232,7 @@ function FormAcademicTraining() {
       width: "150px", // Puedes ajustar el ancho según tus necesidades
     },
   ];
-  
+
 
   return (
     <form onSubmit={handleSubmit} ref={form}>
@@ -252,6 +246,7 @@ function FormAcademicTraining() {
           </AccordionButton>
         </h2>
         <AccordionPanel pb={4}>
+
           <Grid
             gap={2}
             mt={2}

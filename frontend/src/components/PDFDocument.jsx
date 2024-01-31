@@ -1,6 +1,8 @@
 import React from 'react';
 import { PDFViewer, Document, Page, Text, View, StyleSheet,Image } from '@react-pdf/renderer';
 import { urlPhotos } from "../api/axios";
+import { reorderDateString } from "../helpers/date.js";
+
 
 
 const styles = StyleSheet.create({
@@ -280,7 +282,7 @@ const PDFDocument = ({ data,cv }) => {
     
         const getCellContent = (rowIndex, colKey) => {
             const cellData = Table.values[rowIndex][colKey];
-            return <Text>{cellData}</Text>;
+            return <Text>{reorderDateString(cellData)}</Text>;
         };
     
         const numRows = Table.header.reduce((acc, col) => (col.row ? Math.max(acc, col.row.length) : acc), 0);
@@ -360,6 +362,7 @@ const PDFDocument = ({ data,cv }) => {
                                     }}
                                     key={colIndex}
                                 >
+
                                     {getCellContent(rowIndex, colIndex)}
                                 </View>
                             );

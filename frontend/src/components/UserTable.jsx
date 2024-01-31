@@ -39,6 +39,7 @@ function UserTable() {
 
   const [currentUser, setCurrentUser] = useState({});
   const cancelRef = useRef();
+  
 
   const deleteUser = () => {
     toast.promise(removeUser(currentUser.userId), {

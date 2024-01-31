@@ -43,6 +43,8 @@ import DataTable from "../components/DataTables";
 import Modal from "../components/AlertDialog";
 import Tabl from "./Table";
 import { useAuth } from "../context/AuthContext";
+import HelpBox from "../components/HelpBox";
+
 
 function FormLanguages() {
   const { user } = useAuth();
@@ -206,7 +208,20 @@ function FormLanguages() {
       accessorKey: "comprehensionLevel",
     },
     {
-      header: "Tipo de certificación",
+      header: (
+        <>
+        <Flex>
+        Tipo de certificación
+          <HelpBox title="Tipo de certificación" message="(TOEFL, TOEIC, CPE, IELTS, PET, Otro) 
+          TOEFL: Test of English as a Foreign Language.
+          TOEIC: Test of English for International Communication.
+          CPE: Certificate of Proficiency in English.
+          IELTS: International English Language Testing System.
+          PET: Preliminary English Test.
+"/>
+        </Flex>
+        </>
+      ),
       accessorKey: "typeCertification",
     },
     {

@@ -12,7 +12,10 @@ import {
   AccordionButton,
   useToast,
   Stack,
+  Flex,
 } from "@chakra-ui/react";
+import HelpBox from "../components/HelpBox";
+
 import { useEffect, useState } from "react";
 import {
   addIntellectualProduction,
@@ -152,7 +155,19 @@ function FormIntellectualProduction() {
 
   const columns = [
     {
-      header: "Tipo",
+      header: (
+        <>
+        <Flex>
+        Tipo
+          <HelpBox title="Tipo" message="(Divulgación, Indexadas, ISI, SCOPUS, IEEE, Otros)
+          
+          ISI: Institute for Scientific Information,  Instituto para la Información Científica.
+          SCOPUS: base de datos de referencias bibliográficas y citas.
+          IEEE: Institute of Electrical and Electronics Engineers, Instituto de Ingenieros Eléctricos y Electrónicos.
+"/>
+        </Flex>
+        </>
+      ),
       accessorKey: "type",
     },
     {
@@ -160,7 +175,14 @@ function FormIntellectualProduction() {
       accessorKey: "name",
     },
     {
-      header: "Tipo de Autoría",
+      header:  (
+        <>
+        <Flex>
+        Tipo de Autoria
+          <HelpBox title="Tipo de Autoria" message="(Autor Principal, Co-autor, Evaluador)"/>
+        </Flex>
+        </>
+      ),
       accessorKey: "typeAuthorship",
     },
     {

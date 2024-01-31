@@ -15,7 +15,10 @@ import {
   useToast,
   Stack,
   Radio,
+  Flex,
 } from "@chakra-ui/react";
+import HelpBox from "../components/HelpBox";
+
 import { useEffect, useState, useRef } from "react";
 import {
   addCoursesWorkshops,
@@ -173,11 +176,18 @@ function FormCourses() {
   }, []);
 
   const columns = [
-    { header: "Tipo", accessorKey: "type" },
+    { header: (
+      <>
+      <Flex>
+      Tipo
+        <HelpBox title="Tipo" message="(Curso, Seminario, Taller, Congreso, Otro)"/>
+      </Flex>
+      </>
+    ), accessorKey: "type" },
     { header: "Nombre", accessorKey: "name" },
     { header: "Organizado Por:", accessorKey: "organizedBy" },
     { header: "Lugar", accessorKey: "place" },
-    { header: "Duracion(Horas)", accessorKey: "duration" },
+    { header: "Duracion (Horas)", accessorKey: "duration" },
     { header: "Fecha Inicio", accessorKey: "startDate" },
     { header: "Fecha Fin", accessorKey: "endDate" },
     {

@@ -105,22 +105,22 @@ function ProfessionalForm() {
       return;
     }
 
-    toast.promise(editPro(id, formProfessional), {
-      loading: {
-        title: "Añadiendo...",
-        position: "top-right",
-      },
-      success: (d) => ({
-        title: "Información profesional",
-        description: d.data.message,
-        isClosable: true,
-      }),
-      error: (e) => ({
-        title: "Error",
-        description: e.response.data.message,
-        isClosable: true,
-      }),
-    });
+    // toast.promise(editProfessional(id, formProfessional), {
+    //   loading: {
+    //     title: "Añadiendo...",
+    //     position: "top-right",
+    //   },
+    //   success: (d) => ({
+    //     title: "Información profesional",
+    //     description: d.data.message,
+    //     isClosable: true,
+    //   }),
+    //   error: (e) => ({
+    //     title: "Error",
+    //     description: e.response.data.message,
+    //     isClosable: true,
+    //   }),
+    // });
 
     clear();
   };

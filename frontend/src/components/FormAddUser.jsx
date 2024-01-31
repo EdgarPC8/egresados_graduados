@@ -31,6 +31,10 @@ import {
   getRoles,
   updateUserData,
 } from "../api/userRequest";
+
+import {
+  addProfessional,
+} from "../api/professionalRequest";
 import { urlPhotos } from "../api/axios";
 
 function FormAddUser() {
@@ -51,6 +55,7 @@ function FormAddUser() {
   const hiddenFileInput = useRef();
 
   const [form, setForm] = useState(initialForm);
+  const [formProfessional, setFormProfessional] = useState(initialForm);
   const [rolesList, setRolesList] = useState([]);
   const handleSubmit = async (event) => {
     event.preventDefault();
@@ -97,6 +102,22 @@ function FormAddUser() {
         isClosable: true,
       }),
     });
+    toast.promise(addProfessional(form), {
+      loading: {
+        title: "Añadiendo...",
+        position: "top-right",
+      },
+      success: (d) => ({
+        title: "Profesional",
+        description: d.data.message,
+        isClosable: true,
+      }),
+      error: (e) => ({
+        title: "Error",
+        description: e.response.data.message,
+        isClosable: true,
+      }),
+    });
   };
 
   const handlePhoto = (event) => {
@@ -121,6 +142,7 @@ function FormAddUser() {
   const handleChange = (event) => {
     const { name, value } = event.target;
     setForm({ ...form, [name]: value });
+    setFormProfessional({ ...formProfessional, [name]: value });
   };
 
   const handleChangeCheck = ({ rolId, isChecked }) => {

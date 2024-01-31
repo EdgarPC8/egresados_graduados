@@ -20,6 +20,7 @@ import {
   AccordionIcon,
   AccordionButton,
   Stack,
+  Flex,
 } from "@chakra-ui/react";
 import { useEffect, useState, useRef } from "react";
 import {
@@ -32,6 +33,8 @@ import DataTable from "../components/DataTables";
 import Modal from "../components/AlertDialog";
 import Tabl from "./Table";
 import { useAuth } from "../context/AuthContext";
+import HelpBox from "../components/HelpBox";
+
 function FormBooks() {
   const { user } = useAuth();
   const toast = useToast();
@@ -168,11 +171,32 @@ function FormBooks() {
 
   const columns = [
     { header: "Titulo", accessorKey: "title" },
-    { header: "Tipo", accessorKey: "type" },
+    { header: (
+      <>
+      <Flex>
+      Tipo
+        <HelpBox title="Tipo de Libro" message="(Divulgación, Científico)"/>
+      </Flex>
+      </>
+    ), accessorKey: "type" },
     { header: "Tipo de Autoria", accessorKey: "typeAuthorship" },
-    { header: "ISB N.", accessorKey: "isbN" },
+    { header: (
+      <>
+      <Flex>
+      ISB N
+        <HelpBox title="ISB N" message="International Standard Book Number, Número Estándar Internacional de Libros."/>
+      </Flex>
+      </>
+    ), accessorKey: "isbN" },
     { header: "Nombre Editorial", accessorKey: "editorialName" },
-    { header: "Origen Editorial", accessorKey: "editorialOrigin" },
+    { header: (
+      <>
+      <Flex>
+      Origen Editorial
+        <HelpBox title="Origen Editorial" message="(Nacional, Internacional)"/>
+      </Flex>
+      </>
+    ), accessorKey: "editorialOrigin" },
     { header: "Año", accessorKey: "year" },
 
     {

@@ -38,6 +38,11 @@ import {
 
 import { FiArrowUp, FiArrowDown } from "react-icons/fi";
 
+
+
+import { renderCellContent } from "../helpers/date.js";
+
+
 function Tabl({ data, columns }) {
   const [sort, setSort] = useState([]);
   const [filter, setFilter] = useState("");
@@ -123,20 +128,16 @@ function Tabl({ data, columns }) {
           ))}
         </Thead>
         <Tbody>
-          {table.getRowModel().rows.map((row) => (
-            <Tr key={row.id}>
-              {row.getVisibleCells().map((cell) => (
-                <Td key={cell.id} 
-              whiteSpace="normal" // Permite el retorno de línea en lugar de desbordamiento
-
-                
-                >
-                  {flexRender(cell.column.columnDef.cell, cell.getContext())}
-                </Td>
-              ))}
-            </Tr>
-          ))}
-        </Tbody>
+  {table.getRowModel().rows.map((row) => (
+    <Tr key={row.id}>
+      {row.getVisibleCells().map((cell) => (
+        <Td key={cell.id} whiteSpace="normal">
+          {renderCellContent(cell.column.columnDef.cell, cell.getContext())}
+        </Td>
+      ))}
+    </Tr>
+  ))}
+</Tbody>
       </Table>
     </TableContainer>
   );

@@ -30,8 +30,6 @@ import {
 } from "../api/cvRequest";
 import { useParams } from "react-router-dom";
 
-
-
 function Resumes() {
 
   const [showPDF, setShowPDF] = useState(false);
@@ -99,7 +97,6 @@ function Resumes() {
         const { educationalInstitution, subject, startDate, endDate, modality, place, country } = objeto;
         return { 0: educationalInstitution, 1: subject, 2: startDate, 3: endDate, 4: modality, 5: place, 6: country }
       });
-
       const coursesData = resCoursesWorkshops.data.map(objeto => {
         const {
           startDate,
@@ -157,11 +154,11 @@ function Resumes() {
       setFormProfessional(professionalData);
       setListAcademicTraining(academicTrainingData);
       setListProfessionalExperience(professionalExperienceData);
-      setListLanguages(languagesData);
+      setListCoursesWorkshops(coursesData);
       setListAcademicProfessionalMerits(professionalMeritsData);
       setListBooks(booksData);
       setListIntellectualProduction(intellectualProductionData);
-      setListCoursesWorkshops(coursesData);
+      setListLanguages(languagesData);
       setListTeachingExperience(teachingData);
     } catch (error) {
       console.error("Error al obtener datos académicos:", error);
@@ -203,7 +200,7 @@ function Resumes() {
                   { width: '50%', title: 'Lugar' },
                   { width: '50%', title: 'País' },
                 ],
-                values: ListProfessionalExperience
+                values: ListTeachingExperience
               }
               , Cursos: {
                 title: "CURSOS, TALLERES, SEMINARIOS, CONGRESOS Y /U OTROS",
@@ -226,7 +223,7 @@ function Resumes() {
 
                   { width: '40%', title: 'Tipo de Participación' },
                 ],
-                values: ListLanguages,
+                values: ListCoursesWorkshops,
                 valuesPorcentajes: [
                   "50%",
                   "50%",
@@ -247,7 +244,7 @@ function Resumes() {
                   { width: '50%', title: 'Fecha' },
                   { width: '50%', title: 'Enlace Web' },
                 ],
-                values: ListAcademicProfessionalMerits
+                values: ListIntellectualProduction
               }
               , Libros: {
                 title: "Libros",
@@ -289,7 +286,7 @@ function Resumes() {
                   { width: '50%', title: 'Pais' },
                   { width: '50%', title: 'Lugar' },
                 ],
-                values: ListIntellectualProduction
+                values: ListAcademicProfessionalMerits
               }
               , Idiomas: {
                 title: "Idiomas",
@@ -308,7 +305,7 @@ function Resumes() {
                   { width: '50%', title: 'Tipo de Certificación' },
 
                 ],
-                values: ListCoursesWorkshops,
+                values: ListLanguages,
                 valuesPorcentajes: [
                   "30%",
                   "30%",
@@ -328,7 +325,7 @@ function Resumes() {
                   { width: '50%', title: 'Fecha Inicio' },
                   { width: '50%', title: 'Fecha Fin' },
                 ],
-                values: ListTeachingExperience
+                values: ListProfessionalExperience
               }
             }}
           />
