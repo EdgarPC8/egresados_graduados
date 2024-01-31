@@ -24,6 +24,34 @@ const AuthProvider = ({ children }) => {
   const [isLoading, setIsLoading] = useState(true);
   const [user, setUser] = useState({ roles: [] });
 
+  const loadUserProfile = async () => {
+    try {
+      setIsLoading(false);
+      setIsAuthenticated(true);
+      const session = await verifyTokenRequest();
+      const user = await getOneUser(session.data.userId);
+
+      const data = {
+        ci: user.data.ci,
+        firstLastName: user.data.firstLastName,
+        firstName: user.data.firstName,
+        photo: user.data.photo,
+        roles: user.data.roles,
+        secondLastName: user.data.secondLastName,
+        secondName: user.data.secondName,
+        userId: user.data.userId,
+        username: user.data.username,
+        loginRol: session.data.loginRol,
+      };
+
+      if (session.status === 200) {
+        setUser(data);
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   const signin = async (user) => {
     try {
       const response = await loginRequest(user);
@@ -46,40 +74,20 @@ const AuthProvider = ({ children }) => {
   };
 
   const checkLogin = async () => {
-  //  setIsAuthenticated(true) 
-    
-
     if (!jwt()) {
       setIsAuthenticated(false);
       setIsLoading(false);
       return;
     }
 
-    
-
     try {
       const session = await verifyTokenRequest();
-      const user = await getOneUser(session.data.userId);
-      
-      
-      const data = {
-        ci: user.data.ci,
-        firstLastName: user.data.firstLastName,
-        firstName: user.data.firstName,
-        photo: user.data.photo,
-        roles: user.data.roles,
-        secondLastName: user.data.secondLastName,
-        secondName: user.data.secondName,
-        userId: user.data.userId,
-        username: user.data.username,
-        loginRol: session.data.loginRol,
-      };
 
       // console.log(user)
       if (session.status) {
-        setUser(data);
-        setIsAuthenticated(true);
         setIsLoading(false);
+        setIsAuthenticated(true);
+        loadUserProfile();
       }
 
       // console.log(res);
