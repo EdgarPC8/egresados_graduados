@@ -258,11 +258,11 @@ const changePassword = async (req, res) => {
       { where: { userId: req.params.userId } }
     );
     res.json({ message: "Contraseña actualizada con éxito" });
-    logger({
-      httpMethod: req.method,
-      endPoint: req.originalUrl,
-      action: "Contraseña cambiada",
-    });
+    // logger({
+    //   httpMethod: req.method,
+    //   endPoint: req.originalUrl,
+    //   action: "Contraseña cambiada",
+    // });
   } catch (e) {
     return res.status(400).json({
       error: "Bad Request",

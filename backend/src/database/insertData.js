@@ -25,6 +25,8 @@ import {
 
 import {
   Matriz,
+  Carreers,
+  Periods,
 } from "../Models/Matriz.js";
 
 import {
@@ -75,6 +77,8 @@ const insertData = async () => {
    await Province.bulkCreate(jsonData.ProvinceBackup, { returning: true });
    await Canton.bulkCreate(jsonData.CantonBackup, { returning: true });
    await Parish.bulkCreate(jsonData.ParishBackup, { returning: true });
+   await Periods.bulkCreate(jsonData.PeriodsBackup, { returning: true });
+   await Carreers.bulkCreate(jsonData.CarreersBackup, { returning: true });
    await Matriz.bulkCreate(jsonData.MatrizBackup, { returning: true });
 
   } catch (error) {

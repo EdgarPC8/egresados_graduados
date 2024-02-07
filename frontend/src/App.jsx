@@ -16,6 +16,9 @@ import CvProfessionalPdf from "./components/CvProfessionalPdf.jsx";
 import Quiz from "./pages/Quiz.jsx";
 import Profile from "./pages/Profile.jsx";
 import Quizzes from "./pages/Quizzes.jsx";
+import Matriz from "./pages/Matriz.jsx";
+import Careers from "./pages/Careers.jsx";
+import Periods from "./pages/Periods.jsx";
 
 import UserTable from "./components/UserTable.jsx";
 import FormAddUser from "./components/FormAddUser.jsx";
@@ -39,7 +42,7 @@ function App() {
             <Route
               element={
                 <ProtectedRoute
-                  requiredRol={["profesional","programador"]}
+                  requiredRol={["profesional","programador","administrador"]}
                 />
               }
             >
@@ -62,6 +65,9 @@ function App() {
               <Route path="/cvProfessionalPdf/:userId" element={<CvProfessionalPdf />} />
               <Route path="/cvPdf" element={<CvPdf />} />
               <Route path="/quizzes" element={<Quizzes />} />
+              <Route path="/matriz" element={<Matriz />} />
+              <Route path="/carreras" element={<Careers />} />
+              <Route path="/periodos" element={<Periods />} />
 
             </Route>
           </Routes>

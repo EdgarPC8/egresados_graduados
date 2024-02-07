@@ -111,6 +111,21 @@ const Navbar = () => {
         path: "/quizzes",
         icon: <FiFileText />,
       },
+      {
+        name: "Matrices",
+        path: "/matriz",
+        icon: <FiFileText />,
+      },
+      {
+        name: "Carreras",
+        path: "/carreras",
+        icon: <FiFileText />,
+      },
+      {
+        name: "Periodos",
+        path: "/periodos",
+        icon: <FiFileText />,
+      },
     ],
 
     administrador: [

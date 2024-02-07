@@ -1,7 +1,7 @@
 import Tabl from "../components/Table";
 import { useEffect, useState } from "react";
 import { addUser, getUsers, removeUser } from "../api/userRequest";
-import { getAllQuizzes,addQuiz } from "../api/quizResquest";
+import { getAllQuizzes,addQuiz,editQuiz } from "../api/quizResquest";
 import { urlPhotos } from "../api/axios";
 import { useRef } from "react";
 import {
@@ -128,7 +128,7 @@ function Quizzes() {
     } = row;
     form.current.scrollIntoView({ behavior: "smooth", block: "start" });
     setIsEditing(true);
-    setId(row.id);
+    setId(row.idQuiz);
     setFormQuiz({
       title,
       description,
@@ -139,28 +139,28 @@ function Quizzes() {
   const handleSubmit = async (event) => {
     event.preventDefault();
 
-    console.log(formQuiz)
+    // console.log(formQuiz)
+    // console.log(id)
 
     if (isEditing) {
-      // toast.promise(editProfessional(id, formQuiz), {
-      //   loading: {
-      //     title: "Editando...",
-      //     position: "top-right",
-      //   },
-      //   success: (d) => ({
-      //     title: "Información profesional",
-      //     description: d.data.message,
-      //     isClosable: true,
-      //   }),
-      //   error: (e) => ({
-      //     title: "Error",
-      //     description: e.response.data.message,
-      //     isClosable: true,
-      //   }),
-      // });
-
-      // fetchData();
-      // clear();
+      toast.promise(editQuiz(id, formQuiz), {
+        loading: {
+          title: "Editando...",
+          position: "top-right",
+        },
+        success: (d) => ({
+          title: "Encuesta",
+          description: d.data.message,
+          isClosable: true,
+        }),
+        error: (e) => ({
+          title: "Error",
+          description: e.response.data.message,
+          isClosable: true,
+        }),
+      });
+      fetchUsers();
+      clear();
 
       return;
     }
@@ -181,9 +181,9 @@ function Quizzes() {
         isClosable: true,
       }),
     });
+    fetchUsers();
 
     clear();
-    fetchUsers();
 
   };
   const handleChange = (event) => {
@@ -215,7 +215,7 @@ function Quizzes() {
       }),
     });
 
-    setUsers(users.filter((user) => user.userId !== currentUser.userId));
+    // setUsers(users.filter((user) => user.userId !== currentUser.userId));
   };
 
   async function fetchUsers() {

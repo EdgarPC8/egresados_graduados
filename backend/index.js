@@ -4,6 +4,7 @@ import professionalsRoutes from "./src/routes/professionalsRoutes.js";
 import cvRoutes from "./src/routes/cvRoutes.js";
 import configRoutes from "./src/routes/configRoutes.js";
 import quizRoutes from "./src/routes/quizRoutes.js";
+import matrizRoutes from "./src/routes/matrizRoutes.js";
 import chartsRoutes from "./src/routes/chartsRoutes.js";
 import linguiGeoRoutes from "./src/routes/linguisticsGeographyRoutes.js";
 import cors from "cors";
@@ -26,7 +27,7 @@ const allowedOrigins = [
   "http://dev.alum.com",
   // "http://localhost:8888",
   "http://localhost:5173",
-  // "http://192.168.137.250:5173",
+  "http://192.168.137.250:5173",
   // "http://192.169.100.250:5173",
   // "http://192.168.137.250:8888",
   // "http://aplicaciones.marianosamaniego.edu.ec",
@@ -58,7 +59,7 @@ app.use(express.json());
 app.use("/photos", express.static("userPhotos"));
 app.use("/api/auth", authRoutes);
 app.use("/api/professionals", professionalsRoutes);
-app.use("/api/cv", cvRoutes,loggerMiddleware);
+app.use("/api/cv", cvRoutes);
 app.use("/api/quiz", quizRoutes);
 app.use("/api/linguiGeo", linguiGeoRoutes);
 app.use("/api/users", userRoutes);
@@ -66,6 +67,7 @@ app.use("/api/charts", chartsRoutes);
 app.use("/api/register", registerRoutes);
 app.use("/api/logs", logRoutes);
 app.use("/api/config", configRoutes);
+app.use("/api/matriz", matrizRoutes);
 
 
 async function main() {
@@ -74,6 +76,7 @@ async function main() {
 
     // await sequelize.sync({ force: true });
     // await insertData();
+
     console.log("Conección realizada con éxito.");
     app.listen(PORT, () => {
       console.log(`Backend escuchando en el puesto ${PORT}`);

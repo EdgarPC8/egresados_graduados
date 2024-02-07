@@ -52,7 +52,6 @@ function LoginPage() {
           position: "top-right",
         },
         success: (d) => {
-          // aqui quiero que me rediriga a otra enlace
           navigate('/login');
 
   

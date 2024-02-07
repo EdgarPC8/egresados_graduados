@@ -1,14 +1,5 @@
-import {
-  AlertDialog,
-  AlertDialogBody,
-  AlertDialogFooter,
-  AlertDialogHeader,
-  AlertDialogContent,
-  AlertDialogOverlay,
-  AlertDialogCloseButton,
-  useDisclosure,
-  Button,
-} from "@chakra-ui/react";
+// ... otras importaciones
+import { AlertDialog, AlertDialogBody, AlertDialogFooter, AlertDialogHeader, AlertDialogContent, AlertDialogOverlay, AlertDialogCloseButton, useDisclosure, Button, } from "@chakra-ui/react";
 import React from "react";
 
 function Modal({
@@ -23,7 +14,9 @@ function Modal({
 
   const handleAccept = () => {
     onAccept(); // Ejecuta la función onAccept cuando se hace clic en "Aceptar"
-    onClose(); // Cierra el modal
+    if (onClose) {
+      onClose(); // Cierra el modal solo si onClose está definida
+    }
   };
 
   return (
@@ -39,12 +32,14 @@ function Modal({
         <AlertDialogOverlay />
         <AlertDialogContent>
           <AlertDialogHeader>{title}</AlertDialogHeader>
-          <AlertDialogCloseButton />
+          {onClose && <AlertDialogCloseButton />}
           <AlertDialogBody>{message}</AlertDialogBody>
           <AlertDialogFooter>
-            <Button ref={cancelRef} onClick={onClose}>
-              Cancelar
-            </Button>
+            {onClose && (
+              <Button ref={cancelRef} onClick={onClose}>
+                Cancelar
+              </Button>
+            )}
             <Button colorScheme="red" ml={3} onClick={handleAccept}>
               Aceptar
             </Button>

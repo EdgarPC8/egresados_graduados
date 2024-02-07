@@ -53,14 +53,14 @@ function FormProfessionalMerits() {
 
   const [dataAcademicProfessionalMerits, setDataAcademicProfessionalMerits] =
     useState([]);
-  const [isEditing, setIsEditing] = useState(false);
-  const [isModalOpen, setIsModalOpen] = useState(false);
-  const form = useRef(null);
-
-  const [formProfessionalMerits, setFormProfessionalMerits] = useState(
-    initialProfessionalMerits
-  );
-
+    const [isModalOpen, setIsModalOpen] = useState(false);
+    const form = useRef(null);
+    
+    const [formProfessionalMerits, setFormProfessionalMerits] = useState(
+      initialProfessionalMerits
+      );
+      
+      const [isEditing, setIsEditing] = useState(false);
   const [id, setId] = useState(false);
 
   function clear() {

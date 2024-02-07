@@ -2,6 +2,7 @@ import Tabl from "../components/Table";
 import DataTable from "../components/DataTables";
 import { useEffect, useState } from "react";
 import { addUser, getUsers, removeUser } from "../api/userRequest";
+import { getAllProfessionals } from "../api/professionalRequest";
 import { urlPhotos } from "../api/axios";
 import { useRef } from "react";
 import {
@@ -116,13 +117,10 @@ function Resumes() {
   ];
 
 
-  const headerprueba=["dede","edede","dede","edede","dede","edede","dede","edede","dede","ededessssssssssssdsdsdsdsdsdsdsdsdsdsdsdsdsdsdsdsdsdsdsdsdsdsdsdsdsdsdsdsdsdsdsdsdsdsdsdsdsdsdsdsdsdsdsdsddsdsdsd"]
-  const valuesprueba=["deded","deded","dede","edede","dede","edede","dede","edede","dede","ededesssssssssssssssssssssssss"]
-
   useEffect(() => {
     const fetchUsers = async () => {
       try {
-        const userRequest = await getUsers();
+        const userRequest = await getAllProfessionals();
 
         setUsers(userRequest.data);
         // console.log(users);
