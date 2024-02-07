@@ -1,30 +1,29 @@
 // loggerMiddleware.js
-import { logger } from '../log/LogActivity.js';
+import { getHeaderToken, verifyJWT } from "../libs/jwt.js";
+import { logger } from "../log/LogActivity.js";
 
+const methodsToFilter = ["GET"];
 
-const methodsToFilter = ['GET','OPTIONS'];
+const loggerMiddleware = async (req, res, next) => {
+  const authHeader = req.headers["authorization"];
+  // const token = getHeaderToken();
+  if (
+    authHeader &&
+    authHeader !== "Bearer null" &&
+    !methodsToFilter.includes(req.method)
+  ) {
+    const token = getHeaderToken(req);
+    const user = await verifyJWT(token);
 
-
-
-
-const loggerMiddleware = (req, res, next) => {
-  const user = req.user; // Información del usuario autenticado
-
-  // Filtrar solicitudes según el array methodsToFilter
-  if (!methodsToFilter.includes(req.method)) {
-    
     logger({
       httpMethod: req.method,
       endPoint: req.originalUrl,
-      action: 'Interceptando solicitud en rutas de usuario',
-      description: user ? { userId: user.userId, username: user.username } : null,
+      action: `${user.userId} ${user.username}`,
     });
   }
+  // console.log(req.headers.split())
 
   next();
 };
-
-  
-  
 
 export default loggerMiddleware;

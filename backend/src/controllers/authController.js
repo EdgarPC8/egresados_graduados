@@ -2,7 +2,7 @@
 import { sequelize } from "../database/connection.js";
 import { Users } from "../Models/Users.js";
 import bycrypt from "bcrypt";
-import { createAccessToken, verifyJWT } from "../libs/jwt.js";
+import { createAccessToken, getHeaderToken, verifyJWT } from "../libs/jwt.js";
 import jwt from "jsonwebtoken";
 import { Roles } from "../Models/Roles.js";
 import { UserRoles } from "../Models/UserRoles.js";
@@ -24,7 +24,7 @@ const login = async (req, res) => {
         where: { rol },
       },
     });
-    console.log(user);
+    // console.log(user);
 
     const roles = await Users.findOne({
       where: { userId: user.userId },
@@ -67,7 +67,8 @@ const login = async (req, res) => {
 };
 
 const verifytoken = async (req, res) => {
-  const token = req.headers["authorization"].split(" ")[1];
+  const token = getHeaderToken(req);
+
   if (!token) return res.status(401).json({ message: "Unauthorized" });
 
   try {
