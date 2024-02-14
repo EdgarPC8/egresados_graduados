@@ -9,6 +9,10 @@ addCareer,
 addPeriod,
 editCareer,
 editPeriod,
+getMatrizFilter,
+addMatrizQuiz,
+getMatrizQuizFilter,
+deleteMatrizQuiz,
 } from "../controllers/matrizController.js";
 import { isAuthenticated } from "../middlewares/authMiddelware.js";
 
@@ -17,11 +21,15 @@ const router = Router();
 router.get("/getAllCareers", isAuthenticated, getAllCareers);
 router.get("/getAllPeriods", isAuthenticated, getAllPeriods);
 router.get("/getAllMatriz", isAuthenticated, getAllMatriz);
+router.post("/getMatrizFilter", isAuthenticated, getMatrizFilter);
+router.get("/getMatrizQuizFilter/:quizId", isAuthenticated, getMatrizQuizFilter);
 router.post("/addMatriz", isAuthenticated, addMatriz);
+router.post("/addMatrizQuiz", isAuthenticated, addMatrizQuiz);
 router.post("/addCareer", isAuthenticated, addCareer);
 router.post("/addPeriod", isAuthenticated, addPeriod);
 
 router.delete("/:matrizId", isAuthenticated, deleteMatriz);
+router.delete("/:matrizId/:quizId", isAuthenticated, deleteMatrizQuiz);
 
 router.put("/editCareer/:careerId", isAuthenticated, editCareer);
 router.put("/editPeriod/:periodId", isAuthenticated, editPeriod);

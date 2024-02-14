@@ -1,14 +1,14 @@
 import Tabl from "../components/Table";
 import { useEffect, useState } from "react";
-import { addUser, getUsers, removeUser } from "../api/userRequest";
 import { getAllQuizzes,addQuiz,editQuiz } from "../api/quizResquest";
-import { urlPhotos } from "../api/axios";
+import { getAllMatriz,getAllPeriods,getAllCareers,getMatrizFilter,addMatrizQuiz,getMatrizQuizFilter,deleteMatrizQuiz } from "../api/matrizResquest";
 import { useRef } from "react";
+import SelectData from "../components/SelectData";
+
 import {
   Button,
   useDisclosure,
   AlertDialog,
-  Avatar,
   Grid,
   GridItem,
   Stack,
@@ -18,35 +18,15 @@ import {
   AlertDialogHeader,
   AlertDialogContent,
   AlertDialogOverlay,
-  Image,
-  Spacer,
   Flex,
   Box,
   Heading,
   Input,
-  Container,
   InputLeftAddon,
   InputGroup,
-  Select,
-  TableContainer,
-  Table,
-  Th,
-  Td,
-  Tr,
-  Thead,
-  Tbody,
-  Tfoot,
   Textarea,
-  Accordion,
-  AccordionItem,
-  AccordionPanel,
-  AccordionIcon,
-  AccordionButton,
-  RadioGroup,
-  Radio,
-  FormControl,
-  FormLabel,
   Checkbox,
+  Center,
 } from "@chakra-ui/react";
 
 import { useAuth } from "../context/AuthContext";
@@ -55,19 +35,28 @@ import { EmailIcon } from "@chakra-ui/icons";
 import { Link, useNavigate } from "react-router-dom";
 
 function Quizzes() {
-  const navigate = useNavigate();
   const toast = useToast();
-  const { user } = useAuth();
   const [quizzes, setQuizzes] = useState([]);
-
   const { isOpen, onOpen, onClose } = useDisclosure();
-
   const [currentUser, setCurrentUser] = useState({});
   const cancelRef = useRef();
-
   const form = useRef(null);
   const [isEditing, setIsEditing] = useState(false);
   const [id, setId] = useState(0);
+  const [matriz, setMatriz] = useState([]);
+  const [matrizFilterQuiz, setMatrizFilterQuiz] = useState([]);
+  const [Periods, setPeriods] = useState([]);
+  const [Careers, setCareers] = useState([]);
+  const [selectAll, setSelectAll] = useState(false);
+  const [selectedItems, setSelectedItems] = useState([]);
+  const [selectedOptionCareer, setSelectedOptionCareer] = useState(null);
+  const [selectedOptionPeriod, setSelectedOptionPeriod] = useState(null);
+
+
+
+
+
+
   const columns = [
     {
       header: "Id",
@@ -112,21 +101,205 @@ function Quizzes() {
       ),
     },
   ];
+  const columnsCreateMatriz = [
+    {
+      header: "#",
+      accessorKey: "index",
+      cell: (props) => props.row.index + 1,
+    },
+    {
+      header: "Nombres Completos",
+      accessorKey: "fullname",
+      accessorFn: (row) =>
+        `
+        ${row.professional.firstName} ${row.professional.secondName} ${row.professional.firstLastName} ${row.professional.secondLastName}`,
+    },
+    {
+      header: "Cedula",
+      accessorKey: "professional.ci",
+    },
+    {
+      header: "Carrera",
+      accessorKey: "carreer.name",
+    },
+    {
+      header: "Periodo",
+      accessorKey: "period.name",
+    },
+    {
+      header: "Modalidad",
+      accessorKey: "modality",
+    },
+    {
+      header: "Fecha de Grado",
+      accessorKey: "grateDate",
+    },
+  
+    {
+      header: () => (
+        <>
+       <Checkbox
+            isChecked={selectAll}
+            onChange={handleSelectAll}
+         />
+        </>
+        
+      ),
+      accessorKey: "selectAll",
+      cell: (props) => (
+        <Center>
+          <Stack spacing={4} direction="row" align="center">
+            <Checkbox
+              isChecked={selectAll || props.row.original.isSelected}
+              onChange={() => handleCheckboxChange(props.row.index)}
+            />
+          </Stack>
+        </Center>
+      ),
+    },
+  ];
   let initialFormQuiz = {
     title: "",
     description: "",
     date: "",
   };
+  const handleSelectAll = () => {
+    const updatedMatriz = matriz.map((item) => ({ ...item, isSelected: !selectAll }));
+    setMatriz(updatedMatriz);
+    setSelectAll(!selectAll);
+  
+    const selected = updatedMatriz.filter((item) => item.isSelected);
+    setSelectedItems(selected);
+  };
+  const handleCheckboxChange = (index) => {
+    const updatedMatriz = matriz.map((item, i) => {
+      if (i === index) {
+        return { ...item, isSelected: !item.isSelected };
+      }
+      return item;
+    });
+    setMatriz(updatedMatriz);
+  
+    const selected = updatedMatriz.filter((item) => item.isSelected);
+  
+    setSelectAll(selected.length === matriz.length); // Actualizar selectAll en consecuencia
+  
+    setSelectedItems(selected);
+  };
+  
+
+ 
+  const transformedPeriodos = Periods.map(item => ({
+    value: item.id,
+    label: `${item.name}`,
+  }));
+  const transformedCarreras = Careers.map(item => ({
+    value: item.idCarreer,
+    label: `${item.name}`,
+  }));
   const [formQuiz, setFormQuiz] = useState(
     initialFormQuiz
   );
-  const handleEditRow = (row) => {
+  const handleSelectChangePeriod =async (value, selectedOption) => {
+
+    selectAll?handleSelectAll():null;
+
+    // Verifica si la primera opción está seleccionada
+    if (selectedOption === "Seleccione una opción") {
+      // Agrega aquí la lógica que deseas ejecutar cuando se selecciona la primera opción
+        setSelectedOptionPeriod(null);
+        if(!selectedOptionCareer){
+          const res = await getMatrizFilter({})
+          setMatriz(res.data);
+        }else{
+          const res = await getMatrizFilter({career:selectedOptionCareer.id})
+          setMatriz(res.data);
+        }
+    }else{
+      // whereFilter.career? whereFilter.idPeriod=value: setWhereFilter({idPeriod:value});
+      setSelectedOptionPeriod({ id: value, name: selectedOption });
+
+      if(!selectedOptionCareer){
+        const res = await getMatrizFilter({idPeriod:value})
+        setMatriz(res.data);
+      }else{
+        const res = await getMatrizFilter({idPeriod:value,career:selectedOptionCareer.id})
+        setMatriz(res.data);
+      }
+
+
+    }
+  
+    // Actualiza el estado normalmente
+  };
+  const handleSelectChangeCareer =async (value, selectedOption) => {
+    selectAll?handleSelectAll():null;
+
+    // Verifica si la primera opción está seleccionada
+    if (selectedOption === "Seleccione una opción") {
+      // Agrega aquí la lógica que deseas ejecutar cuando se selecciona la primera opción
+        setSelectedOptionCareer(null);
+        if(!selectedOptionPeriod){
+          const res = await getMatrizFilter({})
+          setMatriz(res.data);
+        }else{
+          const res = await getMatrizFilter({idPeriod:selectedOptionPeriod.id})
+          setMatriz(res.data);
+        }
+    }else{
+      setSelectedOptionCareer({ id: value, name: selectedOption });
+
+      if(!selectedOptionPeriod){
+        const res = await getMatrizFilter({career:value})
+        setMatriz(res.data);
+      }else{
+        const res = await getMatrizFilter({idPeriod:selectedOptionPeriod.id,career:value})
+        setMatriz(res.data);
+      }
+      
+    }
+  
+    // Actualiza el estado normalmente
+  };
+  // const handleDelete = async () => {
+  //   // Obtener los idMatriz de los elementos desmarcados
+  //   const deselectedItems = matrizFilterQuizData
+  //     .filter(item => !item.isSelected)
+  //     .map(item => item.idMatriz);
+  
+  //   try {
+  //     // Eliminar las filas de la tabla MatrizQuiz
+  //     await deleteMatrizQuiz(deselectedItems);
+  
+  //     // Actualizar matrizFilterQuizData después de la eliminación
+  //     const updatedMatrizFilterQuizData = matrizFilterQuizData.filter(item => item.isSelected);
+  //     setMatrizFilterQuiz(updatedMatrizFilterQuizData);
+  //   } catch (error) {
+  //     console.error("Error al eliminar filas de la tabla MatrizQuiz:", error);
+  //   }
+  // };
+  
+  
+  const handleEditRow =async (row) => {
     const {
       title,
       description,
       date,
     } = row;
     form.current.scrollIntoView({ behavior: "smooth", block: "start" });
+
+
+    const resFilete = await getMatrizQuizFilter(row.idQuiz);
+    const matrizFilterQuizData = resFilete.data;
+
+    // Comparar y establecer isSelected en consecuencia
+    const updatedMatriz = matriz.map((item) => ({
+      ...item,
+      isSelected: matrizFilterQuizData.some((filterItem) => filterItem.idMatriz === item.id),
+    }));
+
+    setMatriz(updatedMatriz);
+    setMatrizFilterQuiz(matrizFilterQuizData);
     setIsEditing(true);
     setId(row.idQuiz);
     setFormQuiz({
@@ -135,33 +308,58 @@ function Quizzes() {
       date,
     });
   };
-
   const handleSubmit = async (event) => {
     event.preventDefault();
+    // console.log("Registros Seleccionados:", selectedItems);
+   
 
-    // console.log(formQuiz)
-    // console.log(id)
 
     if (isEditing) {
+      // Filtrar los elementos que ya están en matrizFilterQuiz
+      const newSelectedItems = selectedItems.filter(
+        (selectedItem) => !matrizFilterQuiz.some((filterItem) => filterItem.idMatriz === selectedItem.id)
+      );
+      // Filtrar los elementos que ya estaban seleccionados y ahora están deseleccionados
+      const deselectedItems = matrizFilterQuiz.filter(
+        (selectedItem) => !selectedItems.some((item) => item.id === selectedItem.idMatriz)
+      );
+    
+      // Resto del código...
+    
+      console.log(deselectedItems); // Imprimir deselectedItems en la consola
+    
+      // Realizar la edición solo para los nuevos elementos
       toast.promise(editQuiz(id, formQuiz), {
         loading: {
           title: "Editando...",
           position: "top-right",
         },
-        success: (d) => ({
-          title: "Encuesta",
-          description: d.data.message,
-          isClosable: true,
-        }),
+        success: (d) => {
+          newSelectedItems.forEach((element) => {
+            addMatrizQuiz({ idMatriz: element.id, quizId: id });
+          });
+          deselectedItems.forEach((element) => {
+            if(element.completed==0){
+              deleteMatrizQuiz(element.idMatriz,element.quizId);
+            }
+          });
+    
+          return {
+            title: "Encuesta",
+            description: d.data.message,
+            isClosable: true,
+          };
+        },
         error: (e) => ({
           title: "Error",
           description: e.response.data.message,
           isClosable: true,
         }),
       });
+    
       fetchUsers();
       clear();
-
+    
       return;
     }
 
@@ -182,7 +380,6 @@ function Quizzes() {
       }),
     });
     fetchUsers();
-
     clear();
 
   };
@@ -195,33 +392,20 @@ function Quizzes() {
     setId(false);
     setFormQuiz(initialFormQuiz);
   };
-  
-
-  const deleteUser = () => {
-    toast.promise(removeUser(currentUser.userId), {
-      loading: {
-        title: "Eliminando...",
-        position: "top-right",
-      },
-      success: (d) => ({
-        title: "Usuario",
-        description: d.data.message,
-        isClosable: true,
-      }),
-      error: (e) => ({
-        title: "Error",
-        description: e.response.data.message,
-        isClosable: true,
-      }),
-    });
-
-    // setUsers(users.filter((user) => user.userId !== currentUser.userId));
-  };
 
   async function fetchUsers() {
     try {
-      const { data } = await getAllQuizzes();
-      setQuizzes(data)
+      const resMatriz = await getAllMatriz();
+      const resQuizzes = await getAllQuizzes();
+      setQuizzes(resQuizzes.data)
+      setMatriz(resMatriz.data);
+      const resCareers = await getAllCareers();
+      const resPeriods = await getAllPeriods();
+      
+     
+      
+      setCareers(resCareers.data)
+      setPeriods(resPeriods.data)
     } catch (error) {
       console.error("Error al obtener datos académicos:", error);
     }
@@ -258,18 +442,50 @@ function Quizzes() {
                   required/>
                 </InputGroup>
               </GridItem>
-              <GridItem fontSize={"sm"}>
+              <GridItem fontSize={"sm"} colSpan={2}>
                 {/* <InputLeftAddon children="Descripción" /> */}
                 <Textarea name="description" placeholder="Descripción" value={formQuiz.description ? formQuiz.description : ""}
                     onChange={handleChange} ></Textarea>
               </GridItem>
+
+                            {
+                isEditing ?
+                (
+                  <>
+                    <GridItem fontSize={"sm"}>
+                      <SelectData title="Periodo" options={transformedPeriodos} onSelectChange={(value, selectedOption) =>
+                        handleSelectChangePeriod(value, selectedOption)
+                      } />
+                    </GridItem>
+                    <GridItem fontSize={"sm"}>
+                      <SelectData title="Carrera" options={transformedCarreras} onSelectChange={(value, selectedOption) =>
+                        handleSelectChangeCareer(value, selectedOption)
+                      } />
+                    </GridItem>
+                    <GridItem fontSize={"sm"} colSpan={2}>
+                      Tabla de Matrices
+                      <Tabl data={matriz} columns={columnsCreateMatriz} />
+                    </GridItem>
+                  </>
+                ) : null
+              }
               <GridItem fontSize={"sm"}>
-              </GridItem>
-              <GridItem fontSize={"sm"}>
-                <Button type="submit" mt={4} bg="ceruleanBlue.500" color={"white"}>
-                {!isEditing ? "Guardar" : "Editar"}
-                </Button>
-              </GridItem>
+  <Button type="submit" mt={4} bg="ceruleanBlue.500" color={"white"}>
+    {!isEditing ? "Guardar" : "Editar"}
+  </Button>
+  {isEditing && (
+    <Button
+      mt={4}
+      ml={4}
+      colorScheme="red"
+      onClick={() => {
+        clear();
+      }}
+    >
+      Cancelar Edición
+    </Button>
+  )}
+</GridItem>
 
             </Grid>
           </form>
@@ -280,6 +496,7 @@ function Quizzes() {
           </Box>
         </Flex>
         <Tabl data={quizzes} columns={columns} />
+
 
         <AlertDialog
           isOpen={isOpen}

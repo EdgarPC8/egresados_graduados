@@ -1,6 +1,7 @@
 import { sequelize } from "../database/connection.js";
 import { DataTypes } from "sequelize";
 import { Professionals } from "./Professionals.js";
+import { Quiz } from "./Quiz.js";
 
 
 // NOMBRE	N. CEDULA	CARRERA	TELÉFONO	CORREO	MODALIDAD	FECHA GRADO	OCUPACIÓN ACTUAL	ESTUDIOS POST.	PERIODO
@@ -97,8 +98,30 @@ export const Periods = sequelize.define(
         timestamps: false,
     }
 );
-
+export const MatrizQuiz = sequelize.define(
+    "matriz_quizzes",
+    {
+        completed: {
+            type: DataTypes.INTEGER,
+            defaultValue: 0,
+        },
+    },
+    {
+        timestamps: false,
+    }
+);
 // ...
+Matriz.belongsToMany(Quiz, {
+    through: MatrizQuiz,
+    foreignKey: "idMatriz",
+    sourceKey: "id",
+    // unique: false, // Permitir duplicados
+  });
+Quiz.belongsToMany(Matriz, {
+through: MatrizQuiz,
+foreignKey: "quizId",
+sourceKey: "idQuiz",
+});
 
 Professionals.hasMany(Matriz, { foreignKey: "idProfessional", sourceKey: "id", onDelete: 'CASCADE' });
 Matriz.belongsTo(Professionals, { foreignKey: "idProfessional", sourceKey: "idProfessional" });

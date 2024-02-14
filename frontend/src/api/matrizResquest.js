@@ -39,8 +39,33 @@ import axios, { jwt } from "./axios.js";
       Authorization: jwt(),
     },
   });
+  export const addMatrizQuiz = async (data) =>
+  await axios.post("/matriz/addMatrizQuiz", data, {
+    headers: {
+      Authorization: jwt(),
+    },
+  });
+
+  export const getMatrizFilter = async (data) =>
+  await axios.post("/matriz/getMatrizFilter", data, {
+    headers: {
+      Authorization: jwt(),
+    },
+  });
+  export const getMatrizQuizFilter = async (data) =>
+  await axios.get(`/matriz/getMatrizQuizFilter/${data}`, {
+    headers: {
+      Authorization: jwt(),
+    },
+  });
   export const removeMatriz = async (matrizId) =>
   await axios.delete(`/matriz/${matrizId}`, {
+    headers: {
+      Authorization: jwt(),
+    },
+  });
+  export const deleteMatrizQuiz = async (matrizId, quizId) =>
+  await axios.delete(`/matriz/${matrizId}/${quizId}`, {
     headers: {
       Authorization: jwt(),
     },

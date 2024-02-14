@@ -166,58 +166,72 @@ function Matriz() {
       ),
     },
   ];
-  const columnsCreateMatriz = [
-    {
-      header: "#",
-      accessorKey: "userId",
-      cell: (props) => props.row.index + 1,
-    },
-    {
-      header: "Cedula",
-      accessorKey: "ci",
-    },
-
-    {
-      header: "Nombres Completos",
-      accessorKey: "fullname",
-      accessorFn: (row) =>
-        `
-        ${row.firstName} ${row.secondName} ${row.firstLastName} ${row.secondLastName}`,
-    },
-    {
-      header: "Carrera",
-      accessorKey: "carreerName",
-    },
-    {
-      header: "Periodo",
-      accessorKey: "periodName",
-    },
-    {
-      header: "Modalidad",
-      accessorKey: "modality",
-    },
-    {
-      header: "Año",
-      accessorKey: "grateDate",
-    },
-    {
-      header: "Acción",
-
-      cell: (props) => (
-        <Center>
-          <Stack spacing={4} direction="row">
-            <Button
-              colorScheme="red"
+    const columnsCreateMatriz = [
+      {
+        header: "#",
+        accessorKey: "id",
+        cell: (props) => props.row.index + 1,
+      },
+      {
+        header: "Nombres Completos",
+        accessorKey: "fullname",
+        accessorFn: (row) =>
+          `
+          ${row.professional.firstName} ${row.professional.secondName} ${row.professional.firstLastName} ${row.professional.secondLastName}`,
+      },
+      {
+        header: "Cedula",
+        accessorKey: "professional.ci",
+      },
+      {
+        header: "Carrera",
+        accessorKey: "carreer.name",
+      },
+      {
+        header: "Periodo",
+        accessorKey: "period.name",
+      },
+      {
+        header: "Modalidad",
+        accessorKey: "modality",
+      },
+      {
+        header: "Fecha de Grado",
+        accessorKey: "grateDate",
+      },
+      {
+        header: "Acción",
+  
+        cell: (props) => (
+          <Center>
+  
+            <Stack spacing={4} direction="row" align="center">
+              {/* <Button
+              colorScheme="yellow"
               onClick={() => {
-                handleDeleteProfessionalRow(props.row.original);
+                handleEditRow(props.row.original);
               }}
-            >  - </Button>
-          </Stack>
-        </Center>
-
-      ),
-    },
-  ];
+            >
+             <EditIcon></EditIcon>
+            </Button> */}
+  
+              <Button
+                colorScheme="red"
+                onClick={() => {
+                  setDataMatriz(props.row.original);
+                  // console.log(props.row.original)
+                  setDeleteUserModalOpen(true)
+                }}
+              >
+                <DeleteIcon></DeleteIcon>
+              </Button>
+  
+            </Stack>
+          </Center>
+  
+        ),
+      },
+    ];
 
   const transformedCarreras = Careers.map(item => ({
     value: item.idCarreer,
