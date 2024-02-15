@@ -141,7 +141,8 @@ function Matriz() {
       accessorKey: "fullname",
       accessorFn: (row) =>
         `
-        ${row.firstName} ${row.secondName} ${row.firstLastName} ${row.secondLastName}`,
+        ${row.firstName} ${row.secondName} ${row.firstLastName} ${row.secondLastName}
+        `,
     },
     {
       header: "Fecha",
@@ -177,19 +178,20 @@ function Matriz() {
         accessorKey: "fullname",
         accessorFn: (row) =>
           `
-          ${row.professional.firstName} ${row.professional.secondName} ${row.professional.firstLastName} ${row.professional.secondLastName}`,
+        ${row.firstName} ${row.secondName} ${row.firstLastName} ${row.secondLastName}
+          `,
       },
       {
         header: "Cedula",
-        accessorKey: "professional.ci",
+        accessorKey: "ci",
       },
       {
         header: "Carrera",
-        accessorKey: "carreer.name",
+        accessorKey: "carreerName",
       },
       {
         header: "Periodo",
-        accessorKey: "period.name",
+        accessorKey: "periodName",
       },
       {
         header: "Modalidad",
@@ -215,16 +217,13 @@ function Matriz() {
              <EditIcon></EditIcon>
             </Button> */}
   
-              <Button
-                colorScheme="red"
-                onClick={() => {
-                  setDataMatriz(props.row.original);
-                  // console.log(props.row.original)
-                  setDeleteUserModalOpen(true)
-                }}
-              >
-                <DeleteIcon></DeleteIcon>
-              </Button>
+  <Button
+              colorScheme="red"
+              onClick={() => {
+                handleDeleteProfessionalRow(props.row.original);
+              }}
+            >
+              -         </Button>
   
             </Stack>
           </Center>
@@ -363,31 +362,31 @@ function Matriz() {
       });
 
     });
-    // if (isEditing) {
-    //   toast.promise(editQuiz(id, formQuiz), {
-    //     loading: {
-    //       title: "Editando...",
-    //       position: "top-right",
-    //     },
-    //     success: (d) => ({
-    //       title: "Encuesta",
-    //       description: d.data.message,
-    //       isClosable: true,
-    //     }),
-    //     error: (e) => ({
-    //       title: "Error",
-    //       description: e.response.data.message,
-    //       isClosable: true,
-    //     }),
-    //   });
-    //   fetchUsers();
-    //   clear();
+    if (isEditing) {
+      toast.promise(editQuiz(id, formQuiz), {
+        loading: {
+          title: "Editando...",
+          position: "top-right",
+        },
+        success: (d) => ({
+          title: "Encuesta",
+          description: d.data.message,
+          isClosable: true,
+        }),
+        error: (e) => ({
+          title: "Error",
+          description: e.response.data.message,
+          isClosable: true,
+        }),
+      });
+      fetchUsers();
+      // clear();
 
-    //   return;
-    // }
+      return;
+    }
 
 
-    // fetchUsers();
+    fetchUsers();
     // clear();
 
   };

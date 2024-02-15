@@ -171,6 +171,7 @@ function Quizzes() {
     const selected = updatedMatriz.filter((item) => item.isSelected);
     setSelectedItems(selected);
   };
+
   const handleCheckboxChange = (index) => {
     const updatedMatriz = matriz.map((item, i) => {
       if (i === index) {
@@ -326,7 +327,7 @@ function Quizzes() {
     
       // Resto del código...
     
-      console.log(deselectedItems); // Imprimir deselectedItems en la consola
+      // console.log(deselectedItems); // Imprimir deselectedItems en la consola
     
       // Realizar la edición solo para los nuevos elementos
       toast.promise(editQuiz(id, formQuiz), {

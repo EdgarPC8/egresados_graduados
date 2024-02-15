@@ -13,11 +13,14 @@ getMatrizFilter,
 addMatrizQuiz,
 getMatrizQuizFilter,
 deleteMatrizQuiz,
+getQuizByMatrizProfessional,
+completedQuiz,
 } from "../controllers/matrizController.js";
 import { isAuthenticated } from "../middlewares/authMiddelware.js";
 
 const router = Router();
 
+router.get("/getQuizByMatrizProfessional/:idProfessional", isAuthenticated, getQuizByMatrizProfessional);
 router.get("/getAllCareers", isAuthenticated, getAllCareers);
 router.get("/getAllPeriods", isAuthenticated, getAllPeriods);
 router.get("/getAllMatriz", isAuthenticated, getAllMatriz);
@@ -31,6 +34,9 @@ router.post("/addPeriod", isAuthenticated, addPeriod);
 router.delete("/:matrizId", isAuthenticated, deleteMatriz);
 router.delete("/:matrizId/:quizId", isAuthenticated, deleteMatrizQuiz);
 
+
+// router.put("/completedQuiz/:matrizId/:quizId", isAuthenticated, completedQuiz);
+router.put("/completedQuiz", isAuthenticated, completedQuiz);
 router.put("/editCareer/:careerId", isAuthenticated, editCareer);
 router.put("/editPeriod/:periodId", isAuthenticated, editPeriod);
 

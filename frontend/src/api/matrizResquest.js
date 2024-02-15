@@ -2,6 +2,12 @@
 import axios, { jwt } from "./axios.js";
 
 
+  export const getQuizByMatrizProfessional = async (data) =>
+    await axios.get(`/matriz/getQuizByMatrizProfessional/${data}`,{
+      headers: {
+        Authorization: jwt(),
+      },
+    });
   export const getAllMatriz = async () =>
     await axios.get("/matriz/getAllMatriz",{
       headers: {
@@ -70,6 +76,18 @@ import axios, { jwt } from "./axios.js";
       Authorization: jwt(),
     },
   });
+  export const completedQuiz = async (data) =>
+  await axios.put(`/matriz/completedQuiz`,data, {
+    headers: {
+      Authorization: jwt(),
+    },
+  });
+  // export const completedQuiz = async (matrizId, quizId) =>
+  // await axios.put(`/matriz/completedQuiz/${matrizId}/${quizId}`, {
+  //   headers: {
+  //     Authorization: jwt(),
+  //   },
+  // });
 
 export const editCareer = async (id, data) =>
 await axios.put(`/matriz/editCareer/${id}`, data, {

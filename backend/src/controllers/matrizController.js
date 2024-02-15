@@ -8,6 +8,29 @@ import {
 import {
   Professionals,
 } from "../Models/Professionals.js";
+import {
+  Questions,
+  Options,
+  Responses,
+  QuestionTypes,
+  Quiz,
+} from "../Models/Quiz.js";
+
+export const getQuizByMatrizProfessional = async (req, res) => {
+  try {
+    const matriz = await Matriz.findOne({
+      attributes: ['ci'],
+      where: { idProfessional:req.params.idProfessional },
+      include: [
+        { model: Quiz, attributes: ['title','description','date'] },
+      ],
+    });
+    res.json(matriz);
+  } catch (error) {
+    console.error('Error al obtener datos de la matriz:', error);
+    res.status(500).json({ error: 'Hubo un problema al obtener los datos de la matriz.' });
+  }
+};
 
 export const getAllMatriz = async (req, res) => {
   try {
@@ -174,6 +197,21 @@ export const deleteMatrizQuiz = async (req, res) => {
     res.json({ message: "Eliminado con éxito" });
   } catch (error) {
     return res.status(500).json({
+      message: error.message,
+    });
+  }
+};
+
+export const completedQuiz = async (req, res) => {
+  const data = req.body;
+  try {
+    const editProfessional = await MatrizQuiz.update({completed:1}, {
+      where: data
+    });
+    res.json({ message: "Encuesta completada con éxito" });
+    // res.json({ message: data});
+  } catch (error) {
+    res.status(500).json({
       message: error.message,
     });
   }

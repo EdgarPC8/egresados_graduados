@@ -115,13 +115,22 @@ Matriz.belongsToMany(Quiz, {
     through: MatrizQuiz,
     foreignKey: "idMatriz",
     sourceKey: "id",
-    // unique: false, // Permitir duplicados
   });
 Quiz.belongsToMany(Matriz, {
 through: MatrizQuiz,
 foreignKey: "quizId",
 sourceKey: "idQuiz",
 });
+
+
+// Matriz.belongsToMany(Quiz, {
+//     through: MatrizQuiz,
+//     foreignKey: 'idMatriz', // nombre de la clave foránea en la tabla matriz_quizzes que se refiere a la tabla matrices
+//   });
+//   MatrizQuiz.belongsTo(Matriz, {
+//     foreignKey: 'idMatriz', // nombre de la clave foránea en la tabla matriz_quizzes que se refiere a la tabla matrices
+//   });
+  
 
 Professionals.hasMany(Matriz, { foreignKey: "idProfessional", sourceKey: "id", onDelete: 'CASCADE' });
 Matriz.belongsTo(Professionals, { foreignKey: "idProfessional", sourceKey: "idProfessional" });
