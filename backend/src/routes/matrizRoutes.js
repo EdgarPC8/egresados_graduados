@@ -33,8 +33,6 @@ router.post("/addPeriod", isAuthenticated, addPeriod);
 
 router.delete("/:matrizId", isAuthenticated, deleteMatriz);
 router.delete("/:matrizId/:quizId", isAuthenticated, deleteMatrizQuiz);
-
-
 // router.put("/completedQuiz/:matrizId/:quizId", isAuthenticated, completedQuiz);
 router.put("/completedQuiz", isAuthenticated, completedQuiz);
 router.put("/editCareer/:careerId", isAuthenticated, editCareer);
