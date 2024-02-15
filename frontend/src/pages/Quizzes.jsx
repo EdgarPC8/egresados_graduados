@@ -28,12 +28,6 @@ import {
   Checkbox,
   Center,
 } from "@chakra-ui/react";
-
-import { useAuth } from "../context/AuthContext";
-import { FiUserPlus } from "react-icons/fi";
-import { EmailIcon } from "@chakra-ui/icons";
-import { Link, useNavigate } from "react-router-dom";
-
 function Quizzes() {
   const toast = useToast();
   const [quizzes, setQuizzes] = useState([]);

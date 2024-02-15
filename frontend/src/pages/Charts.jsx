@@ -34,15 +34,13 @@ import {
   Checkbox,
 } from "@chakra-ui/react";
 import ChartsCareers from "../components/ChartsCareers.jsx";
-
-
-
+import ChartsResponsesQuiz from "../components/ChartsResponsesQuiz.jsx";
 
 
 function Chart(){
   return (
     <Box margin={10}>
-      <ChartsCareers/>
+      <ChartsResponsesQuiz/>
     </Box>
     
   );

@@ -9,3 +9,9 @@ export const getProfesionalsCareers = async () =>
       Authorization: jwt(),
     },
   });
+export const getAllResponses = async (data) =>
+  await axios.get(`/charts/getAllResponses/${data}`,{
+    headers: {
+      Authorization: jwt(),
+    },
+  });
