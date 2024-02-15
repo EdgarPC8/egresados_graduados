@@ -18,19 +18,34 @@ export function renderCellContent(cellContent, context) {
   // Convertir contentValue a cadena y eliminar espacios en blanco al inicio y al final
   const contentAsString = String(contentValue).trim();
 
-  // Verificar si es una fecha válida en formato yyyy-mm-dd
-  const isDateValid = /^\d{4}-\d{2}-\d{2}$/.test(contentAsString);
+  // Verificar si es una fecha válida en formato yyyy-mm-dd o yyyy-mm-ddThh:mm:ss.000Z
+  const isDateTimeValid = /^\d{4}-\d{2}-\d{2}(T\d{2}:\d{2}:\d{2}\.000Z)?$/.test(contentAsString);
 
+  if (isDateTimeValid) {
+    // Reformatear la fecha a dd-mm-yyyy hh:mm:ss AM/PM
+    const [datePart, timePart] = contentAsString.split('T');
+    const [year, month, day] = datePart.split('-');
+    const formattedDate = `${day}-${month}-${year}`;
+    
+    if (timePart) {
+      const [hours, minutes, seconds] = timePart.slice(0, -5).split(':');
+      let formattedTime = '';
 
-  if (isDateValid) {
-    // Reformatear la fecha a dd-mm-yyyy
-    const [year, month, day] = contentAsString.split('-');
-    return `${day}-${month}-${year}`;
+      // Convertir horas a formato AM/PM
+      const hour = parseInt(hours, 10);
+      const amPm = hour >= 12 ? 'PM' : 'AM';
+      formattedTime = hour > 12 ? `${hour}:${minutes}:${seconds} ${amPm}` : `${hour}:${minutes}:${seconds} ${amPm}`;
+
+      return `${formattedDate} ${formattedTime}`;
+    } else {
+      return formattedDate;
+    }
   } else {
     // Si no es una fecha válida, mostrar el texto tal cual
     return flexRender(cellContent, context);
   }
 }
+
 export function reorderDateString(dateString) {
   const dateRegex = /^\d{4}-\d{2}-\d{2}$/;
 

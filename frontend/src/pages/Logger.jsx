@@ -27,6 +27,11 @@ function Logger() {
 
   const columns = [
     {
+      header: "#",
+      accessorKey: "id",
+      cell: (props) => props.row.index + 1,
+    },
+    {
       header: "Método http",
       accessorKey: "httpMethod",
       cell: (props) => (
@@ -40,8 +45,20 @@ function Logger() {
       accessorKey: "endPoint",
     },
     {
+      header: "Sistema",
+      accessorKey: "system",
+    },
+    {
+      header: "Descripcion",
+      accessorKey: "description",
+    },
+    {
       header: "Acción",
       accessorKey: "action",
+    },
+    {
+      header: "Fecha",
+      accessorKey: "date",
     },
   ];
 
