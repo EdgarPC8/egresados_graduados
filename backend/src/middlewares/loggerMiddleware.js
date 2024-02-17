@@ -59,6 +59,9 @@ const loggerMiddleware = async (req, res, next) => {
   const authHeader = req.headers["authorization"];
   const system=req.headers['user-agent'];
 
+  // console.log("---------------------------------------------------------------------------------")
+  // console.log(req.body)
+
   if (
     authHeader &&
     authHeader !== "Bearer null" &&

@@ -9,24 +9,24 @@ function ProtectedRoute({ requiredRol }) {
 
   // console.log(isLoading, isAuthenticated);
 
-  // if (isLoading)
-  //   return (
-  //     <Center height="100vh">
-  //       <Spinner
-  //         thickness="4px"
-  //         speed="0.65s"
-  //         emptyColor="gray.200"
-  //         color="blue.500"
-  //         size="xl"
-  //       />
-  //     </Center>
-  //   );
+  if (isLoading)
+    return (
+      <Center height="100vh">
+        <Spinner
+          thickness="4px"
+          speed="0.65s"
+          emptyColor="gray.200"
+          color="blue.500"
+          size="xl"
+        />
+      </Center>
+    );
 
-  // if (!isLoading && isAuthenticated && !requiredRol.includes(user.loginRol)) {
-  //   return <NoAccess />;
-  // }
+  if (!isLoading && isAuthenticated && !requiredRol.includes(user.loginRol)) {
+    return <NoAccess />;
+  }
 
-  // if (!isAuthenticated && !isLoading) return <Navigate to="/login" replace />;
+  if (!isAuthenticated && !isLoading) return <Navigate to="/login" replace />;
   return <Outlet />;
 }
 

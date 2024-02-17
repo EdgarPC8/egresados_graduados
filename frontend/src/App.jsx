@@ -51,23 +51,21 @@ function App() {
               <Route path="/perfil" element={<Profile />} />
               <Route path="/cvPdf" element={<CvPdf />} />
             </Route>
-            
             <Route element={<ProtectedRoute requiredRol={["programador","administrador"]} />}>
-              <Route path="/cv" element={<CV />} />
-              <Route path="/actividad" element={<Logger />} />
-              <Route path="/quiz" element={<Quiz />} />
-              <Route path="/perfil" element={<Profile />} />
               <Route path="/usuarios" element={<UserTable />} />
               <Route path="/agregar-usuario" element={<FormAddUser />} />
               <Route path="/editar-usuario/:userId" element={<FormAddUser />} />
-              <Route path="/charts" element={<Charts />} />
               <Route path="/curriculos" element={<Resumes />} />
               <Route path="/cvProfessionalPdf/:userId" element={<CvProfessionalPdf />} />
-              <Route path="/cvPdf" element={<CvPdf />} />
               <Route path="/quizzes" element={<Quizzes />} />
               <Route path="/matriz" element={<Matriz />} />
               <Route path="/carreras" element={<Careers />} />
               <Route path="/periodos" element={<Periods />} />
+            </Route>
+            
+            <Route element={<ProtectedRoute requiredRol={["programador"]} />}>
+              <Route path="/actividad" element={<Logger />} />
+              <Route path="/charts" element={<Charts />} />
 
             </Route>
           </Routes>

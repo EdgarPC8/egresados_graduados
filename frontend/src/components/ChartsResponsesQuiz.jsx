@@ -6,10 +6,10 @@ import {
     Flex,
     Text,
     Grid,
-GridItem,
-Stack,
-Button,
-Center,
+    GridItem,
+    Stack,
+    Button,
+    Center,
 } from "@chakra-ui/react";
 import {
     getProfesionalsCareers,
@@ -20,16 +20,17 @@ import { useEffect, useState, useRef } from "react";
 import ChartPastel from "./ChartPastel.jsx";
 
 import Tabl from "./Table";
+import { getMatrizQuizFilter } from "../api/matrizResquest";
+
 
 import { getAllQuizzes,addQuiz,editQuiz } from "../api/quizResquest";
-
-
-
 
 const data01 = [
     { name: 'Si', value: 25 },
     { name: 'No', value: 43 },
 ];
+
+const questionToFilter = [1,2,3,4,8,9,15,22,27,28];
 
 
 function ChartsResponsesQuiz() {
@@ -37,6 +38,7 @@ function ChartsResponsesQuiz() {
   const [Responses, setResponses] = useState(null);
   const [quizzes, setQuizzes] = useState([]);
   const [TitleAndDescription, setTitleAndDescription] = useState(null);
+  const [completedData, setCompletedData] = useState(null);
 
   const columns = [
     {
@@ -57,8 +59,25 @@ function ChartsResponsesQuiz() {
       accessorKey: "date",
     },
     {
-      header: "Acción",
+      header: "Completas",
+      cell: (props) => {
+        useEffect(() => {
+          getMatrizQuizCompleted(1).then((result) => {
+            setCompletedData(result);
+          });
+        }, []); // El segundo parámetro [] asegura que el efecto se ejecute solo una vez al montar el componente
 
+        // Puedes devolver un elemento JSX o null si no quieres renderizar nada en la celda
+        return completedData ? (
+          <>
+            <p>Completadas: {completedData.completadas}</p>
+            <p>No completadas: {completedData.noCompletadas}</p>
+          </>
+        ) : null;
+      },
+    },
+    {
+      header: "Acción",
       cell: (props) => (
         <Stack spacing={4} direction="row" align="center">
            <Button
@@ -95,35 +114,36 @@ function ChartsResponsesQuiz() {
   }
   
   function countTextResponses(groupedData) {
+    
     const countData = {};
   
     Object.keys(groupedData).forEach((idQuestion) => {
-      const questionData = groupedData[idQuestion];
-      const responses = questionData.responses;
-  
-      const responseCounts = responses.reduce((acc, response) => {
-        if (!acc[response]) {
-          acc[response] = 1;
-        } else {
-          acc[response]++;
-        }
-  
-        return acc;
-      }, {});
-  
-      countData[idQuestion] = {
-        TextQuestion: questionData.TextQuestion,
-        responses: Object.keys(responseCounts).map((textResponse) => ({
-          name: textResponse,
-          value: responseCounts[textResponse],
-        })),
-      };
+        const questionData = groupedData[idQuestion];
+        const responses = questionData.responses;
+    
+        const responseCounts = responses.reduce((acc, response) => {
+          if (!acc[response]) {
+            acc[response] = 1;
+          } else {
+            acc[response]++;
+          }
+    
+          return acc;
+        }, {});
+        countData[idQuestion] = {
+          TextQuestion: questionData.TextQuestion,
+          responses: Object.keys(responseCounts).map((textResponse) => ({
+            name: textResponse,
+            value: responseCounts[textResponse],
+          })),
+        };
+      
     });
   
     return countData;
   }
   const handleEditRow =async (row) => {
-    console.log(row)
+    // console.log(row)
     const resPeriods = await getAllResponses(row.idQuiz);
     const responseData = resPeriods.data;
     const groupedByQuestionId = groupByQuestionId(responseData);
@@ -153,15 +173,62 @@ function ChartsResponsesQuiz() {
       )
     )
   };
+  function contarTareasCompletadas(tareas) {
+    // Inicializar contadores
+    let completadas = 0;
+    let noCompletadas = 0;
+  
+    // Recorrer el array de objetos
+    for (let i = 0; i < tareas.length; i++) {
+      // Verificar el valor de la propiedad 'completed'
+      if (tareas[i].completed === 1) {
+        completadas++;
+      } else if (tareas[i].completed === 0) {
+        noCompletadas++;
+      }
+      // Puedes agregar más condiciones si hay otros valores posibles de 'completed'
+    }
+  
+    // Devolver el resultado como un objeto
+    return {
+      completadas: completadas,
+      noCompletadas: noCompletadas
+    };
+  }
+  
+  // // Ejemplo de uso
+  // const arrayDeTareas = [
+  //   { id: 1, completed: 1 },
+  //   { id: 2, completed: 0 },
+  //   { id: 3, completed: 1 },
+  //   // ... más objetos
+  // ];
+  
+  // const resultado = contarTareasCompletadas(arrayDeTareas);
+  // console.log("Completadas: " + resultado.completadas);
+  // console.log("No completadas: " + resultado.noCompletadas);
+
+
+
+  async function getMatrizQuizCompleted(id) {
+    try {
+      
+         const res = await getMatrizQuizFilter(id);
+        // console.log(res.data)
+        return res.data;
+      
+
+    } catch (error) {
+        console.error("Error al obtener datos académicos:", error);
+    }
+}
+  
 
     async function fetchData() {
         try {
-            
-
             const resQuizzes = await getAllQuizzes();
             setQuizzes(resQuizzes.data)
-
-            
+          
 
         } catch (error) {
             console.error("Error al obtener datos académicos:", error);
@@ -185,13 +252,17 @@ function ChartsResponsesQuiz() {
           mt={2}
         >
           {Responses && Object.keys(Responses).map((key) => {
-            const element = Responses[key];
-            // Puedes pasar el elemento como prop a ChartPastel y renderizarlo dentro del componente
-            return (
-              <GridItem key={key} fontSize={"sm"}>
-                <ChartPastel title={element.TextQuestion} data={element.responses} />
-              </GridItem>
-            );
+      if(questionToFilter.includes(Number(key))){
+        // console.log(key)
+        const element = Responses[key];
+        // Puedes pasar el elemento como prop a ChartPastel y renderizarlo dentro del componente
+        return (
+          <GridItem key={key} fontSize={"sm"}>
+            <ChartPastel title={element.TextQuestion} data={element.responses} />
+          </GridItem>
+        );
+      }
+           
           })}
         </Grid>
       </Box>

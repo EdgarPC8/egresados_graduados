@@ -135,11 +135,6 @@ const Navbar = () => {
         icon: <FiHome />,
       },
       {
-        name: "Usuarios",
-        path: "/usuarios",
-        icon: <FiUser />,
-      },
-      {
         name: "Graficos",
         path: "/charts",
         icon: <FaChartPie />,
@@ -148,6 +143,36 @@ const Navbar = () => {
         name: "Curriculos",
         path: "/curriculos",
         icon: <FiFile />,
+      },
+      {
+        name: "Hoja de Vida",
+        path: "/cv",
+        icon: <FiAward />,
+      },
+      {
+        name: "Encuesta",
+        path: "/quiz",
+        icon: <FiFileText />,
+      },
+      {
+        name: "Encuestas",
+        path: "/quizzes",
+        icon: <FiFileText />,
+      },
+      {
+        name: "Matrices",
+        path: "/matriz",
+        icon: <FiFileText />,
+      },
+      {
+        name: "Carreras",
+        path: "/carreras",
+        icon: <FiFileText />,
+      },
+      {
+        name: "Periodos",
+        path: "/periodos",
+        icon: <FiFileText />,
       },
     ],
     profesional: [

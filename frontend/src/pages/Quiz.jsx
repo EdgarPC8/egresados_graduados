@@ -50,6 +50,7 @@ function ResumeForm() {
   const [Quizzes, setQuizzes] = useState([]);
   const [IsCompleteing, setIsCompleteing] = useState(false);
   const [IdQuiz, setIdQuiz] = useState(null);
+  const [IdMatriz, setIdMatriz] = useState(null);
   const columns = [
     {
       header: "#",
@@ -98,9 +99,11 @@ function ResumeForm() {
     },
   ];
   const handleQuiz = (row) => {
+
     setIsCompleteing(true)
     setIdQuiz(row.matriz_quizzes.quizId)
-    // console.log(row.matriz_quizzes.quizId)
+    setIdMatriz(row.matriz_quizzes.idMatriz)
+    // console.log(row)
 
   };
 
@@ -139,10 +142,9 @@ function ResumeForm() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     const formData = Object.fromEntries(new FormData(e.target));
-    // completedQuiz(172,1)
     toast.promise(completedQuiz({
-          idMatriz: 172,
-          quizId: 1,
+          idMatriz: IdMatriz,
+          quizId: IdQuiz,
         }), {
       loading: {
         title: "Añadiendo...",
