@@ -1,7 +1,6 @@
 import Tabl from "../components/Table";
 import { useEffect, useState } from "react";
 import { getAllCareers,addCareer,editCareer } from "../api/matrizResquest.js";
-import { urlPhotos } from "../api/axios";
 import { useRef } from "react";
 import {
   useDisclosure,

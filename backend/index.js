@@ -12,7 +12,7 @@ import userRoutes from "./src/routes/userRoutes.js";
 import registerRoutes from "./src/routes/registerRoutes.js";
 import logRoutes from "./src/routes/logRoutes.js";
 import { sequelize } from "./src/database/connection.js";
-import { insertData } from "./src/database/insertData.js";
+import { insertData,consoleData } from "./src/database/insertData.js";
 import  loggerMiddleware from "./src/middlewares/loggerMiddleware.js";
 
 
@@ -76,6 +76,7 @@ async function main() {
 
     // await sequelize.sync({ force: true });
     // await insertData();
+    await consoleData();
 
     console.log("Conección realizada con éxito.");
     app.listen(PORT, () => {

@@ -5,6 +5,7 @@ import { getAllMatriz,getAllPeriods,getAllCareers,getMatrizFilter,addMatrizQuiz,
 import { useRef } from "react";
 import SelectData from "../components/SelectData";
 
+
 import {
   Button,
   useDisclosure,
@@ -68,6 +69,12 @@ function Quizzes() {
     {
       header: "Fecha",
       accessorKey: "date",
+    },
+    {
+      header: "Enviados a",
+      cell: (props) => {
+        return `${props.row.original.matrices.length} Profesionales`
+      },
     },
     {
       header: "Acción",
@@ -338,6 +345,8 @@ function Quizzes() {
               deleteMatrizQuiz(element.idMatriz,element.quizId);
             }
           });
+          fetchUsers();
+          clear();
     
           return {
             title: "Encuesta",
@@ -391,7 +400,7 @@ function Quizzes() {
   async function fetchUsers() {
     try {
       const resMatriz = await getAllMatriz();
-      const resQuizzes = await getAllQuizzes();
+      const resQuizzes = await getMatrizQuizFilter(0);
       setQuizzes(resQuizzes.data)
       setMatriz(resMatriz.data);
       const resCareers = await getAllCareers();

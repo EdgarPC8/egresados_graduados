@@ -20,7 +20,7 @@ import { useEffect, useState, useRef } from "react";
 import ChartPastel from "./ChartPastel.jsx";
 
 import Tabl from "./Table";
-import { getMatrizQuizFilter } from "../api/matrizResquest";
+import { getMatrizQuizFilter,getMatrizFilter } from "../api/matrizResquest";
 
 
 import { getAllQuizzes,addQuiz,editQuiz } from "../api/quizResquest";
@@ -38,7 +38,6 @@ function ChartsResponsesQuiz() {
   const [Responses, setResponses] = useState(null);
   const [quizzes, setQuizzes] = useState([]);
   const [TitleAndDescription, setTitleAndDescription] = useState(null);
-  const [completedData, setCompletedData] = useState(null);
 
   const columns = [
     {
@@ -59,21 +58,9 @@ function ChartsResponsesQuiz() {
       accessorKey: "date",
     },
     {
-      header: "Completas",
+      header: "Enviados a",
       cell: (props) => {
-        useEffect(() => {
-          getMatrizQuizCompleted(1).then((result) => {
-            setCompletedData(result);
-          });
-        }, []); // El segundo parámetro [] asegura que el efecto se ejecute solo una vez al montar el componente
-
-        // Puedes devolver un elemento JSX o null si no quieres renderizar nada en la celda
-        return completedData ? (
-          <>
-            <p>Completadas: {completedData.completadas}</p>
-            <p>No completadas: {completedData.noCompletadas}</p>
-          </>
-        ) : null;
+        return `${props.row.original.matrices.length} Profesionales`
       },
     },
     {
@@ -174,6 +161,7 @@ function ChartsResponsesQuiz() {
     )
   };
   function contarTareasCompletadas(tareas) {
+    // console.log(tareas)
     // Inicializar contadores
     let completadas = 0;
     let noCompletadas = 0;
@@ -226,8 +214,9 @@ function ChartsResponsesQuiz() {
 
     async function fetchData() {
         try {
-            const resQuizzes = await getAllQuizzes();
+            const resQuizzes = await getMatrizQuizFilter(0);
             setQuizzes(resQuizzes.data)
+            console.log(resQuizzes.data)
           
 
         } catch (error) {

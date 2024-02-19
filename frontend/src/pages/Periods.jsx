@@ -1,7 +1,6 @@
 import Tabl from "../components/Table";
 import { useEffect, useState } from "react";
 import { getAllPeriods,addPeriod,editPeriod } from "../api/matrizResquest.js";
-import { urlPhotos } from "../api/axios";
 import { useRef } from "react";
 import {
   useDisclosure,

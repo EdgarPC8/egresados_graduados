@@ -5,9 +5,10 @@ import { useEffect, useState } from "react";
 import { addUser, getUsers, removeUser, changePassword } from "../api/userRequest";
 import { getAllProfessionals, addProfessional } from "../api/professionalRequest";
 import { getAllMatriz, addMatriz, removeMatriz, getAllCareers, getAllPeriods } from "../api/matrizResquest";
-import { urlPhotos } from "../api/axios";
 import { useRef } from "react";
 import { EditIcon, DeleteIcon } from '@chakra-ui/icons';
+import Papa from "papaparse"; // Asegúrate de instalar papaparse: npm install papaparse
+
 import {
   Button,
   useDisclosure,
@@ -23,6 +24,7 @@ import {
   InputGroup,
   InputLeftAddon,
   Input,
+  Text,
 } from "@chakra-ui/react";
 
 import { useAuth } from "../context/AuthContext";
@@ -33,6 +35,7 @@ import { Link, useNavigate } from "react-router-dom";
 function Matriz() {
   const navigate = useNavigate();
   const toast = useToast();
+  const hiddenFileInputCSVRef = useRef(null);
   const { user } = useAuth();
   const [quizzes, setQuizzes] = useState([]);
   const [Careers, setCareers] = useState([]);
@@ -40,23 +43,23 @@ function Matriz() {
   const [professionals, setProfessionals] = useState([]);
   const [createMatriz, setCreateMatriz] = useState([]);
   const [alertDialogMessage, setAlertDialogMessage] = useState('');
+  const [csvFile, setCSVFile] = useState(null);
+
 
   const [selectedOptionCareer, setSelectedOptionCareer] = useState(null);
   const [selectedOptionPeriod, setSelectedOptionPeriod] = useState(null);
+
   const [selectedModality, setSelectedModality] = useState(null);
   const [year, setYear] = useState("");
-  const [textValue, setTextValue] = useState("");
+  
+  const [selectedModalityVisible, setSelectedModalityVisible] = useState(true);
+  const [yearVisible, setYearVisible] = useState(true);
+  const [ButtonCargarCsvVisible, setButtonCargarCsvVisible] = useState(true);
 
-
-  const { isOpen, onOpen, onClose } = useDisclosure();
   const [isSelectModalOpen, setSelectModalOpen] = useState(false);
   const [isDeleteUserModalOpen, setDeleteUserModalOpen] = useState(false);
 
-
   const [DataMatriz, setDataMatriz] = useState(null);
-  const cancelRef = useRef();
-
-  const form = useRef(null);
   const [isEditing, setIsEditing] = useState(false);
   const [id, setId] = useState(0);
 
@@ -249,6 +252,92 @@ function Matriz() {
   const [formQuiz, setFormQuiz] = useState(
     initialFormQuiz
   );
+  const handleCSV = async () => {
+    if (!selectedOptionCareer || !selectedOptionPeriod) {
+      // Muestra el AlertDialog con el mensaje correspondiente
+      setAlertDialogMessage("Por favor, seleccione una carrera y período")
+      setSelectModalOpen(true);
+      return;
+    }
+    setButtonCargarCsvVisible(false)
+    hiddenFileInputCSVRef.current.click();
+  };
+
+  const handleFileChangeCSV = async (event) => {
+    const selectedFile = event.target.files[0];
+
+    if (!selectedFile) {
+      console.error("Selecciona un archivo CSV antes de cargar.");
+      return;
+    }
+
+    setYearVisible(false)
+    setSelectedModalityVisible(false)
+    setSelectedModality(true)
+    setYear(true)
+    
+    setProfessionals([])
+    Papa.parse(selectedFile, {
+      complete: (result) => {
+        // El resultado de Papaparse contiene la información del CSV
+        // console.log("Datos CSV:", result.data);
+        const nombresCampos = ['name', 'ci', 'career', 'phone', 'email', 'modality', 'grateDate', 'actualOcupation', 'poststudy'];
+        // Crear otro array de objetos usando los nombres de propiedades como nombres de campos
+        const nuevoArray = result.data.map((element) => {
+          const nuevoObjeto = {};
+          Object.keys(element).forEach((key, index) => {
+            nuevoObjeto[nombresCampos[index]] = element[key];
+            nuevoObjeto.carreerName = selectedOptionCareer.name;
+            nuevoObjeto.periodName = selectedOptionPeriod.name;
+            nuevoObjeto.carreerId = selectedOptionCareer.id;
+            nuevoObjeto.periodId = selectedOptionPeriod.id;
+          });
+          return nuevoObjeto;
+        });
+        
+        const nuevoArrayRepetidos = nuevoArray.map((element) => {
+          const elementoEnProfessionals = professionals.find((objeto) => objeto.ci === element.ci);
+          if (elementoEnProfessionals) {
+            // Actualiza los campos del nuevoArray con los campos correspondientes del profesional
+            // console.log(elementoEnProfessionals)
+            element.birthDate = elementoEnProfessionals.birthDate;
+            element.firstName = elementoEnProfessionals.firstName;
+            element.secondName = elementoEnProfessionals.secondName;
+            element.firstLastName = elementoEnProfessionals.firstLastName;
+            element.secondLastName = elementoEnProfessionals.secondLastName;
+            element.id = elementoEnProfessionals.id;
+            return element;
+          }
+          return false;
+        }).filter(Boolean); // Elimina elementos falsos (que no tuvieron coincidencias)
+    
+        const nuevoArrayNoRepetidos = nuevoArray.filter((element) => {
+          return !professionals.some((objeto) => objeto.ci === element.ci);
+        });
+    
+        console.log("\nNuevo array de objetos con 'ci' repetido en professionals:");
+        console.log(nuevoArrayRepetidos);
+    
+        console.log("\nNuevo array de objetos con 'ci' no repetido en professionals:");
+        console.log(nuevoArrayNoRepetidos);
+
+      // Aquí puedes manejar los dos arrays como desees
+      // Por ejemplo, puedes usar setCreateMatriz para los repetidos y setProfessionals para los no repetidos
+      setCreateMatriz(nuevoArrayRepetidos);
+
+      setProfessionals((prevProfessionals) => {
+        const filteredProfessionals = prevProfessionals.filter(
+          (prof) => !nuevoArrayRepetidos.some((rep) => rep.ci === prof.ci)
+        );
+        return [...filteredProfessionals];
+      });
+      event.target.value = null;
+      },
+      header: true, // Si el archivo CSV tiene encabezados
+      dynamicTyping: true, // Intenta convertir los valores a números automáticamente
+      skipEmptyLines: true, // Omite las líneas vacías
+    });
+  };
 
   const handleSelectChangeCareer = (value, selectedOption) => {
     // Verifica si la primera opción está seleccionada
@@ -278,11 +367,12 @@ function Matriz() {
   
   const handleSelectChangeModality = (value, selectedOption) => {
     // Verifica si la primera opción está seleccionada
+    
     if (selectedOption === "Seleccione una opción") {
       // Agrega aquí la lógica que deseas ejecutar cuando se selecciona la primera opción
         setSelectedModality(null);
+
     }else{
-      
       setSelectedModality(value);
     }
   
@@ -304,6 +394,7 @@ function Matriz() {
   const handleAddProfessionalRow = (row) => {
     if (!selectedOptionCareer || !selectedOptionPeriod || !selectedModality || !year) {
       // Muestra el AlertDialog con el mensaje correspondiente
+      setAlertDialogMessage("Por favor, seleccione una carrera, período, modalidad y año.")
       setSelectModalOpen(true);
       return;
     }
@@ -329,15 +420,15 @@ function Matriz() {
   const handleSubmit = () => {
     if (!selectedOptionCareer || !selectedOptionPeriod || !selectedModality || !year) {
       // Muestra el AlertDialog con el mensaje correspondiente
+      setAlertDialogMessage("Por favor, seleccione una carrera, período, modalidad y año.")
       setSelectModalOpen(true);
       return;
     }
     // console.log(formQuiz)
     const prueba = createMatriz.map(objeto => {
-      const { id, carreerId, periodId, firstLastName, firstName } = objeto;
-      return { data: { idProfessional: id, career: carreerId, idPeriod: periodId, name: firstLastName,grateDate:year,modality:selectedModality }, name: `${firstName} ${firstLastName}` }
+      const { id, carreerId, periodId, firstLastName, firstName,grateDate ,modality} = objeto;
+      return { data: { idProfessional: id, career: carreerId, idPeriod: periodId, name: firstLastName,grateDate:grateDate,modality:modality }, name: `${firstName} ${firstLastName}` }
     });
-
     prueba.forEach(element => {
 
       toast.promise(addMatriz(element.data), {
@@ -429,6 +520,13 @@ function Matriz() {
       setProfessionals(resProfessionals.data);
       setCareers(resCareers.data)
       setPeriods(resPeriods.data)
+      setYearVisible(true)
+      setSelectedModalityVisible(true)
+      setYear("")
+      setSelectedModality(null)
+      setButtonCargarCsvVisible(true)
+      setCreateMatriz([])
+
     } catch (error) {
       console.error("Error al obtener datos académicos:", error);
     }
@@ -448,13 +546,22 @@ function Matriz() {
           >
             <GridItem fontSize={"sm"}>
               {/* <Textarea value={textValue} /> */}
-              <SelectData title="Modalidad" options={[{ value: "Presencial", label: "Presencial" }]}
-                onSelectChange={(value, selectedOption) =>
-                  handleSelectChangeModality(value, selectedOption)
-                } />
+
+              {selectedModalityVisible && (
+                <SelectData
+                  title="Modalidad"
+                  options={[{ value: "Presencial", label: "Presencial" }]}
+                  onSelectChange={(value, selectedOption) =>
+                    handleSelectChangeModality(value, selectedOption)
+                  }
+                />
+              )}
+
+             
             </GridItem>
             <GridItem fontSize={"sm"}>
-              <InputGroup>
+            {yearVisible && (
+                <InputGroup>
                 <InputLeftAddon children="Año" />
                 <Input
                 name="year"
@@ -465,6 +572,8 @@ function Matriz() {
                   value={year}
                 />
               </InputGroup>
+              )}
+             
             </GridItem>
           </Grid>
           <Grid
@@ -506,12 +615,52 @@ function Matriz() {
             mt={2}
           >
             <GridItem fontSize={"sm"}>
-              Profesionales
+              <Center>
+              <Text padding={7} fontSize={"2xl"}>Profesionales</Text>
+              </Center>
+              
               <Tabl data={professionals} columns={columnsProfessionals} />
             </GridItem>
-
             <GridItem fontSize={"sm"}>
-              Enlace para crear Matrices
+            <Center>
+              <Text padding={2} fontSize={"2xl"}>Enlace para crear Matrices</Text>
+              </Center>
+              <Center>
+              {ButtonCargarCsvVisible ? (
+                <Button
+                  type="button"
+                  mt={4}
+                  bg="ceruleanBlue.500"
+                  color={"white"}
+                  onClick={handleCSV}
+                >
+                  Cargar archivo CSV
+                </Button>
+              ) : (
+                <Button
+                  type="button"
+                  mt={4}
+                  bg="red.300"
+                  color={"white"}
+                  onClick={fetchUsers} 
+                >
+                  Limpiar Tabla
+                </Button>
+              )}
+              </Center>
+              
+              
+
+             
+        <Input
+          type="file"
+          ref={hiddenFileInputCSVRef}
+          onChange={handleFileChangeCSV}
+          accept=".csv"
+          hidden
+        />
+
+
               <Tabl data={createMatriz} columns={columnsCreateMatriz} />
             </GridItem>
             <GridItem colSpan={2} fontSize={"sm"}>

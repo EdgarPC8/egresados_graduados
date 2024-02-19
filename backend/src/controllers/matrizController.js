@@ -172,13 +172,23 @@ export const getMatrizFilter= async (req, res) => {
 };
 export const getMatrizQuizFilter= async (req, res) => {
   const data = req.body; 
+  let professional;
+  
+
   try {
-    const professional = await MatrizQuiz.findAll(
-      {
-        where: {
-          quizId: req.params.quizId,
-        },
+    if(req.params.quizId!=0){
+    professional = await MatrizQuiz.findAll({
+      where:{
+      quizId: req.params.quizId,
+    }});
+    }else{
+    professional = await Quiz.findAll({
+      include: [
+        { model: Matriz},
+      ],
     });
+
+    }
     res.json(professional);
   } catch (error) {
     res.status(500).json({
@@ -216,5 +226,8 @@ export const completedQuiz = async (req, res) => {
     });
   }
 };
+
+
+
  
 

@@ -101,7 +101,7 @@ function Profile() {
         ...form,
         photo,
       });
-      console.log(photo);
+      // console.log(photo);
 
       await loadUserProfile();
       toast({

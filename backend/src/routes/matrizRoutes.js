@@ -38,6 +38,11 @@ router.put("/completedQuiz", isAuthenticated, completedQuiz);
 router.put("/editCareer/:careerId", isAuthenticated, editCareer);
 router.put("/editPeriod/:periodId", isAuthenticated, editPeriod);
 
+// router.post("/uploadCSV", isAuthenticated, uploadFileMiddleware, (req, res) => {
+//   res.json({ message: "Archivo CSV cargado con éxito." });
+// });
+
+
 
 
 export default router;
