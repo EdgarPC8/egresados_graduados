@@ -6,3 +6,30 @@ export const backup = async () =>
       Authorization: jwt(),
     },
   });
+
+  export const getAllTutorials = async () =>
+  await axios.get("/config/getAllTutorials", {
+    headers: {
+      Authorization: jwt(),
+    },
+  });
+
+export const addTutorials = async (data) =>
+  await axios.post("/config/addTutorials", data, {
+    headers: {
+      Authorization: jwt(),
+    },
+  });
+
+export const editTutorials = async (id, data) =>
+  await axios.put(`/config/editTutorials/${id}`, data, {
+    headers: {
+      Authorization: jwt(),
+    },
+  });
+  export const deleteTutorials  = async (tutorialsId) =>
+  await axios.delete(`/config/${tutorialsId}`, {
+    headers: {
+      Authorization: jwt(),
+    },
+  });

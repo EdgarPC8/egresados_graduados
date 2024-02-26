@@ -126,6 +126,11 @@ const Navbar = () => {
         path: "/periodos",
         icon: <FiFileText />,
       },
+      {
+        name: "Tutoriales",
+        path: "/tutoriales",
+        icon: <FiFileText />,
+      },
     ],
 
     administrador: [
@@ -172,6 +177,11 @@ const Navbar = () => {
       {
         name: "Periodos",
         path: "/periodos",
+        icon: <FiFileText />,
+      },
+      {
+        name: "Tutoriales",
+        path: "/tutoriales",
         icon: <FiFileText />,
       },
     ],

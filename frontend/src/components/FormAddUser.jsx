@@ -59,7 +59,7 @@ function FormAddUser() {
   const [rolesList, setRolesList] = useState([]);
   const handleSubmit = async (event) => {
     event.preventDefault();
-    console.log(form);
+    // console.log(form);
     // const formData = new FormData(event.target);
     // formData.append("photo", photo);
     // console.log(form)

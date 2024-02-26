@@ -4,8 +4,7 @@ import { getAllQuizzes,addQuiz,editQuiz } from "../api/quizResquest";
 import { getAllMatriz,getAllPeriods,getAllCareers,getMatrizFilter,addMatrizQuiz,getMatrizQuizFilter,deleteMatrizQuiz } from "../api/matrizResquest";
 import { useRef } from "react";
 import SelectData from "../components/SelectData";
-
-
+import { FaYoutube } from "react-icons/fa";
 import {
   Button,
   useDisclosure,
@@ -28,7 +27,10 @@ import {
   Textarea,
   Checkbox,
   Center,
+
 } from "@chakra-ui/react";
+import { Link, useNavigate } from "react-router-dom";
+
 function Quizzes() {
   const toast = useToast();
   const [quizzes, setQuizzes] = useState([]);
@@ -289,6 +291,9 @@ function Quizzes() {
       date,
     } = row;
     form.current.scrollIntoView({ behavior: "smooth", block: "start" });
+    // console.log(row.idQuiz)
+    setMatriz([]);
+    setMatrizFilterQuiz([]);
 
 
     const resFilete = await getMatrizQuizFilter(row.idQuiz);
@@ -423,6 +428,12 @@ function Quizzes() {
     <>
       <Box p={10}>
         <Box>
+        <Link to="https://youtu.be/hsLY2hzr7KU" target="_blank">
+              <Button colorScheme={"red"}>
+                Tutorial
+                <FaYoutube/>
+              </Button>
+            </Link> 
           <form onSubmit={handleSubmit} ref={form}>
             <Grid
               templateColumns={{ base: "1fr", md: "2fr 2fr" }}
