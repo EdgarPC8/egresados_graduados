@@ -39,6 +39,7 @@ import DataTable from "../components/DataTables";
 import Searcher from "../components/Searcher";
 import Modal from "../components/AlertDialog";
 import Tabl from "../components/Table";
+import { getAllCareers,addCareer,editCareer } from "../api/matrizResquest.js";
 
 
 
@@ -51,6 +52,7 @@ function ResumeForm() {
   const [IsCompleteing, setIsCompleteing] = useState(false);
   const [IdQuiz, setIdQuiz] = useState(null);
   const [IdMatriz, setIdMatriz] = useState(null);
+  const [Carreras, setCarreras] = useState([]);
   const columns = [
     {
       header: "#",
@@ -107,12 +109,12 @@ function ResumeForm() {
 
   };
 
-  const carreras=[
-"TECNOLOGIA SUPERIOR EN ADMINISTRACION",
-"TECNOLOGIA SUPERIOR EN DESARROLLO DE SOFTWARE",
-"TECNOLOGIA SUPERIOR EN ELECTRICIDAD",
-"TECNOLOGIA SUPERIOR EN MECANICA AUTOMOTRIZ",
-  ]
+//   const carreras=[
+// "TECNOLOGIA SUPERIOR EN ADMINISTRACION",
+// "TECNOLOGIA SUPERIOR EN DESARROLLO DE SOFTWARE",
+// "TECNOLOGIA SUPERIOR EN ELECTRICIDAD",
+// "TECNOLOGIA SUPERIOR EN MECANICA AUTOMOTRIZ",
+//   ]
   
   let initialFormProfessional = {
     ci: "",
@@ -343,6 +345,11 @@ function ResumeForm() {
       setFormProfessional(resProfessionalById.data);
       const resMatrizProfessional = await getQuizByMatrizProfessional(user.userId);
       setQuizzes(resMatrizProfessional.data.quizzes)
+      const resCareer = await getAllCareers();
+      const arrayDeStringsCarreras = resCareer.data.map(objeto => objeto.name);
+      setCarreras(arrayDeStringsCarreras)
+
+      // setFormProfessional(resCareer.data);
       // console.log(resMatrizProfessional.data.quizzes);
       }
       
@@ -501,7 +508,7 @@ function ResumeForm() {
               
                 <InputGroup>
                   <InputLeftAddon children="Carrera de la que Egresó" />
-                  <Searcher placeholder='Carrera de la que Egresó' data={carreras} name="question2">
+                  <Searcher placeholder='Carrera de la que Egresó' data={Carreras} name="question2">
 
                   </Searcher>
                 </InputGroup>
@@ -935,7 +942,7 @@ function ResumeForm() {
                     placeholder="Carrera"
                     name="question17"
                   /> */}
-                  <Searcher placeholder='Carrera' data={carreras} name="question17">
+                  <Searcher placeholder='Carrera' data={Carreras} name="question17">
 
                   </Searcher>
                 </FormControl>
@@ -984,7 +991,7 @@ function ResumeForm() {
               <GridItem fontSize={"sm"}>
                 <FormControl>
                   <FormLabel>Carrera:</FormLabel>
-                  <Searcher placeholder='Carrera' data={carreras} name="question20">
+                  <Searcher placeholder='Carrera' data={Carreras} name="question20">
 
                   </Searcher>
                   {/* <Input
