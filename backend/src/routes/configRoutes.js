@@ -1,11 +1,11 @@
 import { Router } from "express";
-import { backup, updateDataBase } from "../controllers/configController.js";
 import {
     backup,
     getAllTutorials,
 addTutorials,
 editTutorials,
 deleteTutorials,
+updateDataBase,
 } from "../controllers/configController.js";
 import { isAuthenticated } from "../middlewares/authMiddelware.js";
 
