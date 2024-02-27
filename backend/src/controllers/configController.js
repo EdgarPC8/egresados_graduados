@@ -36,11 +36,17 @@ import {
   Parish,
 } from "../Models/LinguisticsGeography.js";
 
+import { Matriz, Carreers, Periods } from "../Models/Matriz.js";
+import { insertData } from "../database/insertData.js";
 import {
   Matriz,
   Carreers,
   Periods,
+  MatrizQuiz,
 } from "../Models/Matriz.js";
+import {
+  Tutorials,
+} from "../Models/Tutorials.js";
 
 export const backup = async (req, res) => {
   try {
@@ -107,6 +113,8 @@ export const backup = async (req, res) => {
         MatrizBackup,
         CarreersBackup,
         PeriodsBackup,
+        MatrizQuizBackup,
+        TutorialsBackup,
     };
 
     // Convertir a formato JSON y guardar en un archivo
@@ -124,3 +132,80 @@ export const backup = async (req, res) => {
       .json({ success: false, message: "Backup failed", error: error.message });
   }
 };
+
+export const updateDataBase = async (req, res) => {
+  try {
+    await sequelize.sync({ force: true });
+    await insertData();
+
+    res.json({ message: "Base de datos actualizada" });
+  } catch (error) {
+    res
+      .status(500)
+      .json({
+        message: "La base de datos no se pudo actualizar",
+        error: error.message,
+      });
+  }
+};
+export const getAllTutorials = async (req, res) => {
+  const tuto = await Tutorials.findAll();
+  res.json(tuto);
+};
+
+export const addTutorials= async (req, res) => {
+  const data = req.body; // Suponiendo que los datos están en el cuerpo de la solicitud
+  try {
+    const newTutorials= await Tutorials.create(data);
+    res.json({ message: "Agregado con éxito" });
+    // logger({
+    //   httpMethod: req.method,
+    //   endPoint: req.originalUrl,
+    //   action: `Se agregó un profesional ${newProfessional.ci} ${newProfessional.firstName} ${newProfessional.firstLastName}`,
+    // });
+  } catch (error) {
+    res.status(500).json({
+      message: error.message,
+    });
+  }
+};
+
+export const editTutorials= async (req, res) => {
+  const data = req.body;
+  const profesional=req.params;
+  try {
+    const editProfessional = await Tutorials.update(data, {
+      where: {
+        id: profesional.tutorialId,
+      },
+    });
+    res.json({ message: "Profesional Editado con éxito" });
+  //   logger({
+  //     httpMethod: req.method,
+  //     endPoint: req.originalUrl,
+  //     action: "Se editó un profesional",
+  //     description:`El Usuario ah Editado al Profesional ${data.firstName} ${data.firstLastName}`
+  // })
+  } catch (error) {
+    res.status(500).json({
+      message: error.message,
+    });
+  }
+};
+export const deleteTutorials = async (req, res) => {
+  try {
+    const removingUser = await Tutorials.destroy({
+      where: {
+        id: req.params.tutorialsId,
+      },
+    });
+    res.json({ message: "Eliminado con éxito" });
+
+  } catch (error) {
+    return res.status(500).json({
+      message: error.message,
+    });
+  }
+};
+
+
