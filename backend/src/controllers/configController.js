@@ -36,7 +36,6 @@ import {
   Parish,
 } from "../Models/LinguisticsGeography.js";
 
-import { Matriz, Carreers, Periods } from "../Models/Matriz.js";
 import { insertData } from "../database/insertData.js";
 import {
   Matriz,
