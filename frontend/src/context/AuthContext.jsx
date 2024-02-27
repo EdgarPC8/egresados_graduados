@@ -118,6 +118,7 @@ const AuthProvider = ({ children }) => {
         errors,
         logout,
         isAuthenticated,
+        loadUserProfile,
         isLoading,
         user,
       }}

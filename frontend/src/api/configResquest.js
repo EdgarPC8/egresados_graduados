@@ -1,13 +1,21 @@
 import axios, { jwt } from "./axios.js";
 
 export const backup = async () =>
-  await axios.get("/config/backup",{
+  await axios.get("/config/backup", {
     headers: {
       Authorization: jwt(),
     },
   });
 
-  export const getAllTutorials = async () =>
+export const updateDataBaseRequest = async () =>
+  await axios.put("/config/updateDatabase", null, {
+    headers: {
+      Authorization: jwt(),
+      "Content-Type": "multipart/form-data",
+    },
+  });
+
+export const getAllTutorials = async () =>
   await axios.get("/config/getAllTutorials", {
     headers: {
       Authorization: jwt(),
@@ -27,7 +35,7 @@ export const editTutorials = async (id, data) =>
       Authorization: jwt(),
     },
   });
-  export const deleteTutorials  = async (tutorialsId) =>
+export const deleteTutorials = async (tutorialsId) =>
   await axios.delete(`/config/${tutorialsId}`, {
     headers: {
       Authorization: jwt(),
