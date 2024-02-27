@@ -428,7 +428,7 @@ function Quizzes() {
     <>
       <Box p={10}>
         <Box>
-        <Link to="https://youtu.be/hsLY2hzr7KU" target="_blank">
+        <Link to="https://drive.google.com/file/d/1PX_UWgZs_8boMl629Zlh0AVpmh43VmDY/view?usp=sharing" target="_blank">
               <Button colorScheme={"red"}>
                 Tutorial
                 <FaYoutube/>

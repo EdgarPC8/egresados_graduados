@@ -663,7 +663,7 @@ if(objetosAddMatriz.length<=5){
     <>
       <Box p={10}>
         <Box>
-        <Link to="https://youtu.be/GCnQlYZxZ4M" target="_blank">
+        <Link to="https://drive.google.com/file/d/1J-iEj4FcFRHoddaAfc3ZLgVvb05w3EM_/view?usp=sharing" target="_blank">
               <Button colorScheme={"red"}>
                 Tutorial
                 <FaYoutube/>
@@ -777,7 +777,7 @@ if(objetosAddMatriz.length<=5){
                     Limpiar Tabla
                   </Button>
                 )}
-                <Link to="https://youtu.be/Ovthfmg6nak" target="_blank">
+                <Link to="https://drive.google.com/file/d/1tYWSHiKaDsI_QCwAPrpI1dP0nShRps_Y/view?usp=sharing" target="_blank">
               <Button colorScheme={"red"} mt={4}>
                 <FaYoutube/>
               </Button>
