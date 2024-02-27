@@ -216,7 +216,7 @@ function ChartsResponsesQuiz() {
         try {
             const resQuizzes = await getMatrizQuizFilter(0);
             setQuizzes(resQuizzes.data)
-            console.log(resQuizzes.data)
+            // console.log(resQuizzes.data)
           
 
         } catch (error) {

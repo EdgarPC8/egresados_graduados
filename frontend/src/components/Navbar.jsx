@@ -43,11 +43,17 @@ import {
   FiLogOut,
   FiTarget,
 } from "react-icons/fi";
+import { FaYoutube } from "react-icons/fa";
+import { PiFiles } from "react-icons/pi";
+
 
 import { HamburgerIcon, CloseIcon } from "@chakra-ui/icons";
 import { useAuth } from "../context/AuthContext";
 import { urlPhotos } from "../api/axios";
 import { FaChartPie } from "react-icons/fa";
+import { TbBrandMatrix } from "react-icons/tb";
+import { CgCalendarDates } from "react-icons/cg";
+import { GiBookPile } from "react-icons/gi";
 
 const Navbar = () => {
   const btnRef = useRef();
@@ -109,22 +115,27 @@ const Navbar = () => {
       {
         name: "Encuestas",
         path: "/quizzes",
-        icon: <FiFileText />,
+        icon: <PiFiles />,
       },
       {
         name: "Matrices",
         path: "/matriz",
-        icon: <FiFileText />,
+        icon: <TbBrandMatrix />,
       },
       {
         name: "Carreras",
         path: "/carreras",
-        icon: <FiFileText />,
+        icon: <GiBookPile />,
       },
       {
         name: "Periodos",
         path: "/periodos",
-        icon: <FiFileText />,
+        icon: <CgCalendarDates />,
+      },
+      {
+        name: "Tutoriales",
+        path: "/tutoriales",
+        icon: <FaYoutube />,
       },
     ],
 
@@ -157,22 +168,27 @@ const Navbar = () => {
       {
         name: "Encuestas",
         path: "/quizzes",
-        icon: <FiFileText />,
+        icon: <PiFiles />,
       },
       {
         name: "Matrices",
         path: "/matriz",
-        icon: <FiFileText />,
+        icon: <TbBrandMatrix />,
       },
       {
         name: "Carreras",
         path: "/carreras",
-        icon: <FiFileText />,
+        icon: <GiBookPile />,
       },
       {
         name: "Periodos",
         path: "/periodos",
-        icon: <FiFileText />,
+        icon: <CgCalendarDates />,
+      },
+      {
+        name: "Tutoriales",
+        path: "/tutoriales",
+        icon: <FaYoutube />,
       },
     ],
     profesional: [

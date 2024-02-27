@@ -19,6 +19,7 @@ import Quizzes from "./pages/Quizzes.jsx";
 import Matriz from "./pages/Matriz.jsx";
 import Careers from "./pages/Careers.jsx";
 import Periods from "./pages/Periods.jsx";
+import Tutorials from "./pages/Tutorials.jsx";
 
 import UserTable from "./components/UserTable.jsx";
 import FormAddUser from "./components/FormAddUser.jsx";
@@ -61,6 +62,7 @@ function App() {
               <Route path="/matriz" element={<Matriz />} />
               <Route path="/carreras" element={<Careers />} />
               <Route path="/periodos" element={<Periods />} />
+              <Route path="/tutoriales" element={<Tutorials />} />
             </Route>
             
             <Route element={<ProtectedRoute requiredRol={["programador"]} />}>
