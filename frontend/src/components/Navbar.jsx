@@ -270,7 +270,7 @@ const Navbar = () => {
           
 
           <DrawerBody>
-            {!isLoading ? (
+            {!isLoading && isAuthenticated ? (
               <Stack align="start" spacing={4} flex="1" mr={4}>
                 {user.loginRol && (
                   Links[user.loginRol].map((link) => (

@@ -18,6 +18,7 @@ import {
   Spacer,
   useToast,
   FormLabel,
+  Avatar,
 } from "@chakra-ui/react";
 
 import { FiUser, FiUserPlus, FiHash, FiTag, FiEdit2 } from "react-icons/fi";
@@ -32,9 +33,7 @@ import {
   updateUserData,
 } from "../api/userRequest";
 
-import {
-  addProfessional,
-} from "../api/professionalRequest";
+import { addProfessional } from "../api/professionalRequest";
 import { urlPhotos } from "../api/axios";
 
 function FormAddUser() {
@@ -127,7 +126,6 @@ function FormAddUser() {
   const handleFileChange = (event) => {
     const files = event.target.files;
     if (files.length > 0) {
-      
       setPhoto(files[0]);
       setForm({ ...form, photo: files[0] });
     }
@@ -212,31 +210,17 @@ function FormAddUser() {
           >
             <Center>
               <div style={{ position: "relative", display: "inline-block" }}>
-                <Image
-                  boxSize={{ base: "80px", md: "100px" }}
+                <Avatar
+                  size="2xl"
                   objectFit="cover"
                   borderRadius="full"
                   src={photoUrl}
                   alt="User"
                 />
-
-                <IconButton
-                  bg="white"
-                  style={{ position: "absolute", top: "0", right: "0" }}
-                  isRound={true}
-                  onClick={handlePhoto}
-                  icon={<FiEdit2 />}
-                />
-                <Input
-                  type="file"
-                  ref={hiddenFileInput}
-                  hidden
-                  onChange={handleFileChange}
-                />
               </div>
             </Center>
           </Flex>
-          {/* <Spacer/> */}
+          
 
           <Flex
             direction="column"

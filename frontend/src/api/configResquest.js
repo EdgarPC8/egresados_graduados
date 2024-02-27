@@ -1,8 +1,16 @@
 import axios, { jwt } from "./axios.js";
 
 export const backup = async () =>
-  await axios.get("/config/backup",{
+  await axios.get("/config/backup", {
     headers: {
       Authorization: jwt(),
+    },
+  });
+
+export const updateDataBaseRequest = async () =>
+  await axios.put("/config/updateDatabase", null, {
+    headers: {
+      Authorization: jwt(),
+      "Content-Type": "multipart/form-data",
     },
   });

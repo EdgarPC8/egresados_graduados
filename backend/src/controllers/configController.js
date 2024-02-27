@@ -12,6 +12,8 @@ import {
   Books,
 } from "../Models/CV.js";
 
+import { sequelize } from "../database/connection.js";
+
 import { Users } from "../Models/Users.js";
 import { UserRoles } from "../Models/UserRoles.js";
 import { Logger } from "../Models/Logging.js";
@@ -34,11 +36,8 @@ import {
   Parish,
 } from "../Models/LinguisticsGeography.js";
 
-import {
-  Matriz,
-  Carreers,
-  Periods,
-} from "../Models/Matriz.js";
+import { Matriz, Carreers, Periods } from "../Models/Matriz.js";
+import { insertData } from "../database/insertData.js";
 
 export const backup = async (req, res) => {
   try {
@@ -47,7 +46,8 @@ export const backup = async (req, res) => {
     // Obtener datos de todas las tablas
     const ProfessionalExperienceBackup = await ProfessionalExperience.findAll();
     const LanguagesBackup = await Languages.findAll();
-    const AcademicProfessionalMeritsBackup =await AcademicProfessionalMerits.findAll();
+    const AcademicProfessionalMeritsBackup =
+      await AcademicProfessionalMerits.findAll();
     const AcademicTrainingBackup = await AcademicTraining.findAll();
     const TeachingExperienceBackup = await TeachingExperience.findAll();
     const CoursesWorkshopsBackup = await CoursesWorkshops.findAll();
@@ -75,33 +75,33 @@ export const backup = async (req, res) => {
 
     // Crear un objeto que contenga todos los datos
     const backupData = {
-        ProfessionalExperienceBackup,
-        LanguagesBackup,
-        AcademicProfessionalMeritsBackup,
-        AcademicTrainingBackup,
-        TeachingExperienceBackup,
-        CoursesWorkshopsBackup,
-        IntellectualProductionBackup,
-        BooksBackup,
-        UsersBackup,
-        UserRolesBackup,
-        LoggerBackup,
-        NominasBackup,
-        ProfessionalsBackup,
-        RolesBackup,
-        QuestionsBackup,
-        OptionsBackup,
-        ResponsesBackup,
-        QuestionTypesBackup,
-        QuizBackup,
-        CountryBackup,
-        Cod_country_lenguageBackup,
-        ProvinceBackup,
-        CantonBackup,
-        ParishBackup,
-        MatrizBackup,
-        CarreersBackup,
-        PeriodsBackup,
+      ProfessionalExperienceBackup,
+      LanguagesBackup,
+      AcademicProfessionalMeritsBackup,
+      AcademicTrainingBackup,
+      TeachingExperienceBackup,
+      CoursesWorkshopsBackup,
+      IntellectualProductionBackup,
+      BooksBackup,
+      UsersBackup,
+      UserRolesBackup,
+      LoggerBackup,
+      NominasBackup,
+      ProfessionalsBackup,
+      RolesBackup,
+      QuestionsBackup,
+      OptionsBackup,
+      ResponsesBackup,
+      QuestionTypesBackup,
+      QuizBackup,
+      CountryBackup,
+      Cod_country_lenguageBackup,
+      ProvinceBackup,
+      CantonBackup,
+      ParishBackup,
+      MatrizBackup,
+      CarreersBackup,
+      PeriodsBackup,
     };
 
     // Convertir a formato JSON y guardar en un archivo
@@ -117,5 +117,21 @@ export const backup = async (req, res) => {
     res
       .status(500)
       .json({ success: false, message: "Backup failed", error: error.message });
+  }
+};
+
+export const updateDataBase = async (req, res) => {
+  try {
+    await sequelize.sync({ force: true });
+    await insertData();
+
+    res.json({ message: "Base de datos actualizada" });
+  } catch (error) {
+    res
+      .status(500)
+      .json({
+        message: "La base de datos no se pudo actualizar",
+        error: error.message,
+      });
   }
 };
