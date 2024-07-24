@@ -6,14 +6,6 @@ import {
   InputLeftAddon,
   InputGroup,
   Button,
-  TableContainer,
-  Table,
-  Th,
-  Td,
-  Tr,
-  Thead,
-  Tbody,
-  Tfoot,
   AccordionItem,
   AccordionPanel,
   AccordionIcon,
@@ -24,7 +16,6 @@ import {
 } from "@chakra-ui/react";
 import HelpBox from "../components/HelpBox";
 
-
 import { useEffect, useState, useRef } from "react";
 import {
   addProfessionalExperience,
@@ -32,7 +23,6 @@ import {
   editProfessionalExperience,
   deleteProfessionalExperience,
 } from "../api/cvRequest";
-import DataTable from "../components/DataTables";
 import Modal from "../components/AlertDialog";
 import Tabl from "./Table";
 import { useAuth } from "../context/AuthContext";
@@ -53,14 +43,14 @@ function FormProfessionalExperience() {
   };
 
   const [dataProfessionalExperience, setDataProfessionalExperience] = useState(
-    []
+    [],
   );
   const [isEditing, setIsEditing] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const form = useRef(null);
 
   const [formProfessional, setFormProfessional] = useState(
-    initialFormProfessional
+    initialFormProfessional,
   );
 
   const [id, setId] = useState(false);
@@ -73,7 +63,6 @@ function FormProfessionalExperience() {
   async function fetchData() {
     try {
       const { data } = await getAllProfessionalExperience();
-      console.log(data)
       setDataProfessionalExperience(data);
     } catch (error) {
       console.error("Error al obtener datos académicos:", error);
@@ -88,15 +77,15 @@ function FormProfessionalExperience() {
           title: "Editando...",
           position: "top-right",
         },
-        
+
         success: (d) => {
           fetchData();
           clear();
-          return{
-          title: "Experiencia Profesional",
-          description: d.data.message,
-          isClosable: true,
-          }
+          return {
+            title: "Experiencia Profesional",
+            description: d.data.message,
+            isClosable: true,
+          };
         },
         error: (e) => ({
           title: "Error",
@@ -134,7 +123,7 @@ function FormProfessionalExperience() {
           description: e.response.data.message,
           isClosable: true,
         }),
-      }
+      },
     );
 
     clear();
@@ -191,14 +180,20 @@ function FormProfessionalExperience() {
 
   const columns = [
     { header: "Nro.", accessorKey: "nro" },
-    { header: (
-      <>
-      <Flex>
-      Empresa/Institución
-        <HelpBox title="Empresa/Institución" message="(comience por la última)"/>
-      </Flex>
-      </>
-    ), accessorKey: "companyInstitution" },
+    {
+      header: (
+        <>
+          <Flex>
+            Empresa/Institución
+            <HelpBox
+              title="Empresa/Institución"
+              message="(comience por la última)"
+            />
+          </Flex>
+        </>
+      ),
+      accessorKey: "companyInstitution",
+    },
     { header: "Cargo", accessorKey: "position" },
     {
       header: "Responsabilidades y/o Actividades",

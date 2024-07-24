@@ -4,16 +4,9 @@ import {
   Button,
   HStack,
   Stack,
-  Menu,
-  MenuButton,
   Avatar,
-  Text,
-  MenuList,
-  MenuItem,
   useDisclosure,
-  MenuDivider,
   IconButton,
-  VStack,
   Image,
   Flex,
   Center,
@@ -21,11 +14,9 @@ import {
   Drawer,
   DrawerBody,
   DrawerFooter,
-  DrawerHeader,
   DrawerOverlay,
   DrawerContent,
   DrawerCloseButton,
-  Input,
   Badge,
 } from "@chakra-ui/react";
 import { useRef } from "react";
@@ -46,8 +37,7 @@ import {
 import { FaYoutube } from "react-icons/fa";
 import { PiFiles } from "react-icons/pi";
 
-
-import { HamburgerIcon, CloseIcon } from "@chakra-ui/icons";
+import { HamburgerIcon } from "@chakra-ui/icons";
 import { useAuth } from "../context/AuthContext";
 import { urlPhotos } from "../api/axios";
 import { FaChartPie } from "react-icons/fa";
@@ -60,7 +50,6 @@ const Navbar = () => {
   const { isAuthenticated, logout, user, isLoading } = useAuth();
 
   const { isOpen, onOpen, onClose } = useDisclosure();
-  
 
   const LinksToNoAuth = [
     {
@@ -282,19 +271,16 @@ const Navbar = () => {
         <DrawerOverlay />
         <DrawerContent>
           <DrawerCloseButton />
-          
-          
 
           <DrawerBody>
             {!isLoading && isAuthenticated ? (
               <Stack align="start" spacing={4} flex="1" mr={4}>
-                {user.loginRol && (
+                {user.loginRol &&
                   Links[user.loginRol].map((link) => (
                     <Link to={link.path} key={link.name} onClick={onClose}>
                       <NavLink icon={link.icon}>{link.name}</NavLink>
                     </Link>
-                  ))
-                ) }
+                  ))}
               </Stack>
             ) : (
               <Stack align="start" spacing={4} flex="1" mr={4}>

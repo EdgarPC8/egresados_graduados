@@ -1,5 +1,4 @@
 import {
-  Box,
   Heading,
   Input,
   Grid,
@@ -8,7 +7,6 @@ import {
   InputGroup,
   Select,
   Button,
-  Image,
   useToast,
   Center,
   Avatar,
@@ -19,10 +17,10 @@ import {
   getProfessionalsById,
 } from "../api/professionalRequest.js";
 import { verifyTokenRequest } from "../api/userRequest.js";
-import DataTable from "../components/DataTables";
-import Modal from "../components/AlertDialog";
 import { useAuth } from "../context/AuthContext.jsx";
 import { urlPhotos } from "../api/axios.js";
+import { Link } from "react-router-dom";
+import { FaEye } from "react-icons/fa";
 
 function ProfessionalForm() {
   const { user } = useAuth();
@@ -53,7 +51,7 @@ function ProfessionalForm() {
     idUser: "",
   };
   const [formProfessional, setFormProfessional] = useState(
-    initialFormProfessional
+    initialFormProfessional,
   );
 
   async function fetchData() {
@@ -436,7 +434,7 @@ function ProfessionalForm() {
           textAlign={"center"}
           margin={"auto"}
         >
-          <Center w={200} h={200}>
+          <Center w={200} h={200} mb={5}>
             <Avatar
               src={`${urlPhotos}/${user.photo}`}
               borderRadius="full"
@@ -444,6 +442,10 @@ function ProfessionalForm() {
               h={200}
             ></Avatar>
           </Center>
+
+          <Link to="/cvPdf" target="_blank">
+            <Button leftIcon={<FaEye />}>PDF</Button>
+          </Link>
         </GridItem>
         <GridItem
           colSpan={2}

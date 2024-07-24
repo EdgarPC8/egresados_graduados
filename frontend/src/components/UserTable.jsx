@@ -1,6 +1,6 @@
 import Tabl from "./Table";
 import { useEffect, useState } from "react";
-import { addUser, getUsers, removeUser } from "../api/userRequest";
+import { getUsers, removeUser } from "../api/userRequest";
 import { urlPhotos } from "../api/axios";
 import { useRef } from "react";
 import {
@@ -8,8 +8,6 @@ import {
   useDisclosure,
   AlertDialog,
   Avatar,
-  Grid,
-  GridItem,
   Stack,
   useToast,
   AlertDialogBody,
@@ -18,7 +16,6 @@ import {
   AlertDialogContent,
   AlertDialogOverlay,
   Box,
-  Image,
   Heading,
   Spacer,
   Flex,
@@ -26,7 +23,6 @@ import {
 
 import { useAuth } from "../context/AuthContext";
 import { FiUserPlus } from "react-icons/fi";
-import { EmailIcon } from "@chakra-ui/icons";
 import { Link, useNavigate } from "react-router-dom";
 
 function UserTable() {
@@ -39,7 +35,6 @@ function UserTable() {
 
   const [currentUser, setCurrentUser] = useState({});
   const cancelRef = useRef();
-  
 
   const deleteUser = () => {
     toast.promise(removeUser(currentUser.userId), {

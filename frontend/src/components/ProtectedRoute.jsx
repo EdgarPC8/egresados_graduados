@@ -7,8 +7,6 @@ import NoAccess from "./NoAccess";
 function ProtectedRoute({ requiredRol }) {
   const { isAuthenticated, isLoading, user } = useAuth();
 
-  // console.log(isLoading, isAuthenticated);
-
   if (isLoading)
     return (
       <Center height="100vh">
@@ -22,7 +20,7 @@ function ProtectedRoute({ requiredRol }) {
       </Center>
     );
 
-  if (!isLoading && isAuthenticated && !requiredRol.includes(user.loginRol)) {
+  if (isAuthenticated && !requiredRol.includes(user.loginRol)) {
     return <NoAccess />;
   }
 

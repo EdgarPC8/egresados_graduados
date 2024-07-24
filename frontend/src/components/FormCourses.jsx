@@ -5,7 +5,6 @@ import {
   GridItem,
   InputLeftAddon,
   InputGroup,
-  Select,
   Button,
   AccordionItem,
   AccordionPanel,
@@ -26,7 +25,6 @@ import {
   editCoursesWorkshops,
   deleteCoursesWorkshops,
 } from "../api/cvRequest";
-import DataTable from "../components/DataTables";
 import Modal from "../components/AlertDialog";
 import Tabl from "./Table";
 import { useAuth } from "../context/AuthContext";
@@ -115,7 +113,7 @@ function FormCourses() {
           description: e.response.data.message,
           isClosable: true,
         }),
-      }
+      },
     );
     clear();
   };
@@ -163,7 +161,7 @@ function FormCourses() {
 
   const handleAcceptDelete = async () => {
     try {
-      const { data } = await deleteCoursesWorkshops(id);
+      await deleteCoursesWorkshops(id);
       fetchData();
       clear();
     } catch (error) {
@@ -176,14 +174,20 @@ function FormCourses() {
   }, []);
 
   const columns = [
-    { header: (
-      <>
-      <Flex>
-      Tipo
-        <HelpBox title="Tipo" message="(Curso, Seminario, Taller, Congreso, Otro)"/>
-      </Flex>
-      </>
-    ), accessorKey: "type" },
+    {
+      header: (
+        <>
+          <Flex>
+            Tipo
+            <HelpBox
+              title="Tipo"
+              message="(Curso, Seminario, Taller, Congreso, Otro)"
+            />
+          </Flex>
+        </>
+      ),
+      accessorKey: "type",
+    },
     { header: "Nombre", accessorKey: "name" },
     { header: "Organizado Por:", accessorKey: "organizedBy" },
     { header: "Lugar", accessorKey: "place" },

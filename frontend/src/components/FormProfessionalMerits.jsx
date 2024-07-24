@@ -5,17 +5,8 @@ import {
   GridItem,
   InputLeftAddon,
   InputGroup,
-  Select,
   Button,
-  TableContainer,
-  Table,
-  Th,
-  Td,
-  Tr,
-  Thead,
   Stack,
-  Tbody,
-  Tfoot,
   AccordionItem,
   AccordionPanel,
   AccordionIcon,
@@ -32,7 +23,6 @@ import {
   editAcademicProfessionalMerits,
   deleteAcademicProfessionalMerits,
 } from "../api/cvRequest";
-import DataTable from "../components/DataTables";
 import Modal from "../components/AlertDialog";
 import Tabl from "./Table";
 import { useAuth } from "../context/AuthContext";
@@ -53,14 +43,14 @@ function FormProfessionalMerits() {
 
   const [dataAcademicProfessionalMerits, setDataAcademicProfessionalMerits] =
     useState([]);
-    const [isModalOpen, setIsModalOpen] = useState(false);
-    const form = useRef(null);
-    
-    const [formProfessionalMerits, setFormProfessionalMerits] = useState(
-      initialProfessionalMerits
-      );
-      
-      const [isEditing, setIsEditing] = useState(false);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const form = useRef(null);
+
+  const [formProfessionalMerits, setFormProfessionalMerits] = useState(
+    initialProfessionalMerits,
+  );
+
+  const [isEditing, setIsEditing] = useState(false);
   const [id, setId] = useState(false);
 
   function clear() {
@@ -107,7 +97,7 @@ function FormProfessionalMerits() {
             description: e.response.data.message,
             isClosable: true,
           }),
-        }
+        },
       );
 
       return;
@@ -140,7 +130,7 @@ function FormProfessionalMerits() {
           description: e.response.data.message,
           isClosable: true,
         }),
-      }
+      },
     );
 
     clear();
@@ -165,7 +155,7 @@ function FormProfessionalMerits() {
   };
   const handleAcceptDelete = async () => {
     try {
-      const { data } = await deleteAcademicProfessionalMerits(id);
+      await deleteAcademicProfessionalMerits(id);
       fetchData();
       clear();
     } catch (error) {
@@ -179,14 +169,17 @@ function FormProfessionalMerits() {
   const columns = [
     { header: "Nombre", accessorKey: "name" },
     { header: "Fecha", accessorKey: "date" },
-    { header: (
-      <>
-      <Flex>
-      Tipo
-        <HelpBox title="Tipo" message="(Nacional, Internacional)"/>
-      </Flex>
-      </>
-    ), accessorKey: "type" },
+    {
+      header: (
+        <>
+          <Flex>
+            Tipo
+            <HelpBox title="Tipo" message="(Nacional, Internacional)" />
+          </Flex>
+        </>
+      ),
+      accessorKey: "type",
+    },
     { header: "Otorgado Por", accessorKey: "grantedBy" },
     { header: "País", accessorKey: "country" },
     { header: "Lugar", accessorKey: "location" },

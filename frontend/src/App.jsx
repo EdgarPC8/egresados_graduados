@@ -11,7 +11,6 @@ import ProtectedRoute from "./components/ProtectedRoute.jsx";
 import CV from "./pages/CV.jsx";
 import Charts from "./pages/Charts.jsx";
 import Resumes from "./pages/Resumes.jsx";
-import CvPdf from "./pages/CvPdf.jsx";
 import CvProfessionalPdf from "./components/CvProfessionalPdf.jsx";
 import Quiz from "./pages/Quiz.jsx";
 import Profile from "./pages/Profile.jsx";
@@ -43,32 +42,40 @@ function App() {
             <Route
               element={
                 <ProtectedRoute
-                  requiredRol={["profesional","programador","administrador"]}
+                  requiredRol={["profesional", "programador", "administrador"]}
                 />
               }
             >
               <Route path="/cv" element={<CV />} />
               <Route path="/quiz" element={<Quiz />} />
               <Route path="/perfil" element={<Profile />} />
-              <Route path="/cvPdf" element={<CvPdf />} />
+              <Route path="/cvPdf" element={<CvProfessionalPdf />} />
             </Route>
-            <Route element={<ProtectedRoute requiredRol={["programador","administrador"]} />}>
+            <Route
+              element={
+                <ProtectedRoute
+                  requiredRol={["programador", "administrador"]}
+                />
+              }
+            >
               <Route path="/usuarios" element={<UserTable />} />
               <Route path="/agregar-usuario" element={<FormAddUser />} />
               <Route path="/editar-usuario/:userId" element={<FormAddUser />} />
               <Route path="/curriculos" element={<Resumes />} />
-              <Route path="/cvProfessionalPdf/:userId" element={<CvProfessionalPdf />} />
+              <Route
+                path="/cvProfessionalPdf/:userId"
+                element={<CvProfessionalPdf />}
+              />
               <Route path="/quizzes" element={<Quizzes />} />
               <Route path="/matriz" element={<Matriz />} />
               <Route path="/carreras" element={<Careers />} />
               <Route path="/periodos" element={<Periods />} />
               <Route path="/tutoriales" element={<Tutorials />} />
             </Route>
-            
+
             <Route element={<ProtectedRoute requiredRol={["programador"]} />}>
               <Route path="/actividad" element={<Logger />} />
               <Route path="/charts" element={<Charts />} />
-
             </Route>
           </Routes>
         </BrowserRouter>

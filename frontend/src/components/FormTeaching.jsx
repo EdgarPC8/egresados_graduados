@@ -6,14 +6,6 @@ import {
   InputLeftAddon,
   InputGroup,
   Button,
-  TableContainer,
-  Table,
-  Th,
-  Td,
-  Tr,
-  Thead,
-  Tbody,
-  Tfoot,
   AccordionItem,
   AccordionPanel,
   AccordionIcon,
@@ -35,8 +27,6 @@ import Tabl from "./Table";
 import { useAuth } from "../context/AuthContext";
 import HelpBox from "../components/HelpBox";
 
-
-
 function FormTeaching() {
   const initialFormTeaching = {
     educationalInstitution: "",
@@ -50,7 +40,6 @@ function FormTeaching() {
 
   const toast = useToast();
   const { user } = useAuth();
-
 
   const [dataTeachingExperience, setDataTeachingExperience] = useState([]);
   const [isEditing, setIsEditing] = useState(false);
@@ -123,7 +112,7 @@ function FormTeaching() {
           description: e.response.data.message,
           isClosable: true,
         }),
-      }
+      },
     );
   };
 
@@ -132,7 +121,6 @@ function FormTeaching() {
     setFormTeaching({ ...formTeaching, [name]: value });
   };
 
-  
   const handleEditRow = (row) => {
     const {
       educationalInstitution,
@@ -162,11 +150,11 @@ function FormTeaching() {
   };
   const handleAcceptDelete = async () => {
     try {
-      const { data } = await deleteTeachingExperience(id);
+      await deleteTeachingExperience(id);
       fetchData();
       clear();
     } catch (error) {
-      console.log(error);
+      console.error(error);
     }
   };
   useEffect(() => {
@@ -178,14 +166,20 @@ function FormTeaching() {
     { header: "Materia /Componente Educativo", accessorKey: "subject" },
     { header: "Fecha Inicio", accessorKey: "startDate" },
     { header: "Fecha Fin", accessorKey: "endDate" },
-    { header: (
-      <>
-      <Flex>
-      Modalidad
-        <HelpBox title="Modalidad" message="(Presencial, Distancia, Online)"/>
-      </Flex>
-      </>
-    ), accessorKey: "modality" },
+    {
+      header: (
+        <>
+          <Flex>
+            Modalidad
+            <HelpBox
+              title="Modalidad"
+              message="(Presencial, Distancia, Online)"
+            />
+          </Flex>
+        </>
+      ),
+      accessorKey: "modality",
+    },
     { header: "Lugar", accessorKey: "place" },
     { header: "País", accessorKey: "country" },
     {

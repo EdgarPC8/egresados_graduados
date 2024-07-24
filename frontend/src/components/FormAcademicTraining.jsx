@@ -22,20 +22,24 @@ import {
   editAcademicTraining,
   deleteAcademicTraining,
 } from "../api/cvRequest";
-import DataTable from "../components/DataTables";
 import HelpBox from "../components/HelpBox";
 import Modal from "../components/AlertDialog";
 import Tabl from "./Table";
 import { useAuth } from "../context/AuthContext";
-import { reorderDate } from "../helpers/date.js";
-import { EditIcon, DeleteIcon } from '@chakra-ui/icons';
-
 
 function FormAcademicTraining() {
   const toast = useToast();
   const { user } = useAuth();
 
-  const initialFormAcademic = { type: "", date: "", place: "", country: "", obtainedTitle: "", educationalInstitution: "", senescytRegistrationN: "", };
+  const initialFormAcademic = {
+    type: "",
+    date: "",
+    place: "",
+    country: "",
+    obtainedTitle: "",
+    educationalInstitution: "",
+    senescytRegistrationN: "",
+  };
 
   const [ListAcademicTraining, setListAcademicTraining] = useState([]);
   const [isEditing, setIsEditing] = useState(false);
@@ -110,7 +114,7 @@ function FormAcademicTraining() {
           description: e.response.data.message,
           isClosable: true,
         }),
-      }
+      },
     );
     clear();
   };
@@ -150,7 +154,7 @@ function FormAcademicTraining() {
   };
   const handleAcceptDelete = async () => {
     try {
-      const { data } = await deleteAcademicTraining(id);
+      await deleteAcademicTraining(id);
       fetchData();
       clear();
     } catch (error) {
@@ -165,15 +169,17 @@ function FormAcademicTraining() {
     {
       header: (
         <>
-        <Flex>
-        Tipo
-          <HelpBox title="Tipo de Formacion Academica" message="(Secundaria, Tercer Nivel, Cuarto Nivel)"/>
-        </Flex>
+          <Flex>
+            Tipo
+            <HelpBox
+              title="Tipo de Formacion Academica"
+              message="(Secundaria, Tercer Nivel, Cuarto Nivel)"
+            />
+          </Flex>
         </>
       ),
       accessorKey: "type",
       width: "10000000px", // Puedes ajustar el ancho según tus necesidades
-    
     },
     {
       header: "Título Obtenido",
@@ -233,7 +239,6 @@ function FormAcademicTraining() {
     },
   ];
 
-
   return (
     <form onSubmit={handleSubmit} ref={form}>
       <AccordionItem>
@@ -246,7 +251,6 @@ function FormAcademicTraining() {
           </AccordionButton>
         </h2>
         <AccordionPanel pb={4}>
-
           <Grid
             gap={2}
             mt={2}
