@@ -50,10 +50,9 @@ const styles = StyleSheet.create({
   },
   title: {
     fontSize: 15,
-    color: "#3D3D3D",
+    color: "#202021",
     fontFamily: "Lato",
     fontStyle: "bold",
-    borderTop: 1.5,
     borderBottom: 1.5,
     paddingHorizontal: 30,
     paddingVertical: 10,
@@ -71,7 +70,7 @@ const styles = StyleSheet.create({
   },
   titleName: {
     fontSize: 40,
-    color: "#3D3D3D",
+    color: "#202021",
     fontFamily: "Lato",
     fontStyle: "bold",
   },
@@ -79,19 +78,19 @@ const styles = StyleSheet.create({
     fontStyle: "italic",
     fontFamily: "Lato",
     fontSize: 12,
-    color: "#3D3D3D",
+    color: "#202021",
   },
   titleCol: {
     fontFamily: "Lato",
     fontSize: 11,
     fontStyle: "bold",
-    color: "#3D3D3D",
+    color: "#202021",
   },
 
   contentCell: {
     fontFamily: "Lato",
     fontStyle: "italic",
-    color: "#3D3D3D",
+    color: "#202021",
   },
   heading: {
     fontSize: 14,
@@ -113,6 +112,7 @@ const styles = StyleSheet.create({
     borderColor: "#3D3D3D",
     flexDirection: "column",
     justifyContent: "space-between",
+    boxSizing: "border-box",
     borderTopWidth: 1.5,
     borderLeftWidth: 1.5,
     borderBottom: 1.5,
@@ -140,7 +140,7 @@ const styles = StyleSheet.create({
 
     fontFamily: "Lato",
     fontStyle: "regular",
-    color: "#3D3D3D",
+    color: "#202021",
   },
   input: {
     fontSize: 10,
@@ -163,7 +163,7 @@ const styles = StyleSheet.create({
     flex: 1,
     padding: 5,
     textAlign: "center",
-    backgroundColor: "#f2f2f2", // Color de fondo para los encabezados
+    backgroundColor: "#d7dce6", // Color de fondo para los encabezados
   },
   tableColTd: {
     fontSize: 10,
@@ -309,20 +309,22 @@ const PDFDocument = ({ data, cv }) => {
   };
   return (
     <Document>
-      <Page size="A4" style={styles.page}>
+      <Page size="A4" style={styles.page} wrap>
         <View style={styles.content}>
           <View style={styles.box}>
-            <Image src={imageURL} style={styles.photo} />
+            <Image src={imageURL} style={[styles.photo]} />
             <View
               style={{
                 flexDirection: "column",
                 gap: 10,
                 marginLeft: 30,
+                width: "60%",
               }}
             >
               <Text style={styles.titleName}>{data.firstName}</Text>
               <Text style={styles.titleName}>{data.firstLastName}</Text>
-              <Text style={styles.text}>{data.ci}</Text>
+              <Text style={styles.text}>CI: {data.ci}</Text>
+              <Text style={styles.text}>{data.aboutMe}</Text>
             </View>
           </View>
 
@@ -355,7 +357,7 @@ const PDFDocument = ({ data, cv }) => {
               <Text
                 style={{
                   fontSize: 15,
-                  color: "#3D3D3D",
+                  color: "#202021",
                   fontFamily: "Lato",
                   fontStyle: "bold",
                   paddingBottom: 10,

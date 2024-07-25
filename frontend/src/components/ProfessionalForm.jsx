@@ -10,6 +10,8 @@ import {
   useToast,
   Center,
   Avatar,
+  Textarea,
+  FormLabel,
 } from "@chakra-ui/react";
 import { useEffect, useState, useRef } from "react";
 import {
@@ -49,6 +51,7 @@ function ProfessionalForm() {
     institutionalEmail: "",
     image: "",
     idUser: "",
+    aboutMe: "",
   };
   const [formProfessional, setFormProfessional] = useState(
     initialFormProfessional,
@@ -139,11 +142,11 @@ function ProfessionalForm() {
             DATOS PERSONALES
           </Heading>
           <Grid templateColumns={{ base: "1fr", md: "2fr 2fr" }} gap={2} mt={2}>
-            <GridItem fontSize={"sm"}>
+            <GridItem>
               <InputGroup>
                 <InputLeftAddon children="Cedula" />
                 <Input
-                  value={formProfessional.ci ? formProfessional.ci : ""}
+                  value={formProfessional.ci ?? ""}
                   onChange={handleChange}
                   type="number"
                   placeholder="Cedula"
@@ -152,77 +155,62 @@ function ProfessionalForm() {
                 />
               </InputGroup>
             </GridItem>
-            <GridItem></GridItem>
-            <GridItem fontSize={"sm"}>
+            <GridItem>
               <InputGroup>
                 <InputLeftAddon children="Primer Apellido" />
                 <Input
                   type="text"
                   placeholder="Primer Apellido"
                   name="firstLastName"
-                  value={
-                    formProfessional.firstLastName
-                      ? formProfessional.firstLastName
-                      : ""
-                  }
+                  value={formProfessional.firstLastName ?? ""}
                   onChange={handleChange}
                 />
               </InputGroup>
             </GridItem>
-            <GridItem fontSize={"sm"}>
+            <GridItem>
               <InputGroup>
                 <InputLeftAddon children="Segundo Apellido" />
                 <Input
                   type="text"
                   placeholder="Segundo Apellido"
                   name="secondLastName"
-                  value={
-                    formProfessional.secondLastName
-                      ? formProfessional.secondLastName
-                      : ""
-                  }
+                  value={formProfessional.secondLastName ?? ""}
                   onChange={handleChange}
                 />
               </InputGroup>
             </GridItem>
-            <GridItem fontSize={"sm"}>
+            <GridItem>
               <InputGroup>
                 <InputLeftAddon children="Primer Nombre" />
                 <Input
                   type="text"
                   placeholder="Primer Nombre"
                   name="firstName"
-                  value={
-                    formProfessional.firstName ? formProfessional.firstName : ""
-                  }
+                  value={formProfessional.firstName ?? ""}
                   onChange={handleChange}
                 />
               </InputGroup>
             </GridItem>
-            <GridItem fontSize={"sm"}>
+            <GridItem>
               <InputGroup>
                 <InputLeftAddon children="Segundo Nombre" />
                 <Input
                   type="text"
                   placeholder="Segundo Nombre"
                   name="secondName"
-                  value={
-                    formProfessional.secondName
-                      ? formProfessional.secondName
-                      : ""
-                  }
+                  value={formProfessional.secondName ?? ""}
                   onChange={handleChange}
                 />
               </InputGroup>
             </GridItem>
 
-            <GridItem fontSize={"sm"}>
+            <GridItem>
               <InputGroup>
                 <InputLeftAddon children="Genero" />
                 <Select
                   placeholder="Seleccione una opción"
                   name="gender"
-                  value={formProfessional.gender ? formProfessional.gender : ""}
+                  value={formProfessional.gender ?? ""}
                   onChange={handleChange}
                 >
                   <option value="F">Femenino</option>
@@ -230,21 +218,19 @@ function ProfessionalForm() {
                 </Select>
               </InputGroup>
             </GridItem>
-            <GridItem fontSize={"sm"}>
+            <GridItem>
               <InputGroup>
                 <InputLeftAddon children="Tipo de Sangre" />
                 <Input
                   type="text"
                   placeholder="Tipo de Sangre"
                   name="bloodType"
-                  value={
-                    formProfessional.bloodType ? formProfessional.bloodType : ""
-                  }
+                  value={formProfessional.bloodType ?? ""}
                   onChange={handleChange}
                 />
               </InputGroup>
             </GridItem>
-            <GridItem fontSize={"sm"}>
+            <GridItem>
               <InputGroup>
                 <InputLeftAddon children="Fecha de nacimiento" />
                 <Input
@@ -252,25 +238,19 @@ function ProfessionalForm() {
                   size="md"
                   type="date"
                   name="birthDate"
-                  value={
-                    formProfessional.birthDate ? formProfessional.birthDate : ""
-                  }
+                  value={formProfessional.birthDate ?? ""}
                   onChange={handleChange}
                   required
                 />
               </InputGroup>
             </GridItem>
-            <GridItem fontSize={"sm"}>
+            <GridItem>
               <InputGroup>
                 <InputLeftAddon children="Estado Civil" />
                 <Select
                   placeholder="Seleccione una opción"
                   name="civilStatus"
-                  value={
-                    formProfessional.civilStatus
-                      ? formProfessional.civilStatus
-                      : ""
-                  }
+                  value={formProfessional.civilStatus ?? ""}
                   onChange={handleChange}
                 >
                   <option value="Soltero">Soltero</option>
@@ -280,129 +260,112 @@ function ProfessionalForm() {
                 </Select>
               </InputGroup>
             </GridItem>
-            <GridItem fontSize={"sm"}>
+            <GridItem>
               <InputGroup>
                 <InputLeftAddon children="Nacionalidad" />
                 <Input
                   type="text"
                   placeholder="Nacionalidad"
                   name="nationality"
-                  value={
-                    formProfessional.nationality
-                      ? formProfessional.nationality
-                      : ""
-                  }
+                  value={formProfessional.nationality ?? ""}
                   onChange={handleChange}
                 />
               </InputGroup>
             </GridItem>
-            <GridItem fontSize={"sm"}>
+            <GridItem>
               <InputGroup>
                 <InputLeftAddon children="Teléfono de domicilio" />
                 <Input
                   type="tel"
                   placeholder="Teléfono de domicilio"
                   name="homePhone"
-                  value={
-                    formProfessional.homePhone ? formProfessional.homePhone : ""
-                  }
+                  value={formProfessional.homePhone ?? ""}
                   onChange={handleChange}
                 />
               </InputGroup>
             </GridItem>
 
-            <GridItem fontSize={"sm"}>
+            <GridItem>
               <InputGroup>
                 <InputLeftAddon children="Teléfono de celular" />
                 <Input
                   type="tel"
                   placeholder="Teléfono de celular"
                   name="cellPhone"
-                  value={
-                    formProfessional.cellPhone ? formProfessional.cellPhone : ""
-                  }
+                  value={formProfessional.cellPhone ?? ""}
                   onChange={handleChange}
                 />
               </InputGroup>
             </GridItem>
-            <GridItem fontSize={"sm"}>
+            <GridItem>
               <InputGroup>
                 <InputLeftAddon children="Lugar de Nacimiento" />
                 <Input
                   type="text"
                   placeholder="Lugar de Nacimiento"
                   name="placeBirth"
-                  value={
-                    formProfessional.placeBirth
-                      ? formProfessional.placeBirth
-                      : ""
-                  }
+                  value={formProfessional.placeBirth ?? ""}
                   onChange={handleChange}
                 />
               </InputGroup>
             </GridItem>
 
-            <GridItem fontSize={"sm"}>
+            <GridItem>
               <InputGroup>
                 <InputLeftAddon children="Dirección de domicilio" />
                 <Input
                   type="text"
                   placeholder="Dirección de domicilio"
                   name="direction"
-                  value={
-                    formProfessional.direction ? formProfessional.direction : ""
-                  }
+                  value={formProfessional.direction ?? ""}
                   onChange={handleChange}
                 />
               </InputGroup>
             </GridItem>
-            <GridItem fontSize={"sm"}>
+            <GridItem>
               <InputGroup>
                 <InputLeftAddon children="Lugar de residencia" />
                 <Input
                   type="text"
                   placeholder="Lugar de residencia"
                   name="placeResidence"
-                  value={
-                    formProfessional.placeResidence
-                      ? formProfessional.placeResidence
-                      : ""
-                  }
+                  value={formProfessional.placeResidence ?? ""}
                   onChange={handleChange}
                 />
               </InputGroup>
             </GridItem>
-            <GridItem fontSize={"sm"}>
+            <GridItem>
               <InputGroup>
                 <InputLeftAddon children="@" />
                 <Input
                   type="email"
                   placeholder="Correo Electrónico Institucional"
                   name="institutionalEmail"
-                  value={
-                    formProfessional.institutionalEmail
-                      ? formProfessional.institutionalEmail
-                      : ""
-                  }
+                  value={formProfessional.institutionalEmail ?? ""}
                   onChange={handleChange}
                 />
               </InputGroup>
             </GridItem>
-            <GridItem fontSize={"sm"}>
+            <GridItem>
               <InputGroup>
                 <InputLeftAddon children="@" />
                 <Input
                   type="email"
                   placeholder="Correo Electrónico Personal"
                   name="personalEmail"
-                  value={
-                    formProfessional.personalEmail
-                      ? formProfessional.personalEmail
-                      : ""
-                  }
+                  value={formProfessional.personalEmail ?? ""}
                   onChange={handleChange}
                 />
               </InputGroup>
+            </GridItem>
+            <GridItem>
+              <FormLabel>Acerca de mi</FormLabel>
+              <Textarea
+                placeholder="Coloque una descipción acerca de ti"
+                name="aboutMe"
+                value={formProfessional.aboutMe ?? ""}
+                onChange={handleChange}
+              />
             </GridItem>
           </Grid>
           {/* <Grid templateColumns={{ base: "1fr", md: "1fr" }} gap={2} mt={2}>
