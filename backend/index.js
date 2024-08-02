@@ -12,7 +12,7 @@ import userRoutes from "./src/routes/userRoutes.js";
 import registerRoutes from "./src/routes/registerRoutes.js";
 import logRoutes from "./src/routes/logRoutes.js";
 import { sequelize } from "./src/database/connection.js";
-//import { insertData, consoleData } from "./src/database/insertData.js";
+import { insertData, consoleData } from "./src/database/insertData.js";
 import loggerMiddleware from "./src/middlewares/loggerMiddleware.js";
 
 const app = express();

@@ -15594,19 +15594,19 @@
   "RolesBackup": [
     {
       "id": 1,
-      "rol": "administrador"
+      "rol": "Administrador"
     },
     {
       "id": 2,
-      "rol": "profesional"
+      "rol": "Profesional"
     },
     {
       "id": 3,
-      "rol": "empresa"
+      "rol": "Empresa"
     },
     {
       "id": 4,
-      "rol": "programador"
+      "rol": "Programador"
     }
   ],
   "QuestionsBackup": [
