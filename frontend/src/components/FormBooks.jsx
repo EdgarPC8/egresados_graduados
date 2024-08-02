@@ -6,14 +6,6 @@ import {
   InputLeftAddon,
   InputGroup,
   Button,
-  TableContainer,
-  Table,
-  Th,
-  Td,
-  Tr,
-  Thead,
-  Tbody,
-  Tfoot,
   AccordionItem,
   AccordionPanel,
   useToast,
@@ -29,7 +21,6 @@ import {
   editBooks,
   deleteBooks,
 } from "../api/cvRequest";
-import DataTable from "../components/DataTables";
 import Modal from "../components/AlertDialog";
 import Tabl from "./Table";
 import { useAuth } from "../context/AuthContext";
@@ -158,7 +149,7 @@ function FormBooks() {
 
   const handleAcceptDelete = async () => {
     try {
-      const { data } = await deleteBooks(id);
+      await deleteBooks(id);
       fetchData();
       clear();
     } catch (error) {
@@ -171,32 +162,50 @@ function FormBooks() {
 
   const columns = [
     { header: "Titulo", accessorKey: "title" },
-    { header: (
-      <>
-      <Flex>
-      Tipo
-        <HelpBox title="Tipo de Libro" message="(Divulgación, Científico)"/>
-      </Flex>
-      </>
-    ), accessorKey: "type" },
+    {
+      header: (
+        <>
+          <Flex>
+            Tipo
+            <HelpBox
+              title="Tipo de Libro"
+              message="(Divulgación, Científico)"
+            />
+          </Flex>
+        </>
+      ),
+      accessorKey: "type",
+    },
     { header: "Tipo de Autoria", accessorKey: "typeAuthorship" },
-    { header: (
-      <>
-      <Flex>
-      ISB N
-        <HelpBox title="ISB N" message="International Standard Book Number, Número Estándar Internacional de Libros."/>
-      </Flex>
-      </>
-    ), accessorKey: "isbN" },
+    {
+      header: (
+        <>
+          <Flex>
+            ISB N
+            <HelpBox
+              title="ISB N"
+              message="International Standard Book Number, Número Estándar Internacional de Libros."
+            />
+          </Flex>
+        </>
+      ),
+      accessorKey: "isbN",
+    },
     { header: "Nombre Editorial", accessorKey: "editorialName" },
-    { header: (
-      <>
-      <Flex>
-      Origen Editorial
-        <HelpBox title="Origen Editorial" message="(Nacional, Internacional)"/>
-      </Flex>
-      </>
-    ), accessorKey: "editorialOrigin" },
+    {
+      header: (
+        <>
+          <Flex>
+            Origen Editorial
+            <HelpBox
+              title="Origen Editorial"
+              message="(Nacional, Internacional)"
+            />
+          </Flex>
+        </>
+      ),
+      accessorKey: "editorialOrigin",
+    },
     { header: "Año", accessorKey: "year" },
 
     {

@@ -2,15 +2,11 @@ import {
   Table,
   Thead,
   Tbody,
-  Tfoot,
   Tr,
   Th,
   Td,
-  TableCaption,
   TableContainer,
   ButtonGroup,
-  Button,
-  Avatar,
   Input,
   Flex,
   Text,
@@ -29,7 +25,6 @@ import {
 import {
   useReactTable,
   getCoreRowModel,
-  createColumnHelper,
   flexRender,
   getPaginationRowModel,
   getSortedRowModel,
@@ -38,10 +33,7 @@ import {
 
 import { FiArrowUp, FiArrowDown } from "react-icons/fi";
 
-
-
 import { renderCellContent } from "../helpers/date.js";
-
 
 function Tabl({ data, columns }) {
   const [sort, setSort] = useState([]);
@@ -107,14 +99,13 @@ function Tabl({ data, columns }) {
                 <Th
                   key={header.id}
                   onClick={header.column.getToggleSortingHandler()}
-              whiteSpace="normal" // Permite el retorno de línea en lugar de desbordamiento
-
+                  whiteSpace="normal" // Permite el retorno de línea en lugar de desbordamiento
                 >
                   {header.isPlaceholder
                     ? null
                     : flexRender(
                         header.column.columnDef.header,
-                        header.getContext()
+                        header.getContext(),
                       )}
 
                   {
@@ -128,16 +119,19 @@ function Tabl({ data, columns }) {
           ))}
         </Thead>
         <Tbody>
-  {table.getRowModel().rows.map((row) => (
-    <Tr key={row.id}>
-      {row.getVisibleCells().map((cell) => (
-        <Td key={cell.id} whiteSpace="normal" p={1}>
-          {renderCellContent(cell.column.columnDef.cell, cell.getContext())}
-        </Td>
-      ))}
-    </Tr>
-  ))}
-</Tbody>
+          {table.getRowModel().rows.map((row) => (
+            <Tr key={row.id}>
+              {row.getVisibleCells().map((cell) => (
+                <Td key={cell.id} whiteSpace="normal" p={1}>
+                  {renderCellContent(
+                    cell.column.columnDef.cell,
+                    cell.getContext(),
+                  )}
+                </Td>
+              ))}
+            </Tr>
+          ))}
+        </Tbody>
       </Table>
     </TableContainer>
   );

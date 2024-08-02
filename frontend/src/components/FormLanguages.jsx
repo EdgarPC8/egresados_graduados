@@ -1,25 +1,11 @@
 import {
-  ChakraProvider,
   Box,
-  Heading,
   Input,
-  Container,
   Grid,
   GridItem,
   InputLeftAddon,
   InputGroup,
-  Select,
   Button,
-  TableContainer,
-  Table,
-  Th,
-  Td,
-  Tr,
-  Thead,
-  Tbody,
-  Tfoot,
-  Textarea,
-  Accordion,
   AccordionItem,
   AccordionPanel,
   AccordionIcon,
@@ -29,7 +15,6 @@ import {
   Stack,
   Radio,
   Flex,
-  FormControl,
 } from "@chakra-ui/react";
 
 import { useEffect, useState, useRef } from "react";
@@ -39,12 +24,10 @@ import {
   editLanguages,
   deleteLanguages,
 } from "../api/cvRequest";
-import DataTable from "../components/DataTables";
 import Modal from "../components/AlertDialog";
 import Tabl from "./Table";
 import { useAuth } from "../context/AuthContext";
 import HelpBox from "../components/HelpBox";
-
 
 function FormLanguages() {
   const { user } = useAuth();
@@ -148,7 +131,7 @@ function FormLanguages() {
           description: e.response.data.message,
           isClosable: true,
         }),
-      }
+      },
     );
 
     clear();
@@ -179,7 +162,7 @@ function FormLanguages() {
   };
   const handleAcceptDelete = async () => {
     try {
-      const { data } = await deleteLanguages(id);
+      await deleteLanguages(id);
       fetchData();
       clear();
     } catch (error) {
@@ -210,16 +193,19 @@ function FormLanguages() {
     {
       header: (
         <>
-        <Flex>
-        Tipo de certificación
-          <HelpBox title="Tipo de certificación" message="(TOEFL, TOEIC, CPE, IELTS, PET, Otro) 
+          <Flex>
+            Tipo de certificación
+            <HelpBox
+              title="Tipo de certificación"
+              message="(TOEFL, TOEIC, CPE, IELTS, PET, Otro) 
           TOEFL: Test of English as a Foreign Language.
           TOEIC: Test of English for International Communication.
           CPE: Certificate of Proficiency in English.
           IELTS: International English Language Testing System.
           PET: Preliminary English Test.
-"/>
-        </Flex>
+"
+            />
+          </Flex>
         </>
       ),
       accessorKey: "typeCertification",

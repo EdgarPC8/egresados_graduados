@@ -36,7 +36,7 @@ function FormIntellectualProduction() {
   const [id, setId] = useState(0);
 
   const [dataIntellectualProduction, setDataIntellectualProduction] = useState(
-    []
+    [],
   );
 
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -124,7 +124,7 @@ function FormIntellectualProduction() {
           description: e.response.data.message,
           isClosable: true,
         }),
-      }
+      },
     );
 
     clear();
@@ -132,7 +132,7 @@ function FormIntellectualProduction() {
 
   const handleAcceptDelete = async () => {
     try {
-      const { data } = await deleteIntellectualProduction(id);
+      await deleteIntellectualProduction(id);
       fetchData();
       clear();
     } catch (error) {
@@ -157,15 +157,18 @@ function FormIntellectualProduction() {
     {
       header: (
         <>
-        <Flex>
-        Tipo
-          <HelpBox title="Tipo" message="(Divulgación, Indexadas, ISI, SCOPUS, IEEE, Otros)
+          <Flex>
+            Tipo
+            <HelpBox
+              title="Tipo"
+              message="(Divulgación, Indexadas, ISI, SCOPUS, IEEE, Otros)
           
           ISI: Institute for Scientific Information,  Instituto para la Información Científica.
           SCOPUS: base de datos de referencias bibliográficas y citas.
           IEEE: Institute of Electrical and Electronics Engineers, Instituto de Ingenieros Eléctricos y Electrónicos.
-"/>
-        </Flex>
+"
+            />
+          </Flex>
         </>
       ),
       accessorKey: "type",
@@ -175,12 +178,15 @@ function FormIntellectualProduction() {
       accessorKey: "name",
     },
     {
-      header:  (
+      header: (
         <>
-        <Flex>
-        Tipo de Autoria
-          <HelpBox title="Tipo de Autoria" message="(Autor Principal, Co-autor, Evaluador)"/>
-        </Flex>
+          <Flex>
+            Tipo de Autoria
+            <HelpBox
+              title="Tipo de Autoria"
+              message="(Autor Principal, Co-autor, Evaluador)"
+            />
+          </Flex>
         </>
       ),
       accessorKey: "typeAuthorship",

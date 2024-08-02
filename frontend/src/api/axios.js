@@ -40,8 +40,4 @@ export const jwt = () => {
 
 export const urlPhotos = `http://${url}/alumniapi/photos`;
 
-
 export default instance;
-
-
-

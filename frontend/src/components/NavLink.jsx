@@ -1,5 +1,4 @@
-import { Box, Button, Center } from "@chakra-ui/react";
-import { FiHome } from "react-icons/fi";
+import { Button } from "@chakra-ui/react";
 
 const NavLink = (props) => {
   const { children, icon } = props;

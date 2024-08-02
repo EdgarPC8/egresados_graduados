@@ -1,7 +1,5 @@
 import {
   Center,
-  Image,
-  IconButton,
   Icon,
   Stack,
   Grid,
@@ -11,20 +9,18 @@ import {
   InputLeftElement,
   FormControl,
   Box,
-  Heading,
   Button,
   Flex,
   Checkbox,
-  Spacer,
   useToast,
   FormLabel,
   Avatar,
 } from "@chakra-ui/react";
 
-import { FiUser, FiUserPlus, FiHash, FiTag, FiEdit2 } from "react-icons/fi";
+import { FiUser, FiHash, FiTag } from "react-icons/fi";
 
 import PasswordInput from "./PasswordInput";
-import { useState, useRef, useEffect } from "react";
+import { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import {
   getOneUser,
@@ -50,19 +46,11 @@ function FormAddUser() {
     roles: [],
   };
 
-  const [photo, setPhoto] = useState(null);
-  const hiddenFileInput = useRef();
-
   const [form, setForm] = useState(initialForm);
   const [formProfessional, setFormProfessional] = useState(initialForm);
   const [rolesList, setRolesList] = useState([]);
   const handleSubmit = async (event) => {
     event.preventDefault();
-    // console.log(form);
-    // const formData = new FormData(event.target);
-    // formData.append("photo", photo);
-    // console.log(form)
-    // const data = Object.fromEntries(formData);
 
     if (userId) {
       toast.promise(updateUserData(userId, form), {
@@ -119,23 +107,7 @@ function FormAddUser() {
     });
   };
 
-  const handlePhoto = (event) => {
-    hiddenFileInput.current.click();
-  };
-
-  const handleFileChange = (event) => {
-    const files = event.target.files;
-    if (files.length > 0) {
-      setPhoto(files[0]);
-      setForm({ ...form, photo: files[0] });
-    }
-  };
-
-  const photoUrl = photo
-    ? URL.createObjectURL(photo)
-    : userId
-    ? `${urlPhotos}/${form.photo}`
-    : "/noPhoto.jpg";
+  const photoUrl = form.photo ? `${urlPhotos}/${form.photo}` : "/noPhoto.jpg";
 
   const handleChange = (event) => {
     const { name, value } = event.target;
@@ -154,17 +126,11 @@ function FormAddUser() {
     });
   };
 
-  // useEffect(() => {
-  //   // console.log(rolesList);
-  //   console.log(form);
-  // }, [form]);
-
   useEffect(() => {
     const fetchUser = async () => {
       if (userId) {
         try {
           const { data } = await getOneUser(userId);
-          // setPhoto(data.photo)
           const { roles: list } = data;
 
           setForm({
@@ -178,7 +144,7 @@ function FormAddUser() {
             roles: list.map((rol) => rol.user_roles.roleId),
           });
         } catch (error) {
-          console.log(error);
+          console.error(error);
         }
       }
     };
@@ -220,7 +186,6 @@ function FormAddUser() {
               </div>
             </Center>
           </Flex>
-          
 
           <Flex
             direction="column"
@@ -348,7 +313,7 @@ function FormAddUser() {
                   <FormControl mt={6}>
                     <FormLabel color="gray.600">Roles</FormLabel>
                     <Stack spacing={5} direction="row">
-                      {rolesList.map((roles, idx) => (
+                      {rolesList.map((roles) => (
                         <Checkbox
                           key={roles.id}
                           value={roles.id}
