@@ -20,6 +20,7 @@ import Matriz from "./pages/Matriz.jsx";
 import Careers from "./pages/Careers.jsx";
 import Periods from "./pages/Periods.jsx";
 import Tutorials from "./pages/Tutorials.jsx";
+import PanelControl from "./pages/PanelControl.jsx";
 
 import UserTable from "./components/UserTable.jsx";
 import FormAddUser from "./components/FormAddUser.jsx";
@@ -43,7 +44,7 @@ function App() {
             <Route
               element={
                 <ProtectedRoute
-                  requiredRol={["profesional","programador","administrador"]}
+                  requiredRol={["Profesional","Programador","Administrador"]}
                 />
               }
             >
@@ -52,7 +53,7 @@ function App() {
               <Route path="/perfil" element={<Profile />} />
               <Route path="/cvPdf" element={<CvPdf />} />
             </Route>
-            <Route element={<ProtectedRoute requiredRol={["programador","administrador"]} />}>
+            <Route element={<ProtectedRoute requiredRol={["Programador","Administrador"]} />}>
               <Route path="/usuarios" element={<UserTable />} />
               <Route path="/agregar-usuario" element={<FormAddUser />} />
               <Route path="/editar-usuario/:userId" element={<FormAddUser />} />
@@ -65,9 +66,10 @@ function App() {
               <Route path="/tutoriales" element={<Tutorials />} />
             </Route>
             
-            <Route element={<ProtectedRoute requiredRol={["programador"]} />}>
+            <Route element={<ProtectedRoute requiredRol={["Programador"]} />}>
               <Route path="/actividad" element={<Logger />} />
               <Route path="/charts" element={<Charts />} />
+              <Route path="/panel" element={<PanelControl />} />
 
             </Route>
           </Routes>

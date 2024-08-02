@@ -32,6 +32,7 @@ const allowedOrigins = [
   // "http://192.168.137.250:8888",
   "http://181.39.125.155",
   "http://aplicaciones.marianosamaniego.edu.ec",
+  "http://www.aplicaciones.marianosamaniego.edu.ec",
 ];
 
 const corsOptions = {
