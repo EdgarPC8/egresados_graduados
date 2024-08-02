@@ -10,6 +10,11 @@ import {
 } from "@react-pdf/renderer";
 import { urlPhotos } from "../api/axios";
 import { reorderDateString } from "../helpers/date.js";
+import HomePhoneIcon from "./pdfIcons/HomePhoneIcon.jsx";
+import PhoneIcon from "./pdfIcons/PhoneIcon.jsx";
+import LocationIcon from "./pdfIcons/LocationIcon.jsx";
+import EmailIcon from "./pdfIcons/EmailIcon.jsx";
+import IdentificationIcon from "./pdfIcons/IdentificationIcon.jsx";
 
 Font.register({
   family: "Lato",
@@ -54,7 +59,7 @@ const styles = StyleSheet.create({
     fontFamily: "Lato",
     fontStyle: "bold",
     borderBottom: 1.5,
-    paddingHorizontal: 30,
+    paddingHorizontal: 20,
     paddingVertical: 10,
     borderColor: "#3D3D3D",
   },
@@ -174,9 +179,7 @@ const styles = StyleSheet.create({
 });
 
 const PDFDocument = ({ data, cv }) => {
-  const imageURL = data.image
-    ? `${urlPhotos}/${data.image}`
-    : "../../public/noPhoto.jpg";
+  const imageURL = data.image ? `${urlPhotos}/${data.image}` : "/noPhoto.jpg";
 
   const contact = [
     // { label: "Primer Apellido", value: data.firstName },
@@ -188,13 +191,16 @@ const PDFDocument = ({ data, cv }) => {
     // { label: "Fecha de nacimiento", value: data.birthDate },
     // { label: "Estado Civil", value: data.civilStatus },
     // { label: "Nacionalidad", value: data.nationality },
-    { label: "Teléfono de domicilio", value: data.homePhone },
-    { label: "Teléfono de celular", value: data.cellPhone },
+    { icon: <HomePhoneIcon width={18} height={18} />, value: data.homePhone },
+    { icon: <PhoneIcon width={18} height={18} />, value: data.cellPhone },
     //{ label: "Lugar de Nacimiento", value: data.placeBirth },
-    { label: "Dirección de domicilio", value: data.direction },
+    { icon: <LocationIcon width={18} height={18} />, value: data.direction },
     //{ label: "Lugar de residencia", value: data.placeResidence },
-    { label: "Correo Institucional", value: data.institutionalEmail },
-    { label: "Correo Personal", value: data.personalEmail },
+    {
+      icon: <EmailIcon width={18} height={18} />,
+      value: data.institutionalEmail,
+    },
+    { icon: <EmailIcon width={18} height={18} />, value: data.personalEmail },
   ];
 
   const Table = ({ data: Table }) => {
@@ -208,11 +214,6 @@ const PDFDocument = ({ data, cv }) => {
         <Text style={styles.contentCell}>{reorderDateString(cellData)}</Text>
       );
     };
-
-    const numRows = Table.header.reduce(
-      (acc, col) => (col.row ? Math.max(acc, col.row.length) : acc),
-      0,
-    );
 
     const getPorcentaje = (colIndex, colCount) => {
       const totalColumns = colCount || 1;
@@ -277,7 +278,7 @@ const PDFDocument = ({ data, cv }) => {
 
         {Table.values.map((row, rowIndex) => (
           <View style={styles.tableRow} key={rowIndex}>
-            {Object.keys(row).map((key, colIndex) => {
+            {Object.keys(row).map((_, colIndex) => {
               const width = getPorcentaje(colIndex, Object.keys(row).length);
               return (
                 <View
@@ -297,16 +298,6 @@ const PDFDocument = ({ data, cv }) => {
     );
   };
 
-  const renderPersonalData = () => {
-    return personalInfo.map((info, index) => (
-      <View style={styles.inputGroup} key={index}>
-        <Text style={styles.inputLabel}>{info.label}:</Text>
-        <View style={styles.input}>
-          <Text>{info.value}</Text>
-        </View>
-      </View>
-    ));
-  };
   return (
     <Document>
       <Page size="A4" style={styles.page} wrap>
@@ -323,7 +314,12 @@ const PDFDocument = ({ data, cv }) => {
             >
               <Text style={styles.titleName}>{data.firstName}</Text>
               <Text style={styles.titleName}>{data.firstLastName}</Text>
-              <Text style={styles.text}>CI: {data.ci}</Text>
+              <View
+                style={{ flexDirection: "row", gap: 4, alignItems: "center" }}
+              >
+                <IdentificationIcon width={18} height={18} />
+                <Text style={styles.text}>{data.ci}</Text>
+              </View>
               <Text style={styles.text}>{data.aboutMe}</Text>
             </View>
           </View>
@@ -332,11 +328,9 @@ const PDFDocument = ({ data, cv }) => {
             const { values, title } = data;
             if (values && values.length > 0) {
               return (
-                <View key={section}>
+                <View key={section} style={styles.section}>
                   <Text style={styles.title}>{title}</Text>
-                  <View style={styles.section}>
-                    <Table data={data} />
-                  </View>
+                  <Table data={data} />
                 </View>
               );
             }
@@ -366,60 +360,24 @@ const PDFDocument = ({ data, cv }) => {
                 CONTACTO
               </Text>
               <View style={{ gap: 5 }}>
-                {contact.map(({ value }, index) => (
-                  <Text style={styles.text} key={index}>
-                    {value}
-                  </Text>
+                {contact.map(({ value, icon }, index) => (
+                  <View
+                    style={{
+                      flexDirection: "row",
+                      alignItems: "center",
+                      gap: 4,
+                    }}
+                  >
+                    {icon}
+                    <Text style={styles.text} key={index}>
+                      {value}
+                    </Text>
+                  </View>
                 ))}
               </View>
             </View>
           </View>
         </View>
-        {/*   <View style={styles.box2}> */}
-        {/*     <Text style={styles.titleName}>{data.firstName}</Text> */}
-        {/*     <Text */}
-        {/*       style={{ */}
-        {/*         fontSize: 53, */}
-        {/*         fontFamily: "Lato", */}
-        {/*         fontStyle: "regular", */}
-        {/*         color: "#333132", */}
-        {/*       }} */}
-        {/*     > */}
-        {/*       {data.firstLastName} */}
-        {/*     </Text> */}
-        {/*     <Text */}
-        {/*       style={[ */}
-        {/*         styles.title, */}
-        {/*         { */}
-        {/*           marginTop: 50, */}
-        {/*           borderBottomWidth: 1, */}
-        {/*           borderBottomColor: "#333132", */}
-        {/*         }, */}
-        {/*       ]} */}
-        {/*     > */}
-        {/*       Experiencia Profesional */}
-        {/*     </Text> */}
-        {/*   </View> */}
-        {/* </View> */}
-        {/* <Text style={styles.titleInstitution}> */}
-        {/*   INSTITUTO SUPERIOR TECNOLÓGICO "MARIANO SAMANIEGO" */}
-        {/* </Text> */}
-        {/* <View style={styles.section}> */}
-        {/*   <View style={styles.row}> */}
-        {/*     <View style={styles.Infocol}> */}
-        {/*       <Text style={styles.subTitle}>Datos Personales</Text> */}
-        {/*       {renderPersonalData()} */}
-        {/*     </View> */}
-        {/*     {/* <View style={styles.photoCol}> */}
-        {/*                 <Text style={styles.subTitle}>Foto</Text> */}
-        {/*                 <View style={styles.photo}></View> */}
-        {/*             </View> */}
-        {/*     <View style={styles.photoCol}> */}
-        {/*       <Image src={imageURL} style={styles.photo} /> */}
-        {/*     </View> */}
-        {/*   </View> */}
-        {/* </View> */}
-        {/**/}
       </Page>
     </Document>
   );

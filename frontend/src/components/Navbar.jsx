@@ -65,7 +65,7 @@ const Navbar = () => {
   ];
 
   const Links = {
-    programador: [
+    Programador: [
       {
         name: "Actividad",
         path: "/actividad",
@@ -128,7 +128,7 @@ const Navbar = () => {
       },
     ],
 
-    administrador: [
+    Administrador: [
       {
         name: "Inicio",
         path: "/",
@@ -180,7 +180,7 @@ const Navbar = () => {
         icon: <FaYoutube />,
       },
     ],
-    profesional: [
+    Profesional: [
       {
         name: "Hoja de Vida",
         path: "/cv",

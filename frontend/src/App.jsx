@@ -42,7 +42,7 @@ function App() {
             <Route
               element={
                 <ProtectedRoute
-                  requiredRol={["profesional", "programador", "administrador"]}
+                  requiredRol={["Profesional", "Programador", "Administrador"]}
                 />
               }
             >
@@ -54,7 +54,7 @@ function App() {
             <Route
               element={
                 <ProtectedRoute
-                  requiredRol={["programador", "administrador"]}
+                  requiredRol={["Programador", "Administrador"]}
                 />
               }
             >
@@ -73,7 +73,7 @@ function App() {
               <Route path="/tutoriales" element={<Tutorials />} />
             </Route>
 
-            <Route element={<ProtectedRoute requiredRol={["programador"]} />}>
+            <Route element={<ProtectedRoute requiredRol={["Programador"]} />}>
               <Route path="/actividad" element={<Logger />} />
               <Route path="/charts" element={<Charts />} />
             </Route>
