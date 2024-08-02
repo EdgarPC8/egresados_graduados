@@ -61,9 +61,26 @@ const getProfessionalsById = async (req, res) => {
   }
 };
 
+const deleteProfessionals = async (req, res) => {
+  try {
+    const removingUser = await Professionals.destroy({
+      where: {
+        id: req.params.userId,
+      },
+    });
+
+    res.json({ message: "Profesional eleminado con éxito" });
+  } catch (error) {
+    return res.status(500).json({
+      message: error.message,
+    });
+  }
+};
+
 export {
   getAllProfessionals,
   addProfessional,
   editProfessional,
   getProfessionalsById,
+  deleteProfessionals,
 };

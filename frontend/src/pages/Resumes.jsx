@@ -1,8 +1,7 @@
 import Tabl from "../components/Table";
 import DataTable from "../components/DataTables";
 import { useEffect, useState } from "react";
-import { addUser, getUsers, removeUser } from "../api/userRequest";
-import { getAllProfessionals } from "../api/professionalRequest";
+import { getAllProfessionals,deleteProfessional } from "../api/professionalRequest";
 import { urlPhotos } from "../api/axios";
 import { useRef } from "react";
 import {
@@ -44,13 +43,13 @@ function Resumes() {
   const cancelRef = useRef();
 
   const deleteUser = () => {
-    toast.promise(removeUser(currentUser.userId), {
+    toast.promise(deleteProfessional(currentUser.id), {
       loading: {
         title: "Eliminando...",
         position: "top-right",
       },
       success: (d) => ({
-        title: "Usuario",
+        title: "Profesional",
         description: d.data.message,
         isClosable: true,
       }),
@@ -61,13 +60,13 @@ function Resumes() {
       }),
     });
 
-    setUsers(users.filter((user) => user.userId !== currentUser.userId));
+    setUsers(users.filter((user) => user.id !== currentUser.id));
   };
 
   const columns = [
     {
       header: "Id",
-      accessorKey: "userId",
+      accessorKey: "id",
       cell: (props) => props.row.index + 1,
     },
     {
@@ -110,6 +109,15 @@ function Resumes() {
             }
           >
             PDF
+          </Button>
+          <Button
+            colorScheme="red"
+            onClick={() => {
+              setCurrentUser(props.row.original);
+              onOpen();
+            }}
+          >
+            Eliminar
           </Button>
         </Stack>
       ),
