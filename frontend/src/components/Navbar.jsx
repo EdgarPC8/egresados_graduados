@@ -197,6 +197,9 @@ const Navbar = () => {
         icon: <FiFileText />,
       },
     ],
+    Estudiante: [
+ 
+    ],
   };
 
   return (

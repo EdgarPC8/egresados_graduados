@@ -1,9 +1,29 @@
-import React from "react";
 import { Box, Heading, Text, Button, Image } from "@chakra-ui/react";
 import { Link } from "react-router-dom";
 import HomeIcon from "/homeicon.svg";
+import React, { useEffect } from "react";
+import { useAuth } from "../context/AuthContext";
+
+
 
 function HomePage() {
+  const { signinExternal } = useAuth();
+
+  useEffect(() => {
+    const handleMessage = (event) => {
+      if (event.origin !== 'http://localhost:8888') {
+        console.error('Mensaje de origen no permitido');
+        return;
+      }
+      console.log(event.data)
+      signinExternal(event.data);
+    };
+    window.addEventListener('message', handleMessage);
+    return () => {
+      window.removeEventListener('message', handleMessage);
+    };
+  }, []);
+
   return (
     <Box p={20}>
       <Heading>Bienvenido</Heading>

@@ -5,7 +5,7 @@ const objUrl={
   edgar:"192.168.137.250",
   alumni:"aplicaciones.marianosamaniego.edu.ec",
 }
-const url =objUrl.local
+const url =objUrl.edgar
 
 const instance = axios.create({
   baseURL: `http://${url}:3000/api`,

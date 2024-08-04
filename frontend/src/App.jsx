@@ -21,6 +21,8 @@ import Periods from "./pages/Periods.jsx";
 import Tutorials from "./pages/Tutorials.jsx";
 import PanelControl from "./pages/PanelControl.jsx";
 
+
+
 import UserTable from "./components/UserTable.jsx";
 import FormAddUser from "./components/FormAddUser.jsx";
 
@@ -29,6 +31,9 @@ import "@fontsource/inter/600.css";
 import Logger from "./pages/Logger.jsx";
 
 function App() {
+
+ 
+
   return (
     <ChakraProvider theme={customTheme}>
       <AuthProvider>
@@ -39,6 +44,15 @@ function App() {
             <Route path="/" element={<HomePage />} />
             <Route path="/login" element={<LoginPage />} />
             <Route path="/register" element={<RegisterPage />} />
+            <Route
+              element={
+                <ProtectedRoute
+                  requiredRol={["Profesional","Programador","Administrador","Estudiante"]}
+                />
+              }
+            >
+              <Route path="/perfil" element={<Profile />} />
+            </Route>
 
             <Route
               element={
@@ -49,7 +63,6 @@ function App() {
             >
               <Route path="/cv" element={<CV />} />
               <Route path="/quiz" element={<Quiz />} />
-              <Route path="/perfil" element={<Profile />} />
               <Route path="/cvPdf" element={<CvProfessionalPdf />} />
             </Route>
             <Route element={<ProtectedRoute requiredRol={["Programador","Administrador"]} />}>

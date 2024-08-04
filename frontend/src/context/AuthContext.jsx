@@ -3,6 +3,7 @@ import {
   getOneUser,
   loginRequest,
   verifyTokenRequest,
+  loginExternal
 } from "../api/userRequest";
 import { jwt } from "../api/axios";
 
@@ -29,6 +30,30 @@ const AuthProvider = ({ children }) => {
       setIsLoading(false);
       setIsAuthenticated(true);
       const session = await verifyTokenRequest();
+      const sessionExternal=session.data
+      
+      if(sessionExternal.urlWebSession && sessionExternal.urlWebSession.urlWeb==='gaistms.marianosamiego.edu.ec'){
+        const estudiante=sessionExternal.urlWebSession
+
+        const data = {
+          ci: estudiante.ci,
+          firstName: estudiante.firstName,
+          secondName: estudiante.secondName,
+          firstLastName: estudiante.firstLastName,
+          secondLastName: estudiante.secondLastName,
+          photo: null,
+          roles: [{rol:'Estudiante'}],
+          userId: 2,
+          username: sessionExternal.username,
+          loginRol: 'Estudiante',
+        };
+  
+        if (session.status === 200) {
+          setUser(data);
+        }
+        return;
+      }
+      
       const user = await getOneUser(session.data.userId);
 
       const data = {
@@ -56,15 +81,32 @@ const AuthProvider = ({ children }) => {
     try {
       const response = await loginRequest(user);
       const { data } = response;
-      window.localStorage.setItem("token", data.token);
-
+      
       if (response.status === 200) {
+        window.localStorage.setItem("token", data.token);
         setIsAuthenticated(true);
         loadUserProfile();
       }
     } catch (error) {
       // console.log(error.response.data);
+      error.message='Datos Erroneos'
       setErrors(error);
+    }
+  };
+  const signinExternal = async (user) => {
+    try {
+      const response = await loginExternal(user);
+      const { data } = response;
+  
+      // Asegúrate de que la respuesta contenga el token
+      if (data.token) {
+        window.localStorage.setItem("token", data.token);
+        setIsAuthenticated(true);
+        loadUserProfile();
+      }
+    } catch (error) {
+      console.error("Error en la autenticación:", error);
+      setErrors(error.response ? error.response.data : { message: "Error desconocido" });
     }
   };
 
@@ -115,6 +157,7 @@ const AuthProvider = ({ children }) => {
     <AuthContext.Provider
       value={{
         signin,
+        signinExternal,
         errors,
         logout,
         isAuthenticated,
