@@ -19,17 +19,17 @@ import IdentificationIcon from "./pdfIcons/IdentificationIcon.jsx";
 Font.register({
   family: "Lato",
   fonts: [
-    { src: "../../src/assets/fonts/Lato-Black.ttf", fontStyle: "black" },
+    { src: "/src/assets/fonts/Lato-Black.ttf", fontStyle: "black" },
     {
-      src: "../../src/assets/fonts/Lato-Bold.ttf",
+      src: "/src/assets/fonts/Lato-Bold.ttf",
       fontStyle: "bold",
     },
     {
-      src: "../../src/assets/fonts/Lato-Italic.ttf",
+      src: "/src/assets/fonts/Lato-Italic.ttf",
       fontStyle: "italic",
     },
     {
-      src: "../../src/assets/fonts/Lato-Regular.ttf",
+      src: "/src/assets/fonts/Lato-Regular.ttf",
       fontStyle: "regular",
     },
   ],
@@ -367,11 +367,10 @@ const PDFDocument = ({ data, cv }) => {
                       alignItems: "center",
                       gap: 4,
                     }}
+                    key={index}
                   >
                     {icon}
-                    <Text style={styles.text} key={index}>
-                      {value}
-                    </Text>
+                    <Text style={styles.text}>{value}</Text>
                   </View>
                 ))}
               </View>

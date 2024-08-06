@@ -27,6 +27,7 @@ import FormAddUser from "./components/FormAddUser.jsx";
 import "@fontsource/inter";
 import "@fontsource/inter/600.css";
 import Logger from "./pages/Logger.jsx";
+import DocumentQuiz from "./pages/DocumentQuiz.jsx";
 
 function App() {
   return (
@@ -43,36 +44,42 @@ function App() {
             <Route
               element={
                 <ProtectedRoute
-                  requiredRol={["Profesional","Programador","Administrador"]}
+                  requiredRol={["Profesional", "Programador", "Administrador"]}
                 />
               }
             >
               <Route path="/cv" element={<CV />} />
-              <Route path="/quiz" element={<Quiz />} />
+              <Route path="/sus-encuestas" element={<Quiz />} />
               <Route path="/perfil" element={<Profile />} />
               <Route path="/cvPdf" element={<CvProfessionalPdf />} />
+              <Route path="/encuesta/d/:idQuiz" element={<DocumentQuiz />} />
             </Route>
-            <Route element={<ProtectedRoute requiredRol={["Programador","Administrador"]} />}>
+            <Route
+              element={
+                <ProtectedRoute
+                  requiredRol={["Programador", "Administrador"]}
+                />
+              }
+            >
               <Route path="/usuarios" element={<UserTable />} />
               <Route path="/agregar-usuario" element={<FormAddUser />} />
               <Route path="/editar-usuario/:userId" element={<FormAddUser />} />
               <Route path="/curriculos" element={<Resumes />} />
               <Route
-                path="/cvProfessionalPdf/:userId"
+                path="/curriculos/cv-profesional-pdf/:userId"
                 element={<CvProfessionalPdf />}
               />
-              <Route path="/quizzes" element={<Quizzes />} />
+              <Route path="/encuestas" element={<Quizzes />} />
               <Route path="/matriz" element={<Matriz />} />
               <Route path="/carreras" element={<Careers />} />
               <Route path="/periodos" element={<Periods />} />
               <Route path="/tutoriales" element={<Tutorials />} />
             </Route>
-            
+
             <Route element={<ProtectedRoute requiredRol={["Programador"]} />}>
               <Route path="/actividad" element={<Logger />} />
               <Route path="/charts" element={<Charts />} />
               <Route path="/panel" element={<PanelControl />} />
-
             </Route>
           </Routes>
         </BrowserRouter>

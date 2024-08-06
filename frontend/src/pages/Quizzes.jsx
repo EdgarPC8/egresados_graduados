@@ -1,7 +1,15 @@
 import Tabl from "../components/Table";
 import { useEffect, useState } from "react";
-import { getAllQuizzes,addQuiz,editQuiz } from "../api/quizResquest";
-import { getAllMatriz,getAllPeriods,getAllCareers,getMatrizFilter,addMatrizQuiz,getMatrizQuizFilter,deleteMatrizQuiz } from "../api/matrizResquest";
+import { getAllQuizzes, addQuiz, editQuiz } from "../api/quizResquest";
+import {
+  getAllMatriz,
+  getAllPeriods,
+  getAllCareers,
+  getMatrizFilter,
+  addMatrizQuiz,
+  getMatrizQuizFilter,
+  deleteMatrizQuiz,
+} from "../api/matrizResquest";
 import { useRef } from "react";
 import SelectData from "../components/SelectData";
 import { FaYoutube } from "react-icons/fa";
@@ -27,11 +35,11 @@ import {
   Textarea,
   Checkbox,
   Center,
-
 } from "@chakra-ui/react";
 import { Link, useNavigate } from "react-router-dom";
 
 function Quizzes() {
+  const navigate = useNavigate();
   const toast = useToast();
   const [quizzes, setQuizzes] = useState([]);
   const { isOpen, onOpen, onClose } = useDisclosure();
@@ -48,11 +56,6 @@ function Quizzes() {
   const [selectedItems, setSelectedItems] = useState([]);
   const [selectedOptionCareer, setSelectedOptionCareer] = useState(null);
   const [selectedOptionPeriod, setSelectedOptionPeriod] = useState(null);
-
-
-
-
-
 
   const columns = [
     {
@@ -75,7 +78,7 @@ function Quizzes() {
     {
       header: "Enviados a",
       cell: (props) => {
-        return `${props.row.original.matrices.length} Profesionales`
+        return `${props.row.original.matrices.length} Profesionales`;
       },
     },
     {
@@ -83,7 +86,7 @@ function Quizzes() {
 
       cell: (props) => (
         <Stack spacing={4} direction="row" align="center">
-           <Button
+          <Button
             colorScheme="yellow"
             onClick={() => {
               handleEditRow(props.row.original);
@@ -99,6 +102,14 @@ function Quizzes() {
             }}
           >
             Eliminar
+          </Button>
+
+          <Button
+            onClick={() => {
+              navigate(`/encuesta/d/${props.row.original.idQuiz}`);
+            }}
+          >
+            Encuesta
           </Button>
         </Stack>
       ),
@@ -137,16 +148,12 @@ function Quizzes() {
       header: "Fecha de Grado",
       accessorKey: "grateDate",
     },
-  
+
     {
       header: () => (
         <>
-       <Checkbox
-            isChecked={selectAll}
-            onChange={handleSelectAll}
-         />
+          <Checkbox isChecked={selectAll} onChange={handleSelectAll} />
         </>
-        
       ),
       accessorKey: "selectAll",
       cell: (props) => (
@@ -167,10 +174,13 @@ function Quizzes() {
     date: "",
   };
   const handleSelectAll = () => {
-    const updatedMatriz = matriz.map((item) => ({ ...item, isSelected: !selectAll }));
+    const updatedMatriz = matriz.map((item) => ({
+      ...item,
+      isSelected: !selectAll,
+    }));
     setMatriz(updatedMatriz);
     setSelectAll(!selectAll);
-  
+
     const selected = updatedMatriz.filter((item) => item.isSelected);
     setSelectedItems(selected);
   };
@@ -183,86 +193,86 @@ function Quizzes() {
       return item;
     });
     setMatriz(updatedMatriz);
-  
+
     const selected = updatedMatriz.filter((item) => item.isSelected);
-  
+
     setSelectAll(selected.length === matriz.length); // Actualizar selectAll en consecuencia
-  
+
     setSelectedItems(selected);
   };
-  
 
- 
-  const transformedPeriodos = Periods.map(item => ({
+  const transformedPeriodos = Periods.map((item) => ({
     value: item.id,
     label: `${item.name}`,
   }));
-  const transformedCarreras = Careers.map(item => ({
+  const transformedCarreras = Careers.map((item) => ({
     value: item.idCarreer,
     label: `${item.name}`,
   }));
-  const [formQuiz, setFormQuiz] = useState(
-    initialFormQuiz
-  );
-  const handleSelectChangePeriod =async (value, selectedOption) => {
-
-    selectAll?handleSelectAll():null;
+  const [formQuiz, setFormQuiz] = useState(initialFormQuiz);
+  const handleSelectChangePeriod = async (value, selectedOption) => {
+    selectAll ? handleSelectAll() : null;
 
     // Verifica si la primera opción está seleccionada
     if (selectedOption === "Seleccione una opción") {
       // Agrega aquí la lógica que deseas ejecutar cuando se selecciona la primera opción
-        setSelectedOptionPeriod(null);
-        if(!selectedOptionCareer){
-          const res = await getMatrizFilter({})
-          setMatriz(res.data);
-        }else{
-          const res = await getMatrizFilter({career:selectedOptionCareer.id})
-          setMatriz(res.data);
-        }
-    }else{
+      setSelectedOptionPeriod(null);
+      if (!selectedOptionCareer) {
+        const res = await getMatrizFilter({});
+        setMatriz(res.data);
+      } else {
+        const res = await getMatrizFilter({ career: selectedOptionCareer.id });
+        setMatriz(res.data);
+      }
+    } else {
       // whereFilter.career? whereFilter.idPeriod=value: setWhereFilter({idPeriod:value});
       setSelectedOptionPeriod({ id: value, name: selectedOption });
 
-      if(!selectedOptionCareer){
-        const res = await getMatrizFilter({idPeriod:value})
+      if (!selectedOptionCareer) {
+        const res = await getMatrizFilter({ idPeriod: value });
         setMatriz(res.data);
-      }else{
-        const res = await getMatrizFilter({idPeriod:value,career:selectedOptionCareer.id})
+      } else {
+        const res = await getMatrizFilter({
+          idPeriod: value,
+          career: selectedOptionCareer.id,
+        });
         setMatriz(res.data);
       }
-
-
     }
-  
+
     // Actualiza el estado normalmente
   };
-  const handleSelectChangeCareer =async (value, selectedOption) => {
-    selectAll?handleSelectAll():null;
+  const handleSelectChangeCareer = async (value, selectedOption) => {
+    selectAll ? handleSelectAll() : null;
 
     // Verifica si la primera opción está seleccionada
     if (selectedOption === "Seleccione una opción") {
       // Agrega aquí la lógica que deseas ejecutar cuando se selecciona la primera opción
-        setSelectedOptionCareer(null);
-        if(!selectedOptionPeriod){
-          const res = await getMatrizFilter({})
-          setMatriz(res.data);
-        }else{
-          const res = await getMatrizFilter({idPeriod:selectedOptionPeriod.id})
-          setMatriz(res.data);
-        }
-    }else{
-      setSelectedOptionCareer({ id: value, name: selectedOption });
-
-      if(!selectedOptionPeriod){
-        const res = await getMatrizFilter({career:value})
+      setSelectedOptionCareer(null);
+      if (!selectedOptionPeriod) {
+        const res = await getMatrizFilter({});
         setMatriz(res.data);
-      }else{
-        const res = await getMatrizFilter({idPeriod:selectedOptionPeriod.id,career:value})
+      } else {
+        const res = await getMatrizFilter({
+          idPeriod: selectedOptionPeriod.id,
+        });
         setMatriz(res.data);
       }
-      
+    } else {
+      setSelectedOptionCareer({ id: value, name: selectedOption });
+
+      if (!selectedOptionPeriod) {
+        const res = await getMatrizFilter({ career: value });
+        setMatriz(res.data);
+      } else {
+        const res = await getMatrizFilter({
+          idPeriod: selectedOptionPeriod.id,
+          career: value,
+        });
+        setMatriz(res.data);
+      }
     }
-  
+
     // Actualiza el estado normalmente
   };
   // const handleDelete = async () => {
@@ -270,11 +280,11 @@ function Quizzes() {
   //   const deselectedItems = matrizFilterQuizData
   //     .filter(item => !item.isSelected)
   //     .map(item => item.idMatriz);
-  
+
   //   try {
   //     // Eliminar las filas de la tabla MatrizQuiz
   //     await deleteMatrizQuiz(deselectedItems);
-  
+
   //     // Actualizar matrizFilterQuizData después de la eliminación
   //     const updatedMatrizFilterQuizData = matrizFilterQuizData.filter(item => item.isSelected);
   //     setMatrizFilterQuiz(updatedMatrizFilterQuizData);
@@ -282,19 +292,13 @@ function Quizzes() {
   //     console.error("Error al eliminar filas de la tabla MatrizQuiz:", error);
   //   }
   // };
-  
-  
-  const handleEditRow =async (row) => {
-    const {
-      title,
-      description,
-      date,
-    } = row;
+
+  const handleEditRow = async (row) => {
+    const { title, description, date } = row;
     form.current.scrollIntoView({ behavior: "smooth", block: "start" });
     // console.log(row.idQuiz)
     setMatriz([]);
     setMatrizFilterQuiz([]);
-
 
     const resFilete = await getMatrizQuizFilter(row.idQuiz);
     const matrizFilterQuizData = resFilete.data;
@@ -302,7 +306,9 @@ function Quizzes() {
     // Comparar y establecer isSelected en consecuencia
     const updatedMatriz = matriz.map((item) => ({
       ...item,
-      isSelected: matrizFilterQuizData.some((filterItem) => filterItem.idMatriz === item.id),
+      isSelected: matrizFilterQuizData.some(
+        (filterItem) => filterItem.idMatriz === item.id,
+      ),
     }));
 
     setMatriz(updatedMatriz);
@@ -318,23 +324,25 @@ function Quizzes() {
   const handleSubmit = async (event) => {
     event.preventDefault();
     // console.log("Registros Seleccionados:", selectedItems);
-   
-
 
     if (isEditing) {
       // Filtrar los elementos que ya están en matrizFilterQuiz
       const newSelectedItems = selectedItems.filter(
-        (selectedItem) => !matrizFilterQuiz.some((filterItem) => filterItem.idMatriz === selectedItem.id)
+        (selectedItem) =>
+          !matrizFilterQuiz.some(
+            (filterItem) => filterItem.idMatriz === selectedItem.id,
+          ),
       );
       // Filtrar los elementos que ya estaban seleccionados y ahora están deseleccionados
       const deselectedItems = matrizFilterQuiz.filter(
-        (selectedItem) => !selectedItems.some((item) => item.id === selectedItem.idMatriz)
+        (selectedItem) =>
+          !selectedItems.some((item) => item.id === selectedItem.idMatriz),
       );
-    
+
       // Resto del código...
-    
+
       // console.log(deselectedItems); // Imprimir deselectedItems en la consola
-    
+
       // Realizar la edición solo para los nuevos elementos
       toast.promise(editQuiz(id, formQuiz), {
         loading: {
@@ -346,13 +354,13 @@ function Quizzes() {
             addMatrizQuiz({ idMatriz: element.id, quizId: id });
           });
           deselectedItems.forEach((element) => {
-            if(element.completed==0){
-              deleteMatrizQuiz(element.idMatriz,element.quizId);
+            if (element.completed == 0) {
+              deleteMatrizQuiz(element.idMatriz, element.quizId);
             }
           });
           fetchUsers();
           clear();
-    
+
           return {
             title: "Encuesta",
             description: d.data.message,
@@ -365,10 +373,10 @@ function Quizzes() {
           isClosable: true,
         }),
       });
-    
+
       fetchUsers();
       clear();
-    
+
       return;
     }
 
@@ -390,7 +398,6 @@ function Quizzes() {
     });
     fetchUsers();
     clear();
-
   };
   const handleChange = (event) => {
     const { name, value } = event.target;
@@ -406,15 +413,13 @@ function Quizzes() {
     try {
       const resMatriz = await getAllMatriz();
       const resQuizzes = await getMatrizQuizFilter(0);
-      setQuizzes(resQuizzes.data)
+      setQuizzes(resQuizzes.data);
       setMatriz(resMatriz.data);
       const resCareers = await getAllCareers();
       const resPeriods = await getAllPeriods();
-      
-     
-      
-      setCareers(resCareers.data)
-      setPeriods(resPeriods.data)
+
+      setCareers(resCareers.data);
+      setPeriods(resPeriods.data);
     } catch (error) {
       console.error("Error al obtener datos académicos:", error);
     }
@@ -428,12 +433,15 @@ function Quizzes() {
     <>
       <Box p={10}>
         <Box>
-        <Link to="https://drive.google.com/file/d/1PX_UWgZs_8boMl629Zlh0AVpmh43VmDY/view?usp=sharing" target="_blank">
-              <Button colorScheme={"red"}>
-                Tutorial
-                <FaYoutube/>
-              </Button>
-            </Link> 
+          <Link
+            to="https://drive.google.com/file/d/1PX_UWgZs_8boMl629Zlh0AVpmh43VmDY/view?usp=sharing"
+            target="_blank"
+          >
+            <Button colorScheme={"red"}>
+              Tutorial
+              <FaYoutube />
+            </Button>
+          </Link>
           <form onSubmit={handleSubmit} ref={form}>
             <Grid
               templateColumns={{ base: "1fr", md: "2fr 2fr" }}
@@ -443,65 +451,87 @@ function Quizzes() {
               <GridItem fontSize={"sm"}>
                 <InputGroup>
                   <InputLeftAddon children="Titulo" />
-                  <Input type="text" placeholder="Titulo" name="title" value={formQuiz.title ? formQuiz.title : ""}
-                    onChange={handleChange} />
+                  <Input
+                    type="text"
+                    placeholder="Titulo"
+                    name="title"
+                    value={formQuiz.title ? formQuiz.title : ""}
+                    onChange={handleChange}
+                  />
                 </InputGroup>
               </GridItem>
               <GridItem fontSize={"sm"}>
                 <InputGroup>
                   <InputLeftAddon children="Fecha" />
-                  <Input placeholder="Fecha" size="md" type="date" name="date" value={
-                    formQuiz.date ? formQuiz.date : ""
-                  }
-                  onChange={handleChange}
-                  required/>
+                  <Input
+                    placeholder="Fecha"
+                    size="md"
+                    type="date"
+                    name="date"
+                    value={formQuiz.date ? formQuiz.date : ""}
+                    onChange={handleChange}
+                    required
+                  />
                 </InputGroup>
               </GridItem>
               <GridItem fontSize={"sm"} colSpan={2}>
                 {/* <InputLeftAddon children="Descripción" /> */}
-                <Textarea name="description" placeholder="Descripción" value={formQuiz.description ? formQuiz.description : ""}
-                    onChange={handleChange} ></Textarea>
+                <Textarea
+                  name="description"
+                  placeholder="Descripción"
+                  value={formQuiz.description ? formQuiz.description : ""}
+                  onChange={handleChange}
+                ></Textarea>
               </GridItem>
 
-                            {
-                isEditing ?
-                (
-                  <>
-                    <GridItem fontSize={"sm"}>
-                      <SelectData title="Periodo" options={transformedPeriodos} onSelectChange={(value, selectedOption) =>
+              {isEditing ? (
+                <>
+                  <GridItem fontSize={"sm"}>
+                    <SelectData
+                      title="Periodo"
+                      options={transformedPeriodos}
+                      onSelectChange={(value, selectedOption) =>
                         handleSelectChangePeriod(value, selectedOption)
-                      } />
-                    </GridItem>
-                    <GridItem fontSize={"sm"}>
-                      <SelectData title="Carrera" options={transformedCarreras} onSelectChange={(value, selectedOption) =>
+                      }
+                    />
+                  </GridItem>
+                  <GridItem fontSize={"sm"}>
+                    <SelectData
+                      title="Carrera"
+                      options={transformedCarreras}
+                      onSelectChange={(value, selectedOption) =>
                         handleSelectChangeCareer(value, selectedOption)
-                      } />
-                    </GridItem>
-                    <GridItem fontSize={"sm"} colSpan={2}>
-                      Tabla de Matrices
-                      <Tabl data={matriz} columns={columnsCreateMatriz} />
-                    </GridItem>
-                  </>
-                ) : null
-              }
+                      }
+                    />
+                  </GridItem>
+                  <GridItem fontSize={"sm"} colSpan={2}>
+                    Tabla de Matrices
+                    <Tabl data={matriz} columns={columnsCreateMatriz} />
+                  </GridItem>
+                </>
+              ) : null}
               <GridItem fontSize={"sm"}>
-  <Button type="submit" mt={4} bg="ceruleanBlue.500" color={"white"}>
-    {!isEditing ? "Guardar" : "Editar"}
-  </Button>
-  {isEditing && (
-    <Button
-      mt={4}
-      ml={4}
-      colorScheme="red"
-      onClick={() => {
-        clear();
-      }}
-    >
-      Cancelar Edición
-    </Button>
-  )}
-</GridItem>
-
+                <Button
+                  type="submit"
+                  mt={4}
+                  bg="ceruleanBlue.500"
+                  color={"white"}
+                >
+                  {!isEditing ? "Guardar" : "Editar"}
+                </Button>
+                {isEditing && (
+                  <Button
+                    mt={4}
+                    ml={4}
+                    colorScheme="red"
+                    onClick={() => {
+                      clear();
+                    }}
+                  >
+                    Cancelar Edición
+                  </Button>
+                )}
+              </GridItem>
             </Grid>
           </form>
         </Box>
@@ -511,7 +541,6 @@ function Quizzes() {
           </Box>
         </Flex>
         <Tabl data={quizzes} columns={columns} />
-
 
         <AlertDialog
           isOpen={isOpen}

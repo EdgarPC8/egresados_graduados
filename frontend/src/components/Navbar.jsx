@@ -103,12 +103,12 @@ const Navbar = () => {
       },
       {
         name: "Encuesta",
-        path: "/quiz",
+        path: "/sus-encuestas",
         icon: <FiFileText />,
       },
       {
         name: "Encuestas",
-        path: "/quizzes",
+        path: "/encuestas",
         icon: <PiFiles />,
       },
       {
@@ -156,12 +156,12 @@ const Navbar = () => {
       },
       {
         name: "Encuesta",
-        path: "/quiz",
+        path: "/sus-encuestas",
         icon: <FiFileText />,
       },
       {
         name: "Encuestas",
-        path: "/quizzes",
+        path: "/encuestas",
         icon: <PiFiles />,
       },
       {

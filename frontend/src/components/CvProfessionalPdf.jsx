@@ -17,7 +17,7 @@ import {
 import { useParams } from "react-router-dom";
 import { useAuth } from "../context/AuthContext.jsx";
 
-function Resumes() {
+function CvProfessionalPdf() {
   const [showPDF, setShowPDF] = useState(false);
   const { userId } = useParams();
   const { user } = useAuth();
@@ -407,4 +407,4 @@ function Resumes() {
   );
 }
 
-export default Resumes;
+export default CvProfessionalPdf;
