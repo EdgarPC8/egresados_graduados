@@ -1,0 +1,42 @@
+{
+  "idQuiz": 1,
+  "title": "Encuesta de Empleabilidad",
+  "questionsGroup": [
+    {
+      "options": [
+        {
+          "name": "option3-question-0",
+          "value": "verars",
+          "id": 1
+        }
+      ],
+      "question": {
+        "name": "question-0",
+        "value": "seleccione la respuesta"
+      },
+      "typeInput": {
+        "type": "radio",
+        "name": "Varias opciones"
+      },
+      "response": {}
+    },
+    {
+      "options": [
+        {
+          "name": "option1-question-1",
+          "value": "",
+          "id": 1
+        }
+      ],
+      "question": {
+        "name": "question-1",
+        "value": "Argumente acerca de la pena de muerte"
+      },
+      "typeInput": {
+        "type": "textarea",
+        "name": "Parrafo"
+      },
+      "response": {}
+    }
+  ]
+}

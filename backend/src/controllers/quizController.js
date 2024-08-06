@@ -1,66 +1,79 @@
-import {
-  Questions,
-  Options,
-  Responses,
-  QuestionTypes,
-  Quiz,
-} from "../Models/Quiz.js";
-import { logger } from "../log/LogActivity.js";
+import { Responses, Quiz } from "../Models/Quiz.js";
+import fs from "fs/promises";
+import fileDirName from "../libs/file-dirname.js";
+import { join } from "path";
+const { __dirname } = fileDirName(import.meta);
 
-export const addResponses = async (req, res) => {
-  const data = req.body; // Suponiendo que los datos están en el cuerpo de la solicitud
+export const getOneQuiz = async (req, res) => {
   try {
-    const newResponses = await Responses.create(data);
-    res.json({ message: "Agregado con éxito" });
-    // logger({
-    //   httpMethod: req.method,
-    //   endPoint: req.originalUrl,
-    //   action: "Se respondió la encuesta",
-    // });
-  } catch (error) {
-    res.status(500).json({
-      message: error.message,
-    });
-  }
-};
+    const { idQuiz } = req.params;
 
-export const editResponses = async (req, res) => {
-  const data = req.body; // Suponiendo que los datos están en el cuerpo de la solicitud
-  try {
-    const updatedResponses = await Responses.update(
-      data.columns, // Aquí defines los campos y sus nuevos valores a actualizar
-      data.where // Aquí estableces la condición para la actualización
-    );
-    res.json({ message: "Editado con éxito" });
-    // logger({
-    //   httpMethod: req.method,
-    //   endPoint: req.originalUrl,
-    //   action: "Se editó la encuesta",
-    // });
-  } catch (error) {
-    res.status(500).json({
-      message: error.message,
-    });
-  }
-};
-
-export const deleteResponses = async (req, res) => {
-  try {
-    const updatedResponses = await Responses.destroy({
+    const oneQuiz = await Quiz.findOne({
       where: {
-        id: req.params.responseId,
+        idQuiz,
       },
     });
-    res.json({ message: "Eliminado con Exito" });
+
+    let document = null;
+
+    try {
+      const data = await fs.readFile(
+        new URL(
+          join(__dirname, `../../quizzes/quiz-${idQuiz}-${oneQuiz.title}.json`),
+          import.meta.url,
+        ),
+        "utf8",
+      );
+      document = JSON.parse(data);
+    } catch (fileError) {
+      if (fileError.code === "ENOENT") {
+        console.warn(`Archivo no encontrado`);
+      } else {
+        throw fileError;
+      }
+    }
+
+    res.json({ ...oneQuiz.dataValues, document });
   } catch (error) {
     res.status(500).json({
       message: error.message,
     });
   }
 };
-export const getAllResponses = async (req, res) => {
-  const professionals = await Responses.findAll();
-  res.json(professionals);
+
+export const updateQuestionsQuiz = async (req, res) => {
+  const { idQuiz } = req.params;
+  const { title } = req.body;
+
+  const jsonData = JSON.stringify(req.body, null, 2);
+  await fs.writeFile(
+    join(__dirname, `../../quizzes/quiz-${idQuiz}-${title}.json`),
+    jsonData,
+    "utf8",
+  );
+
+  // si existe no actualiza el nombre de la encuesta;
+  try {
+    await fs.access(
+      join(__dirname, `../../quizzes/quiz-${idQuiz}-${title}.json`),
+    );
+  } catch (error) {
+    if (error.code === "ENOENT") {
+      console.log("La encuesta no existe, agregar nombre en la db");
+      await Quiz.update(
+        {
+          document: `quiz-${idQuiz}-${title}.json`,
+        },
+        {
+          where: {
+            idQuiz,
+          },
+        },
+      );
+    }
+  }
+
+  res.json({ message: "Cuestionario agregado con éxito" });
 };
 
 export const getAllQuizzes = async (req, res) => {
@@ -68,7 +81,7 @@ export const getAllQuizzes = async (req, res) => {
   res.json(data);
 };
 
-export const addQuiz= async (req, res) => {
+export const addQuiz = async (req, res) => {
   const data = req.body; // Suponiendo que los datos están en el cuerpo de la solicitud
   try {
     const newResponses = await Quiz.create(data);
@@ -84,21 +97,41 @@ export const addQuiz= async (req, res) => {
     });
   }
 };
-export const editQuiz= async (req, res) => {
+export const editQuiz = async (req, res) => {
   const data = req.body; // Suponiendo que los datos están en el cuerpo de la solicitud
   try {
     const data = req.body;
-    const quiz=req.params;
-      const editQuiz = await Quiz.update(data, {
+    const quiz = req.params;
+    const prevDocumentName = await Quiz.findOne({
+      where: {
+        idQuiz: quiz.idQuiz,
+      },
+    });
+
+    await Quiz.update(
+      {
+        ...data,
+        document: `quiz-${quiz.idQuiz}-${data.title}.json`,
+      },
+      {
         where: {
           idQuiz: quiz.idQuiz,
         },
-      });
-      res.json({ message: "Encuesta Editada con éxito" });
+      },
+    );
+
+    await fs.rename(
+      join(
+        __dirname,
+        `../../quizzes/quiz-${prevDocumentName.idQuiz}-${prevDocumentName.title}.json`,
+      ),
+      join(__dirname, `../../quizzes/quiz-${quiz.idQuiz}-${data.title}.json`),
+    );
+
+    res.json({ message: "Encuesta Editada con éxito" });
   } catch (error) {
     res.status(500).json({
       message: error.message,
     });
   }
 };
-
