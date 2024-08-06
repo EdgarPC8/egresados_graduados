@@ -3,6 +3,7 @@ import axios, { jwt } from "./axios.js";
 // const jwt = `Bearer ${window.localStorage.getItem("jwt")}`;
 
 const loginRequest = async (data) => await axios.post("/auth/login", data);
+const loginExternal = async (data) => await axios.post("/auth/loginExternal", data);
 
 const verifyTokenRequest = async () =>
   await axios.get("/auth/verifytoken", {
@@ -76,4 +77,5 @@ export {
   getUsers,
   addUser,
   removeUser,
+  loginExternal,
 };

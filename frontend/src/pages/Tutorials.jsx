@@ -303,7 +303,7 @@ function TutorialsPage() {
         
         <Flex alignItems="center" gap="2">
           <Box p="2">
-            <Heading size="md">Encuestas</Heading>
+            <Heading size="md">Tutoriales</Heading>
           </Box>
         </Flex>
         <Tabl data={TutorialsData} columns={user.loginRol=="programador"?columnsProgramador:columns} />
@@ -311,7 +311,7 @@ function TutorialsPage() {
           isOpen={isDeleteTutoModalOpen}
           onClose={() => setDeleteTutoModalOpen(false)}
           onAccept={deleteHandle}
-          title="Eliminar de la Matriz"
+          title="Eliminar Tutorial"
           message={`¿Estás seguro de eliminar el tutorial?`}
         // message={alertDialogMessage || `¿Estás seguro de eliminar a?`}
         />

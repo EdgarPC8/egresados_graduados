@@ -49,7 +49,7 @@ function App() {
               }
             >
               <Route path="/cv" element={<CV />} />
-              <Route path="/sus-encuestas" element={<Quiz />} />
+              <Route path="/quiz" element={<Quiz />} />
               <Route path="/perfil" element={<Profile />} />
               <Route path="/cvPdf" element={<CvProfessionalPdf />} />
               <Route path="/encuesta/d/:idQuiz" element={<DocumentQuiz />} />
@@ -66,7 +66,7 @@ function App() {
               <Route path="/editar-usuario/:userId" element={<FormAddUser />} />
               <Route path="/curriculos" element={<Resumes />} />
               <Route
-                path="/curriculos/cv-profesional-pdf/:userId"
+                path="/cvProfessionalPdf/:userId"
                 element={<CvProfessionalPdf />}
               />
               <Route path="/encuestas" element={<Quizzes />} />

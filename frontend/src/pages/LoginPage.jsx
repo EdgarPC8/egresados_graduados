@@ -36,6 +36,7 @@ function LoginPage() {
     const data = Object.fromEntries(new FormData(event.target));
     // console.log(JSON.stringify(data));
     signin(data);
+    console.log(errors)
   };
 
   useEffect(() => {
@@ -87,18 +88,17 @@ function LoginPage() {
                       <AlertDescription>{errors.message}</AlertDescription>
                     </Alert>
                   )}
-
                   <FormControl>
                     <FormLabel htmlFor="username">Usuario</FormLabel>
-                    <Input id="username" name="username" />
+                    <Input id="username" name="username" required/>
                   </FormControl>
                   <FormControl>
                     <FormLabel>Contraseña</FormLabel>
-                    <PasswordInput name="password" />
+                    <PasswordInput name="password" required/>
                   </FormControl>
                   <FormControl>
                     <FormLabel htmlFor="roles">Roles disponibles</FormLabel>
-                    <Select placeholder="Seleccione un rol" name="rol">
+                    <Select placeholder="Seleccione un rol" name="rol" required>
                       {roles.map((rol) => (
                         <option key={rol.id} value={rol.rol}>
                           {rol.rol}
@@ -125,5 +125,4 @@ function LoginPage() {
     </Container>
   );
 }
-
 export default LoginPage;
