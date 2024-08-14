@@ -14,22 +14,24 @@ import {
   IconButton,
   Textarea,
 } from "@chakra-ui/react";
-import { FaRegCircle } from "react-icons/fa";
+import { FaRegCircle, FaRegSquare } from "react-icons/fa";
 import React from "react";
 
 import { ChevronDownIcon, CloseIcon } from "@chakra-ui/icons";
-function Question({
+import { QUESTION_TYPES } from "../constants/questionTypes";
+const Question = ({
   id,
   typeInput,
   name,
   value,
   options,
-  onChangeOption,
   addOption,
   removeOption,
   onChangeTypeQuestion,
   typeInputsQuestion,
-}) {
+  onChangeOptionInput,
+  onChangeQuestionInput,
+}) => {
   return (
     <Grid templateColumns="repeat(2, 1fr)" gap={6}>
       <GridItem>
@@ -43,6 +45,7 @@ function Question({
             variant="flushed"
             defaultValue={value}
             name={name}
+            onChange={(e) => onChangeQuestionInput(e, id)}
             placeholder="Pregunta"
           />
         </FormControl>
@@ -73,56 +76,61 @@ function Question({
       <GridItem colSpan={2}>
         <Box>
           <Stack direction="column">
-            {options.map((option, index) => (
-              <React.Fragment key={index}>
-                {typeInput.type === "radio" && (
+            {(typeInput.type === QUESTION_TYPES.RADIO ||
+              typeInput.type === QUESTION_TYPES.CHECKBOX) &&
+              options?.map((option, index) => (
+                <React.Fragment key={index}>
                   <Flex alignItems="center" gap={4} key={index}>
-                    <>
-                      <FaRegCircle size={22} color="#CBD5E0" />
-                      <Input
-                        variant="flushed"
-                        value={option.value}
-                        name={option.name}
-                        onChange={(event) => onChangeOption(event, option.id)}
-                        onClick={() => {
-                          if (options.length === option.id) {
-                            addOption(id, option.id + 1);
-                          }
-                        }}
+                    {typeInput.type === QUESTION_TYPES.RADIO ? (
+                      <FaRegCircle size={22} color="#A0AEC0" />
+                    ) : (
+                      <FaRegSquare size={22} color="#A0AEC0" />
+                    )}
+
+                    <Input
+                      variant="flushed"
+                      placeholder="Escriba la opción"
+                      value={option.value}
+                      onChange={(e) => onChangeOptionInput(e, option.id, id)}
+                      name={option.name}
+                      onClick={() => {
+                        if (options[options.length - 1].id === option.id) {
+                          addOption(id, option.id + 1);
+                        }
+                      }}
+                    />
+
+                    {options.length >= 2 && (
+                      <IconButton
+                        icon={<CloseIcon />}
+                        onClick={() => removeOption(id, option.id)}
                       />
-
-                      {options.length >= 2 && (
-                        <IconButton
-                          icon={<CloseIcon />}
-                          onClick={() => removeOption(id, option.id)}
-                        />
-                      )}
-                    </>
+                    )}
                   </Flex>
-                )}
-                {typeInput.type === "input" && (
-                  <Input
-                    name={option.name}
-                    placeholder="Respuesta corta"
-                    variant="flushed"
-                    isReadOnly={true}
-                  />
-                )}
+                </React.Fragment>
+              ))}
 
-                {typeInput.type === "textarea" && (
-                  <Textarea
-                    name={option.name}
-                    placeholder="Respuesta larga"
-                    isReadOnly={true}
-                  />
-                )}
-              </React.Fragment>
-            ))}
+            {typeInput.type === QUESTION_TYPES.INPUT && (
+              <Input
+                name={`short-answer-${id}`}
+                placeholder="Respuesta corta"
+                variant="flushed"
+                isReadOnly={true}
+              />
+            )}
+
+            {typeInput.type === QUESTION_TYPES.TEXTAREA && (
+              <Textarea
+                name={`long-answer-${id}`}
+                placeholder="Respuesta larga"
+                isReadOnly={true}
+              />
+            )}
           </Stack>
         </Box>
       </GridItem>
     </Grid>
   );
-}
+};
 
-export default Question;
+export default React.memo(Question);

@@ -1,39 +1,27 @@
-import { Responses, Quiz } from "../Models/Quiz.js";
-import fs from "fs/promises";
-import fileDirName from "../libs/file-dirname.js";
-import { join } from "path";
-const { __dirname } = fileDirName(import.meta);
+import { Matriz, MatrizQuiz } from "../Models/Matriz.js";
+import { Quiz } from "../Models/Quiz.js";
+const QUESTION_TYPES = {
+  INPUT: "input",
+  CHECKBOX: "checkbox",
+  RADIO: "radio",
+  TEXTAREA: "textarea",
+};
 
 export const getOneQuiz = async (req, res) => {
   try {
-    const { idQuiz } = req.params;
-
-    const oneQuiz = await Quiz.findOne({
+    const { document, idQuiz, title, date, description } = await Quiz.findOne({
       where: {
-        idQuiz,
+        idQuiz: req.params.idQuiz,
       },
     });
 
-    let document = null;
-
-    try {
-      const data = await fs.readFile(
-        new URL(
-          join(__dirname, `../../quizzes/quiz-${idQuiz}-${oneQuiz.title}.json`),
-          import.meta.url,
-        ),
-        "utf8",
-      );
-      document = JSON.parse(data);
-    } catch (fileError) {
-      if (fileError.code === "ENOENT") {
-        console.warn(`Archivo no encontrado`);
-      } else {
-        throw fileError;
-      }
-    }
-
-    res.json({ ...oneQuiz.dataValues, document });
+    res.json({
+      idQuiz,
+      title,
+      date,
+      description,
+      document: JSON.parse(document),
+    });
   } catch (error) {
     res.status(500).json({
       message: error.message,
@@ -41,39 +29,193 @@ export const getOneQuiz = async (req, res) => {
   }
 };
 
+export const getChartDataQuiz = async (req, res) => {
+  try {
+    const { idQuiz } = req.params;
+    const ans = await MatrizQuiz.findAll({
+      attributes: [["answers", "quiz"]],
+      where: {
+        quizId: idQuiz,
+        completed: 1,
+      },
+    });
+
+    const { document } = await Quiz.findOne({
+      where: {
+        idQuiz: req.params.idQuiz,
+      },
+    });
+
+    const questions = JSON.parse(document);
+    const chartDataQuestions = questions.map(
+      ({ question, typeInput, options }) => {
+        if (typeInput.type === QUESTION_TYPES.RADIO) {
+          return {
+            question: question.value,
+            type: typeInput.type,
+            data: options.map((option) => ({ name: option.value, value: 0 })),
+          };
+        }
+        if (typeInput.type === QUESTION_TYPES.CHECKBOX) {
+          return {
+            question: question.value,
+            type: typeInput.type,
+            data: options.map((option) => ({ name: option.value, value: 0 })),
+          };
+        }
+
+        return {
+          question: question.value,
+          type: typeInput.type,
+          data: [],
+        };
+      },
+    );
+
+    const answers = ans.map((answer) => ({
+      quiz: JSON.parse(answer.dataValues.quiz),
+    }));
+
+    const textAreaValues = new Set();
+
+    answers.map(({ quiz }) => {
+      quiz.answers.forEach((answer, index) => {
+        if (answer.type === QUESTION_TYPES.RADIO) {
+          questions[index]?.options.forEach((option, id) => {
+            if (option.value === answer.answer) {
+              chartDataQuestions[index].data[id].value += 1;
+            }
+          });
+        }
+
+        if (answer.type === QUESTION_TYPES.CHECKBOX) {
+          questions[index]?.options.forEach((option, id) => {
+            if (answer.answer.includes(option.value)) {
+              chartDataQuestions[index].data[id].value += 1;
+            }
+          });
+        }
+        //
+        if (
+          answer.type === QUESTION_TYPES.TEXTAREA ||
+          answer.type === QUESTION_TYPES.INPUT
+        ) {
+          if (textAreaValues.has(answer.answer)) {
+            chartDataQuestions[index].data.forEach(
+              (_, i) => (chartDataQuestions[index].data[i].value += 1),
+            );
+            return;
+          }
+
+          textAreaValues.add(answer.answer);
+          chartDataQuestions[index].data.push({
+            name: answer.answer,
+            value: 1,
+          });
+        }
+      });
+    });
+
+    const filled = await MatrizQuiz.count({
+      where: {
+        quizId: idQuiz,
+        completed: 1,
+      },
+    });
+
+    res.json({ chartDataQuestions, filled });
+  } catch (error) {
+    res.status(500).json({
+      message: error.message,
+    });
+  }
+};
+
+export const verifyQuizCompleted = async (req, res) => {
+  try {
+    const { matrizId, quizId } = req.query;
+    const completed = await MatrizQuiz.findOne({
+      attributes: ["completed"],
+      where: {
+        idMatriz: matrizId,
+        quizId,
+      },
+    });
+    res.json(completed);
+  } catch (error) {
+    res.status(500).json({
+      message: error.message,
+    });
+  }
+};
+
+export const getQuizzesProfessional = async (req, res) => {
+  try {
+    const { idProfessional } = req.params;
+    const quizzes = await Matriz.findAll({
+      attributes: [],
+      include: [
+        {
+          model: Quiz,
+          attributes: ["idQuiz", "title", "description", "date"],
+        },
+      ],
+      where: {
+        idProfessional: idProfessional,
+      },
+    });
+
+    res.json(quizzes[0]?.quizzes);
+  } catch (error) {
+    res.status(500).json({
+      message: error.message,
+    });
+  }
+};
+
+export const addAnswersQuiz = async (req, res) => {
+  try {
+    const { quizId, matrizId } = req.query;
+    await MatrizQuiz.update(
+      {
+        answers: req.body,
+        completed: 1,
+      },
+      {
+        where: {
+          idMatriz: matrizId,
+          quizId,
+        },
+      },
+    );
+    res.json({ message: "Encuesta completada con éxito" });
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+};
+
 export const updateQuestionsQuiz = async (req, res) => {
   const { idQuiz } = req.params;
-  const { title } = req.body;
+  const data = req.body;
 
-  const jsonData = JSON.stringify(req.body, null, 2);
-  await fs.writeFile(
-    join(__dirname, `../../quizzes/quiz-${idQuiz}-${title}.json`),
-    jsonData,
-    "utf8",
-  );
-
-  // si existe no actualiza el nombre de la encuesta;
   try {
-    await fs.access(
-      join(__dirname, `../../quizzes/quiz-${idQuiz}-${title}.json`),
+    await Quiz.update(
+      {
+        document: data,
+      },
+      {
+        where: {
+          idQuiz,
+        },
+      },
     );
-  } catch (error) {
-    if (error.code === "ENOENT") {
-      console.log("La encuesta no existe, agregar nombre en la db");
-      await Quiz.update(
-        {
-          document: `quiz-${idQuiz}-${title}.json`,
-        },
-        {
-          where: {
-            idQuiz,
-          },
-        },
-      );
-    }
-  }
 
-  res.json({ message: "Cuestionario agregado con éxito" });
+    res.json({ message: "Encuesta agregado con éxito" });
+  } catch (error) {
+    res.status(500).json({
+      message: error.message,
+    });
+  }
 };
 
 export const getAllQuizzes = async (req, res) => {
@@ -84,7 +226,7 @@ export const getAllQuizzes = async (req, res) => {
 export const addQuiz = async (req, res) => {
   const data = req.body; // Suponiendo que los datos están en el cuerpo de la solicitud
   try {
-    const newResponses = await Quiz.create(data);
+    await Quiz.create(data);
     res.json({ message: "Agregado con éxito" });
     // logger({
     //   httpMethod: req.method,
@@ -98,35 +240,20 @@ export const addQuiz = async (req, res) => {
   }
 };
 export const editQuiz = async (req, res) => {
-  const data = req.body; // Suponiendo que los datos están en el cuerpo de la solicitud
   try {
     const data = req.body;
     const quiz = req.params;
-    const prevDocumentName = await Quiz.findOne({
+    await Quiz.findOne({
       where: {
         idQuiz: quiz.idQuiz,
       },
     });
 
-    await Quiz.update(
-      {
-        ...data,
-        document: `quiz-${quiz.idQuiz}-${data.title}.json`,
+    await Quiz.update(data, {
+      where: {
+        idQuiz: quiz.idQuiz,
       },
-      {
-        where: {
-          idQuiz: quiz.idQuiz,
-        },
-      },
-    );
-
-    await fs.rename(
-      join(
-        __dirname,
-        `../../quizzes/quiz-${prevDocumentName.idQuiz}-${prevDocumentName.title}.json`,
-      ),
-      join(__dirname, `../../quizzes/quiz-${quiz.idQuiz}-${data.title}.json`),
-    );
+    });
 
     res.json({ message: "Encuesta Editada con éxito" });
   } catch (error) {

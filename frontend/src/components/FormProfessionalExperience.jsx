@@ -343,8 +343,11 @@ function FormProfessionalExperience() {
               <Button
                 type="submit"
                 mt={4}
-                bg="ceruleanBlue.500"
-                color={"white"}
+                bg="ceruleanBlue.600"
+                color="white"
+                _hover={{
+                  bg: "ceruleanBlue.500",
+                }}
               >
                 {!isEditing ? "Guardar" : "Editar"}
               </Button>

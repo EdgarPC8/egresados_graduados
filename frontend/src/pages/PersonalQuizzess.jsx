@@ -1,17 +1,17 @@
-import { Box, Button, Center, Badge, useToast } from "@chakra-ui/react";
-import { useState, useRef } from "react";
+import { Box, Button, Center, Badge } from "@chakra-ui/react";
+import { useState, useEffect } from "react";
 
 import { useAuth } from "../context/AuthContext";
 
 import Tabl from "../components/Table";
+import { getQuizzesProfessional } from "../api/quizResquest";
+import { useNavigate } from "react-router-dom";
 
-function Quizz() {
-  const toast = useToast();
-
-  const form = useRef(null);
+function PersonalQuizzes() {
   const { user } = useAuth();
-  const [Quizzes, setQuizzes] = useState([]);
-  const [IsCompleteing, setIsCompleteing] = useState(false);
+  const [quizzes, setQuizzes] = useState([]);
+  const navigate = useNavigate();
+
   const columns = [
     {
       header: "#",
@@ -49,7 +49,9 @@ function Quizz() {
               <Button
                 colorScheme={"green"}
                 onClick={() => {
-                  handleQuiz(props.row.original);
+                  navigate(
+                    `/encuesta/f/${props.cell.row.original.idQuiz}/matriz/${props.cell.row.original.matriz_quizzes.idMatriz}`,
+                  );
                 }}
               >
                 Llenar
@@ -60,24 +62,20 @@ function Quizz() {
       },
     },
   ];
-  const handleQuiz = (row) => {
-    setIsCompleteing(true);
-    setIdQuiz(row.matriz_quizzes.quizId);
-    setIdMatriz(row.matriz_quizzes.idMatriz);
-    // console.log(row)
-  };
 
-  const handleSubmit = async (e) => {};
-  const handleChange = (event) => {
-    const { name, value } = event.target;
-    setFormProfessional({ ...formProfessional, [name]: value });
-  };
+  useEffect(() => {
+    const fetching = async () => {
+      const { data } = await getQuizzesProfessional(user.userId);
+      setQuizzes(data);
+    };
+    fetching();
+  }, []);
 
   return (
-    <Box>
-      <Tabl data={Quizzes} columns={columns} />
+    <Box padding={10}>
+      <Tabl data={quizzes} columns={columns} />
     </Box>
   );
 }
 
-export default Quizz;
+export default PersonalQuizzes;

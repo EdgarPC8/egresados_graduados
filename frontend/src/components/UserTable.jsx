@@ -18,7 +18,6 @@ import {
   AlertDialogContent,
   AlertDialogOverlay,
   Box,
-  Image,
   Heading,
   Spacer,
   Flex,
@@ -26,7 +25,6 @@ import {
 
 import { useAuth } from "../context/AuthContext";
 import { FiUserPlus } from "react-icons/fi";
-import { EmailIcon } from "@chakra-ui/icons";
 import { Link, useNavigate } from "react-router-dom";
 
 function UserTable() {

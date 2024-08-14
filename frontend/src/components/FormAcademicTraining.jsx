@@ -358,9 +358,11 @@ function FormAcademicTraining() {
               <Button
                 type="submit"
                 mt={4}
-                bg="ceruleanBlue.500"
-                color={"white"}
-                _hover={{ bg: "primary.100" }}
+                bg="ceruleanBlue.600"
+                color="white"
+                _hover={{
+                  bg: "ceruleanBlue.500",
+                }}
                 data-purpose="create"
               >
                 {!isEditing ? "Guardar" : "editar"}

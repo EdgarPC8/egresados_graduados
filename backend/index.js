@@ -21,9 +21,7 @@ const PORT = 3000;
 app.use(express.json());
 
 const allowedOrigins = [
-  // "http://dev.gym.com",
   "http://localhost",
-  "http://dev.alum.com",
   "http://localhost:8888",
   "http://localhost:5173",
   "http://192.168.137.250:5173",
@@ -74,7 +72,7 @@ async function main() {
 
     //await sequelize.sync({ force: true });
     //await insertData();
-    // await consoleData();
+    //await consoleData();
 
     console.log("Conección realizada con éxito.");
     app.listen(PORT, () => {

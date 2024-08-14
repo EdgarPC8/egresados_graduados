@@ -1,11 +1,11 @@
 import axios from "axios";
 
-const objUrl={
-  local:"localhost",
-  edgar:"192.168.137.250",
-  alumni:"aplicaciones.marianosamaniego.edu.ec",
-}
-const url =objUrl.edgar
+const objUrl = {
+  local: "localhost:3000/api/",
+  edgar: "192.168.137.250",
+  alumni: "aplicaciones.marianosamaniego.edu.ec",
+};
+const url = objUrl.local;
 
 const instance = axios.create({
   baseURL: `http://${url}`,

@@ -25,7 +25,14 @@ import {
   AccordionIcon,
 } from "@chakra-ui/react";
 import { Link } from "react-router-dom";
-import { FiHome, FiFile, FiAward, FiUser, FiLogOut, FiTarget } from "react-icons/fi";
+import {
+  FiHome,
+  FiFile,
+  FiAward,
+  FiUser,
+  FiLogOut,
+  FiTarget,
+} from "react-icons/fi";
 import { FaChartPie } from "react-icons/fa";
 import { TbBrandMatrix } from "react-icons/tb";
 import { HamburgerIcon } from "@chakra-ui/icons";
@@ -48,7 +55,7 @@ const LinksToNoAuth = [
 // Constantes para las vistas con autenticación y permisos
 const permisos = {
   Programador: [
-    {name: "Inicio",link: "/",icon: <FiHome />},
+    { name: "Inicio", link: "/", icon: <FiHome /> },
     { name: "Hoja de Vida", link: "/cv", icon: <FiAward /> },
     {
       name: "Panel de Control",
@@ -78,12 +85,12 @@ const permisos = {
       icon: <PiFiles />,
       menu: {
         items: [
-          { name: "Todas", link: "/quizzes", icon: <PiFiles /> },
-          { name: "Encuesta", link: "/quiz", icon: <PiFiles /> },
+          { name: "Administrar", link: "/encuestas", icon: <PiFiles /> },
+          { name: "Sus encuesta", link: "/sus-encuestas", icon: <PiFiles /> },
         ],
       },
     },
-    { name: "Tutoriales", link: "/tutoriales", icon: <FaYoutube  /> },
+    { name: "Tutoriales", link: "/tutoriales", icon: <FaYoutube /> },
     { name: "Matrices", link: "/matriz", icon: <TbBrandMatrix /> },
   ],
   Administrador: [
@@ -111,12 +118,12 @@ const permisos = {
       icon: <PiFiles />,
       menu: {
         items: [
-          { name: "Todas", link: "/quizzes", icon: <PiFiles /> },
-          { name: "Encuesta", link: "/quiz", icon: <PiFiles /> },
+          { name: "Administrar", link: "/encuestas", icon: <PiFiles /> },
+          { name: "Sus encuestas", link: "/sus-encuestas", icon: <PiFiles /> },
         ],
       },
     },
-    { name: "Tutoriales", link: "/tutoriales", icon: <FaYoutube  /> },
+    { name: "Tutoriales", link: "/tutoriales", icon: <FaYoutube /> },
     { name: "Matrices", link: "/matriz", icon: <TbBrandMatrix /> },
   ],
   Profesional: [
@@ -126,7 +133,7 @@ const permisos = {
       icon: <FiHome />,
     },
     { name: "Hoja de Vida", link: "/cv", icon: <FiAward /> },
-    { name: "Encuesta", link: "/quiz", icon: <PiFiles /> },
+    { name: "Encuesta", link: "/sus-encuestas", icon: <PiFiles /> },
   ],
   Estudiante: [
     {
@@ -157,7 +164,11 @@ const Navbar = () => {
               ref={btnRef}
               onClick={onOpen}
             />
-            <HStack as={"nav"} spacing={4} display={{ base: "none", md: "flex" }}>
+            <HStack
+              as={"nav"}
+              spacing={4}
+              display={{ base: "none", md: "flex" }}
+            >
               <Image
                 borderRadius="full"
                 boxSize="50px"
@@ -180,7 +191,11 @@ const Navbar = () => {
                   {user.loginRol}
                 </Badge>
                 <Link to="/perfil">
-                  <Avatar size={"sm"} mr="10px" src={`${urlPhotos}/${user.photo}`}>
+                  <Avatar
+                    size={"sm"}
+                    mr="10px"
+                    src={`${urlPhotos}/${user.photo}`}
+                  >
                     <AvatarBadge boxSize="1.25em" bg="green.500" />
                   </Avatar>
                 </Link>
@@ -203,7 +218,12 @@ const Navbar = () => {
         </Flex>
       </Box>
 
-      <Drawer isOpen={isOpen} placement="left" onClose={onClose} finalFocusRef={btnRef}>
+      <Drawer
+        isOpen={isOpen}
+        placement="left"
+        onClose={onClose}
+        finalFocusRef={btnRef}
+      >
         <DrawerOverlay />
         <DrawerContent>
           <DrawerCloseButton />
@@ -215,28 +235,33 @@ const Navbar = () => {
                     <AccordionItem key={page.name}>
                       <h2>
                         <AccordionButton>
-                          <Box as="span" flex="1" textAlign="left" >
-                            <NavLink type='text' icon={page.icon}>{page.name}</NavLink>
+                          <Box as="span" flex="1" textAlign="left">
+                            <NavLink type="text" icon={page.icon}>
+                              {page.name}
+                            </NavLink>
                           </Box>
                           <AccordionIcon />
                         </AccordionButton>
                       </h2>
                       <AccordionPanel pb={4}>
-                          {page.menu.items.map((item) => (
-                            <Link to={item.link} key={item.name} onClick={onClose}>
+                        {page.menu.items.map((item) => (
+                          <Link
+                            to={item.link}
+                            key={item.name}
+                            onClick={onClose}
+                          >
                             <NavLink icon={item.icon}>{item.name}</NavLink>
-                            </Link>
-                          ))}
+                          </Link>
+                        ))}
                       </AccordionPanel>
                     </AccordionItem>
                   ) : (
                     <AccordionItem key={page.name}>
-                  
                       <Link to={page.link} key={page.name} onClick={onClose}>
                         <NavLink icon={page.icon}>{page.name}</NavLink>
                       </Link>
                     </AccordionItem>
-                  )
+                  ),
                 )}
               </Accordion>
             ) : (

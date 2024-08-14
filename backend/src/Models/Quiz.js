@@ -123,7 +123,7 @@ const Quiz = sequelize.define(
       defaultValue: null,
     },
     document: {
-      type: DataTypes.TEXT,
+      type: DataTypes.JSON,
       defaultValue: null,
     },
   },

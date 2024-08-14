@@ -12,7 +12,7 @@ import CV from "./pages/CV.jsx";
 import Charts from "./pages/Charts.jsx";
 import Resumes from "./pages/Resumes.jsx";
 import CvProfessionalPdf from "./components/CvProfessionalPdf.jsx";
-import Quiz from "./pages/Quiz.jsx";
+import PersonalQuizzes from "./pages/PersonalQuizzess.jsx";
 import Profile from "./pages/Profile.jsx";
 import Quizzes from "./pages/Quizzes.jsx";
 import Matriz from "./pages/Matriz.jsx";
@@ -28,6 +28,7 @@ import "@fontsource/inter";
 import "@fontsource/inter/600.css";
 import Logger from "./pages/Logger.jsx";
 import DocumentQuiz from "./pages/DocumentQuiz.jsx";
+import FillQuiz from "./pages/FillQuiz.jsx";
 
 function App() {
   return (
@@ -49,10 +50,15 @@ function App() {
               }
             >
               <Route path="/cv" element={<CV />} />
-              <Route path="/quiz" element={<Quiz />} />
+              <Route path="/sus-encuestas" element={<PersonalQuizzes />} />
               <Route path="/perfil" element={<Profile />} />
               <Route path="/cvPdf" element={<CvProfessionalPdf />} />
-              <Route path="/encuesta/d/:idQuiz" element={<DocumentQuiz />} />
+              <Route path="/encuesta/d/:quizId" element={<DocumentQuiz />} />
+
+              <Route
+                path="/encuesta/f/:quizId/matriz/:matrizId"
+                element={<FillQuiz />}
+              />
             </Route>
             <Route
               element={
