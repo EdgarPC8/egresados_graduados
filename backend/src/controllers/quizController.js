@@ -76,7 +76,7 @@ export const getChartDataQuiz = async (req, res) => {
       quiz: JSON.parse(answer.dataValues.quiz),
     }));
 
-    const textAreaValues = new Set();
+    const textValues = new Set();
 
     answers.map(({ quiz }) => {
       quiz.answers.forEach((answer, index) => {
@@ -100,14 +100,14 @@ export const getChartDataQuiz = async (req, res) => {
           answer.type === QUESTION_TYPES.TEXTAREA ||
           answer.type === QUESTION_TYPES.INPUT
         ) {
-          if (textAreaValues.has(answer.answer)) {
+          if (textValues.has(answer.answer)) {
             chartDataQuestions[index].data.forEach(
               (_, i) => (chartDataQuestions[index].data[i].value += 1),
             );
             return;
           }
 
-          textAreaValues.add(answer.answer);
+          textValues.add(answer.answer);
           chartDataQuestions[index].data.push({
             name: answer.answer,
             value: 1,

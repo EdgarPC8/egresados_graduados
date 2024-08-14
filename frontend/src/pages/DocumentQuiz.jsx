@@ -571,7 +571,8 @@ function DocumentQuiz() {
                         </ResponsiveContainer>
                       )}
 
-                      {type === QUESTION_TYPES.TEXTAREA && (
+                      {(type === QUESTION_TYPES.TEXTAREA ||
+                        type === QUESTION_TYPES.INPUT) && (
                         <ResponsiveContainer width="100%" height={400}>
                           <ComposedChart
                             layout="vertical"
