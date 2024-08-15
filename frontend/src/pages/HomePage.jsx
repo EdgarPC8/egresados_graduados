@@ -24,6 +24,10 @@ function HomePage() {
     };
   }, []);
 
+
+
+  
+
   return (
     <Box p={20}>
       <Heading>Bienvenido</Heading>

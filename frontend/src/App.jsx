@@ -6,7 +6,7 @@ import { BrowserRouter, Route, Routes } from "react-router-dom";
 import HomePage from "./pages/HomePage.jsx";
 import LoginPage from "./pages/LoginPage.jsx";
 import RegisterPage from "./pages/RegisterPage.jsx";
-import { AuthProvider } from "./context/AuthContext.jsx";
+import { AuthProvider,useAuth } from "./context/AuthContext.jsx";
 import ProtectedRoute from "./components/ProtectedRoute.jsx";
 import CV from "./pages/CV.jsx";
 import Charts from "./pages/Charts.jsx";
@@ -30,9 +30,9 @@ import "@fontsource/inter";
 import "@fontsource/inter/600.css";
 import Logger from "./pages/Logger.jsx";
 
-function App() {
+import { useEffect } from "react";
 
- 
+function App() {
 
   return (
     <ChakraProvider theme={customTheme}>
