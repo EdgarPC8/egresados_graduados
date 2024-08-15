@@ -1,5 +1,18 @@
-import React from 'react';
-import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer,PieChart, Pie, Sector, Cell  } from 'recharts';
+import React from "react";
+import {
+  BarChart,
+  Bar,
+  XAxis,
+  YAxis,
+  CartesianGrid,
+  Tooltip,
+  Legend,
+  ResponsiveContainer,
+  PieChart,
+  Pie,
+  Sector,
+  Cell,
+} from "recharts";
 import {
   Box,
   Heading,
@@ -36,20 +49,12 @@ import {
 import ChartsCareers from "../components/ChartsCareers.jsx";
 import ChartsResponsesQuiz from "../components/ChartsResponsesQuiz.jsx";
 
-
-function Chart(){
+function Chart() {
   return (
     <Box margin={10}>
-      <ChartsResponsesQuiz/>
+      <ChartsResponsesQuiz />
     </Box>
-    
   );
-};
+}
 
 export default Chart;
-
-
-
-
-
-

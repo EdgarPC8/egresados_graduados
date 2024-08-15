@@ -1,7 +1,10 @@
 import Tabl from "../components/Table";
 import DataTable from "../components/DataTables";
 import { useEffect, useState } from "react";
-import { getAllProfessionals,deleteProfessional } from "../api/professionalRequest";
+import {
+  getAllProfessionals,
+  deleteProfessional,
+} from "../api/professionalRequest";
 import { urlPhotos } from "../api/axios";
 import { useRef } from "react";
 import {
@@ -29,7 +32,6 @@ import { useAuth } from "../context/AuthContext";
 import { FiUserPlus } from "react-icons/fi";
 import { EmailIcon } from "@chakra-ui/icons";
 import { Link, useNavigate } from "react-router-dom";
-
 
 function Resumes() {
   const navigate = useNavigate();
@@ -100,12 +102,13 @@ function Resumes() {
 
       cell: (props) => (
         <Stack spacing={4} direction="row" align="center">
-
           <Button
             colorScheme="red"
             leftIcon={<FaEye />}
             onClick={() =>
-              navigate(`/cvProfessionalPdf/${props.row.original.userId}`)
+              navigate(
+                `/curriculos/cv-profesional-pdf/${props.row.original.userId}`,
+              )
             }
           >
             PDF
@@ -124,7 +127,6 @@ function Resumes() {
     },
   ];
 
-
   useEffect(() => {
     const fetchUsers = async () => {
       try {
@@ -139,21 +141,15 @@ function Resumes() {
 
     fetchUsers();
   }, [user]);
-  
-
-
 
   return (
     <>
- 
-
       <Box p={10}>
         <Flex alignItems="center" gap="2">
           <Box p="2">
             <Heading size="md">Curriculos</Heading>
           </Box>
           <Spacer />
-         
         </Flex>
 
         {/* <DataTable header={headerprueba} keyValues={valuesprueba} data={["ddsdsd","dsdsdsssss"]}></DataTable> */}

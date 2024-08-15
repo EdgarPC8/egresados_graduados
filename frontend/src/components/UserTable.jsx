@@ -1,6 +1,6 @@
 import Tabl from "./Table";
 import { useEffect, useState } from "react";
-import { getUsers, removeUser } from "../api/userRequest";
+import { addUser, getUsers, removeUser } from "../api/userRequest";
 import { urlPhotos } from "../api/axios";
 import { useRef } from "react";
 import {
@@ -8,6 +8,8 @@ import {
   useDisclosure,
   AlertDialog,
   Avatar,
+  Grid,
+  GridItem,
   Stack,
   useToast,
   AlertDialogBody,
