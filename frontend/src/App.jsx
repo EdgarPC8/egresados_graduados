@@ -4,7 +4,7 @@ import { BrowserRouter, Route, Routes } from "react-router-dom";
 import HomePage from "./pages/HomePage.jsx";
 import LoginPage from "./pages/LoginPage.jsx";
 import RegisterPage from "./pages/RegisterPage.jsx";
-import { AuthProvider } from "./context/AuthContext.jsx";
+import { AuthProvider,useAuth } from "./context/AuthContext.jsx";
 import ProtectedRoute from "./components/ProtectedRoute.jsx";
 import CV from "./pages/CV.jsx";
 import Charts from "./pages/Charts.jsx";
@@ -29,7 +29,10 @@ import DocumentQuiz from "./pages/DocumentQuiz.jsx";
 import FillQuiz from "./pages/FillQuiz.jsx";
 import { Flex } from "@chakra-ui/react";
 
+import { useEffect } from "react";
+
 function App() {
+
   return (
     <AuthProvider>
       <BrowserRouter basename="/alumni">

@@ -10,6 +10,8 @@ import { EditIcon, DeleteIcon } from '@chakra-ui/icons';
 import Papa from "papaparse"; // Asegúrate de instalar papaparse: npm install papaparse
 import { FaYoutube } from "react-icons/fa";
 
+
+
 import {
   Button,
   useDisclosure,
@@ -32,6 +34,9 @@ import { useAuth } from "../context/AuthContext";
 import { FiUserPlus } from "react-icons/fi";
 import { EmailIcon } from "@chakra-ui/icons";
 import { Link, useNavigate } from "react-router-dom";
+import { isValidCI } from "../helpers/isValidCI";
+
+
 
 function Matriz() {
   const navigate = useNavigate();
@@ -63,7 +68,6 @@ function Matriz() {
   const [DataMatriz, setDataMatriz] = useState(null);
   const [isEditing, setIsEditing] = useState(false);
   const [id, setId] = useState(0);
-
   const columns = [
     {
       header: "#",
@@ -99,10 +103,10 @@ function Matriz() {
     },
     {
       header: "Acción",
-
+  
       cell: (props) => (
         <Center>
-
+  
           <Stack spacing={4} direction="row" align="center">
             {/* <Button
             colorScheme="yellow"
@@ -112,7 +116,7 @@ function Matriz() {
           >
            <EditIcon></EditIcon>
           </Button> */}
-
+  
             <Button
               colorScheme="red"
               onClick={() => {
@@ -123,10 +127,10 @@ function Matriz() {
             >
               <DeleteIcon></DeleteIcon>
             </Button>
-
+  
           </Stack>
         </Center>
-
+  
       ),
     },
   ];
@@ -154,7 +158,7 @@ function Matriz() {
     },
     {
       header: "Acción",
-
+  
       cell: (props) => (
         <Center>
           <Stack spacing={4} direction="row">
@@ -167,7 +171,7 @@ function Matriz() {
               +          </Button>
           </Stack>
         </Center>
-
+  
       ),
     },
   ];
@@ -207,10 +211,10 @@ function Matriz() {
     },
     {
       header: "Acción",
-
+  
       cell: (props) => (
         <Center>
-
+  
           <Stack spacing={4} direction="row" align="center">
             {/* <Button
               colorScheme="yellow"
@@ -220,7 +224,7 @@ function Matriz() {
             >
              <EditIcon></EditIcon>
             </Button> */}
-
+  
             <Button
               colorScheme="red"
               onClick={() => {
@@ -228,10 +232,10 @@ function Matriz() {
               }}
             >
               -         </Button>
-
+  
           </Stack>
         </Center>
-
+  
       ),
     },
   ];
@@ -253,7 +257,7 @@ function Matriz() {
   const [formQuiz, setFormQuiz] = useState(
     initialFormQuiz
   );
-  const handleCSV =  () => {
+  const handleCSV = () => {
     if (!selectedOptionCareer || !selectedOptionPeriod) {
       // Muestra el AlertDialog con el mensaje correspondiente
       setAlertDialogMessage("Por favor, seleccione una carrera y período")
@@ -272,18 +276,19 @@ function Matriz() {
       return;
     }
 
-    setYearVisible(false)
-    setSelectedModalityVisible(false)
-    setSelectedModality(true)
-    setYear(true)
+    // setYearVisible(false)
+    // setSelectedModalityVisible(false)
+    // setSelectedModality(true)
+    // setYear(true)
 
     Papa.parse(selectedFile, {
-      complete:async (result) => {
+      complete: async (result) => {
         // El resultado de Papaparse contiene la información del CSV
         // console.log("Datos CSV:", result.data);
         // CEDULA	APELLIDO_1	APELLIDO_2	NOMBRE_1	NOMBRE_2	FECHA_NAC	GENERO	TELEFONO	CORREO	MODALIDAD	FECHA_GRADO
-        const nombresCampos = ['ci', 'firstLastName', 'secondLastName', 'firstName', 'secondName', 
-        'birthDate', 'gender', 'phone', 'email', 'modality', 'grateDate'];
+        
+        const nombresCampos = ['ci', 'firstLastName', 'secondLastName', 'firstName', 'secondName',
+          'birthDate', 'gender', 'phone', 'email', 'modality', 'grateDate'];
         // Crear otro array de objetos usando los nombres de propiedades como nombres de campos
         const nuevoArray = result.data.map((element) => {
           const nuevoObjeto = {};
@@ -323,52 +328,63 @@ function Matriz() {
         // console.log("\nNuevo array de objetos con 'ci' no repetido en professionals:");
         // console.log(nuevoArrayNoRepetidos);
 
-        let newArray=[]
+        let cedulasNovalidas = [];
+        let cedulasValidas = [];
 
-        if(nuevoArrayNoRepetidos.length>0){
+        if (nuevoArrayNoRepetidos.length > 0) {
           const promises = nuevoArrayNoRepetidos.map(async (element) => {
-            const response = await addUser({
-              ci: element.ci,
-              username: element.ci,
-              firstName: element.firstName,
-              secondName: element.secondName,
-              firstLastName: element.firstLastName,
-              secondLastName: element.secondLastName,
-              password: element.ci,
-              roles: [2],
-            });
-        
-            const professional = response.data.user;
-            element.id=professional.userId
-        
-            await addProfessional({
-              firstName: professional.firstName,
-              secondName: professional.secondName,
-              firstLastName: professional.firstLastName,
-              secondLastName: professional.secondLastName,
-              ci: professional.ci,
-              userId: professional.userId,
-            });
-        
-            return element;
-          });
-        // Verificar si el toast fue exitoso antes de mostrar otro toast
-        const newArray = await Promise.all(promises);
+            if (isValidCI(element.ci)) {
 
-        // Verificar si el toast fue exitoso antes de mostrar otro toast
-        toast({
-          title: `${newArray.length} Profesionales Nuevos`,
-          description: `Se agregaron nuevos profesionales del archivo csv`,
-          status: "success",
-          position: "top-right",
-          isClosable: true,
-        });
-        setCreateMatriz((prevCreateMatriz) => [...prevCreateMatriz, ...newArray]);
+              // const response = await addUser({
+              //   ci: element.ci,
+              //   username: element.ci,
+              //   firstName: element.firstName,
+              //   secondName: element.secondName,
+              //   firstLastName: element.firstLastName,
+              //   secondLastName: element.secondLastName,
+              //   password: element.ci,
+              //   roles: [2],
+              // });
+
+              // const professional = response.data.user;
+              // element.id = professional.userId;
+
+              // await addProfessional({
+              //   firstName: professional.firstName,
+              //   secondName: professional.secondName,
+              //   firstLastName: professional.firstLastName,
+              //   secondLastName: professional.secondLastName,
+              //   ci: professional.ci,
+              //   userId: professional.userId,
+              // });
+              cedulasValidas.push(element);
+              return element;
+            } else {
+              // Si la cédula no es válida, agrégala al array de cédulas no válidas
+              cedulasNovalidas.push(element);
+            }
+          });
+
+          console.log(nuevoArrayNoRepetidos,cedulasValidas,cedulasNovalidas);
+
+          const newArray = await Promise.all(promises);
+
+          // Verificar si el toast fue exitoso antes de mostrar otro toast
+
+          // Verificar si el toast fue exitoso antes de mostrar otro toast
+          toast({
+            title: `${newArray.length} Profesionales Nuevos`,
+            description: `Se agregaron nuevos profesionales del archivo csv`,
+            status: "success",
+            position: "top-right",
+            isClosable: true,
+          });
+          setCreateMatriz((prevCreateMatriz) => [...prevCreateMatriz, ...newArray]);
         }
 
 
         setCreateMatriz((prevCreateMatriz) => [...prevCreateMatriz, ...nuevoArrayRepetidos]);
-        
+
         // setProfessionals((prevProfessionals) => {
         //   const filteredProfessionals = prevProfessionals.filter(
         //     (prof) => !nuevoArrayRepetidos.some((rep) => rep.ci === prof.ci)
@@ -376,7 +392,7 @@ function Matriz() {
         //   return [...filteredProfessionals];
         // });
         // event.target.value = null;
-      event.target.value = null;
+        event.target.value = null;
 
       },
       header: true, // Si el archivo CSV tiene encabezados
@@ -486,99 +502,99 @@ function Matriz() {
       return { data: { idProfessional: id, career: carreerId, idPeriod: periodId, name: firstLastName, grateDate: grateDate, modality: modality }, name: `${firstName} ${firstLastName}` }
     });
 
-//   // Filtrar objetos que cumplen con la condición
-// const filteredObjects = insertArrayMatriz.filter(insertObj => {
-//   // Encontrar un objeto en matricesData que cumple con la condición
-//   const matchingObj = matricesData.find(matrizObj => {
-//       return (parseInt(insertObj.data.idPeriod) == parseInt(matrizObj.period.id)&&
-//       parseInt(insertObj.data.career) == parseInt(matrizObj.carreer.idCarreer)&&
-//       parseInt(insertObj.data.idProfessional) == parseInt(matrizObj.professional.id));
-//   });
+    //   // Filtrar objetos que cumplen con la condición
+    // const filteredObjects = insertArrayMatriz.filter(insertObj => {
+    //   // Encontrar un objeto en matricesData que cumple con la condición
+    //   const matchingObj = matricesData.find(matrizObj => {
+    //       return (parseInt(insertObj.data.idPeriod) == parseInt(matrizObj.period.id)&&
+    //       parseInt(insertObj.data.career) == parseInt(matrizObj.carreer.idCarreer)&&
+    //       parseInt(insertObj.data.idProfessional) == parseInt(matrizObj.professional.id));
+    //   });
 
-//   // Devolver true solo si se encuentra una coincidencia
-//   return !matchingObj;
-// });
+    //   // Devolver true solo si se encuentra una coincidencia
+    //   return !matchingObj;
+    // });
 
-const objetosExistsmatriz = [];
-const objetosAddMatriz = [];
+    const objetosExistsmatriz = [];
+    const objetosAddMatriz = [];
 
-insertArrayMatriz.filter(insertObj => {
-  // Encontrar un objeto en matricesData que cumple con la condición
-  const matchingObj = matricesData.find(matrizObj => {
-      return (parseInt(insertObj.data.idPeriod) == parseInt(matrizObj.period.id) &&
-              parseInt(insertObj.data.career) == parseInt(matrizObj.carreer.idCarreer) &&
-              parseInt(insertObj.data.idProfessional) == parseInt(matrizObj.professional.id));
-  });
+    insertArrayMatriz.filter(insertObj => {
+      // Encontrar un objeto en matricesData que cumple con la condición
+      const matchingObj = matricesData.find(matrizObj => {
+        return (parseInt(insertObj.data.idPeriod) == parseInt(matrizObj.period.id) &&
+          parseInt(insertObj.data.career) == parseInt(matrizObj.carreer.idCarreer) &&
+          parseInt(insertObj.data.idProfessional) == parseInt(matrizObj.professional.id));
+      });
 
-  // Determinar en cuál array almacenar el objeto
-  if (matchingObj) {
-    // Si hay una coincidencia, almacenar en el array de objetos que cumplen
-    objetosExistsmatriz.push(matchingObj);
-    return false; // No incluir en el resultado final
-  } else {
-    // Si no hay coincidencia, almacenar en el array de objetos que no cumplen
-    objetosAddMatriz.push(insertObj);
-    return true; // Incluir en el resultado final
-  }
-});
-
-// Ahora, objetosExistsmatriz contiene los objetos que cumplen la condición,
-// // y objetosAddMatriz contiene los que no cumplen.
-// console.log("Objetos que cumplen:", objetosExistsmatriz);
-// console.log("Objetos que no cumplen:", objetosAddMatriz);
-
-
-
-if(objetosExistsmatriz.length>0){
-  toast({
-    title: `Las Matrices ya existen`,
-    description: `${objetosExistsmatriz.length>1?`Las ${objetosExistsmatriz.length} Matrices que quieres agregar ya existen`:`La Matriz que quieres agregar ya existe`}`,
-    status: "warning",
-    position: "top-right",
-    isClosable: true,
-  });
-}
-if(objetosAddMatriz.length<=5){
-  objetosAddMatriz.forEach(element => {
-    toast.promise(addMatriz(element.data), {
-      loading: {
-        title: "Añadiendo...",
-        position: "top-right",
-      },
-      success: (d) => {
-        fetchUsers();
-        return {
-          title: "Matriz",
-          description: `${element.name} ${d.data.message}`,
-          isClosable: true,
-        };
-      },
-      error: (e) => ({
-        title: "Error",
-        description: e.response.data.message,
-        isClosable: true,
-      }),
+      // Determinar en cuál array almacenar el objeto
+      if (matchingObj) {
+        // Si hay una coincidencia, almacenar en el array de objetos que cumplen
+        objetosExistsmatriz.push(matchingObj);
+        return false; // No incluir en el resultado final
+      } else {
+        // Si no hay coincidencia, almacenar en el array de objetos que no cumplen
+        objetosAddMatriz.push(insertObj);
+        return true; // Incluir en el resultado final
+      }
     });
 
-  });
-}else{
-  objetosAddMatriz.forEach(element => {
-    addMatriz(element.data)
-  });
-  toast({
-    title: `${objetosAddMatriz.length} Matrices Nuevas`,
-    description: `Se agregaron nuevas matrices correctamente`,
-    status: "success",
-    position: "top-right",
-    isClosable: true,
-  });
-  fetchUsers();
-
-}
-    
+    // Ahora, objetosExistsmatriz contiene los objetos que cumplen la condición,
+    // // y objetosAddMatriz contiene los que no cumplen.
+    // console.log("Objetos que cumplen:", objetosExistsmatriz);
+    // console.log("Objetos que no cumplen:", objetosAddMatriz);
 
 
-    
+
+    if (objetosExistsmatriz.length > 0) {
+      toast({
+        title: `Las Matrices ya existen`,
+        description: `${objetosExistsmatriz.length > 1 ? `Las ${objetosExistsmatriz.length} Matrices que quieres agregar ya existen` : `La Matriz que quieres agregar ya existe`}`,
+        status: "warning",
+        position: "top-right",
+        isClosable: true,
+      });
+    }
+    if (objetosAddMatriz.length <= 5) {
+      objetosAddMatriz.forEach(element => {
+        toast.promise(addMatriz(element.data), {
+          loading: {
+            title: "Añadiendo...",
+            position: "top-right",
+          },
+          success: (d) => {
+            fetchUsers();
+            return {
+              title: "Matriz",
+              description: `${element.name} ${d.data.message}`,
+              isClosable: true,
+            };
+          },
+          error: (e) => ({
+            title: "Error",
+            description: e.response.data.message,
+            isClosable: true,
+          }),
+        });
+
+      });
+    } else {
+      objetosAddMatriz.forEach(element => {
+        addMatriz(element.data)
+      });
+      toast({
+        title: `${objetosAddMatriz.length} Matrices Nuevas`,
+        description: `Se agregaron nuevas matrices correctamente`,
+        status: "success",
+        position: "top-right",
+        isClosable: true,
+      });
+      fetchUsers();
+
+    }
+
+
+
+
     // if (isEditing) {
     //   toast.promise(editQuiz(id, formQuiz), {
     //     loading: {
@@ -606,7 +622,6 @@ if(objetosAddMatriz.length<=5){
 
   };
 
-
   const deleteMatriz = () => {
     toast.promise(removeMatriz(DataMatriz.id), {
       loading: {
@@ -632,7 +647,6 @@ if(objetosAddMatriz.length<=5){
       }),
     });
   };
-
 
   async function fetchUsers() {
     try {
@@ -663,45 +677,33 @@ if(objetosAddMatriz.length<=5){
     <>
       <Box p={10}>
         <Box>
-        <Link to="https://drive.google.com/file/d/1J-iEj4FcFRHoddaAfc3ZLgVvb05w3EM_/view?usp=sharing" target="_blank">
-              <Button colorScheme={"red"}>
-                Tutorial
-                <FaYoutube/>
-              </Button>
-            </Link> 
+          <Link to="https://drive.google.com/file/d/1J-iEj4FcFRHoddaAfc3ZLgVvb05w3EM_/view?usp=sharing" target="_blank">
+            <Button colorScheme={"red"}>
+              Tutorial
+              <FaYoutube />
+            </Button>
+          </Link>
           <Grid
             templateColumns={{ base: "1fr", md: "4fr 4fr" }}
             gap={2}
             mt={2}
           >
             <GridItem fontSize={"sm"}>
-              {/* <Textarea value={textValue} /> */}
-              
-
               {selectedModalityVisible && (
                 <SelectData
                   title="Modalidad"
-                  options={[{ value: "Presencial", label: "Presencial" },{ value: "Hibrida", label: "Hibrida" },{ value: "En Linea", label: "En Linea" }]}
+                  options={[{ value: "Presencial", label: "Presencial" }, { value: "Hibrida", label: "Hibrida" }, { value: "En Linea", label: "En Linea" }]}
                   onSelectChange={(value, selectedOption) =>
                     handleSelectChangeModality(value, selectedOption)
                   }
                 />
               )}
-
-
             </GridItem>
             <GridItem fontSize={"sm"}>
               {yearVisible && (
                 <InputGroup>
                   <InputLeftAddon children="Año" />
-                  <Input
-                    name="year"
-                    type="text"
-                    maxLength={4}
-                    placeholder="yyyy"
-                    onChange={handleChangeYear}
-                    value={year}
-                  />
+                  <Input name="year" type="text" maxLength={4} placeholder="yyyy" onChange={handleChangeYear} value={year} />
                 </InputGroup>
               )}
 
@@ -713,7 +715,6 @@ if(objetosAddMatriz.length<=5){
             mt={2}
           >
             <GridItem fontSize={"sm"}>
-              {/* <Textarea value={textValue} /> */}
               <SelectData title="Carrera" options={transformedCarreras}
                 onSelectChange={(value, selectedOption) =>
                   handleSelectChangeCareer(value, selectedOption)
@@ -741,7 +742,7 @@ if(objetosAddMatriz.length<=5){
 
           </Grid>
           <Grid
-            templateColumns={{ base: "1fr", md: "2fr 4fr" }}
+            templateColumns={{ base: "1fr", md: "4fr 4fr" }}
             gap={2}
             mt={2}
           >
@@ -757,53 +758,28 @@ if(objetosAddMatriz.length<=5){
               </Center>
               <Center>
                 {ButtonCargarCsvVisible ? (
-                  <Button
-                    type="button"
-                    mt={4}
-                    bg="ceruleanBlue.500"
-                    color={"white"}
-                    onClick={handleCSV}
-                  >
+                  <Button type="button" mt={4} bg="ceruleanBlue.500" color={"white"} onClick={handleCSV} >
                     Cargar archivo.csv
                   </Button>
                 ) : (
-                  <Button
-                    type="button"
-                    mt={4}
-                    bg="red.300"
-                    color={"white"}
-                    onClick={fetchUsers}
-                  >
+                  <Button type="button" mt={4} bg="red.300" color={"white"} onClick={fetchUsers} >
                     Limpiar Tabla
                   </Button>
                 )}
                 <Link to="https://drive.google.com/file/d/1tYWSHiKaDsI_QCwAPrpI1dP0nShRps_Y/view?usp=sharing" target="_blank">
-              <Button colorScheme={"red"} mt={4}>
-                <FaYoutube/>
-              </Button>
-              </Link> 
+                  <Button colorScheme={"red"} mt={4}>
+                    <FaYoutube />
+                  </Button>
+                </Link>
               </Center>
 
-              <Input
-                type="file"
-                ref={hiddenFileInputCSVRef}
-                onChange={handleFileChangeCSV}
-                accept=".csv"
-                hidden
-              />
-
-
+              <Input type="file" ref={hiddenFileInputCSVRef} onChange={handleFileChangeCSV} accept=".csv" hidden />
               <Tabl data={createMatriz} columns={columnsCreateMatriz} />
+
             </GridItem>
             <GridItem colSpan={2} fontSize={"sm"}>
               <Center>
-                <Button
-                  type="button"
-                  mt={4}
-                  bg="ceruleanBlue.500"
-                  color={"white"}
-                  onClick={handleSubmit}  // Reemplaza "tuFuncion" con la función que deseas ejecutar
-                >
+                <Button type="button" mt={4} bg="ceruleanBlue.500" color={"white"} onClick={handleSubmit} >
                   Guardar
                 </Button>
 
