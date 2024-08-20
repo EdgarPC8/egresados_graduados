@@ -40,37 +40,47 @@ export const getChartDataQuiz = async (req, res) => {
       },
     });
 
+    if (!ans.length) {
+      return res.status(404).json({
+        message: "No existe ninguna respuesta",
+      });
+    }
+
     const { document } = await Quiz.findOne({
       where: {
-        idQuiz: req.params.idQuiz,
+        idQuiz,
       },
     });
 
     const questions = JSON.parse(document);
-    const chartDataQuestions = questions.map(
-      ({ question, typeInput, options }) => {
-        if (typeInput.type === QUESTION_TYPES.RADIO) {
-          return {
-            question: question.value,
-            type: typeInput.type,
-            data: options.map((option) => ({ name: option.value, value: 0 })),
-          };
-        }
-        if (typeInput.type === QUESTION_TYPES.CHECKBOX) {
-          return {
-            question: question.value,
-            type: typeInput.type,
-            data: options.map((option) => ({ name: option.value, value: 0 })),
-          };
-        }
-
+    const chartDataQuestions = questions.map(({ question }) => {
+      if (question.typeInput.type === QUESTION_TYPES.RADIO) {
         return {
-          question: question.value,
-          type: typeInput.type,
-          data: [],
+          question: question.title,
+          type: question.typeInput.type,
+          data: question.options.map((option) => ({
+            name: option.value,
+            value: 0,
+          })),
         };
-      },
-    );
+      }
+      if (question.typeInput.type === QUESTION_TYPES.CHECKBOX) {
+        return {
+          question: question.title,
+          type: question.typeInput.type,
+          data: question.options.map((option) => ({
+            name: option.value,
+            value: 0,
+          })),
+        };
+      }
+
+      return {
+        question: question.title,
+        type: question.typeInput.type,
+        data: [],
+      };
+    });
 
     const answers = ans.map((answer) => ({
       quiz: JSON.parse(answer.dataValues.quiz),
@@ -81,7 +91,7 @@ export const getChartDataQuiz = async (req, res) => {
     answers.map(({ quiz }) => {
       quiz.answers.forEach((answer, index) => {
         if (answer.type === QUESTION_TYPES.RADIO) {
-          questions[index]?.options.forEach((option, id) => {
+          questions[index]?.question.options.forEach((option, id) => {
             if (option.value === answer.answer) {
               chartDataQuestions[index].data[id].value += 1;
             }
@@ -89,7 +99,7 @@ export const getChartDataQuiz = async (req, res) => {
         }
 
         if (answer.type === QUESTION_TYPES.CHECKBOX) {
-          questions[index]?.options.forEach((option, id) => {
+          questions[index]?.question.options.forEach((option, id) => {
             if (answer.answer.includes(option.value)) {
               chartDataQuestions[index].data[id].value += 1;
             }

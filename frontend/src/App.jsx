@@ -1,6 +1,4 @@
 import Navbar from "./components/Navbar.jsx";
-import { ChakraProvider } from "@chakra-ui/react";
-import customTheme from "./theme/theme.jsx";
 import "./App.css";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import HomePage from "./pages/HomePage.jsx";
@@ -29,12 +27,13 @@ import "@fontsource/inter/600.css";
 import Logger from "./pages/Logger.jsx";
 import DocumentQuiz from "./pages/DocumentQuiz.jsx";
 import FillQuiz from "./pages/FillQuiz.jsx";
+import { Flex } from "@chakra-ui/react";
 
 function App() {
   return (
-    <ChakraProvider theme={customTheme}>
-      <AuthProvider>
-        <BrowserRouter basename="/alumni">
+    <AuthProvider>
+      <BrowserRouter basename="/alumni">
+        <Flex flexDirection="column" height="100vh">
           <Navbar />
 
           <Routes>
@@ -88,9 +87,9 @@ function App() {
               <Route path="/panel" element={<PanelControl />} />
             </Route>
           </Routes>
-        </BrowserRouter>
-      </AuthProvider>
-    </ChakraProvider>
+        </Flex>
+      </BrowserRouter>
+    </AuthProvider>
   );
 }
 

@@ -16,7 +16,6 @@ import {
   Tab,
   TabPanel,
   Spinner,
-  Tooltip,
 } from "@chakra-ui/react";
 import {
   PieChart,
@@ -25,7 +24,6 @@ import {
   Legend,
   Sector,
   ResponsiveContainer,
-  BarChart,
   XAxis,
   YAxis,
   CartesianGrid,
@@ -146,7 +144,7 @@ function DocumentQuiz() {
   const [focusQuestionId, setFocusQuestionId] = useState(0);
   const [questionsCharts, setQuestionsCharts] = useState({
     chartDataQuestions: [],
-    filled: "",
+    filled: 0,
   });
   const [loading, setLoading] = useState(true);
 
@@ -154,15 +152,16 @@ function DocumentQuiz() {
 
   const [questions, setQuestions] = useState([
     {
-      options: [
-        {
-          name: "option1-question-0",
-          value: "Opción 1",
-          id: 1,
-        },
-      ],
-      question: { name: "question-0", value: "" },
-      typeInput: { type: "radio", name: "Varias opciones" },
+      question: {
+        title: "",
+        options: [
+          {
+            value: "Opción 1",
+            id: 1,
+          },
+        ],
+        typeInput: { type: QUESTION_TYPES.RADIO, name: "Varias opciones" },
+      },
     },
   ]);
 
@@ -170,15 +169,17 @@ function DocumentQuiz() {
     setQuestions((prev) => [
       ...prev,
       {
-        options: [
-          {
-            name: `option1-question-${prev.length}`,
-            value: "Opción 1",
-            id: prev.length,
-          },
-        ],
-        question: { name: `question-${prev.length}`, value: "" },
-        typeInput: { type: "radio", name: "Varias opciones" },
+        question: {
+          title: "",
+          options: [
+            {
+              value: "Opción 1",
+              id: 1,
+            },
+          ],
+
+          typeInput: { type: QUESTION_TYPES.RADIO, name: "Varias opciones" },
+        },
       },
     ]);
   };
@@ -200,20 +201,21 @@ function DocumentQuiz() {
 
   const addOption = (idQuestion, idOption) => {
     setQuestions((prev) =>
-      prev.map((question, id) =>
+      prev.map(({ question }, id) =>
         id === idQuestion
           ? {
-              ...question,
-              options: [
-                ...question.options,
-                {
-                  name: `option${idOption}-question-${idQuestion}`,
-                  value: `Opción ${idOption}`,
-                  id: idOption,
-                },
-              ],
+              question: {
+                ...question,
+                options: [
+                  ...question.options,
+                  {
+                    value: `Opción ${idOption}`,
+                    id: idOption,
+                  },
+                ],
+              },
             }
-          : question,
+          : { question },
       ),
     );
   };
@@ -278,13 +280,15 @@ function DocumentQuiz() {
     const { value } = event.target;
 
     setQuestions(
-      questions.map((question, id) =>
+      questions.map(({ question }, id) =>
         id === idQuestion
           ? {
-              ...question,
-              options: question.options.map((option) =>
-                option.id === idOption ? { ...option, value } : option,
-              ),
+              question: {
+                ...question,
+                options: question.options.map((option) =>
+                  option.id === idOption ? { ...option, value } : option,
+                ),
+              },
             }
           : question,
       ),
@@ -292,16 +296,19 @@ function DocumentQuiz() {
   };
 
   const onChangeQuestionInput = (event, idQuestion) => {
-    const { value, name } = event.target;
+    const { value } = event.target;
+
     setQuestions((prev) =>
-      prev.map((question, id) => {
+      prev.map(({ question }, id) => {
         if (id !== idQuestion) {
-          return question;
+          return { question };
         }
 
         return {
-          ...question,
-          question: { name, value },
+          question: {
+            ...question,
+            title: value,
+          },
         };
       }),
     );
@@ -309,30 +316,33 @@ function DocumentQuiz() {
 
   const onChangeTypeQuestion = ({ type, idQuestion, name }) => {
     setQuestions((prev) =>
-      prev.map((question, id) => {
+      prev.map(({ question }, id) => {
         if (id !== idQuestion) {
-          return question;
+          return { question };
         }
 
         if (type === QUESTION_TYPES.RADIO || type === QUESTION_TYPES.CHECKBOX) {
           return {
-            ...question,
-            typeInput: { type, name },
-            options: [
-              {
-                name: `option1-question-${idQuestion}`,
-                value: `Opción 1`,
-                id: 1,
-              },
-            ],
+            question: {
+              ...question,
+              typeInput: { type, name },
+              options: [
+                {
+                  value: `Opción 1`,
+                  id: 1,
+                },
+              ],
+            },
           };
         }
 
-        if (type === "input" || type === "textarea") {
+        if (type === QUESTION_TYPES.INPUT || type === QUESTION_TYPES.TEXTAREA) {
           const { options, ...rest } = question;
           return {
-            ...rest,
-            typeInput: { type, name },
+            question: {
+              ...rest,
+              typeInput: { type, name },
+            },
           };
         }
       }),
@@ -381,14 +391,17 @@ function DocumentQuiz() {
           fetchDataCharts();
         }
       }}
+      flex="1"
+      display="flex"
+      flexDirection="column"
     >
       <TabList>
         <Tab>Preguntas</Tab>
         <Tab>Respuestas</Tab>
       </TabList>
 
-      <TabPanels>
-        <TabPanel bg="blackAlpha.50">
+      <TabPanels bg="ceruleanBlue.50" flex="1">
+        <TabPanel>
           <Box
             display="flex"
             alignItems="center"
@@ -421,7 +434,7 @@ function DocumentQuiz() {
                   </Button>
                 </Flex>
               </GridItem>
-              {questions.map((question, index) => (
+              {questions.map(({ question }, index) => (
                 <GridItem
                   key={index}
                   borderLeft={focusQuestionId === index ? "4px" : "1px"}
@@ -440,8 +453,7 @@ function DocumentQuiz() {
                   borderRadius="md"
                 >
                   <Question
-                    name={question.question.name}
-                    value={question.question.value}
+                    value={question.title}
                     typeInput={question.typeInput}
                     id={index}
                     onChangeQuestionInput={onChangeQuestionInput}
@@ -474,143 +486,138 @@ function DocumentQuiz() {
           </Box>
         </TabPanel>
 
-        <TabPanel bg={!loading ? "blackAlpha.50" : "white"}>
-          <Box
-            display="flex"
-            alignItems="center"
-            flexDirection="column"
-            paddingBottom={6}
-          >
-            {loading ? (
-              <Spinner />
-            ) : (
-              <Grid w={"70%"} gap={5}>
-                <GridItem
-                  backgroundColor="white"
-                  border="1px"
-                  borderColor="gray.300"
-                  padding={5}
-                  borderRadius="md"
-                >
-                  {questionsCharts.filled ? (
-                    <Text>{questionsCharts.filled} respuestas</Text>
-                  ) : (
-                    <Text>No existe ninguna respuesta</Text>
-                  )}
-                </GridItem>
-
-                {questionsCharts.chartDataQuestions.map(
-                  ({ question, type, data }, idx) => (
-                    <GridItem
-                      backgroundColor="white"
-                      border="1px"
-                      borderColor="gray.300"
-                      padding={5}
-                      borderRadius="md"
-                      key={idx}
-                    >
-                      <Text mb={5}>{question}</Text>
-
-                      {type === QUESTION_TYPES.RADIO && (
-                        <ResponsiveContainer width="100%" height={400}>
-                          <PieChart>
-                            <Pie
-                              data={data}
-                              activeIndex={data.map((_, index) => index)}
-                              activeShape={renderActiveShape}
-                              cx="50%"
-                              cy="50%"
-                              labelLine={false}
-                              outerRadius={80}
-                              label={renderCustomizedLabel}
-                              fill="#8884d8"
-                              dataKey="value"
-                            >
-                              {data.map((_, index) => (
-                                <Cell
-                                  key={`cell-${index}`}
-                                  fill={COLORS[index % COLORS.length]}
-                                />
-                              ))}
-                            </Pie>
-                            <Legend
-                              layout="vertical"
-                              verticalAlign="middle"
-                              wrapperStyle={style}
-                            />
-                          </PieChart>
-                        </ResponsiveContainer>
-                      )}
-                      {type === QUESTION_TYPES.CHECKBOX && (
-                        <ResponsiveContainer width="100%" height={400}>
-                          <PieChart>
-                            <Pie
-                              data={data}
-                              activeShape={renderActiveShape}
-                              activeIndex={data.map((_, index) => index)}
-                              cx="50%"
-                              cy="50%"
-                              innerRadius={60}
-                              outerRadius={80}
-                              fill="#8884d8"
-                              dataKey="value"
-                            >
-                              {data.map((_, index) => (
-                                <Cell
-                                  key={`cell-${index}`}
-                                  fill={COLORS[index % COLORS.length]}
-                                />
-                              ))}
-                            </Pie>
-                            <Legend
-                              layout="vertical"
-                              verticalAlign="middle"
-                              wrapperStyle={style}
-                            />
-                          </PieChart>
-                        </ResponsiveContainer>
-                      )}
-
-                      {(type === QUESTION_TYPES.TEXTAREA ||
-                        type === QUESTION_TYPES.INPUT) && (
-                        <ResponsiveContainer width="100%" height={400}>
-                          <ComposedChart
-                            layout="vertical"
-                            width={500}
-                            height={400}
-                            data={data}
-                            margin={{
-                              top: 20,
-                              right: 20,
-                              bottom: 20,
-                              left: 20,
-                            }}
-                            barSize={20}
-                          >
-                            <XAxis type="number" />
-                            <YAxis
-                              dataKey="name"
-                              type="category"
-                              scale="band"
-                            />
-
-                            <Legend />
-                            <CartesianGrid stroke="#f5f5f5" />
-                            <Bar
-                              dataKey="value"
-                              fill="#8884d8"
-                              barSize={20}
-                              background={{ fill: "#eee" }}
-                            />
-                          </ComposedChart>
-                        </ResponsiveContainer>
-                      )}
-                    </GridItem>
-                  ),
+        <TabPanel
+          display="flex"
+          alignItems="center"
+          flexDirection="column"
+          paddingBottom={6}
+          flex="1"
+        >
+          {loading ? (
+            <Spinner />
+          ) : (
+            <Grid w={"70%"} gap={5}>
+              <GridItem
+                backgroundColor="white"
+                border="1px"
+                borderColor="gray.300"
+                padding={5}
+                borderRadius="md"
+              >
+                {questionsCharts.filled ? (
+                  <Text>{questionsCharts.filled} respuestas</Text>
+                ) : (
+                  <Text>No existe ninguna respuesta</Text>
                 )}
-              </Grid>
-            )}
-          </Box>
+              </GridItem>
+
+              {questionsCharts.chartDataQuestions.map(
+                ({ question, type, data }, idx) => (
+                  <GridItem
+                    backgroundColor="white"
+                    border="1px"
+                    borderColor="gray.300"
+                    padding={5}
+                    borderRadius="md"
+                    key={idx}
+                  >
+                    <Text mb={5}>{question}</Text>
+
+                    {type === QUESTION_TYPES.RADIO && (
+                      <ResponsiveContainer width="100%" height={400}>
+                        <PieChart>
+                          <Pie
+                            data={data}
+                            activeIndex={data.map((_, index) => index)}
+                            activeShape={renderActiveShape}
+                            cx="50%"
+                            cy="50%"
+                            labelLine={false}
+                            outerRadius={80}
+                            label={renderCustomizedLabel}
+                            fill="#8884d8"
+                            dataKey="value"
+                          >
+                            {data.map((_, index) => (
+                              <Cell
+                                key={`cell-${index}`}
+                                fill={COLORS[index % COLORS.length]}
+                              />
+                            ))}
+                          </Pie>
+                          <Legend
+                            layout="vertical"
+                            verticalAlign="middle"
+                            wrapperStyle={style}
+                          />
+                        </PieChart>
+                      </ResponsiveContainer>
+                    )}
+                    {type === QUESTION_TYPES.CHECKBOX && (
+                      <ResponsiveContainer width="100%" height={400}>
+                        <PieChart>
+                          <Pie
+                            data={data}
+                            activeShape={renderActiveShape}
+                            activeIndex={data.map((_, index) => index)}
+                            cx="50%"
+                            cy="50%"
+                            innerRadius={60}
+                            outerRadius={80}
+                            fill="#8884d8"
+                            dataKey="value"
+                          >
+                            {data.map((_, index) => (
+                              <Cell
+                                key={`cell-${index}`}
+                                fill={COLORS[index % COLORS.length]}
+                              />
+                            ))}
+                          </Pie>
+                          <Legend
+                            layout="vertical"
+                            verticalAlign="middle"
+                            wrapperStyle={style}
+                          />
+                        </PieChart>
+                      </ResponsiveContainer>
+                    )}
+
+                    {(type === QUESTION_TYPES.TEXTAREA ||
+                      type === QUESTION_TYPES.INPUT) && (
+                      <ResponsiveContainer width="100%" height={400}>
+                        <ComposedChart
+                          layout="vertical"
+                          width={500}
+                          height={400}
+                          data={data}
+                          margin={{
+                            top: 20,
+                            right: 20,
+                            bottom: 20,
+                            left: 20,
+                          }}
+                          barSize={20}
+                        >
+                          <XAxis type="number" />
+                          <YAxis dataKey="name" type="category" scale="band" />
+
+                          <Legend />
+                          <CartesianGrid stroke="#f5f5f5" />
+                          <Bar
+                            dataKey="value"
+                            fill="#8884d8"
+                            barSize={20}
+                            background={{ fill: "#eee" }}
+                          />
+                        </ComposedChart>
+                      </ResponsiveContainer>
+                    )}
+                  </GridItem>
+                ),
+              )}
+            </Grid>
+          )}
         </TabPanel>
       </TabPanels>
     </Tabs>
