@@ -37,11 +37,6 @@ const Question = ({
       <GridItem>
         <FormControl>
           <Input
-            name={`typeInput-question-${typeInput.type}-${id}`}
-            value={typeInput?.name}
-            type="hidden"
-          />
-          <Input
             variant="flushed"
             defaultValue={value}
             name={name}
@@ -90,9 +85,9 @@ const Question = ({
                     <Input
                       variant="flushed"
                       placeholder="Escriba la opción"
+                      name={option.id}
                       value={option.value}
                       onChange={(e) => onChangeOptionInput(e, option.id, id)}
-                      name={option.name}
                       onClick={() => {
                         if (options[options.length - 1].id === option.id) {
                           addOption(id, option.id + 1);
@@ -112,7 +107,6 @@ const Question = ({
 
             {typeInput.type === QUESTION_TYPES.INPUT && (
               <Input
-                name={`short-answer-${id}`}
                 placeholder="Respuesta corta"
                 variant="flushed"
                 isReadOnly={true}
@@ -120,11 +114,7 @@ const Question = ({
             )}
 
             {typeInput.type === QUESTION_TYPES.TEXTAREA && (
-              <Textarea
-                name={`long-answer-${id}`}
-                placeholder="Respuesta larga"
-                isReadOnly={true}
-              />
+              <Textarea placeholder="Respuesta larga" isReadOnly={true} />
             )}
           </Stack>
         </Box>

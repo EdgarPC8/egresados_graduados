@@ -1,6 +1,4 @@
 import Navbar from "./components/Navbar.jsx";
-import { ChakraProvider } from "@chakra-ui/react";
-import customTheme from "./theme/theme.jsx";
 import "./App.css";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import HomePage from "./pages/HomePage.jsx";
@@ -36,9 +34,9 @@ import { useEffect } from "react";
 function App() {
 
   return (
-    <ChakraProvider theme={customTheme}>
-      <AuthProvider>
-        <BrowserRouter basename="/alumni">
+    <AuthProvider>
+      <BrowserRouter basename="/alumni">
+        <Flex flexDirection="column" height="100vh">
           <Navbar />
 
           <Routes>
@@ -96,9 +94,9 @@ function App() {
               <Route path="/panel" element={<PanelControl />} />
             </Route>
           </Routes>
-        </BrowserRouter>
-      </AuthProvider>
-    </ChakraProvider>
+        </Flex>
+      </BrowserRouter>
+    </AuthProvider>
   );
 }
 

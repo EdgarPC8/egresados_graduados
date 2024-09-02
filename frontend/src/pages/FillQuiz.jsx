@@ -41,6 +41,7 @@ function FillQuiz() {
   useEffect(() => {
     const fetchOneQuiz = async () => {
       const { data } = await getOneQuiz(quizId);
+      console.log(data);
       setQuiz(data);
       setAnswers({
         idQuiz: quizId,
@@ -157,7 +158,7 @@ function FillQuiz() {
               <Text fontSize="xl">{quiz.description}</Text>
             </Stack>
           </GridItem>
-          {quiz.document?.map(({ question, typeInput, options }, index) => (
+          {quiz.document?.map(({ question }, index) => (
             <GridItem
               key={index}
               border="1px"
@@ -165,23 +166,23 @@ function FillQuiz() {
               padding={5}
               borderRadius="md"
             >
-              {typeInput.type === "radio" && (
+              {question.typeInput.type === "radio" && (
                 <FormControl as="fieldset">
-                  <FormLabel as="legend">{question.value}</FormLabel>
+                  <FormLabel as="legend">{question.title}</FormLabel>
                   <RadioGroup
                     mt={3}
                     onChange={(e) =>
                       onChangeValueOption({
-                        question: question.value,
+                        question: question.title,
                         answer: e,
                         questionId: index,
-                        type: typeInput.type,
+                        type: question.typeInput.type,
                       })
                     }
                   >
                     <Flex direction="column" gap={3}>
-                      {options.map((option, i) => (
-                        <Radio key={i} value={option.value} name={option.name}>
+                      {question?.options.map((option, i) => (
+                        <Radio key={i} value={option.value}>
                           {option.value}
                         </Radio>
                       ))}
@@ -190,23 +191,23 @@ function FillQuiz() {
                 </FormControl>
               )}
 
-              {typeInput.type === "checkbox" && (
+              {question.typeInput.type === "checkbox" && (
                 <FormControl>
                   <FormLabel as="legend">{question.value}</FormLabel>
                   <CheckboxGroup
                     colorScheme="messenger"
                     onChange={(e) =>
                       onChangeValueOption({
-                        question: question.value,
+                        question: question.title,
                         answer: e,
                         questionId: index,
-                        type: typeInput.type,
+                        type: question.typeInput.type,
                       })
                     }
                   >
                     <Stack spacing={[1, 5]} direction={["column", "row"]}>
                       <Flex direction="column" gap={3}>
-                        {options.map((option, i) => (
+                        {question?.options.map((option, i) => (
                           <Checkbox
                             key={i}
                             value={option.value}
@@ -221,18 +222,18 @@ function FillQuiz() {
                 </FormControl>
               )}
 
-              {typeInput.type === "input" && (
+              {question.typeInput.type === "input" && (
                 <FormControl>
-                  <FormLabel>{question.value}</FormLabel>
+                  <FormLabel>{question.title}</FormLabel>
                   <Input
-                    type={typeInput.type}
+                    type={question.typeInput.type}
                     name={question.name}
                     onChange={(event) =>
                       onChangeValueInput({
                         event,
                         questionId: index,
-                        type: typeInput.type,
-                        question: question.value,
+                        type: question.typeInput.type,
+                        question: question.title,
                       })
                     }
                     variant="flushed"
@@ -240,17 +241,17 @@ function FillQuiz() {
                 </FormControl>
               )}
 
-              {typeInput.type === "textarea" && (
+              {question.typeInput.type === "textarea" && (
                 <FormControl>
-                  <FormLabel>{question.value}</FormLabel>
+                  <FormLabel>{question.title}</FormLabel>
                   <Textarea
                     name={question.name}
                     onChange={(event) =>
                       onChangeValueInput({
                         event,
                         questionId: index,
-                        type: typeInput.type,
-                        question: question.value,
+                        type: question.typeInput.type,
+                        question: question.title,
                       })
                     }
                   />
