@@ -14,6 +14,12 @@ import logRoutes from "./src/routes/logRoutes.js";
 import { sequelize } from "./src/database/connection.js";
 import { insertData, consoleData } from "./src/database/insertData.js";
 import loggerMiddleware from "./src/middlewares/loggerMiddleware.js";
+import { StudenstQuiz } from "./src/Models/StudentsQuiz.js";
+import { Notifications } from "./src/Models/Notifications.js";
+import studentsRoutes  from "./src/routes/studentsRoutes.js";
+import matriculaRoutes  from "./src/routes/matriculaRoutes.js";
+
+
 
 const app = express();
 const PORT = 3000;
@@ -65,13 +71,14 @@ app.use("/api/register", registerRoutes);
 app.use("/api/logs", logRoutes);
 app.use("/api/config", configRoutes);
 app.use("/api/matriz", matrizRoutes);
+app.use("/api/student", studentsRoutes);
+app.use("/api/matricula", matriculaRoutes);
 
 async function main() {
   try {
     await sequelize.authenticate();
-
-    //await sequelize.sync({ force: true });
-    //await insertData();
+    // await sequelize.sync({ force: true });
+    // await insertData();
     //await consoleData();
 
     console.log("Conección realizada con éxito.");

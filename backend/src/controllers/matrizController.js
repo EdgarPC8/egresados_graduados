@@ -1,3 +1,4 @@
+import { Matricula } from "../Models/Matricula.js";
 import { Matriz, Carreers, Periods, MatrizQuiz } from "../Models/Matriz.js";
 
 import { Professionals } from "../Models/Professionals.js";
@@ -182,14 +183,28 @@ export const getMatrizQuizFilter = async (req, res) => {
 
   try {
     if (req.params.quizId != 0) {
-      professional = await MatrizQuiz.findAll({
+      // professional = await MatrizQuiz.findAll({
+      //   where: {
+      //     quizId: req.params.quizId,
+      //   },
+      // });
+      professional = await Quiz.findAll({
+        include: [
+          { model: Matriz},
+          { model: Matricula}
+        ],
         where: {
-          quizId: req.params.quizId,
+          idQuiz: req.params.quizId,
         },
       });
+
+      
     } else {
       professional = await Quiz.findAll({
-        include: [{ model: Matriz }],
+        include: [
+          { model: Matriz},
+          { model: Matricula}
+        ],
       });
     }
     res.json(professional);
@@ -199,6 +214,47 @@ export const getMatrizQuizFilter = async (req, res) => {
     });
   }
 };
+// export const getMatrizQuizFilter = async (req, res) => {
+//   const data = req.body;
+//   let professional;
+
+//   try {
+//     if (req.params.quizId != 0) {
+
+      
+
+//       professional = await MatrizQuiz.findAll({
+//         where: {
+//           quizId: req.params.quizId,
+//         },
+//       });
+//     } else {
+//       const quizzes = await Quiz.findAll({
+//         include: [{ model: Matriz }, { model: Matricula }],
+//       });
+
+//       // Mapea los resultados para devolver solo las longitudes de los arrays
+//       professional = quizzes.map((quiz) => ({
+//         id: quiz.id,
+//         title: quiz.title,
+//         description: quiz.description,
+//         date: quiz.date,
+//         MatrizLength: quiz.dataValues.matrices.length,
+//         MatriculaLength: quiz.dataValues.matriculas.length,
+//       }));
+//       // console.log("---------------------------------------------------------------------------");
+//       // console.log(quizzes[1].dataValues.matrices.length);
+//     }
+ 
+//     res.json(professional);
+
+//   } catch (error) {
+//     res.status(500).json({
+//       message: error.message,
+//     });
+//   }
+// };
+
 export const deleteMatrizQuiz = async (req, res) => {
   try {
     const removingUser = await MatrizQuiz.destroy({

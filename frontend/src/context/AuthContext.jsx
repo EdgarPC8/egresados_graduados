@@ -43,7 +43,8 @@ const AuthProvider = ({ children }) => {
           secondLastName: estudiante.secondLastName,
           photo: null,
           roles: [{rol:'Estudiante'}],
-          userId: 2,
+          userId: null,
+          id_estudiante: estudiante.id_estudiante,
           username: sessionExternal.username,
           loginRol: 'Estudiante',
         };

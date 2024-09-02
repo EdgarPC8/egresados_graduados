@@ -78,8 +78,6 @@ const login = async (req, res) => {
 const loginExternal = async (req, res) => {
   const { username, loginRol, userId } = req.body;
   const system=req.headers['user-agent'];
-  
-
   try {
 
     const payload =req.body;
@@ -88,8 +86,6 @@ const loginExternal = async (req, res) => {
     const token = await createAccessToken({ payload });
     const user = req.body.urlWebSession
     const rol = req.body.loginRol
-
-
 
     logger({
       httpMethod: req.method,

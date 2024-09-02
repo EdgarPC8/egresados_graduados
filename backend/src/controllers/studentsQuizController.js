@@ -1,7 +1,91 @@
-import { Matriz, MatrizQuiz } from "../Models/Matriz.js";
+import { Matricula } from "../Models/Matricula.js";
 import { Quiz } from "../Models/Quiz.js";
 import { StudenstQuiz } from "../Models/StudentsQuiz.js";
 
+
+export const getAllStudentsQuiz = async (req, res) => {
+  const data = await StudenstQuiz.findAll();
+  res.json(data);
+};
+
+
+export const addStudentsQuiz = async (req, res) => {
+  const data = req.body; // Suponiendo que los datos están en el cuerpo de la solicitud
+  try {
+    const newProfessional = await StudenstQuiz.create(data);
+    res.json({ message: `Agregado con éxito` });
+    // res.json({ message: data });
+  } catch (error) {
+    res.status(500).json({
+      message: error.message,
+    });
+  }
+};
+
+export const deleteStudentQuiz = async (req, res) => {
+  try {
+    const removingUser = await StudenstQuiz.destroy({
+      where: {
+        studentId: req.params.matriId,
+        quizId: req.params.quizId,
+      },
+    });
+    res.json({ message: "Eliminado con éxito" });
+  } catch (error) {
+    return res.status(500).json({
+      message: error.message,
+    });
+  }
+};
+export const getStudentQuizFilter = async (req, res) => {
+  const data = req.body;
+  let professional;
+
+  try {
+
+    if (req.params.quizId != 0) {
+      professional = await Matricula.findAll({
+        where: {
+          quizId: req.params.quizId,
+        },
+      });
+    } else {
+      professional = await Quiz.findAll({
+        include: [{ model: Matricula }],
+      });
+    }
+    res.json(professional);
+  } catch (error) {
+    res.status(500).json({
+      message: error.message,
+    });
+  }
+};
+
+export const getQuizzesStudent = async (req, res) => {
+  try {
+    const { studentId } = req.params;
+    const quizzes = await Matricula.findAll({
+      attributes: [],
+      include: [
+        {
+          model: Quiz,
+          attributes: ["idQuiz", "title", "description", "date"],
+        },
+      ],
+      where: {
+        id_estudiante: studentId,
+      },
+    });
+
+    res.json(quizzes[0]?.quizzes);
+  } catch (error) {
+    res.status(500).json({
+      message: error.message,
+    });
+  }
+};
+// -----------------------------------------------------------------------------------------------------------------------------------------------
 
 const QUESTION_TYPES = {
   INPUT: "input",
@@ -31,31 +115,16 @@ export const getOneQuiz = async (req, res) => {
     });
   }
 };
-
-export const getChartDataQuiz = async (req, res) => {
+export const getChartDataQuizStudent = async (req, res) => {
   try {
     const { idQuiz } = req.params;
-
-    // Obtener respuestas de MatrizQuiz
-    const ans1 = await MatrizQuiz.findAll({
+    const ans = await StudenstQuiz.findAll({
       attributes: [["answers", "quiz"]],
       where: {
         quizId: idQuiz,
         completed: 1,
       },
     });
-
-    // Obtener respuestas de StudenstQuiz
-    const ans2 = await StudenstQuiz.findAll({
-      attributes: [["answers", "quiz"]],
-      where: {
-        quizId: idQuiz,
-        completed: 1,
-      },
-    });
-
-    // Combinar ambas respuestas en un solo array
-    const combinedAnswers = [...ans1, ...ans2];
 
     const { document } = await Quiz.findOne({
       where: {
@@ -89,7 +158,7 @@ export const getChartDataQuiz = async (req, res) => {
       },
     );
 
-    const answers = combinedAnswers.map((answer) => ({
+    const answers = ans.map((answer) => ({
       quiz: JSON.parse(answer.dataValues.quiz),
     }));
 
@@ -112,7 +181,7 @@ export const getChartDataQuiz = async (req, res) => {
             }
           });
         }
-
+        //
         if (
           answer.type === QUESTION_TYPES.TEXTAREA ||
           answer.type === QUESTION_TYPES.INPUT
@@ -133,38 +202,27 @@ export const getChartDataQuiz = async (req, res) => {
       });
     });
 
-    const filled1 = await MatrizQuiz.count({
-      where: {
-        quizId: idQuiz,
-        completed: 1,
-      },
-    });
-    const filled2 = await StudenstQuiz.count({
+    const filled = await MatrizQuiz.count({
       where: {
         quizId: idQuiz,
         completed: 1,
       },
     });
 
-    // Sumamos los registros completados de ambas tablas
-    const totalFilled = filled1 + filled2;
-
-    res.json({ chartDataQuestions, filled: totalFilled });
+    res.json({ chartDataQuestions, filled });
   } catch (error) {
     res.status(500).json({
       message: error.message,
     });
   }
 };
-
-
-export const verifyQuizCompleted = async (req, res) => {
+export const verifyQuizCompletedStudent = async (req, res) => {
   try {
-    const { matrizId, quizId } = req.query;
-    const completed = await MatrizQuiz.findOne({
+    const { studentId, quizId } = req.query;
+    const completed = await StudenstQuiz.findOne({
       attributes: ["completed"],
       where: {
-        idMatriz: matrizId,
+        studentId: studentId,
         quizId,
       },
     });
@@ -175,42 +233,17 @@ export const verifyQuizCompleted = async (req, res) => {
     });
   }
 };
-
-export const getQuizzesProfessional = async (req, res) => {
+export const addAnswersQuizStudent = async (req, res) => {
   try {
-    const { idProfessional } = req.params;
-    const quizzes = await Matriz.findAll({
-      attributes: [],
-      include: [
-        {
-          model: Quiz,
-          attributes: ["idQuiz", "title", "description", "date"],
-        },
-      ],
-      where: {
-        idProfessional: idProfessional,
-      },
-    });
-
-    res.json(quizzes[0]?.quizzes);
-  } catch (error) {
-    res.status(500).json({
-      message: error.message,
-    });
-  }
-};
-
-export const addAnswersQuiz = async (req, res) => {
-  try {
-    const { quizId, matrizId } = req.query;
-    await MatrizQuiz.update(
+    const { quizId, studentId } = req.query;
+    await StudenstQuiz.update(
       {
         answers: req.body,
         completed: 1,
       },
       {
         where: {
-          idMatriz: matrizId,
+          studentId: studentId,
           quizId,
         },
       },
@@ -218,74 +251,5 @@ export const addAnswersQuiz = async (req, res) => {
     res.json({ message: "Encuesta completada con éxito" });
   } catch (error) {
     res.status(500).json({ message: error.message });
-  }
-};
-
-export const updateQuestionsQuiz = async (req, res) => {
-  const { idQuiz } = req.params;
-  const data = req.body;
-
-  try {
-    await Quiz.update(
-      {
-        document: data,
-      },
-      {
-        where: {
-          idQuiz,
-        },
-      },
-    );
-
-    res.json({ message: "Encuesta agregado con éxito" });
-  } catch (error) {
-    res.status(500).json({
-      message: error.message,
-    });
-  }
-};
-
-export const getAllQuizzes = async (req, res) => {
-  const data = await Quiz.findAll();
-  res.json(data);
-};
-
-export const addQuiz = async (req, res) => {
-  const data = req.body; // Suponiendo que los datos están en el cuerpo de la solicitud
-  try {
-    await Quiz.create(data);
-    res.json({ message: "Agregado con éxito" });
-    // logger({
-    //   httpMethod: req.method,
-    //   endPoint: req.originalUrl,
-    //   action: "Se agrego la encuesta",
-    // });
-  } catch (error) {
-    res.status(500).json({
-      message: error.message,
-    });
-  }
-};
-export const editQuiz = async (req, res) => {
-  try {
-    const data = req.body;
-    const quiz = req.params;
-    await Quiz.findOne({
-      where: {
-        idQuiz: quiz.idQuiz,
-      },
-    });
-
-    await Quiz.update(data, {
-      where: {
-        idQuiz: quiz.idQuiz,
-      },
-    });
-
-    res.json({ message: "Encuesta Editada con éxito" });
-  } catch (error) {
-    res.status(500).json({
-      message: error.message,
-    });
   }
 };

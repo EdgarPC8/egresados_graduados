@@ -2,6 +2,9 @@ import { sequelize } from "../database/connection.js";
 import { DataTypes } from "sequelize";
 import { Professionals } from "./Professionals.js";
 import { Quiz } from "./Quiz.js";
+import { Students } from "./Students.js";
+import { StudenstQuiz } from "./StudentsQuiz.js";
+
 
 // NOMBRE	N. CEDULA	CARRERA	TELÉFONO	CORREO	MODALIDAD	FECHA GRADO	OCUPACIÓN ACTUAL	ESTUDIOS POST.	PERIODO
 
@@ -91,6 +94,10 @@ export const Periods = sequelize.define(
       type: DataTypes.STRING(150),
       defaultValue: null,
     },
+    order: {
+      type: DataTypes.INTEGER,
+      defaultValue: null,
+    },
   },
   {
     timestamps: false,
@@ -112,25 +119,33 @@ export const MatrizQuiz = sequelize.define(
     timestamps: false,
   },
 );
+
 // ...
+// Matriz.belongsToMany(Quiz, {
+//   through: MatrizQuiz,
+//   foreignKey: "idMatriz",
+//   sourceKey: "id",
+// });
+// Quiz.belongsToMany(Matriz, {
+//   through: MatrizQuiz,
+//   foreignKey: "quizId",
+//   sourceKey: "idQuiz",
+// });
+// Relación muchos a muchos entre Matriz y Quiz
 Matriz.belongsToMany(Quiz, {
   through: MatrizQuiz,
   foreignKey: "idMatriz",
   sourceKey: "id",
 });
+
 Quiz.belongsToMany(Matriz, {
   through: MatrizQuiz,
   foreignKey: "quizId",
   sourceKey: "idQuiz",
 });
 
-// Matriz.belongsToMany(Quiz, {
-//     through: MatrizQuiz,
-//     foreignKey: 'idMatriz', // nombre de la clave foránea en la tabla matriz_quizzes que se refiere a la tabla matrices
-//   });
-//   MatrizQuiz.belongsTo(Matriz, {
-//     foreignKey: 'idMatriz', // nombre de la clave foránea en la tabla matriz_quizzes que se refiere a la tabla matrices
-//   });
+
+
 
 Professionals.hasMany(Matriz, {
   foreignKey: "idProfessional",
