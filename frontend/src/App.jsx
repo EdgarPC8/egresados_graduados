@@ -30,6 +30,8 @@ import FillQuiz from "./pages/FillQuiz.jsx";
 import FillQuizStudent from "./pages/FillQuizStudent.jsx";
 
 import { useEffect } from "react";
+import { Flex } from "@chakra-ui/react";
+
 
 function App() {
 
