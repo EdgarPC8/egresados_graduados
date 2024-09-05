@@ -10,6 +10,8 @@ import { EditIcon, DeleteIcon } from '@chakra-ui/icons';
 import Papa from "papaparse"; // Asegúrate de instalar papaparse: npm install papaparse
 import { FaYoutube } from "react-icons/fa";
 
+import { IconButton } from '@chakra-ui/react';
+import { FaBell } from 'react-icons/fa';
 
 
 import {
@@ -35,6 +37,10 @@ import { FiUserPlus } from "react-icons/fi";
 import { EmailIcon } from "@chakra-ui/icons";
 import { Link, useNavigate } from "react-router-dom";
 import { isValidCI } from "../helpers/isValidCI";
+import FloatingIcon from "../components/FloatingIcon";
+import { getCurrentDateTime } from "../helpers/date";
+
+
 
 
 
@@ -68,6 +74,7 @@ function Matriz() {
   const [DataMatriz, setDataMatriz] = useState(null);
   const [isEditing, setIsEditing] = useState(false);
   const [id, setId] = useState(0);
+  const [notifications, setNotifications] = useState([]);
   const columns = [
     {
       header: "#",
@@ -240,6 +247,9 @@ function Matriz() {
     },
   ];
 
+
+
+
   const transformedCarreras = Careers.map(item => ({
     value: item.idCarreer,
     label: `${item.name}`,
@@ -276,6 +286,160 @@ function Matriz() {
       return;
     }
 
+    setYearVisible(false)
+    setSelectedModalityVisible(false)
+    setSelectedModality(true)
+    setYear(true)
+
+    Papa.parse(selectedFile, {
+      complete: async (result) => {
+        const nombresCampos = ['ci', 'firstLastName', 'secondLastName', 'firstName', 'secondName',
+          'birthDate', 'gender', 'phone', 'email', 'modality', 'grateDate'];
+
+        // Crear otro array de objetos usando los nombres de propiedades como nombres de campos
+        const arrayCsvProfesionales = result.data.map((element) => {
+          const nuevoObjeto = {};
+          Object.keys(element).forEach((key, index) => {
+            nuevoObjeto[nombresCampos[index]] = element[key];
+            nuevoObjeto.carreerName = selectedOptionCareer.name;
+            nuevoObjeto.periodName = selectedOptionPeriod.name;
+            nuevoObjeto.carreerId = selectedOptionCareer.id;
+            nuevoObjeto.periodId = selectedOptionPeriod.id;
+          });
+
+            return nuevoObjeto;
+        });
+
+
+
+        const arrayDeCedulasInvalidas = [];
+        const arrayCsvProfesionalesValidos = arrayCsvProfesionales.filter((element) => {
+          if (!isValidCI(element.ci)) {
+            arrayDeCedulasInvalidas.push(element);
+            setSelectedModality(element.modality)
+            setYear(element.grateDate)
+            return false; // Excluir del array de válidos
+          }
+          return true; // Incluir en el array de válidos
+        });
+        const nuevoArrayRepetidos = arrayCsvProfesionalesValidos.map((element) => {
+          const elementoEnProfessionals = professionals.find((objeto) => `${objeto.ci }`=== `${element.ci}`);
+          if (elementoEnProfessionals) {
+            // Actualiza los campos del nuevoArray con los campos correspondientes del profesional
+            // console.log(elementoEnProfessionals)
+            element.birthDate = elementoEnProfessionals.birthDate;
+            element.firstName = elementoEnProfessionals.firstName;
+            element.secondName = elementoEnProfessionals.secondName;
+            element.firstLastName = elementoEnProfessionals.firstLastName;
+            element.secondLastName = elementoEnProfessionals.secondLastName;
+            element.id = elementoEnProfessionals.id;
+            return element;
+          }
+          return false;
+        }).filter(Boolean); // Elimina elementos falsos (que no tuvieron coincidencias)
+        const notiMatriz=[]
+
+        if(arrayDeCedulasInvalidas.length>0){
+          arrayDeCedulasInvalidas.forEach(element => {
+            const objNoti={
+              id:null,
+              title:'Cedula Erronea',
+              message:`La cedula ${element.ci} del usuario ${element.firstName} ${element.secondName} ${element.firstLastName} ${element.secondLastName} esta mal, verifique y vuelva a ingresar`,
+              timestamp:getCurrentDateTime(),
+              read:false,
+            }
+            notiMatriz.push(objNoti);
+          });
+        }
+
+        setNotifications(notiMatriz)
+
+
+
+        const nuevoArrayNoRepetidos = arrayCsvProfesionalesValidos.filter((element) => {
+          return !professionals.some((objeto) => `${objeto.ci}` === `${element.ci}`);
+        });
+
+
+
+        if (nuevoArrayNoRepetidos.length > 0) {
+          const promises = nuevoArrayNoRepetidos.map(async (element) => {
+
+              const response = await addUser({
+                ci: element.ci,
+                username: element.ci,
+                firstName: element.firstName,
+                secondName: element.secondName,
+                firstLastName: element.firstLastName,
+                secondLastName: element.secondLastName,
+                password: element.ci,
+                roles: [2],
+              });
+
+              const professional = response.data.user;
+              element.id = professional.userId;
+
+              await addProfessional({
+                firstName: professional.firstName,
+                secondName: professional.secondName,
+                firstLastName: professional.firstLastName,
+                secondLastName: professional.secondLastName,
+                ci: professional.ci,
+                userId: professional.userId,
+              });
+              return element;
+          });
+
+          const newArray = await Promise.all(promises);
+
+        
+
+          // Verificar si el toast fue exitoso antes de mostrar otro toast
+
+          // Verificar si el toast fue exitoso antes de mostrar otro toast
+          toast({
+            title: `${newArray.length} Profesionales Nuevos`,
+            description: `Se agregaron nuevos profesionales del archivo csv`,
+            status: "success",
+            position: "top-right",
+            isClosable: true,
+          });
+          setCreateMatriz((prevCreateMatriz) => [...prevCreateMatriz, ...newArray]);
+        }
+
+
+        setCreateMatriz((prevCreateMatriz) => [...prevCreateMatriz, ...nuevoArrayRepetidos]);
+
+        // setProfessionals((prevProfessionals) => {
+        //   const filteredProfessionals = prevProfessionals.filter(
+        //     (prof) => !nuevoArrayRepetidos.some((rep) => rep.ci === prof.ci)
+        //   );
+        //   return [...filteredProfessionals];
+        // });
+        // event.target.value = null;
+
+
+
+        event.target.value = null;
+
+      },
+      header: true, // Si el archivo CSV tiene encabezados
+      dynamicTyping: true, // Intenta convertir los valores a números automáticamente
+      skipEmptyLines: true, // Omite las líneas vacías
+    });
+    // fetchUsers()
+    // setButtonCargarCsvVisible(true)
+    // const resProfessionals = await getAllProfessionals();
+    // setProfessionals(resProfessionals.data);
+  };
+  const handleFileChangeCSV2 = async (event) => {
+    const selectedFile = event.target.files[0];
+
+    if (!selectedFile) {
+      console.error("Selecciona un archivo CSV antes de cargar.");
+      return;
+    }
+
     // setYearVisible(false)
     // setSelectedModalityVisible(false)
     // setSelectedModality(true)
@@ -289,6 +453,7 @@ function Matriz() {
         
         const nombresCampos = ['ci', 'firstLastName', 'secondLastName', 'firstName', 'secondName',
           'birthDate', 'gender', 'phone', 'email', 'modality', 'grateDate'];
+
         // Crear otro array de objetos usando los nombres de propiedades como nombres de campos
         const nuevoArray = result.data.map((element) => {
           const nuevoObjeto = {};
@@ -321,12 +486,7 @@ function Matriz() {
         const nuevoArrayNoRepetidos = nuevoArray.filter((element) => {
           return !professionals.some((objeto) => objeto.ci === element.ci);
         });
-
-        // console.log("\nNuevo array de objetos con 'ci' repetido en professionals:");
-        // console.log(nuevoArrayRepetidos);
-
-        // console.log("\nNuevo array de objetos con 'ci' no repetido en professionals:");
-        // console.log(nuevoArrayNoRepetidos);
+    
 
         let cedulasNovalidas = [];
         let cedulasValidas = [];
@@ -335,28 +495,28 @@ function Matriz() {
           const promises = nuevoArrayNoRepetidos.map(async (element) => {
             if (isValidCI(element.ci)) {
 
-              // const response = await addUser({
-              //   ci: element.ci,
-              //   username: element.ci,
-              //   firstName: element.firstName,
-              //   secondName: element.secondName,
-              //   firstLastName: element.firstLastName,
-              //   secondLastName: element.secondLastName,
-              //   password: element.ci,
-              //   roles: [2],
-              // });
+              const response = await addUser({
+                ci: element.ci,
+                username: element.ci,
+                firstName: element.firstName,
+                secondName: element.secondName,
+                firstLastName: element.firstLastName,
+                secondLastName: element.secondLastName,
+                password: element.ci,
+                roles: [2],
+              });
 
-              // const professional = response.data.user;
-              // element.id = professional.userId;
+              const professional = response.data.user;
+              element.id = professional.userId;
 
-              // await addProfessional({
-              //   firstName: professional.firstName,
-              //   secondName: professional.secondName,
-              //   firstLastName: professional.firstLastName,
-              //   secondLastName: professional.secondLastName,
-              //   ci: professional.ci,
-              //   userId: professional.userId,
-              // });
+              await addProfessional({
+                firstName: professional.firstName,
+                secondName: professional.secondName,
+                firstLastName: professional.firstLastName,
+                secondLastName: professional.secondLastName,
+                ci: professional.ci,
+                userId: professional.userId,
+              });
               cedulasValidas.push(element);
               return element;
             } else {
@@ -365,9 +525,11 @@ function Matriz() {
             }
           });
 
-          console.log(nuevoArrayNoRepetidos,cedulasValidas,cedulasNovalidas);
-
           const newArray = await Promise.all(promises);
+     
+
+
+      
 
           // Verificar si el toast fue exitoso antes de mostrar otro toast
 
@@ -384,6 +546,8 @@ function Matriz() {
 
 
         setCreateMatriz((prevCreateMatriz) => [...prevCreateMatriz, ...nuevoArrayRepetidos]);
+
+        console.log(createMatriz);
 
         // setProfessionals((prevProfessionals) => {
         //   const filteredProfessionals = prevProfessionals.filter(
@@ -676,6 +840,7 @@ function Matriz() {
   return (
     <>
       <Box p={10}>
+      <FloatingIcon notifications={notifications} />
         <Box>
           <Link to="https://drive.google.com/file/d/1J-iEj4FcFRHoddaAfc3ZLgVvb05w3EM_/view?usp=sharing" target="_blank">
             <Button colorScheme={"red"}>
@@ -814,5 +979,8 @@ function Matriz() {
     </>
   );
 }
+
+
+
 
 export default Matriz;

@@ -141,6 +141,15 @@ const permisos = {
       link: "/",
       icon: <FiHome />,
     },
+    {
+      name: "Encuestas",
+      icon: <PiFiles />,
+      menu: {
+        items: [
+          { name: "Sus encuestas", link: "/sus-encuestas", icon: <PiFiles /> },
+        ],
+      },
+    },
   ],
 };
 

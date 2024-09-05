@@ -1,0 +1,275 @@
+[
+  {
+    "question": {
+      "title": "¿Cómo calificarías la calidad de la enseñanza en tu carrera? (1=Muy Mala, 5=Excelente)",
+      "options": [
+        {
+          "name": "option1-question-0",
+          "value": "1",
+          "id": 1
+        },
+        {
+          "name": "option2-question-0",
+          "value": "2",
+          "id": 2
+        },
+        {
+          "name": "option3-question-0",
+          "value": "3",
+          "id": 3
+        },
+        {
+          "name": "option4-question-0",
+          "value": "4",
+          "id": 4
+        },
+        {
+          "name": "option5-question-0",
+          "value": "5",
+          "id": 5
+        }
+      ],
+      "typeInput": {
+        "type": "radio",
+        "name": "Varias opciones"
+      }
+    }
+  },
+  {
+    "question": {
+      "title": "¿Consideras que los contenidos de las asignaturas son relevantes y actualizados? (1=Muy en desacuerdo, 5=Muy de acuerdo)",
+      "options": [
+        {
+          "name": "option1-question-1",
+          "value": "1",
+          "id": 1
+        },
+        {
+          "name": "option2-question-1",
+          "value": "2",
+          "id": 2
+        },
+        {
+          "name": "option3-question-1",
+          "value": "3",
+          "id": 3
+        },
+        {
+          "name": "option4-question-1",
+          "value": "4",
+          "id": 4
+        },
+        {
+          "name": "option5-question-1",
+          "value": "5",
+          "id": 5
+        }
+      ],
+      "typeInput": {
+        "type": "radio",
+        "name": "Varias opciones"
+      }
+    }
+  },
+  {
+    "question": {
+      "title": "¿Qué asignaturas consideras que necesitan mejoras en su contenido o metodología?"
+      ,
+    "typeInput": {
+      "type": "textarea",
+      "name": "Parrafo"
+    },
+    "options": []
+    }
+  },
+  {
+    "question": {
+      "title": "¿Has tenido oportunidades suficientes para realizar prácticas profesionales? (1 = Muy pocas, 5 = Muchas)",
+      "typeInput": {
+        "type": "radio",
+        "name": "Varias opciones"
+      },
+      "options": [
+        {
+          "name": "option1-question-3",
+          "value": "1",
+          "id": 3
+        },
+        {
+          "name": "option2-question-3",
+          "value": "2",
+          "id": 4
+        },
+        {
+          "name": "option3-question-3",
+          "value": "3",
+          "id": 5
+        },
+        {
+          "name": "option4-question-3",
+          "value": "4",
+          "id": 6
+        },
+        {
+          "name": "option5-question-3",
+          "value": "5",
+          "id": 7
+        }
+      ]
+    }
+    
+  },
+  {
+    "question": {
+      "title": "¿Cómo calificarías la calidad de las prácticas profesionales ofrecidas? (1 = Muy mala, 5 = Excelente)",
+      "typeInput": {
+        "type": "radio",
+        "name": "Varias opciones"
+      },
+      "options": [
+        {
+          "name": "option1-question-4",
+          "value": "1",
+          "id": 4
+        },
+        {
+          "name": "option2-question-4",
+          "value": "2",
+          "id": 5
+        },
+        {
+          "name": "option3-question-4",
+          "value": "3",
+          "id": 6
+        },
+        {
+          "name": "option4-question-4",
+          "value": "4",
+          "id": 7
+        },
+        {
+          "name": "option5-question-4",
+          "value": "5",
+          "id": 8
+        }
+      ]
+    }
+   
+  },
+  {
+    "question": {
+      "title": "¿Qué sugerencias tienes para mejorar las oportunidades de prácticas profesionales? (Especificar)",
+      "typeInput": {
+        "type": "textarea",
+        "name": "Parrafo"
+      },
+      "options": []
+    }
+  },
+  {
+    "question": {
+      "title": "¿Consideras que la institución cuenta con los recursos necesarios (biblioteca, laboratorios, tecnología) para tu formación? (1 = Muy en desacuerdo, 5 = Muy de acuerdo)",
+      "typeInput": {
+        "type": "radio",
+        "name": "Varias opciones"
+      },
+      "options": [
+        {
+          "name": "option1-question-6",
+          "value": "1",
+          "id": 6
+        },
+        {
+          "name": "option2-question-6",
+          "value": "2",
+          "id": 7
+        },
+        {
+          "name": "option3-question-6",
+          "value": "3",
+          "id": 8
+        },
+        {
+          "name": "option4-question-6",
+          "value": "4",
+          "id": 9
+        },
+        {
+          "name": "option5-question-6",
+          "value": "5",
+          "id": 10
+        }
+      ]
+    }
+  },
+  {
+    "question": {
+      "name": "question-7",
+      "value": "¿Qué recursos adicionales crees que deberían implementarse? (Especificar)",
+      "typeInput": {
+        "type": "textarea",
+        "name": "Parrafo"
+      },
+      "options": []
+    }
+  },
+  {
+    "question": {
+      "name": "question-8",
+      "value": "¿Qué tan satisfecho estás con tu experiencia educativa en la institución? (1 = Muy insatisfecho, 5 = Muy satisfecho)",
+      "typeInput": {
+        "type": "radio",
+        "name": "Varias opciones"
+      },
+      "options": [
+        {
+          "name": "option1-question-8",
+          "value": "1",
+          "id": 1
+        },
+        {
+          "name": "option2-question-8",
+          "value": "2",
+          "id": 2
+        },
+        {
+          "name": "option3-question-8",
+          "value": "3",
+          "id": 3
+        },
+        {
+          "name": "option4-question-8",
+          "value": "4",
+          "id": 4
+        },
+        {
+          "name": "option5-question-8",
+          "value": "5",
+          "id": 5
+        }
+      ]
+    }
+  },
+  {
+    "question": {
+      "name": "question-9",
+      "value": "¿Qué aspectos de la institución consideras que deberían mejorarse? (Especificar)",
+      "typeInput": {
+        "type": "textarea",
+        "name": "Parrafo"
+      },
+      "options": []
+    }
+  },
+  {
+    "question": {
+      "name": "question-10",
+      "value": "¿Tienes algún comentario o sugerencia adicional que te gustaría compartir? (Especificar)",
+      "typeInput": {
+        "type": "textarea",
+        "name": "Parrafo"
+      },
+      "options": []
+    }
+  }
+]

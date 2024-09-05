@@ -1,5 +1,8 @@
 import { Matriz, MatrizQuiz } from "../Models/Matriz.js";
 import { Quiz } from "../Models/Quiz.js";
+import { StudenstQuiz } from "../Models/StudentsQuiz.js";
+
+
 const QUESTION_TYPES = {
   INPUT: "input",
   CHECKBOX: "checkbox",
@@ -32,7 +35,9 @@ export const getOneQuiz = async (req, res) => {
 export const getChartDataQuiz = async (req, res) => {
   try {
     const { idQuiz } = req.params;
-    const ans = await MatrizQuiz.findAll({
+
+    // Obtener respuestas de MatrizQuiz
+    const ans1 = await MatrizQuiz.findAll({
       attributes: [["answers", "quiz"]],
       where: {
         quizId: idQuiz,
@@ -40,11 +45,17 @@ export const getChartDataQuiz = async (req, res) => {
       },
     });
 
-    if (!ans.length) {
-      return res.status(404).json({
-        message: "No existe ninguna respuesta",
-      });
-    }
+    // Obtener respuestas de StudenstQuiz
+    const ans2 = await StudenstQuiz.findAll({
+      attributes: [["answers", "quiz"]],
+      where: {
+        quizId: idQuiz,
+        completed: 1,
+      },
+    });
+
+    // Combinar ambas respuestas en un solo array
+    const combinedAnswers = [...ans1, ...ans2];
 
     const { document } = await Quiz.findOne({
       where: {
@@ -82,7 +93,7 @@ export const getChartDataQuiz = async (req, res) => {
       };
     });
 
-    const answers = ans.map((answer) => ({
+    const answers = combinedAnswers.map((answer) => ({
       quiz: JSON.parse(answer.dataValues.quiz),
     }));
 
@@ -105,7 +116,7 @@ export const getChartDataQuiz = async (req, res) => {
             }
           });
         }
-        //
+
         if (
           answer.type === QUESTION_TYPES.TEXTAREA ||
           answer.type === QUESTION_TYPES.INPUT
@@ -126,20 +137,30 @@ export const getChartDataQuiz = async (req, res) => {
       });
     });
 
-    const filled = await MatrizQuiz.count({
+    const filled1 = await MatrizQuiz.count({
+      where: {
+        quizId: idQuiz,
+        completed: 1,
+      },
+    });
+    const filled2 = await StudenstQuiz.count({
       where: {
         quizId: idQuiz,
         completed: 1,
       },
     });
 
-    res.json({ chartDataQuestions, filled });
+    // Sumamos los registros completados de ambas tablas
+    const totalFilled = filled1 + filled2;
+
+    res.json({ chartDataQuestions, filled: totalFilled });
   } catch (error) {
     res.status(500).json({
       message: error.message,
     });
   }
 };
+
 
 export const verifyQuizCompleted = async (req, res) => {
   try {

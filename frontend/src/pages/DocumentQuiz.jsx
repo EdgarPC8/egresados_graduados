@@ -353,6 +353,7 @@ function DocumentQuiz() {
     const fetchQuiz = async () => {
       const { data } = await getOneQuiz(quizId);
 
+      // console.log(data);
       setDocumentQuiz(data);
 
       if (data.document) {
@@ -434,7 +435,12 @@ function DocumentQuiz() {
                   </Button>
                 </Flex>
               </GridItem>
+              {console.log("las preguntas",questions)}
               {questions.map(({ question }, index) => (
+
+              
+
+
                 <GridItem
                   key={index}
                   borderLeft={focusQuestionId === index ? "4px" : "1px"}

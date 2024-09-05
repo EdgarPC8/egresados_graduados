@@ -35,13 +35,25 @@ import {
   Textarea,
   Checkbox,
   Center,
+  Accordion,
+  AccordionItem,
+  AccordionButton,
+  AccordionPanel,
+  AccordionIcon,
 } from "@chakra-ui/react";
 import { Link, useNavigate } from "react-router-dom";
+// import { getAllStudents } from "../api/studentsResquest";
+import { getAllStudents,getMatriculaFilter,addStudentsQuiz,
+  deleteStudentsQuiz,
+  getStudentQuizFilter} from "../api/matriculaResquest";
+
+
 
 function Quizzes() {
   const navigate = useNavigate();
   const toast = useToast();
   const [quizzes, setQuizzes] = useState([]);
+  const [students, setStudents] = useState([]);
   const { isOpen, onOpen, onClose } = useDisclosure();
   const [currentUser, setCurrentUser] = useState({});
   const cancelRef = useRef();
@@ -56,6 +68,16 @@ function Quizzes() {
   const [selectedItems, setSelectedItems] = useState([]);
   const [selectedOptionCareer, setSelectedOptionCareer] = useState(null);
   const [selectedOptionPeriod, setSelectedOptionPeriod] = useState(null);
+
+  const [selectAllStudents, setSelectAllStudents] = useState(false);
+  const [selectedItemsStudents, setSelectedItemsStudents] = useState([]);
+  const [matriculaFilterQuiz, setMatriculaFilterQuiz] = useState([]);
+
+  let initialFormQuiz = {
+    title: "",
+    description: "",
+    date: "",
+  };
 
   const columns = [
     {
@@ -79,6 +101,12 @@ function Quizzes() {
       header: "Enviados a",
       cell: (props) => {
         return `${props.row.original.matrices.length} Profesionales`;
+      },
+    },
+    {
+      header: "Enviado a",
+      cell: (props) => {
+        return `${props.row.original.matriculas.length} Estudiantes`;
       },
     },
     {
@@ -168,11 +196,52 @@ function Quizzes() {
       ),
     },
   ];
-  let initialFormQuiz = {
-    title: "",
-    description: "",
-    date: "",
-  };
+  const columnsStudents = [
+    {
+      header: "#",
+      accessorKey: "index",
+      cell: (props) => props.row.index + 1,
+    },
+    {
+      header: "Nombres Completos",
+      accessorKey: "fullname",
+      accessorFn: (row) =>
+        `
+        ${row.student.nombre_1} ${row.student.nombre_2} ${row.student.apellido_1} ${row.student.apellido_2} 
+        `
+    },
+    {
+      header: "Cedula",
+      accessorKey: "student.numero_documento",
+    },
+    {
+      header: "Carrera",
+      accessorKey: "carreer.name",
+    },
+    {
+      header: "Periodo",
+      accessorKey: "period.name",
+    },
+    {
+      header: () => (
+        <>
+          <Checkbox isChecked={selectAllStudents} onChange={handleSelectAllStudents} />
+        </>
+      ),
+      accessorKey: "selectAllStudents",
+      cell: (props) => (
+        <Center>
+          <Stack spacing={4} direction="row" align="center">
+            <Checkbox
+              isChecked={selectAllStudents || props.row.original.isSelected}
+              onChange={() => handleCheckboxChangeStudents(props.row.index)}
+            />
+          </Stack>
+        </Center>
+      ),
+    },
+  ];
+ 
   const handleSelectAll = () => {
     const updatedMatriz = matriz.map((item) => ({
       ...item,
@@ -184,6 +253,17 @@ function Quizzes() {
     const selected = updatedMatriz.filter((item) => item.isSelected);
     setSelectedItems(selected);
   };
+  const handleSelectAllStudents = () => {
+    const updatedMatricula = students.map((item) => ({
+      ...item,
+      isSelected: !selectAllStudents,
+    }));
+    setStudents(updatedMatricula);
+    setSelectAllStudents(!selectAllStudents);
+
+    const selected = updatedMatricula.filter((item) => item.isSelected);
+    setSelectedItemsStudents(selected);
+  };
 
   const handleCheckboxChange = (index) => {
     const updatedMatriz = matriz.map((item, i) => {
@@ -192,13 +272,34 @@ function Quizzes() {
       }
       return item;
     });
+    
     setMatriz(updatedMatriz);
-
+    
     const selected = updatedMatriz.filter((item) => item.isSelected);
-
+    const deselected = updatedMatriz.filter((item) => !item.isSelected && selectedItems.includes(item));
+    
+    // Combinar los seleccionados y deseleccionados
+    const updatedSelectedItems = [...selected, ...deselected];
+    
     setSelectAll(selected.length === matriz.length); // Actualizar selectAll en consecuencia
+    setSelectedItems(updatedSelectedItems);
+    
+  };
 
-    setSelectedItems(selected);
+  const handleCheckboxChangeStudents = (index) => {
+    const updatedMatricula = students.map((item, i) => {
+      if (i === index) {
+        return { ...item, isSelected: !item.isSelected };
+      }
+      return item;
+    });
+    setStudents(updatedMatricula);
+
+    const selected = updatedMatricula.filter((item) => item.isSelected);
+
+    setSelectAllStudents(selected.length === students.length); // Actualizar selectAll en consecuencia
+
+    setSelectedItemsStudents(selected);
   };
 
   const transformedPeriodos = Periods.map((item) => ({
@@ -220,9 +321,15 @@ function Quizzes() {
       if (!selectedOptionCareer) {
         const res = await getMatrizFilter({});
         setMatriz(res.data);
+
+        const resStudents = await getMatriculaFilter({});
+        setStudents(resStudents.data);
       } else {
         const res = await getMatrizFilter({ career: selectedOptionCareer.id });
         setMatriz(res.data);
+
+            const resStudents = await getMatriculaFilter({ id_especialidad: selectedOptionCareer.id });
+            setStudents(resStudents.data);
       }
     } else {
       // whereFilter.career? whereFilter.idPeriod=value: setWhereFilter({idPeriod:value});
@@ -231,12 +338,21 @@ function Quizzes() {
       if (!selectedOptionCareer) {
         const res = await getMatrizFilter({ idPeriod: value });
         setMatriz(res.data);
+
+        const resStudents = await getMatriculaFilter({ id_periodoac: value });
+        setStudents(resStudents.data);
       } else {
         const res = await getMatrizFilter({
           idPeriod: value,
           career: selectedOptionCareer.id,
         });
         setMatriz(res.data);
+
+        const resStudents = await getMatriculaFilter({
+          id_periodoac: value,
+          id_especialidad: selectedOptionCareer.id,
+        });
+        setStudents(resStudents.data);
       }
     }
 
@@ -252,11 +368,19 @@ function Quizzes() {
       if (!selectedOptionPeriod) {
         const res = await getMatrizFilter({});
         setMatriz(res.data);
+        const resStudents = await getMatriculaFilter({});
+        setStudents(resStudents.data);
       } else {
         const res = await getMatrizFilter({
           idPeriod: selectedOptionPeriod.id,
         });
+
+
         setMatriz(res.data);
+        const resStudents = await getMatriculaFilter({
+          id_periodoac: selectedOptionPeriod.id,
+        });
+        setStudents(resStudents.data);
       }
     } else {
       setSelectedOptionCareer({ id: value, name: selectedOption });
@@ -264,55 +388,62 @@ function Quizzes() {
       if (!selectedOptionPeriod) {
         const res = await getMatrizFilter({ career: value });
         setMatriz(res.data);
+
+        const resStudents = await getMatriculaFilter({ id_especialidad: value });
+        setStudents(resStudents.data);
       } else {
         const res = await getMatrizFilter({
           idPeriod: selectedOptionPeriod.id,
           career: value,
         });
         setMatriz(res.data);
+
+        const resStudents = await getMatriculaFilter({
+          id_periodoac: selectedOptionPeriod.id,
+          id_especialidad: value,
+        });
+        setStudents(resStudents.data);
       }
     }
 
     // Actualiza el estado normalmente
   };
-  // const handleDelete = async () => {
-  //   // Obtener los idMatriz de los elementos desmarcados
-  //   const deselectedItems = matrizFilterQuizData
-  //     .filter(item => !item.isSelected)
-  //     .map(item => item.idMatriz);
-
-  //   try {
-  //     // Eliminar las filas de la tabla MatrizQuiz
-  //     await deleteMatrizQuiz(deselectedItems);
-
-  //     // Actualizar matrizFilterQuizData después de la eliminación
-  //     const updatedMatrizFilterQuizData = matrizFilterQuizData.filter(item => item.isSelected);
-  //     setMatrizFilterQuiz(updatedMatrizFilterQuizData);
-  //   } catch (error) {
-  //     console.error("Error al eliminar filas de la tabla MatrizQuiz:", error);
-  //   }
-  // };
 
   const handleEditRow = async (row) => {
     const { title, description, date } = row;
     form.current.scrollIntoView({ behavior: "smooth", block: "start" });
-    // console.log(row.idQuiz)
+    // console.log(row.matriculas)
     setMatriz([]);
     setMatrizFilterQuiz([]);
 
-    const resFilete = await getMatrizQuizFilter(row.idQuiz);
-    const matrizFilterQuizData = resFilete.data;
+    // const resFilete = await getMatrizQuizFilter(row.idQuiz);
+
+
+    // const matrizFilterQuizData = resFilete.data.matrices;
+    const matrizFilterQuizData = row.matrices;
+    const matriculaFilterQuizData = row.matriculas;
 
     // Comparar y establecer isSelected en consecuencia
     const updatedMatriz = matriz.map((item) => ({
       ...item,
       isSelected: matrizFilterQuizData.some(
-        (filterItem) => filterItem.idMatriz === item.id,
+        (filterItem) => filterItem.matriz_quizzes.idMatriz === item.id,
       ),
     }));
+    const updatedMatricula = students.map((item) => ({
+      ...item,
+      isSelected: matriculaFilterQuizData.some(
+        (filterItem) => filterItem.students_quizzes.studentId === item.id_matricula,
+      ),
+    }));
+    console.log(matrizFilterQuizData,matriculaFilterQuizData);
 
     setMatriz(updatedMatriz);
     setMatrizFilterQuiz(matrizFilterQuizData);
+
+    setStudents(updatedMatricula);
+    setMatriculaFilterQuiz(matriculaFilterQuizData);
+
     setIsEditing(true);
     setId(row.idQuiz);
     setFormQuiz({
@@ -327,17 +458,41 @@ function Quizzes() {
 
     if (isEditing) {
       // Filtrar los elementos que ya están en matrizFilterQuiz
-      const newSelectedItems = selectedItems.filter(
-        (selectedItem) =>
-          !matrizFilterQuiz.some(
-            (filterItem) => filterItem.idMatriz === selectedItem.id,
+
+     
+
+
+        const newSelectedItems = selectedItems.filter(
+          (selectedItem) =>
+            !matrizFilterQuiz.some(
+              (filterItem) => filterItem.matriz_quizzes.idMatriz === selectedItem.id,
+            ),
+        );
+        // Filtrar los elementos que ya estaban seleccionados y ahora están deseleccionados
+        const deselectedItems = matrizFilterQuiz.filter(
+          (selectedItem) =>
+            !selectedItems.some((item) => item.id === selectedItem.matriz_quizzes.idMatriz),
+        );
+
+        console.log("matricula filter",matrizFilterQuiz);
+        console.log("selected items",selectedItems);
+        console.log("deselected items",deselectedItems);
+
+  
+
+      const newSelectedItemsStundents = selectedItemsStudents.filter(
+        (selectedItemStudents) =>
+          !matriculaFilterQuiz.some(
+            (filterItem) => filterItem.students_quizzes.studentId === selectedItemStudents.id_matricula,
           ),
       );
       // Filtrar los elementos que ya estaban seleccionados y ahora están deseleccionados
-      const deselectedItems = matrizFilterQuiz.filter(
-        (selectedItem) =>
-          !selectedItems.some((item) => item.id === selectedItem.idMatriz),
+      const deselectedItemsStudents = matriculaFilterQuiz.filter(
+        (selectedItemStudents) =>
+          !selectedItemsStudents.some((item) => item.id_matricula === selectedItemStudents.students_quizzes.studentId),
       );
+
+      // console.log(selectedItems,newSelectedItems,deselectedItems);
 
       // Resto del código...
 
@@ -350,14 +505,37 @@ function Quizzes() {
           position: "top-right",
         },
         success: (d) => {
-          newSelectedItems.forEach((element) => {
-            addMatrizQuiz({ idMatriz: element.id, quizId: id });
-          });
-          deselectedItems.forEach((element) => {
-            if (element.completed == 0) {
-              deleteMatrizQuiz(element.idMatriz, element.quizId);
-            }
-          });
+
+//esto falta controlar el agregado y la elminacion de datos de la BD
+          if(newSelectedItems.length>0 || selectedItems.length>0){
+            newSelectedItems.forEach((element) => {
+              addMatrizQuiz({ idMatriz: element.id, quizId: id });
+            });
+
+          }
+          if(deselectedItems.length>0 || selectedItems.length>0){
+            deselectedItems.forEach((element) => {
+              if (element.matriz_quizzes.completed == 0) {
+                deleteMatrizQuiz(element.matriz_quizzes.idMatriz, element.matriz_quizzes.quizId);
+              }
+            });
+          }
+
+          if(newSelectedItemsStundents.length>0 || selectedItemsStudents.length>0){
+            newSelectedItemsStundents.forEach((element) => {
+              addStudentsQuiz({ studentId: element.id_matricula, quizId: id });
+            });
+
+          }
+          if(deselectedItemsStudents.length>0 || selectedItemsStudents.length>0){
+            deselectedItemsStudents.forEach((element) => {
+              // console.log(element);
+              if (element.students_quizzes.completed == 0) {
+                deleteStudentsQuiz(element.students_quizzes.studentId, element.students_quizzes.quizId);
+              }
+            });
+          }
+      
           fetchUsers();
           clear();
 
@@ -412,9 +590,11 @@ function Quizzes() {
   async function fetchUsers() {
     try {
       const resMatriz = await getAllMatriz();
+      const resStudents = await getAllStudents();
       const resQuizzes = await getMatrizQuizFilter(0);
       setQuizzes(resQuizzes.data);
       setMatriz(resMatriz.data);
+      setStudents(resStudents.data);
       const resCareers = await getAllCareers();
       const resPeriods = await getAllPeriods();
 
@@ -505,8 +685,37 @@ function Quizzes() {
                     />
                   </GridItem>
                   <GridItem fontSize={"sm"} colSpan={2}>
-                    Tabla de Matrices
-                    <Tabl data={matriz} columns={columnsCreateMatriz} />
+                  <Accordion allowToggle>
+                    <AccordionItem>
+                      <h2>
+                        <AccordionButton>
+                          <Box as='span' flex='1' textAlign='left'>
+                          Tabla de Matrices
+                          </Box>
+                          <AccordionIcon />
+                        </AccordionButton>
+                      </h2>
+                      <AccordionPanel pb={4}>
+                      <Tabl data={matriz} columns={columnsCreateMatriz} />
+                      </AccordionPanel>
+                    </AccordionItem>
+
+                    <AccordionItem>
+                      <h2>
+                        <AccordionButton>
+                          <Box as='span' flex='1' textAlign='left'>
+                            Tabla de Estudiantes
+                          </Box>
+                          <AccordionIcon />
+                        </AccordionButton>
+                      </h2>
+                      <AccordionPanel pb={4}>
+                      <Tabl data={students} columns={columnsStudents} />
+
+                      </AccordionPanel>
+                    </AccordionItem>
+                  </Accordion>
+                    
                   </GridItem>
                 </>
               ) : null}

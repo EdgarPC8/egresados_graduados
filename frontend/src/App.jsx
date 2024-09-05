@@ -27,9 +27,11 @@ import "@fontsource/inter/600.css";
 import Logger from "./pages/Logger.jsx";
 import DocumentQuiz from "./pages/DocumentQuiz.jsx";
 import FillQuiz from "./pages/FillQuiz.jsx";
-import { Flex } from "@chakra-ui/react";
+import FillQuizStudent from "./pages/FillQuizStudent.jsx";
 
 import { useEffect } from "react";
+import { Flex } from "@chakra-ui/react";
+
 
 function App() {
 
@@ -47,7 +49,7 @@ function App() {
             <Route
               element={
                 <ProtectedRoute
-                  requiredRol={["Profesional", "Programador", "Administrador"]}
+                  requiredRol={["Profesional", "Programador", "Administrador","Estudiante"]}
                 />
               }
             >
@@ -60,6 +62,10 @@ function App() {
               <Route
                 path="/encuesta/f/:quizId/matriz/:matrizId"
                 element={<FillQuiz />}
+              />
+                 <Route
+                path="/encuesta/f/:quizId/matricula/:studentId"
+                element={<FillQuizStudent />}
               />
             </Route>
             <Route
