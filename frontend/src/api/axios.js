@@ -1,11 +1,7 @@
 import axios from "axios";
+import { urlRequestsApi } from "../constants/url";
 
-const objUrl = {
-  local: "localhost:3000/api/",
-  edgar: "192.168.137.250:3000/api/",
-  alumni: "aplicaciones.marianosamaniego.edu.ec",
-};
-const url = objUrl.local;
+const url =  urlRequestsApi.local;
 
 const instance = axios.create({
   baseURL: `http://${url}`,

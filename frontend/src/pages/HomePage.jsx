@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import HomeIcon from "/homeicon.svg";
 import React, { useEffect } from "react";
 import { useAuth } from "../context/AuthContext";
+import { urlRequestsApi } from "../constants/url";
 
 
 
@@ -11,8 +12,9 @@ function HomePage() {
 
   useEffect(() => {
     const handleMessage = (event) => {
-      if (event.origin !== 'http://localhost:8888') {
+      if (event.origin !== urlRequestsApi.urlAcademicSystem) {
         console.error('Mensaje de origen no permitido');
+        window.alert('Mensaje de origen no permitido')
         return;
       }
       console.log(event.data)
