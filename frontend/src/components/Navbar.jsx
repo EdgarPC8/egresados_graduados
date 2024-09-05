@@ -280,7 +280,7 @@ const Navbar = () => {
                 <IconButton icon={<FiLogOut />} onClick={logout} />
               </Link>
             ) : (
-              <>
+              <Flex gap={2}>
                 <Link to="/register">
                   <Button onClick={onClose}>Registrarse</Button>
                 </Link>
@@ -289,7 +289,7 @@ const Navbar = () => {
                     Iniciar Sesión
                   </Button>
                 </Link>
-              </>
+              </Flex>
             )}
           </DrawerFooter>
         </DrawerContent>
