@@ -5,30 +5,24 @@ import React, { useEffect } from "react";
 import { useAuth } from "../context/AuthContext";
 import { urlRequestsApi } from "../constants/url";
 
-
-
 function HomePage() {
   const { signinExternal } = useAuth();
 
   useEffect(() => {
     const handleMessage = (event) => {
       if (event.origin !== urlRequestsApi.urlAcademicSystem) {
-        console.error('Mensaje de origen no permitido');
-        window.alert('Mensaje de origen no permitido')
+        console.error("Mensaje de origen no permitido");
+        //window.alert('Mensaje de origen no permitido')
         return;
       }
-      console.log(event.data)
+      console.log(event.data);
       signinExternal(event.data);
     };
-    window.addEventListener('message', handleMessage);
+    window.addEventListener("message", handleMessage);
     return () => {
-      window.removeEventListener('message', handleMessage);
+      window.removeEventListener("message", handleMessage);
     };
   }, []);
-
-
-
-  
 
   return (
     <Box p={20}>

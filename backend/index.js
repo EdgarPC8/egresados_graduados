@@ -16,10 +16,8 @@ import { insertData, consoleData } from "./src/database/insertData.js";
 import loggerMiddleware from "./src/middlewares/loggerMiddleware.js";
 import { StudenstQuiz } from "./src/Models/StudentsQuiz.js";
 import { Notifications } from "./src/Models/Notifications.js";
-import studentsRoutes  from "./src/routes/studentsRoutes.js";
-import matriculaRoutes  from "./src/routes/matriculaRoutes.js";
-
-
+import studentsRoutes from "./src/routes/studentsRoutes.js";
+import matriculaRoutes from "./src/routes/matriculaRoutes.js";
 
 const app = express();
 const PORT = 3000;
@@ -77,8 +75,8 @@ app.use("/api/matricula", matriculaRoutes);
 async function main() {
   try {
     await sequelize.authenticate();
-    // await sequelize.sync({ force: true });
-    // await insertData();
+    //await sequelize.sync({ force: true });
+    //await insertData();
     //await consoleData();
 
     console.log("Conección realizada con éxito.");
