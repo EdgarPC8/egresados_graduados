@@ -42,7 +42,7 @@ import fs from "fs";
 import fileDirName from "../libs/file-dirname.js";
 import { readFile } from "fs/promises";
 import { Students } from "../Models/Students.js";
-import { Matricula } from "../Models/Matricula.js";
+import { Matricula,AcademicPeriods } from "../Models/Matricula.js";
 
 
 
@@ -177,6 +177,7 @@ const insertData = async () => {
     await Province.bulkCreate(jsonData.ProvinceBackup, { returning: true });
     await Canton.bulkCreate(jsonData.CantonBackup, { returning: true });
     await Parish.bulkCreate(jsonData.ParishBackup, { returning: true });
+    await AcademicPeriods.bulkCreate(jsonData.AcademicPeriodsBackup, { returning: true });
     await Periods.bulkCreate(jsonData.PeriodsBackup, { returning: true });
     await Carreers.bulkCreate(jsonData.CarreersBackup, { returning: true });
     await Matriz.bulkCreate(jsonData.MatrizBackup, { returning: true });

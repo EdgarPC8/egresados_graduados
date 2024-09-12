@@ -1,4 +1,4 @@
-import { Matricula } from "../Models/Matricula.js";
+import { Matricula,AcademicPeriods } from "../Models/Matricula.js";
 import { Carreers,Periods } from "../Models/Matriz.js";
 import { Students } from "../Models/Students.js";
 
@@ -17,7 +17,6 @@ export const getAllMatriculas = async (req, res) => {
 
 export const getAllStudents = async (req, res) => {
   try {
-    // const data = await Matricula.findAll();
     const data = await Matricula.findAll({
       attributes: ["id_matricula"],
       include: [
@@ -35,8 +34,12 @@ export const getAllStudents = async (req, res) => {
           ],
         },
         { model: Carreers },
-        { model: Periods },
-      ],
+        { 
+          model: AcademicPeriods,
+          where: { active: 1 }, // Colocamos el where aquí para filtrar solo los periodos activos
+          attributes: []  // Si no necesitas otros atributos de AcademicPeriods, puedes dejarlo vacío
+        },
+      ]
     });
     res.json(data);
   } catch (error) {
@@ -47,8 +50,10 @@ export const getAllStudents = async (req, res) => {
   }
 };
 
+
 export const getMatriculaFilter = async (req, res) => {
   const data = req.body;
+
   try {
     const professional = await Matricula.findAll({
       attributes: ["id_matricula",],
@@ -67,7 +72,7 @@ export const getMatriculaFilter = async (req, res) => {
           ],
         },
         { model: Carreers, attributes: ["name"] },
-        { model: Periods, attributes: ["name"] },
+        { model: AcademicPeriods, attributes: ["name"] },
       ],
       where: data,
     });

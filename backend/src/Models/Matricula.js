@@ -58,6 +58,31 @@ export const Matricula = sequelize.define(
   }
 );
 
+export const AcademicPeriods = sequelize.define(
+  "academic_periods",
+  {
+    id: {
+      type: DataTypes.INTEGER,
+      primaryKey: true,
+      autoIncrement: true,
+    },
+    name: {
+      type: DataTypes.STRING(150),
+      defaultValue: null,
+    },
+    order: {
+      type: DataTypes.INTEGER,
+      defaultValue: null,
+    },
+    active: {
+      type: DataTypes.INTEGER,
+      defaultValue: null,
+    },
+  },
+  {
+    timestamps: false,
+  },
+);
 
 
 Students.hasMany(Matricula, {
@@ -84,13 +109,13 @@ Matricula.belongsTo(Carreers, {
   sourceKey: "id_especialidad",
 });
 
-Periods.hasMany(Matricula, {
+AcademicPeriods.hasMany(Matricula, {
   foreignKey: "id_periodoac",
   sourceKey: "id",
   onDelete: "CASCADE",
 });
 
-Matricula.belongsTo(Periods, {
+Matricula.belongsTo(AcademicPeriods, {
   foreignKey: "id_periodoac",
   sourceKey: "id_periodoac",
 });

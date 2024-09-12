@@ -47,7 +47,7 @@ import {
 import {
   Tutorials,
 } from "../Models/Tutorials.js";
-import { Matricula } from "../Models/Matricula.js";
+import { Matricula,AcademicPeriods } from "../Models/Matricula.js";
 
 
 
@@ -87,6 +87,7 @@ export const backup = async (req, res) => {
     const MatrizQuizBackup = await MatrizQuiz.findAll();
     const TutorialsBackup = await Tutorials.findAll();
     const StudentsBackup = await Students.findAll();
+    const AcademicPeriodsBackup = await AcademicPeriods.findAll();
     const MatriculaBackup = await Matricula.findAll();
 
     // Crear un objeto que contenga todos los datos
@@ -121,6 +122,7 @@ export const backup = async (req, res) => {
         MatrizQuizBackup,
         TutorialsBackup,
         StudentsBackup,
+        AcademicPeriodsBackup,
         MatriculaBackup,
     };
 

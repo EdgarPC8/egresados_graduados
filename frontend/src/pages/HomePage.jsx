@@ -11,6 +11,7 @@ function HomePage() {
 
   useEffect(() => {
     const handleMessage = (event) => {
+      // if (event.origin !== 'http://localhost:8888') {
       if (event.origin !== 'http://localhost:8888') {
         console.error('Mensaje de origen no permitido');
         return;
