@@ -292,7 +292,7 @@ function DocumentQuiz() {
                 ),
               },
             }
-          : question,
+          : { question },
       ),
     );
   };
@@ -437,7 +437,6 @@ function DocumentQuiz() {
                   </Button>
                 </Flex>
               </GridItem>
-              {console.log("las preguntas", questions)}
               {questions.map(({ question }, index) => (
                 <GridItem
                   key={index}
