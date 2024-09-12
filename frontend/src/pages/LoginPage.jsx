@@ -36,7 +36,7 @@ function LoginPage() {
     const data = Object.fromEntries(new FormData(event.target));
     // console.log(JSON.stringify(data));
     signin(data);
-    console.log(errors)
+    console.log(errors);
   };
 
   useEffect(() => {
@@ -55,74 +55,70 @@ function LoginPage() {
 
   return (
     <Container
-      maxW="lg"
+      flex="1"
       alignItems="center"
-
-      py={{ base: "12", md: "24" }}
-      px={{ base: "0", sm: "8" }}
+      justifyContent="center"
+      display="flex"
+      flexDirection="column"
     >
-      <Stack spacing="7">
-        <Stack spacing="6">
-          <Stack spacing={{ base: "2", md: "3" }} textAlign="center">
-            <Heading size={{ base: "xs", md: "sm" }}>
-              Inicia Sesión en tu cuenta.
-            </Heading>
-            <Text>Es un gusto tenerte de vuelta 😄</Text>
-          </Stack>
-          <Box
-            py={{ base: "0", sm: "8" }}
-            px={{ base: "4", sm: "10" }}
-            bg={{ base: "transparent", sm: "bg.surface" }}
-            boxShadow={{ base: "none", sm: "md" }}
-            borderRadius={{ base: "none", sm: "xl" }}
-          >
-            <form onSubmit={handleSubmit}>
-              <Stack spacing="6">
-                <Stack spacing="5">
-                  {!errors.message ? (
-                    ""
-                  ) : (
-                    <Alert status="error">
-                      <AlertIcon />
-                      <AlertTitle>Autenticación</AlertTitle>
-                      <AlertDescription>{errors.message}</AlertDescription>
-                    </Alert>
-                  )}
-                  <FormControl>
-                    <FormLabel htmlFor="username">Usuario</FormLabel>
-                    <Input id="username" name="username" required/>
-                  </FormControl>
-                  <FormControl>
-                    <FormLabel>Contraseña</FormLabel>
-                    <PasswordInput name="password" required/>
-                  </FormControl>
-                  <FormControl>
-                    <FormLabel htmlFor="roles">Roles disponibles</FormLabel>
-                    <Select placeholder="Seleccione un rol" name="rol" required>
-                      {roles.map((rol) => (
-                        <option key={rol.id} value={rol.rol}>
-                          {rol.rol}
-                        </option>
-                      ))}
-                    </Select>
-                  </FormControl>
-                </Stack>
-                <Button
-                  bg="ceruleanBlue.500"
-                  color="white"
-                  type="submit"
-                  _hover={{
-                    bg: "ceruleanBlue.600",
-                  }}
-                >
-                  Iniciar Sesión
-                </Button>
-              </Stack>
-            </form>
-          </Box>
+      <Box
+        py={{ base: "0", sm: "8" }}
+        px={{ base: "4", sm: "10" }}
+        bg={{ base: "transparent", sm: "bg.surface" }}
+        boxShadow={{ base: "none", sm: "md" }}
+        borderRadius={{ base: "none", sm: "xl" }}
+      >
+        <Stack spacing={{ base: "2", md: "3" }} mb={6} textAlign="center">
+          <Heading size={{ base: "xs", md: "sm" }}>Iniciar sesión.</Heading>
+          <Text>Es un gusto tenerte de vuelta 😄</Text>
         </Stack>
-      </Stack>
+
+        <form onSubmit={handleSubmit}>
+          <Stack spacing="6">
+            <Stack spacing="5">
+              {!errors.message ? (
+                ""
+              ) : (
+                <Alert status="error">
+                  <AlertIcon />
+                  <AlertTitle>Autenticación</AlertTitle>
+                  <AlertDescription>{errors.message}</AlertDescription>
+                </Alert>
+              )}
+              <FormControl>
+                <FormLabel htmlFor="username">Usuario</FormLabel>
+                <Input id="username" name="username" required />
+              </FormControl>
+              <FormControl>
+                <FormLabel>Contraseña</FormLabel>
+                <PasswordInput name="password" required />
+              </FormControl>
+              <FormControl>
+                <FormLabel htmlFor="roles">Roles disponibles</FormLabel>
+                <Select placeholder="Seleccione un rol" name="rol" required>
+                  {roles.map((rol) => (
+                    <option key={rol.id} value={rol.rol}>
+                      {rol.rol}
+                    </option>
+                  ))}
+                </Select>
+              </FormControl>
+            </Stack>
+            <Button
+              bg="ceruleanBlue.500"
+              color="white"
+              type="submit"
+              _hover={{
+                bg: "ceruleanBlue.600",
+              }}
+            >
+              Iniciar Sesión
+            </Button>
+          </Stack>
+        </form>
+      </Box>
     </Container>
   );
 }
 export default LoginPage;
+

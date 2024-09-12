@@ -186,15 +186,17 @@ function DocumentQuiz() {
 
   const removeOption = (idQuestion, idOption) => {
     setQuestions(
-      questions.map((question, id) =>
+      questions.map(({ question }, id) =>
         id === idQuestion
           ? {
-              ...question,
-              options: question.options.filter(
-                (option) => option.id !== idOption,
-              ),
+              question: {
+                ...question,
+                options: question.options.filter(
+                  (option) => option.id !== idOption,
+                ),
+              },
             }
-          : question,
+          : { question },
       ),
     );
   };
@@ -435,12 +437,8 @@ function DocumentQuiz() {
                   </Button>
                 </Flex>
               </GridItem>
-              {console.log("las preguntas",questions)}
+              {console.log("las preguntas", questions)}
               {questions.map(({ question }, index) => (
-
-              
-
-
                 <GridItem
                   key={index}
                   borderLeft={focusQuestionId === index ? "4px" : "1px"}
