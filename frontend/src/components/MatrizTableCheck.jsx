@@ -49,7 +49,7 @@ import { getAllStudents,getMatriculaFilter,addStudentsQuiz,
 
 
 
-function Quizzes() {
+function MatrizTableCheck() {
   const navigate = useNavigate();
   const toast = useToast();
   const [quizzes, setQuizzes] = useState([]);
@@ -73,76 +73,7 @@ function Quizzes() {
   const [selectedItemsStudents, setSelectedItemsStudents] = useState([]);
   const [matriculaFilterQuiz, setMatriculaFilterQuiz] = useState([]);
 
-  let initialFormQuiz = {
-    title: "",
-    description: "",
-    date: "",
-  };
 
-  const columns = [
-    {
-      header: "Id",
-      accessorKey: "idQuiz",
-      cell: (props) => props.row.index + 1,
-    },
-    {
-      header: "Titulo",
-      accessorKey: "title",
-    },
-    {
-      header: "Descripción",
-      accessorKey: "description",
-    },
-    {
-      header: "Fecha",
-      accessorKey: "date",
-    },
-    {
-      header: "Enviados a",
-      cell: (props) => {
-        return `${props.row.original.matrices.length} Profesionales`;
-      },
-    },
-    {
-      header: "Enviado a",
-      cell: (props) => {
-        return `${props.row.original.matriculas.length} Estudiantes`;
-      },
-    },
-    {
-      header: "Acción",
-
-      cell: (props) => (
-        <Stack spacing={4} direction="row" align="center">
-          <Button
-            colorScheme="yellow"
-            onClick={() => {
-              handleEditRow(props.row.original);
-            }}
-          >
-            Editar
-          </Button>
-          <Button
-            colorScheme="red"
-            onClick={() => {
-              setCurrentUser(props.row.original);
-              onOpen();
-            }}
-          >
-            Eliminar
-          </Button>
-
-          <Button
-            onClick={() => {
-              navigate(`/encuesta/d/${props.row.original.idQuiz}`);
-            }}
-          >
-            Encuesta
-          </Button>
-        </Stack>
-      ),
-    },
-  ];
   const columnsCreateMatriz = [
     {
       header: "#",
@@ -196,51 +127,7 @@ function Quizzes() {
       ),
     },
   ];
-  const columnsStudents = [
-    {
-      header: "#",
-      accessorKey: "index",
-      cell: (props) => props.row.index + 1,
-    },
-    {
-      header: "Nombres Completos",
-      accessorKey: "fullname",
-      accessorFn: (row) =>
-        `
-        ${row.student.nombre_1} ${row.student.nombre_2} ${row.student.apellido_1} ${row.student.apellido_2} 
-        `
-    },
-    {
-      header: "Cedula",
-      accessorKey: "student.numero_documento",
-    },
-    {
-      header: "Carrera",
-      accessorKey: "carreer.name",
-    },
-    {
-      header: "Periodo",
-      accessorKey: "academic_period.name",
-    },
-    {
-      header: () => (
-        <>
-          <Checkbox isChecked={selectAllStudents} onChange={handleSelectAllStudents} />
-        </>
-      ),
-      accessorKey: "selectAllStudents",
-      cell: (props) => (
-        <Center>
-          <Stack spacing={4} direction="row" align="center">
-            <Checkbox
-              isChecked={selectAllStudents || props.row.original.isSelected}
-              onChange={() => handleCheckboxChangeStudents(props.row.index)}
-            />
-          </Stack>
-        </Center>
-      ),
-    },
-  ];
+
  
   const handleSelectAll = () => {
     const updatedMatriz = matriz.map((item) => ({
@@ -582,37 +469,6 @@ function Quizzes() {
     fetchUsers();
     clear();
   };
-  const handleChange = (event) => {
-    const { name, value } = event.target;
-    setFormQuiz({ ...formQuiz, [name]: value });
-  };
-  const clear = () => {
-    setIsEditing(false);
-    setId(false);
-    setFormQuiz(initialFormQuiz);
-  };
-
-  async function fetchUsers() {
-    try {
-      const resMatriz = await getAllMatriz();
-      const resStudents = await getAllStudents();
-      const resQuizzes = await getMatrizQuizFilter(0);
-      setQuizzes(resQuizzes.data);
-      setMatriz(resMatriz.data);
-      setStudents(resStudents.data);
-      const resCareers = await getAllCareers();
-      const resPeriods = await getAllPeriods();
-
-      setCareers(resCareers.data);
-      setPeriods(resPeriods.data);
-    } catch (error) {
-      console.error("Error al obtener datos académicos:", error);
-    }
-  }
-
-  useEffect(() => {
-    fetchUsers();
-  }, []);
 
   return (
     <>
@@ -795,4 +651,4 @@ function Quizzes() {
   );
 }
 
-export default Quizzes;
+export default MatrizTableCheck;
